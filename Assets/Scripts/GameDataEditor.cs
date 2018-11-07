@@ -72,20 +72,6 @@ public class GameDataEditor : MonoBehaviour
         SaveData();
     }
 
-    public void SetSelectedPlayer(int playerID)
-    {
-        data.selectedPlayer = playerID;
-
-        SaveData();
-    }
-
-    public void SetSelectedBuddy(int buddyID)
-    {
-        data.selectedBuddy = buddyID;
-
-        SaveData();
-    }
-
     public bool IsMuted()
     {
         return data.isMuted;
@@ -93,7 +79,7 @@ public class GameDataEditor : MonoBehaviour
 
     public void AddLevel()
     {
-        Level level = new LevelData();
+        LevelData level = new LevelData();
         data.levels.Add(level);
 
         SaveData();

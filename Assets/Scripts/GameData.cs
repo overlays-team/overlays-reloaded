@@ -7,10 +7,10 @@ using UnityEngine;
 public class GameData
 {
     public bool isMuted;
-    public List<Level> levels;
+    public List<LevelData> levels;
 
     public GameData()
     {
-        level = new List<Level>();
+        levels = new List<LevelData>();
     }
 }
