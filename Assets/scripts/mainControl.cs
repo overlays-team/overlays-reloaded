@@ -9,10 +9,12 @@ public class mainControl : MonoBehaviour {
     //time to win
     float timeLeft = 5.0f;
 
+    private bool win;
+
     // Use this for initialization
     void Start () {
 
-
+        win = false;
         //all complete level game objets are unactive
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -24,14 +26,19 @@ public class mainControl : MonoBehaviour {
 	void Update () {
 
         timeLeft -= Time.deltaTime;
+
         //if win
-        if (timeLeft < 0)
-        {
-            for (int i = 0; i < buttons.Length; i++)
-            {
-                buttons[i].SetActive(true);
-            }
+        win |= timeLeft < 0;
+        if(win){
+            Win();
         }
 
+    }
+
+    private void Win(){
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].SetActive(true);
+        }
     }
 }
