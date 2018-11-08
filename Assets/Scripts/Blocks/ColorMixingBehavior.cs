@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ColorMixingBehavior {
 
-       ImageData calculateImageDataOutput(List<ImageData> inputs);
+       List<ImageData> calculateImageDataOutput(List<ImageData> inputs);
 }
