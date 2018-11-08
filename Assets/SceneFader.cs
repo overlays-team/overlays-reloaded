@@ -11,18 +11,24 @@ public class SceneFader : MonoBehaviour {
     public Image img;
     public AnimationCurve curve;
 
+
     private void Start()
     {
         StartCoroutine(FadeIn());
 
     }
 
+
+
     public void FadeTo(string scene)
     {
         StartCoroutine(FadeOut(scene));
     }
 
+
+
     private readonly float speedFactor = 2f; //the lager the value, the slower the fading
+   
     IEnumerator FadeIn()
     {
         float t = 1f * speedFactor;
@@ -34,7 +40,7 @@ public class SceneFader : MonoBehaviour {
             float a = curve.Evaluate(t);
 
             img.color = new Color(0f, 0f, 0f, a);
-            yield return 0; //break. wait unti the next frame
+            yield return 0; //break. wait unti the next frame and continue
         }
     }
 
@@ -50,7 +56,7 @@ public class SceneFader : MonoBehaviour {
             float a = curve.Evaluate(t);
 
             img.color = new Color(0f, 0f, 0f, a);
-            yield return 0; //break. wait unti the next frame
+            yield return 0; //break. wait unti the next frame and continue
         }
 
         SceneManager.LoadScene(scene);
