@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdditivieColorMixing : ColorMixingBehavior {
+public class AdditiveColorMixing : ColorMixingBehavior {
 
-    ImageData ColorMixingBehavior.calculateImageDataOutput(List<ImageData> inputs)
+    List<ImageData> ColorMixingBehavior.calculateImageDataOutput(List<ImageData> inputs)
     {
         //TODO: additive box code
-        return new ImageData(); //change it to the result of additive box calculations
+        List<ImageData> outputs = new List<ImageData>();
+        outputs.Add(new ImageData());
+        return outputs; //change it to the result of additive box calculations
     }
 }

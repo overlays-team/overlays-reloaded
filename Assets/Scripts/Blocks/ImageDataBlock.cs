@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class ImageDataBlock : SimpleBlock {
 
     List<ImageData> inputs;
-    ImageData imageDataOutput;
+    List<ImageData> outputs;
     private ColorMixingBehavior colorMixingBehavior;
 
     public ImageDataBlock(RotateBehavior rotateBehavior, MoveBehavior moveBehavior, ColorMixingBehavior colorMixingBehavior) : base(rotateBehavior, moveBehavior)
@@ -23,7 +23,7 @@ public abstract class ImageDataBlock : SimpleBlock {
         // update inputs
 
         //calculate imageDataOutput
-        this.imageDataOutput = colorMixingBehavior.calculateImageDataOutput(this.inputs);
+        this.outputs = colorMixingBehavior.calculateImageDataOutput(this.inputs);
 
     }
 

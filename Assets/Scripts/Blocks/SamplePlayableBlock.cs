@@ -10,7 +10,7 @@ public class SamplePlayableBlock : ImageDataBlock {
     // Use this for initialization
     void Start () {
         //you can also try AnyMovement() when we know how it works with grid cells
-        new SamplePlayableBlock(new Rotate90(), new NoMovement(), new AdditivieColorMixing());
+        new SamplePlayableBlock(new Rotate90(), new NoMovement(), new AdditiveColorMixing());
 	}
 	
 	// Update is called once per frame
