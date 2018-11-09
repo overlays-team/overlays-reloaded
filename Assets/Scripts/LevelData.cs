@@ -6,7 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class LevelData
 {
-    public string assetID;
     public string sceneID;
 
     public bool completed;

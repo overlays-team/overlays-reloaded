@@ -6,12 +6,9 @@ using UnityEngine;
 public class GameDataEditor : MonoBehaviour
 {
     public static GameDataEditor Instance;
-    public bool clearData = false;
-    public string saveDataName;
-    public float playerPrice;
+    public string dataFileName;
+    public bool loadFromFile;
     public GameData data;
-
-    private string filePath;
 
     private void Awake()
     {
@@ -26,17 +23,15 @@ public class GameDataEditor : MonoBehaviour
 
         DontDestroyOnLoad(this);
 
-        saveDataName = "/gameData.json";
-
-        filePath = Application.persistentDataPath + saveDataName;
-
-        data = new GameData();
-
-        LoadData();
-
-        if (clearData)
+        if(dataFileName == null)
         {
-            ClearData();
+            dataFileName = "/gameData.json";
+        }
+
+        if(loadFromFile)
+        {
+            data = new GameData();
+            LoadData();
         }
     }
 
@@ -45,11 +40,16 @@ public class GameDataEditor : MonoBehaviour
 
     }
 
+    public string getFilePath()
+    {
+        return Application.persistentDataPath + dataFileName;
+    }
+
     public void LoadData()
     {
-        if (File.Exists(filePath))
+        if (File.Exists(getFilePath()))
         {
-            string dataAsJson = File.ReadAllText(filePath);
+            string dataAsJson = File.ReadAllText(getFilePath());
             data = JsonUtility.FromJson<GameData>(dataAsJson);
         }
         else
@@ -62,7 +62,7 @@ public class GameDataEditor : MonoBehaviour
     {
         string dataString = JsonUtility.ToJson(data);
 
-        File.WriteAllText(filePath, dataString);
+        File.WriteAllText(getFilePath(), dataString);
     }
 
     public void ClearData()
@@ -72,16 +72,4 @@ public class GameDataEditor : MonoBehaviour
         SaveData();
     }
 
-    public bool IsMuted()
-    {
-        return data.isMuted;
-    }
-
-    public void AddLevel()
-    {
-        LevelData level = new LevelData();
-        data.levels.Add(level);
-
-        SaveData();
-    }
 }
