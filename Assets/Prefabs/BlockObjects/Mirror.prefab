@@ -9,52 +9,35 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1361127257053738}
+  m_RootGameObject: {fileID: 1725225235283142}
   m_IsPrefabAsset: 1
---- !u!1 &1361127257053738
+--- !u!1 &1037037895009582
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4080691665274208}
-  - component: {fileID: 65941952620740636}
-  - component: {fileID: 114716621309244078}
-  m_Layer: 10
-  m_Name: ImageInput
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1740700869880052
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4110894592386216}
-  - component: {fileID: 114468706457623300}
+  - component: {fileID: 4631939482739012}
+  - component: {fileID: 114913988979077482}
   m_Layer: 0
-  m_Name: LaserOutput
+  m_Name: LaserOutputFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1924055240612334
+--- !u!1 &1093453022281056
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4062767815208190}
-  - component: {fileID: 33606144108158426}
-  - component: {fileID: 23329325884847934}
-  - component: {fileID: 65519569849891718}
+  - component: {fileID: 4807297518901128}
+  - component: {fileID: 33452916273405998}
+  - component: {fileID: 23095551790403886}
+  - component: {fileID: 65753636244715132}
   m_Layer: 11
   m_Name: Graphics
   m_TagString: Untagged
@@ -62,53 +45,100 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4062767815208190
+--- !u!1 &1573563114450374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4329850910085998}
+  - component: {fileID: 114845319287286820}
+  m_Layer: 0
+  m_Name: LaseroutputBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1725225235283142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4646714026611906}
+  - component: {fileID: 65431205570070146}
+  - component: {fileID: 114151354797866240}
+  m_Layer: 10
+  m_Name: Mirror
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4329850910085998
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924055240612334}
+  m_GameObject: {fileID: 1573563114450374}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4646714026611906}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!4 &4631939482739012
+Transform:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1037037895009582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 1, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4080691665274208}
+  m_Father: {fileID: 4646714026611906}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4080691665274208
+--- !u!4 &4646714026611906
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1361127257053738}
+  m_GameObject: {fileID: 1725225235283142}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.109, y: 3.7799997, z: -0.736}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.59, y: 2.73, z: 0.76}
+  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_Children:
-  - {fileID: 4110894592386216}
-  - {fileID: 4062767815208190}
+  - {fileID: 4807297518901128}
+  - {fileID: 4631939482739012}
+  - {fileID: 4329850910085998}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4110894592386216
+--- !u!4 &4807297518901128
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1740700869880052}
+  m_GameObject: {fileID: 1093453022281056}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.19, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4080691665274208}
+  m_Father: {fileID: 4646714026611906}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23329325884847934
+--- !u!23 &23095551790403886
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924055240612334}
+  m_GameObject: {fileID: 1093453022281056}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -138,43 +168,59 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33606144108158426
+--- !u!33 &33452916273405998
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924055240612334}
+  m_GameObject: {fileID: 1093453022281056}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &65519569849891718
+--- !u!65 &65431205570070146
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1924055240612334}
+  m_GameObject: {fileID: 1725225235283142}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65941952620740636
+--- !u!65 &65753636244715132
 BoxCollider:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1361127257053738}
+  m_GameObject: {fileID: 1093453022281056}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114468706457623300
+--- !u!114 &114151354797866240
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1740700869880052}
+  m_GameObject: {fileID: 1725225235283142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5d87bd9fff26c4a9270b5ee781c614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAssignedGridPlane: {fileID: 0}
+  stationary: 0
+  actionBlocked: 0
+  outputLaserFront: {fileID: 114913988979077482}
+  outputLaserBack: {fileID: 114845319287286820}
+--- !u!114 &114845319287286820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1573563114450374}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 765bd32d0941d3240aa3d11d8e3fbfd4, type: 3}
@@ -184,19 +230,18 @@ MonoBehaviour:
     type: 2}
   laser: {fileID: 0}
   active: 1
---- !u!114 &114716621309244078
+--- !u!114 &114913988979077482
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1361127257053738}
+  m_GameObject: {fileID: 1037037895009582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc4f671c70b377044b43e7f231141892, type: 3}
+  m_Script: {fileID: 11500000, guid: 765bd32d0941d3240aa3d11d8e3fbfd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAssignedGridPlane: {fileID: 0}
-  stationary: 0
-  actionBlocked: 0
-  laserOutput: {fileID: 114468706457623300}
-  inputImage: {fileID: 0}
+  laserPrefab: {fileID: 1388563228816114, guid: 701f32b7d89955740a6160dc3c75e853,
+    type: 2}
+  laser: {fileID: 0}
+  active: 1
