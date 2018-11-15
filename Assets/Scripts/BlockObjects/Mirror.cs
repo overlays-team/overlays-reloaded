@@ -23,19 +23,19 @@ public class Mirror : BlockObject
 
         foreach (Laser laser in inputLasers)
         {
-            Debug.Log("laser incming");
+
             //check for input lasers
            
             int angleDifference = (int)Vector3.Angle(laser.laserOutput.forward, transform.forward);
-
+            Debug.Log("angle Difference: " + angleDifference);
             //zwischen 0 und 45 - back, zwischen 135 und 180 front
-            if (angleDifference >= 0 && angleDifference <= 50)
+            if (angleDifference >= 0 && angleDifference <= 85)
             {
                 inputLaserBack = laser;
                 outputLaserBack.gameObject.transform.forward = Vector3.Reflect(inputLaserBack.laserOutput.forward, transform.forward);
 
             }
-            else if (angleDifference >= 130 && angleDifference <= 180)
+            else if (angleDifference >= 95 && angleDifference <= 180)
             {
                 inputLaserFront = laser;
                 outputLaserFront.gameObject.transform.forward = Vector3.Reflect(inputLaserFront.laserOutput.forward, transform.forward);
