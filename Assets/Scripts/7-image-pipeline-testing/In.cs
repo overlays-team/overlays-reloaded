@@ -9,7 +9,7 @@ public class In : MonoBehaviour {
     public Image debugImage;
 
     //referenz auf den nächsten Node
-    public ImageProcessor imageProcessor;
+    public ImageProcessorNode imageProcessorNode;
 
     void Start()
     {
@@ -25,7 +25,7 @@ public class In : MonoBehaviour {
         }
         outputImage.Apply();
 
-        imageProcessor.SetInputImage(outputImage);
+        imageProcessorNode.SetInputImage(outputImage);
         debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
     }
 

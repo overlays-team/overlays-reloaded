@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
-
+/*
 [CustomEditor(typeof(GameDataEditor))]
 public class ObjectBuilderEditor : Editor
 {
@@ -37,3 +37,4 @@ public class ObjectBuilderEditor : Editor
 		EditorGUILayout.Space();
     }
 }
+*/
