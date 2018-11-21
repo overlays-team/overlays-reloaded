@@ -14,4 +14,13 @@ public class LevelData
 	{
 
 	}
+
+    public LevelData(string id, bool c)
+    {
+        this.sceneID = id;
+        this.completed = c;
+    }
+
+
+
 }

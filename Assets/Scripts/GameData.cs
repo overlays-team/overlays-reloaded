@@ -13,4 +13,11 @@ public class GameData
     {
         levels = new List<LevelData>();
     }
+
+    public GameData(List<LevelData> levels)
+    {
+        this.levels = levels;
+    }
+
+
 }
