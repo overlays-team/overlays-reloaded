@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class InGameManager : MonoBehaviour {
 
     GameData gameData;
-    GoalBlock goalBlock;
+    //GoalBlock goalBlock; //uncomment when here IS a goalBlock
     Scene thisScene;
 
     // Use this for initialization
@@ -19,14 +19,14 @@ public class InGameManager : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (goalBlock.isGoalAchieved)
+        //if (goalBlock.isGoalAchieved) //uncomment when here IS a goalBlock
         {
-            List<LevelData> levels = gameData.getLevels();
+            List<LevelData> levels = gameData.levels; //why public field and not a getter?
             foreach (LevelData level in levels)
             {
-                if (level.getName == thisScene.name)
+                if (level.sceneID == thisScene.name)
                 {
-                    level.isCompleted = true;
+                    level.completed = true; //better rename it to isCompleted 
                 }
             }
             SceneManager.LoadScene("LevelComplete"); //or otherwise 
