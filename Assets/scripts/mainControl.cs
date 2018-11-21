@@ -5,9 +5,10 @@ using UnityEngine;
 public class mainControl : MonoBehaviour {
 
     //array of complete level game objets
-    public GameObject[] buttons;
+    public GameObject[] completesButtons;
     //time to win
     float timeLeft = 5.0f;
+    public GameObject pauseButton;
 
     private bool win;
 
@@ -16,10 +17,13 @@ public class mainControl : MonoBehaviour {
 
         win = false;
         //all complete level game objets are unactive
-        for (int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < completesButtons.Length; i++)
         {
-            buttons[i].SetActive(false);
+            completesButtons[i].SetActive(false);
         }
+
+
+
     }
 	
 	// Update is called once per frame
@@ -27,6 +31,7 @@ public class mainControl : MonoBehaviour {
 
         timeLeft -= Time.deltaTime;
 
+        Debug.Log(timeLeft);
         //if win
         win |= timeLeft < 0;
         if(win){
@@ -35,10 +40,15 @@ public class mainControl : MonoBehaviour {
 
     }
 
+
+
+
     private void Win(){
-        for (int i = 0; i < buttons.Length; i++)
+        for (int i = 0; i < completesButtons.Length; i++)
         {
-            buttons[i].SetActive(true);
+            completesButtons[i].SetActive(true);
         }
+        pauseButton.SetActive(false);
+        Time.timeScale = 0f;
     }
 }

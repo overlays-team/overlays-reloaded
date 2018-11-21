@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class ButtonControl : MonoBehaviour {
+   
     public void Next()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -25,4 +26,5 @@ public class ButtonControl : MonoBehaviour {
     {
         SceneManager.LoadScene(Level);
     }
+
 }
