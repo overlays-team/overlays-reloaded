@@ -23,18 +23,22 @@ public class LevelSelector : MonoBehaviour
     }
 
 
+    /*
     public void Select(string levelName)
     {
         fader.FadeTo(levelName);
     }
+    */
 
 
+    /*
     public void SelectLevel(Button btn)
     {
         Debug.Log(btn.name);
 
         fader.FadeTo(btn.name);
     }
+    */
 
 
 
@@ -42,16 +46,10 @@ public class LevelSelector : MonoBehaviour
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("あ", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("い", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("う", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("け", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("Level1", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("Level2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("Level3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("Level4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("TestLevel01", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("TestLevel02", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level1", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level2", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level3", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level4", true));
 
     }
 
@@ -91,13 +89,26 @@ public class LevelSelector : MonoBehaviour
         {
             //Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID + "," + GameDataEditor.Instance.data.levels[i].completed);
 
+            int currentLevel = i + 1;
+            string sceneName = "Level" + currentLevel;
+            string buttonText = "Level " + currentLevel;
+
             GameObject level = Instantiate(levelPrefab);
             level.transform.parent = content.transform;
             level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().name = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
+            level.GetComponent<Button>().onClick.AddListener(delegate { Select(sceneName); });
         }
     }
+
+
+    void Select(string levelName)
+    {
+        Debug.Log("Select here!");
+        fader.FadeTo(levelName);
+    }
+
 
 
     public void Save()
