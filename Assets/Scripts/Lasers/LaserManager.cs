@@ -27,13 +27,9 @@ public class LaserManager : MonoBehaviour {
         {
             Instance = this;
         }
-    }
 
-    void Start ()
-    {
         lasers = new HashSet<Laser>();
         nextLaserUpdateTime = Time.time + updateInterval;
-
     }
 	
 	// Update is called once per frame

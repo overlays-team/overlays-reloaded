@@ -45,7 +45,15 @@ public class BlockObject : MonoBehaviour {
     //For Lasers
     protected List<Laser> inputLasers;
 
-   
+    //for laser inputs
+    [SerializeField]
+    protected LaserInput[] laserInputs;
+
+    protected bool lasersChanged; //did the laserInputs change last frame?
+    bool[] activeLasersLastFrame;
+    Texture2D[] imagesLastFrame;
+
+
 
     // Use this for initialization
     protected virtual void Start ()
@@ -59,6 +67,20 @@ public class BlockObject : MonoBehaviour {
         rotate = false;
         desiredRotation = transform.localRotation;
         degreesToRotate = 90;
+
+        #region  or laserInputUpdate
+        inputLasers = LaserManager.Instance.GetInputLasers(this);
+
+        activeLasersLastFrame = new bool[laserInputs.Length];
+        imagesLastFrame = new Texture2D[laserInputs.Length];
+
+        for (int i = 0; i < laserInputs.Length; i++)
+        {
+            activeLasersLastFrame[i] = laserInputs[i].active;
+            if (laserInputs[i].inputLaser != null) imagesLastFrame[i] = laserInputs[i].inputLaser.image;
+            else imagesLastFrame[i] = null;
+        }
+        #endregion
     }
 
     protected virtual void Update()
@@ -76,11 +98,67 @@ public class BlockObject : MonoBehaviour {
         }
         #endregion
 
-        inputLasers = LaserManager.Instance.GetInputLasers(this);
+        UpdateLaserInputs();
         //every child decides here what to do with the input Lasers
+        if (lasersChanged) Debug.Log("lasersChanged");
     }
 
+    private void UpdateLaserInputs()
+    {
 
+        //wir holen uns alle Laser, welche diesen Block trefen
+        inputLasers = LaserManager.Instance.GetInputLasers(this);
+
+       
+        foreach (LaserInput laserInput in laserInputs)
+        {
+            //erstmal alle auf false setzen
+            laserInput.active = false;
+            laserInput.inputLaser = null;
+
+            //nun schauen wir ob irgend ein Laser einen unserer LaserInputs trifft
+            foreach (Laser laser in inputLasers)
+            {
+                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < 5)
+                {
+                    laserInput.active = true;
+                    laserInput.inputLaser = laser;
+                }
+            }
+        }
+
+        //checken obs ein unterschied zum letztem Frame gibt
+        lasersChanged = false;
+
+        for (int i = 0; i < laserInputs.Length; i++)
+        {
+            if (activeLasersLastFrame[i] != laserInputs[i].active)
+            {
+                lasersChanged = true;
+            }
+            else
+            {
+                if (laserInputs[i].inputLaser == null)
+                {
+                    if (imagesLastFrame[i] != null) lasersChanged = true;
+                }
+                else
+                {
+                    if (imagesLastFrame[i] != laserInputs[i].inputLaser.image) lasersChanged = true;
+                }
+            }
+                
+        }
+
+        //dieses frame fürs nächste speichern
+        for (int i = 0; i < laserInputs.Length; i++)
+        {
+            activeLasersLastFrame[i] = laserInputs[i].active;
+            if (laserInputs[i].inputLaser != null) imagesLastFrame[i] = laserInputs[i].inputLaser.image;
+            else imagesLastFrame[i] = null;
+        }
+
+    }
 
     public virtual void OnMouseClick()
     {
