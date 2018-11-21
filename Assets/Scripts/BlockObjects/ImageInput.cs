@@ -13,7 +13,6 @@ public class ImageInput : BlockObject
     {
         base.Start();
         laserOutput.active = true;
-        degreesToRotate = 45;
 
         // here we would need to convert the image in another dataformat that we can use to transport it between images and process it with a good performance
         
