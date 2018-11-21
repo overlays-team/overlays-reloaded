@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AdditiveCombine2 : MonoBehaviour {
 
+    //takes 2 lasers as Input and gives one as output
+
 	// Use this for initialization
 	void Start () {
 		
