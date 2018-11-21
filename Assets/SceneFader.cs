@@ -14,15 +14,17 @@ public class SceneFader : MonoBehaviour {
 
     private void Start()
     {
-        StartCoroutine(FadeIn());
-
+        //StartCoroutine(FadeIn());
     }
-
 
 
     public void FadeTo(string scene)
     {
+        Debug.Log("Active? " + gameObject.activeInHierarchy);
+
         StartCoroutine(FadeOut(scene));
+
+        //FadeOut(scene);
     }
 
 
