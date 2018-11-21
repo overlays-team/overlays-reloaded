@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class buttonMethod : MonoBehaviour {
 
+    public GameObject levelSelect;
+    public GameObject clickParticle;
+    GameObject mainMenu;
+
 	// Use this for initialization
 	void Start () {
-		
+        mainMenu = GameObject.FindGameObjectWithTag("MainMenuScreen");
 	}
 	
 	// Update is called once per frame
@@ -23,6 +27,9 @@ public class buttonMethod : MonoBehaviour {
     public void levelSelectScreen()
     {
         //Hier "Level Select"-Screen öffnen.
+        //clickParticle.SetActive(true);
+        levelSelect.SetActive(true);
+        mainMenu.SetActive(false);
         Debug.Log("Level Selected.");
     }
 }
