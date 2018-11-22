@@ -5,16 +5,13 @@ using UnityEngine;
 public class RedFilter : BlockObject
 {
     [SerializeField]
-    private LaserInput laserInput;
-    private Laser inputLaser;
-    [SerializeField]
-    private LaserOutput laserOutput;
+    LaserOutput laserOutput;
 
-    bool imageReady;
-    bool imageInProcess;
+    //for image processing
     Texture2D inputImage;
     Texture2D outputImage;
-
+    bool imageReady;
+    bool imageInProcess;
 
     protected override void Start()
     {
@@ -26,35 +23,19 @@ public class RedFilter : BlockObject
     {
         base.Update();
 
-
-        //inputLaser updaten und image Processing starten oder stoppen
-        if (inputLasers.Count == 0)
+        if (lasersChanged)
         {
-            inputLaser = null;
-            StopImageProcessing();
-        }
-        else
-        {
-            bool inputLaserFound = false;
-            foreach (Laser laser in inputLasers)
+            if (laserInputs[0].active)
             {
-                //check if one of our input Lasers hits the input
-                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < 5)
-                {
-                    inputLaserFound = true;
-                    if (inputLaser == null || inputLaser != laser)
-                    {
-                        inputLaser = laser;
-                        Debug.Log("start imageProcessing");
-                        StartImageProcessing();
-                    }
-                }
+                inputImage = laserInputs[0].inputLaser.image;
+                StartImageProcessing();
             }
-            if (!inputLaserFound)
+            else
             {
-                inputLaser = null;
+                inputImage = null;
                 StopImageProcessing();
             }
+
         }
 
         if (imageReady)
@@ -65,32 +46,29 @@ public class RedFilter : BlockObject
         {
             laserOutput.active = false;
         }
-        if (imageInProcess) Debug.Log("imape in process");
+
     }
 
-
-       
     void StartImageProcessing()
     {
-        //hier kommt der Image Processing Code: zum beispiel Rot Filter
-        inputImage = inputLaser.image;
+        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
         outputImage = Instantiate(inputImage);
         imageReady = false;
         imageInProcess = true;
-        StartCoroutine("RedFilterEnumerator");
+        StartCoroutine("ImageProcessingEnumerator");
     }
 
-    //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
+
     void StopImageProcessing()
     {
-        outputImage = null;
+        //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
         imageReady = false;
         imageInProcess = false;
-        StopCoroutine("RedFilterEnumerator");
+        StopCoroutine("ImageProcessingEnumerator");
     }
 
 
-    IEnumerator RedFilterEnumerator()
+    IEnumerator ImageProcessingEnumerator()
     {
         for (int y = 0; y < outputImage.height; y++)
         {
@@ -101,9 +79,10 @@ public class RedFilter : BlockObject
             if (y % 10 == 0) yield return null;
         }
         outputImage.Apply();
-        laserOutput.laser.image = outputImage;
+        
         imageInProcess = false;
         imageReady = true;
 
+        laserOutput.laser.image = outputImage;
     }
 }

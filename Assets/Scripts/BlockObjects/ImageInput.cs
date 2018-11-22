@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ImageInput : BlockObject
 {
@@ -8,6 +9,8 @@ public class ImageInput : BlockObject
     private LaserOutput laserOutput;
     [SerializeField]
     private Texture2D inputImage;
+
+    public Image debugImage; //just for now
 
     protected override void Start()
     {
@@ -27,8 +30,29 @@ public class ImageInput : BlockObject
 
         laserOutput.laser.image = outputImage;
         laserOutput.active = true;
-        
+
+
+        debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
+    }
+
+    void ToogleDebugImage()
+    {
+        if (debugImage.gameObject.activeSelf)
+        {
+            debugImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            debugImage.gameObject.SetActive(true);
+        }
+    }
 
 }

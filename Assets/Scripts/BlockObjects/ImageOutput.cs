@@ -23,6 +23,7 @@ public class ImageOutput : BlockObject {
     protected override void Update()
     {
         base.Update();
+
         if (lasersChanged)
         {
             if (laserInputs[0].active)
@@ -37,6 +38,21 @@ public class ImageOutput : BlockObject {
             }
 
         }
-    }           
+
+        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
+
+    }  
+    
+    void ToogleDebugImage()
+    {
+        if (debugImage.gameObject.activeSelf)
+        {
+            debugImage.gameObject.SetActive(false);
+        }
+        else
+        {
+            debugImage.gameObject.SetActive(true);
+        }
+    }
 
 }

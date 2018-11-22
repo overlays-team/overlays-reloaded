@@ -100,7 +100,6 @@ public class BlockObject : MonoBehaviour {
 
         UpdateLaserInputs();
         //every child decides here what to do with the input Lasers
-        if (lasersChanged) Debug.Log("lasersChanged");
     }
 
     private void UpdateLaserInputs()
@@ -159,6 +158,7 @@ public class BlockObject : MonoBehaviour {
         }
 
     }
+
 
     public virtual void OnMouseClick()
     {
