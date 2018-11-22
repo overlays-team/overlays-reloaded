@@ -57,7 +57,18 @@ public class ImageOutput : BlockObject {
         {
             for (int x = 0; x < inputImage.width; x++)
             {
-                if (inputImage.GetPixel(x, y) != goalImage.GetPixel(x, y))
+                Color color1 = inputImage.GetPixel(x, y);
+                Color color2 = goalImage.GetPixel(x, y);
+
+                if (color1.r != color2.r)
+                {
+                    isCorrect = false;
+                }
+                else if  (color1.g != color2.g)
+                {
+                        isCorrect = false;
+                }
+                else if (color1.b != color2.b)
                 {
                     isCorrect = false;
                 }
