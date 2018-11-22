@@ -109,7 +109,9 @@ public class BlockObject : MonoBehaviour {
         UpdateLaserInputs();
         //every child decides here what to do with the input Lasers
 
+        //for debug image
         if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
+        if (debugImage != null) debugImage.gameObject.transform.up = Camera.main.transform.up;
     }
 
 
