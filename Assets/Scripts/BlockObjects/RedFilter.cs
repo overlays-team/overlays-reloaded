@@ -50,7 +50,7 @@ public class RedFilter : BlockObject
     protected override void StartImageProcessing()
     {
         outputImage = Instantiate(inputImage);
-        base.StartImageProcessing(); ;
+        base.StartImageProcessing(); 
     }
 
 
