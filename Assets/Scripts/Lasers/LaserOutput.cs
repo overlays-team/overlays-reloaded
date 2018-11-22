@@ -5,8 +5,8 @@ using UnityEngine;
 public class LaserOutput : MonoBehaviour {
 
     /*
-     * Jedes BlockObject, welches Laser ruasschießt hat einen oder mehrere LaserOutputs
-     * Abhängig davon wie die Rotation eines Laser ooutputs ist, so werden auch die Laser rausgeschoissen
+     * Jedes BlockObject, welches Laser rausschießt hat einen oder mehrere LaserOutputs
+     * Abhängig davon wie die Rotation eines Laser  outputs ist, so werden auch die Laser rausgeschossen
      */
 
     public GameObject laserPrefab;
