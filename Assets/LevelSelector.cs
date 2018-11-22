@@ -13,6 +13,8 @@ public class LevelSelector : MonoBehaviour
     public GameObject levelPrefab;
     public GameObject content;
 
+    public string selectedLevel;
+
 
     public void Start()
     {
@@ -50,6 +52,11 @@ public class LevelSelector : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("level2", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("level3", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("level4", true));
+
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level5", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level6", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level7", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level8", true));
 
     }
 
@@ -103,10 +110,25 @@ public class LevelSelector : MonoBehaviour
     }
 
 
-    void Select(string levelName)
+    public void ChangeScene()
     {
-        Debug.Log("Select here!");
-        fader.FadeTo(levelName);
+        Debug.Log("clicked: " + "changeScene()");
+        fader.FadeTo(selectedLevel);
+    }
+
+
+    public void Select(string levelName)
+    {
+        //fader.FadeTo(levelName);
+
+        this.selectedLevel = levelName;
+        Debug.Log("has set: " + selectedLevel);
+
+        LoadPreview();
+    }
+
+    public void LoadPreview(){
+
     }
 
 
