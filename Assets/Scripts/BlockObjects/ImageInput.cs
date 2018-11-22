@@ -10,8 +10,6 @@ public class ImageInput : BlockObject
     [SerializeField]
     private Texture2D inputImage;
 
-    public Image debugImage; //just for now
-
     protected override void Start()
     {
         base.Start();
@@ -39,20 +37,5 @@ public class ImageInput : BlockObject
     protected override void Update()
     {
         base.Update();
-
-        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
     }
-
-    void ToogleDebugImage()
-    {
-        if (debugImage.gameObject.activeSelf)
-        {
-            debugImage.gameObject.SetActive(false);
-        }
-        else
-        {
-            debugImage.gameObject.SetActive(true);
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BlockObject : MonoBehaviour {
 
@@ -53,6 +54,13 @@ public class BlockObject : MonoBehaviour {
     bool[] activeLasersLastFrame;
     Texture2D[] imagesLastFrame;
 
+    //for image processing
+    protected bool imageReady;
+    protected bool imageInProcess;
+
+    //for development debugging
+    public Image debugImage; //just for now
+
 
 
     // Use this for initialization
@@ -100,6 +108,21 @@ public class BlockObject : MonoBehaviour {
 
         UpdateLaserInputs();
         //every child decides here what to do with the input Lasers
+
+        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
+    }
+
+
+
+
+    public virtual void OnMouseClick()
+    {
+        //most of the mneed to rotate, if they need something else they just override
+        if (!actionBlocked)
+        {
+            Rotate();
+        }
+        
     }
 
     private void UpdateLaserInputs()
@@ -108,7 +131,7 @@ public class BlockObject : MonoBehaviour {
         //wir holen uns alle Laser, welche diesen Block trefen
         inputLasers = LaserManager.Instance.GetInputLasers(this);
 
-       
+
         foreach (LaserInput laserInput in laserInputs)
         {
             //erstmal alle auf false setzen
@@ -146,7 +169,7 @@ public class BlockObject : MonoBehaviour {
                     if (imagesLastFrame[i] != laserInputs[i].inputLaser.image) lasersChanged = true;
                 }
             }
-                
+
         }
 
         //dieses frame fürs nächste speichern
@@ -159,20 +182,45 @@ public class BlockObject : MonoBehaviour {
 
     }
 
-
-    public virtual void OnMouseClick()
+    void ToogleDebugImage()
     {
-        //most of the mneed to rotate, if they need something else they just override
-        if (!actionBlocked)
+        if (debugImage != null)
         {
-            Rotate();
+            if (debugImage.gameObject.activeSelf)
+            {
+                debugImage.gameObject.SetActive(false);
+            }
+            else
+            {
+                debugImage.gameObject.SetActive(true);
+            }
         }
-        
     }
+
+    #region image processing
+
+    protected virtual void StartImageProcessing()
+    {
+        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
+        imageReady = false;
+        imageInProcess = true;
+
+        StartCoroutine("ImageProcessingEnumerator");
+    }
+
+    protected virtual void StopImageProcessing()
+    {
+        //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
+        imageReady = false;
+        imageInProcess = false;
+        StopCoroutine("ImageProcessingEnumerator");
+    }
+
+    #endregion
 
     #region smooth movement code
 
-    void Rotate()
+        void Rotate()
     {
         rotate = true;
         desiredRotation = desiredRotation*Quaternion.Euler(0, degreesToRotate, 0);

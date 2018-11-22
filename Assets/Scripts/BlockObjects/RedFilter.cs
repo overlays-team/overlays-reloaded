@@ -10,8 +10,6 @@ public class RedFilter : BlockObject
     //for image processing
     Texture2D inputImage;
     Texture2D outputImage;
-    bool imageReady;
-    bool imageInProcess;
 
     protected override void Start()
     {
@@ -49,25 +47,14 @@ public class RedFilter : BlockObject
 
     }
 
-    void StartImageProcessing()
+    protected override void StartImageProcessing()
     {
-        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
         outputImage = Instantiate(inputImage);
-        imageReady = false;
-        imageInProcess = true;
-        StartCoroutine("ImageProcessingEnumerator");
+        base.StartImageProcessing(); ;
     }
 
 
-    void StopImageProcessing()
-    {
-        //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
-        imageReady = false;
-        imageInProcess = false;
-        StopCoroutine("ImageProcessingEnumerator");
-    }
-
-
+    //könnte auch in die Vaterklasse verlagert werden, nur weiß ich nicht wie das schlau mit enumeratoren geht
     IEnumerator ImageProcessingEnumerator()
     {
         for (int y = 0; y < outputImage.height; y++)

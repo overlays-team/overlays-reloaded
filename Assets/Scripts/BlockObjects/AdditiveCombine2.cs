@@ -14,9 +14,6 @@ public class AdditiveCombine2 : BlockObject {
     Texture2D inputImage2;
     Texture2D outputImage;
 
-    bool imageReady;
-    bool imageInProcess;
-
     protected override void Start()
     {
         base.Start();
@@ -54,27 +51,13 @@ public class AdditiveCombine2 : BlockObject {
         }
     }
 
-    void StartImageProcessing()
+    protected override void StartImageProcessing()
     {
-        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
         outputImage = Instantiate(inputImage1); // wir erstellen uns ein neues output Image - welches eine Kopie eines Inputs ist, wird soweiso gleih überschrieben - könnte man schlauer lösen
-
         if (inputImage1.width != inputImage2.width) Debug.Log("different resolutions!");
 
-        imageReady = false;
-        imageInProcess = true;
-        StartCoroutine("ImageProcessingEnumerator");
+        base.StartImageProcessing();
     }
-
-
-    void StopImageProcessing()
-    {
-        //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
-        imageReady = false;
-        imageInProcess = false;
-        StopCoroutine("ImageProcessingEnumerator");
-    }
-
 
     IEnumerator ImageProcessingEnumerator()
     {

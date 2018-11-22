@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class ImageOutput : BlockObject {
 
     //wenn wir nur einen ImageInput haben wollen das:
     Texture2D inputImage;
 
-    public Image debugImage; //just for now
     public Texture2D noImage; //just a white texture we show when no image is present
+    public Texture2D goalImage;
 
     protected override void Start()
     {
@@ -36,23 +37,46 @@ public class ImageOutput : BlockObject {
                 inputImage = null;
                 debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
             }
-
         }
 
-        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
-
-    }  
-    
-    void ToogleDebugImage()
-    {
-        if (debugImage.gameObject.activeSelf)
+        //export function to get a goal image
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            debugImage.gameObject.SetActive(false);
+            ExportCurrentImage();
         }
-        else
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            debugImage.gameObject.SetActive(true);
+            Debug.Log(CheckIfImageIsCorrect());
         }
     }
 
+    bool CheckIfImageIsCorrect()
+    {
+        bool isCorrect = true;
+        for (int y = 0; y < inputImage.height; y++)
+        {
+            for (int x = 0; x < inputImage.width; x++)
+            {
+                if (inputImage.GetPixel(x, y) != goalImage.GetPixel(x, y))
+                {
+                    isCorrect = false;
+                }
+            }
+        }
+
+        return isCorrect;
+    }
+
+    void ExportCurrentImage()
+    {
+        if (inputImage != null)
+        {
+            byte[] bytes = inputImage.EncodeToPNG();
+            File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
+        }
+        else
+        {
+            Debug.Log("input image is Null");
+        }
+    }
 }
