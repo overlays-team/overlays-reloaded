@@ -59,7 +59,12 @@ public class ImageOutput : BlockObject {
             {
                 Color color1 = inputImage.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
-
+                if (y == 1) { 
+                Debug.Log("color1.r: " + color1.r);
+                Debug.Log("color2.r: " + color2.r);
+            }
+                //Debug.Log("color1.b: " + color1.b);
+                //Debug.Log("color2.b: " + color2.b);
                 if (color1.r != color2.r)
                 {
                     isCorrect = false;
