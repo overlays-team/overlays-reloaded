@@ -27,7 +27,7 @@ public class Mirror : BlockObject
             //check for input lasers
            
             int angleDifference = (int)Vector3.Angle(laser.laserOutput.forward, transform.forward);
-            Debug.Log("angle Difference: " + angleDifference);
+            //Debug.Log("angle Difference: " + angleDifference);
             //zwischen 0 und 45 - back, zwischen 135 und 180 front
             if (angleDifference >= 0 && angleDifference <= 85)
             {
