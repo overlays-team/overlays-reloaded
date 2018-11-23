@@ -168,7 +168,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1186871491060748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.206}
+  m_LocalPosition: {x: 0, y: 0, z: 0.179}
   m_LocalScale: {x: 0.04040169, y: 0.04315347, z: 0.21463856}
   m_Children: []
   m_Father: {fileID: 4771518943806310}
@@ -208,8 +208,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1743793235135258}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.627, y: 2.629, z: 0.268}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.195023, y: 37.05701, z: -9.934803}
   m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_Children:
   - {fileID: 4591202715972900}
@@ -238,14 +238,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492934231671222}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0000006, y: 1, z: 1.0000006}
   m_Children:
   - {fileID: 4188190697180502}
   m_Father: {fileID: 4376185924583572}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4811209905331364
 Transform:
   m_ObjectHideFlags: 1
@@ -486,7 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 765bd32d0941d3240aa3d11d8e3fbfd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laserPrefab: {fileID: 0}
+  laserPrefab: {fileID: 1388563228816114, guid: 701f32b7d89955740a6160dc3c75e853,
+    type: 2}
   laser: {fileID: 114097975611848908, guid: 701f32b7d89955740a6160dc3c75e853, type: 2}
   active: 0
 --- !u!114 &114293660456041258
@@ -506,6 +507,7 @@ MonoBehaviour:
   laserInputs:
   - {fileID: 114629734657999982}
   - {fileID: 114480240440270416}
+  debugImage: {fileID: 0}
   laserOutput: {fileID: 114205516126807558}
 --- !u!114 &114480240440270416
 MonoBehaviour:
