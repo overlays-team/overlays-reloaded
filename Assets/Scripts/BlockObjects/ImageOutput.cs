@@ -46,12 +46,13 @@ public class ImageOutput : BlockObject {
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log(CheckIfImageIsCorrect());
+            Debug.Log("Image correct = " + CheckIfImageIsCorrect());
         }
     }
 
     bool CheckIfImageIsCorrect()
     {
+        //float biggestError = 0;
         bool isCorrect = true;
         for (int y = 0; y < inputImage.height; y++)
         {
@@ -59,28 +60,42 @@ public class ImageOutput : BlockObject {
             {
                 Color color1 = inputImage.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
-                //if (y == 1) { 
-               // Debug.Log("color1.r: " + color1.r);
+                /*
+                if (y == 1) { 
+                Debug.Log("color1.r: " + color1.r);
                // Debug.Log("color1.r: rgb  " + color1.r*255);
-                //Debug.Log("color2.r: " + color2.r);
-                //Debug.Log("color2.r: " + color2.r * 255);
-                //}
+                Debug.Log("color2.r: " + color2.r);
+                Debug.Log("color1.g: " + color1.g);
+                Debug.Log("color2.g: " + color2.g);
+                Debug.Log("color1.b: " + color1.b);
+                Debug.Log("color2.b: " + color2.b);
+                    //Debug.Log("color2.r: " + color2.r * 255);
+                }
                 //Debug.Log("color1.b: " + color1.b);
                 //Debug.Log("color2.b: " + color2.b);
-                if (color1.r < color2.r - 0.01 || color1.r > color2.r + 0.01)
+                */
+                //biggestError = Mathf.Floor(color2.r - color1.r);
+                //if(y==1)Debug.Log(Mathf.Abs(color2.r - color1.r));
+                //if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
+                //if (Mathf.Abs(color2.g - color1.g) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
+                //if (Mathf.Abs(color2.b - color1.b) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
+
+
+                if (color1.r < color2.r - 0.15 || color1.r > color2.r + 0.15)
                 {
                     isCorrect = false;
                 }
-                else if (color1.g < color2.g - 0.01 || color1.g > color2.g + 0.01)
+                else if (color1.g < color2.g - 0.15 || color1.g > color2.g + 0.15)
                 {
                         isCorrect = false;
                 }
-                else if (color1.b < color2.b - 0.01 || color1.b > color2.b + 0.01)
+                else if (color1.b < color2.b - 0.15 || color1.b > color2.b + 0.15)
                 {
                     isCorrect = false;
                 }
             }
         }
+        //Debug.Log("biggestError: " + biggestError);
 
         return isCorrect;
     }
