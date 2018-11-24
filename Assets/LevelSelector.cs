@@ -50,13 +50,13 @@ public class LevelSelector : MonoBehaviour
 
         GameDataEditor.Instance.data.levels.Add(new LevelData("level1", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("level2", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level3", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level4", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level3", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level4", false));
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level5", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level6", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level7", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level8", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level5", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level6", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level7", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("level8", false));
 
     }
 
