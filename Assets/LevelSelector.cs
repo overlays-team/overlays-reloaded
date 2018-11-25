@@ -17,6 +17,7 @@ public class LevelSelector : MonoBehaviour
 
     private Texture2D image;
     public RawImage scenePreview;
+    public Button startButton;
 
 
     public void Start()
@@ -99,16 +100,19 @@ public class LevelSelector : MonoBehaviour
         {
             //Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID + "," + GameDataEditor.Instance.data.levels[i].completed);
 
-            int currentLevel = i + 1;
-            string sceneName = "Level" + currentLevel;
-            string buttonText = "Level " + currentLevel;
+            //int currentLevel = i + 1;
+            //string sceneName = "Level" + currentLevel;
+            //string buttonText = "Level " + currentLevel;
+            string sceneID = GameDataEditor.Instance.data.levels[i].sceneID;
 
             GameObject level = Instantiate(levelPrefab);
             level.transform.parent = content.transform;
             level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().name = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
-            level.GetComponent<Button>().onClick.AddListener(delegate { Select(sceneName); });
+
+            level.GetComponent<Button>().onClick.AddListener(delegate { Select(sceneID); });
+            //level.GetComponent<Button>().onClick.AddListener(delegate { Select(GameDataEditor.Instance.data.levels[i].sceneID); });
         }
     }
 
@@ -117,7 +121,6 @@ public class LevelSelector : MonoBehaviour
     {
         Debug.Log(selectedLevel);
 
-        //TODO: must be fixed
         if (selectedLevel != null)
         {
             Debug.Log("clicked: " + "changeScene()");
@@ -132,6 +135,7 @@ public class LevelSelector : MonoBehaviour
         this.selectedLevel = levelName;
         Debug.Log("has set: " + selectedLevel);
 
+        startButton.interactable = true;
         LoadPreview();
     }
 
@@ -139,8 +143,7 @@ public class LevelSelector : MonoBehaviour
    
     public void LoadPreview()
     {
-        //image = Resources.Load("LevelPreviews/Level1") as Texture2D;
-
+     
         image = Resources.Load("LevelPreviews/" + selectedLevel) as Texture2D;
 
         Debug.Log(image);
