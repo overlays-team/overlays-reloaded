@@ -13,7 +13,10 @@ public class LevelSelector : MonoBehaviour
     public GameObject levelPrefab;
     public GameObject content;
 
-    public string selectedLevel;
+    private string selectedLevel;
+
+    private Texture2D image;
+    public RawImage scenePreview;
 
 
     public void Start()
@@ -112,14 +115,19 @@ public class LevelSelector : MonoBehaviour
 
     public void ChangeScene()
     {
-        Debug.Log("clicked: " + "changeScene()");
-        fader.FadeTo(selectedLevel);
+        Debug.Log(selectedLevel);
+
+        //TODO: must be fixed
+        if (selectedLevel != null)
+        {
+            Debug.Log("clicked: " + "changeScene()");
+            fader.FadeTo(selectedLevel);
+        }
     }
 
 
     public void Select(string levelName)
     {
-        //fader.FadeTo(levelName);
 
         this.selectedLevel = levelName;
         Debug.Log("has set: " + selectedLevel);
@@ -127,8 +135,20 @@ public class LevelSelector : MonoBehaviour
         LoadPreview();
     }
 
-    public void LoadPreview(){
 
+   
+    public void LoadPreview()
+    {
+        //image = Resources.Load("LevelPreviews/Level1") as Texture2D;
+
+        image = Resources.Load("LevelPreviews/" + selectedLevel) as Texture2D;
+
+        Debug.Log(image);
+
+        //GameObject rawImage = GameObject.Find("RawImage");
+        //rawImage.GetComponent<RawImage>().texture = image;
+
+        scenePreview.GetComponent<RawImage>().texture = image;
     }
 
 
