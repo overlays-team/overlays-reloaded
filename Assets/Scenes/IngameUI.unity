@@ -210,6 +210,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114833288758962196, guid: 51493e4f3093d4c198e83e6844385380,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a79f5e75e96a647b992899d712ee0064,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51493e4f3093d4c198e83e6844385380, type: 2}
   m_IsPrefabAsset: 0
@@ -324,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InGameUIScripts: {fileID: 485406057}
   win: 0
+  lose: 0
 --- !u!4 &239305925
 Transform:
   m_ObjectHideFlags: 0
@@ -370,6 +377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelCompleteMenu: {fileID: 1878629417}
+  GameOverMenu: {fileID: 614495918}
   PauseButton: {fileID: 1626284903}
   PlayButton: {fileID: 937703808}
   PauseMenuButton: {fileID: 694748747}
@@ -497,10 +505,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelCompleteMenu: {fileID: 0}
+  GameOverMenu: {fileID: 0}
   PauseButton: {fileID: 0}
   PlayButton: {fileID: 0}
   PauseMenuButton: {fileID: 0}
   PausePlayButton: {fileID: 0}
+--- !u!1 &614495918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1091086826223266, guid: 51493e4f3093d4c198e83e6844385380,
+    type: 2}
+  m_PrefabInternal: {fileID: 30176806}
 --- !u!1 &694748747 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1577802183868750, guid: 8317b86e64e1345fbb1826bd80c73d7c,
