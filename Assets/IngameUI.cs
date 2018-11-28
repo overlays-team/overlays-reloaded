@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class IngameUI : MonoBehaviour {
     public GameObject LevelCompleteMenu;
+    public GameObject GameOverMenu;
     public GameObject PauseButton;
     public GameObject PlayButton;
     public GameObject PauseMenuButton;
@@ -26,6 +27,7 @@ public class IngameUI : MonoBehaviour {
         Debug.Log("You Win!");
         LevelCompleteMenu.SetActive(true);
         PausePlayButton.SetActive(false);
+        PauseMenuButton.SetActive(false);
 
     }
 
@@ -43,5 +45,22 @@ public class IngameUI : MonoBehaviour {
         PlayButton.SetActive(false);
         PauseMenuButton.SetActive(false);
 
+    }
+    public void ShowGameOverPanel()
+    {
+        Debug.Log("You lose!");
+        GameOverMenu.SetActive(true);
+        PausePlayButton.SetActive(false);
+    }
+    public void HideLevelCompletePanel()
+    {
+        LevelCompleteMenu.SetActive(false);
+        PausePlayButton.SetActive(true);
+
+    }
+    public void HideGameOverPanel()
+    {
+        GameOverMenu.SetActive(false);
+        PausePlayButton.SetActive(true);
     }
 }

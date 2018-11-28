@@ -7,13 +7,18 @@ public class IngameManager : MonoBehaviour
 {
     public IngameUI InGameUIScripts;
     public bool win;
+    public bool lose;
     float timeLeft = 5.0f;
 
     // Use this for initialization
     void Start()
     {
         win = false;
+        lose = false;
         Resume();
+        InGameUIScripts.HideLevelCompletePanel();
+        InGameUIScripts.HideGameOverPanel();
+
     }
 
     // Update is called once per frame
@@ -23,11 +28,19 @@ public class IngameManager : MonoBehaviour
         timeLeft -= Time.deltaTime;
 
         Debug.Log(timeLeft);
+
+        //if lose
+        lose |= timeLeft < 0;
+        if (lose)
+        {
+            Lose();
+        }
+
         //if win
-        win |= timeLeft < 0;
-        if (win)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Win();
+
         }
     }
 
@@ -35,6 +48,13 @@ public class IngameManager : MonoBehaviour
     {
         InGameUIScripts.ShowLevelCompletePanel();
         win = true;
+        Time.timeScale = 0f;
+    }
+    void Lose()
+    {
+        InGameUIScripts.ShowGameOverPanel();
+        lose = true;
+        Time.timeScale = 0f;
     }
 
     public void Next()
