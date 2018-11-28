@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
-    public InGameUI InGameUIScripts;
+    public IngameUI InGameUIScripts;
     public bool win;
     public bool lose;
     float timeLeft = 5.0f;
