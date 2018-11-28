@@ -27,6 +27,7 @@ public class IngameUI : MonoBehaviour {
         Debug.Log("You Win!");
         LevelCompleteMenu.SetActive(true);
         PausePlayButton.SetActive(false);
+        PauseMenuButton.SetActive(false);
 
     }
 
@@ -53,14 +54,12 @@ public class IngameUI : MonoBehaviour {
     }
     public void HideLevelCompletePanel()
     {
-        Debug.Log("You Win!");
         LevelCompleteMenu.SetActive(false);
         PausePlayButton.SetActive(true);
 
     }
     public void HideGameOverPanel()
     {
-        Debug.Log("You lose!");
         GameOverMenu.SetActive(false);
         PausePlayButton.SetActive(true);
     }
