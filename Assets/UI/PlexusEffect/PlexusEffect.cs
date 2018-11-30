@@ -122,6 +122,8 @@ public class PlexusEffect : MonoBehaviour
                         lr.SetPosition(0, p1_position);
                         lr.SetPosition(1, p2_position);
 
+                        //ToDo lr.material = FadeOutByDistance(lr, distanceSqr, lineRendererTemplate.sharedMaterial);
+
                         lrIndex++;
                         connections++;
 
@@ -138,5 +140,13 @@ public class PlexusEffect : MonoBehaviour
         {
             lineRenderers[i].enabled = false;
         }
+    }
+
+    private Material FadeOutByDistance(LineRenderer lr, float distance, Material mat)
+    {
+        float alpha = (maxDistance - distance)/maxDistance;
+        Color color_m = Color.Lerp(mat.color, new Color(0f, 0f, 0f, 0f), alpha);
+        Debug.Log("LineMatAlpha: " + alpha);
+        return mat;
     }
 }
