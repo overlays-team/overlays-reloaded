@@ -184,6 +184,19 @@ public class BlockObject : MonoBehaviour {
 
     }
 
+    //is called by a laser which wants to know if it has hitted an input
+    public bool HittedInput(Laser laserToCheck)
+    {
+        bool hittedInput = false;
+
+        foreach(LaserInput laserInput in laserInputs)
+        {
+            if (laserInput.inputLaser == laserToCheck) hittedInput = true;
+        }
+
+        return hittedInput;
+    }
+
     void ToogleDebugImage()
     {
         if (debugImage != null)
