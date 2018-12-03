@@ -30,8 +30,6 @@ public class Inventar : MonoBehaviour {
 
     public void Start()
     {
-        GameObject wallBlockButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/WallBlockItem");
-        this.wallBlockButton = Instantiate(wallBlockButtonPrefab);
         InitializeButtons();
     }
 
@@ -40,14 +38,6 @@ public class Inventar : MonoBehaviour {
         InitializeWallBlockButton();
         InitializeMirrorButton();
         //InitializeAdditiveBlockButton();
-        if (wallBlockButton != null)
-        {
-            Debug.Log("wallBlock Button is fine " + wallBlockButton);
-        }
-        else
-        {
-            Debug.Log("Something wrong wallBlock Button");
-        }
 
     }
 
@@ -60,7 +50,7 @@ public class Inventar : MonoBehaviour {
             wallBlocks = new GameObject[wallBlocksAmount];
 
 
-            wallBlockButton = Instantiate(wallBlockButtonPrefab) as GameObject; //checked: it has been assigned
+            wallBlockButton = (GameObject)Instantiate(wallBlockButtonPrefab); //checked: it has been assigned
  
             wallBlockButton.GetComponentInChildren<Text>().text = "" + wallBlocksAmount;
             wallBlockButton.transform.SetParent(gameObject.transform); //attaching this button as a child to the inventar object //maybe true or false in SetParent as an argument
@@ -70,6 +60,7 @@ public class Inventar : MonoBehaviour {
             for (int i = 0; i < wallBlocksAmount; i++)
             {
                 GameObject aNewWallBlock = GameObject.Instantiate((GameObject)Resources.Load("Inventar/Blocks/BlockObject"));
+                //FIXME: This doesn't work
                 aNewWallBlock.transform.position = wallBlockButton.transform.position;
                 aNewWallBlock.SetActive(false);
 
@@ -114,6 +105,10 @@ public class Inventar : MonoBehaviour {
         int wallBlocksAvailable = int.Parse(wallBlockButton.GetComponent<GUIText>().text) ; //wallBlockButton.guiText ist veraltet
         wallBlocks[wallBlocksAvailable - 1].SetActive(true);
 
+        //Here I should begin to drag an object
+
+        String newAmountOfWallBlocksAvailable = "" + (wallBlocksAvailable - 1);
+        wallBlockButton.GetComponent<GUIText>().text = newAmountOfWallBlocksAvailable;
     }
 
     public void chooseMirrorBlock()
