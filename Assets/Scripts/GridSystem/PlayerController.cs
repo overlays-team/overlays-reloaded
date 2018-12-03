@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour {
     BlockObject selectedBlockObject; // the object we move during our hold phase
     GridPlane lastHittedGridPlane;
 
+    public void setSelectedBlockObject(BlockObject selectedBlock)
+    {
+        this.selectedBlockObject = selectedBlock;
+    }
+
     public enum PlayerMode
     {
         Default, //we can click on an object to call it on mouse click action
