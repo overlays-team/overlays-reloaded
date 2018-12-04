@@ -44,9 +44,14 @@ public class AdditiveCombine2 : BlockObject {
         if (imageReady)
         {
             laserOutput.active = true;
+            
+            //added with 13-graphics update
+            debugImage.gameObject.SetActive(true);
+            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
         }
         else
         {
+            debugImage.gameObject.SetActive(false);
             laserOutput.active = false;
         }
     }

@@ -14,6 +14,7 @@ public class Laser : MonoBehaviour {
     public GameObject impactParticle;
     public GameObject directionFlowParticle;
     public GameObject particleLight;
+    float lastLaserLength; 
 
     [Header("Game Logic")]
     public BlockObject startingBlock;
@@ -59,7 +60,10 @@ public class Laser : MonoBehaviour {
                 //set flow particle position and length
                 directionFlowParticle.transform.position = laserOutput.position;
                 directionFlowParticle.transform.forward = laserOutput.forward;
-                directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = (hit.point - laserOutput.position).magnitude; //lifetime = laser Length
+                float currentLaserLength = (hit.point - laserOutput.position).magnitude;
+                if(currentLaserLength != lastLaserLength) directionFlowParticle.GetComponent<ParticleSystem>().Clear();
+                directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = currentLaserLength; //lifetime = laser Length
+                lastLaserLength = currentLaserLength;
 
                 if (hittedObject.transform.parent.GetComponent<BlockObject>() != null)
                 {
