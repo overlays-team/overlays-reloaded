@@ -25,6 +25,8 @@ public class ImageInput : BlockObject
 
         }
         outputImage.Apply();
+        Debug.Log("laser Ouptut: " + laserOutput);
+        Debug.Log("laser Ouptut .laser: " + laserOutput.laser);
         laserOutput.laser.image = outputImage;
         laserOutput.active = true;
 

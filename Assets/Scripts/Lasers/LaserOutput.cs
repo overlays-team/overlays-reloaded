@@ -13,7 +13,7 @@ public class LaserOutput : MonoBehaviour {
     public Laser laser;
     public bool active = false;
 
-	void Awake () {
+	void Start () {
         laser = Instantiate(laserPrefab).GetComponent<Laser>();
         laser.startingBlock = transform.parent.GetComponent<BlockObject>();
         laser.laserOutput = transform;  //output point sets direction, can be at 000 transform of parent

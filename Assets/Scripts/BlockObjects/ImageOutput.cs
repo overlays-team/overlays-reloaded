@@ -52,7 +52,6 @@ public class ImageOutput : BlockObject {
 
     bool CheckIfImageIsCorrect()
     {
-        float biggestError = 0;
         bool isCorrect = true;
         for (int y = 0; y < inputImage.height; y++)
         {
@@ -60,14 +59,27 @@ public class ImageOutput : BlockObject {
             {
                 Color color1 = inputImage.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
-
-                if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
-                if (Mathf.Abs(color2.g - color1.g) > biggestError) biggestError = Mathf.Abs(color2.g - color1.g);
-                if (Mathf.Abs(color2.b - color1.b) > biggestError) biggestError = Mathf.Abs(color2.b - color1.b);
-
+                if (y == 1) { 
+                Debug.Log("color1.r: " + color1.r);
+                Debug.Log("color2.r: " + color2.r);
+            }
+                //Debug.Log("color1.b: " + color1.b);
+                //Debug.Log("color2.b: " + color2.b);
+                if (color1.r != color2.r)
+                {
+                    isCorrect = false;
+                }
+                else if  (color1.g != color2.g)
+                {
+                        isCorrect = false;
+                }
+                else if (color1.b != color2.b)
+                {
+                    isCorrect = false;
+                }
             }
         }
-        if (biggestError > 0) isCorrect = false;
+
         return isCorrect;
     }
 
