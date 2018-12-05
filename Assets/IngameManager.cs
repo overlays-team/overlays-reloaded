@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
-    public IngameUI InGameUIScripts;
+    public IngameUI inGameUIScripts;
     public int wert;
     private bool win;
     private bool lose;
@@ -17,8 +17,8 @@ public class IngameManager : MonoBehaviour
         win = false;
         lose = false;
         Resume();
-        InGameUIScripts.HideLevelCompletePanel();
-        InGameUIScripts.HideGameOverPanel();
+        inGameUIScripts.HideLevelCompletePanel();
+        inGameUIScripts.HideGameOverPanel();
 
     }
 
@@ -47,13 +47,13 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        InGameUIScripts.ShowLevelCompletePanel(wert);
+        inGameUIScripts.ShowLevelCompletePanel(wert);
         win = true;
         Time.timeScale = 0f;
     }
     void Lose()
     {
-        InGameUIScripts.ShowGameOverPanel();
+        inGameUIScripts.ShowGameOverPanel();
         lose = true;
         Time.timeScale = 0f;
     }
@@ -76,12 +76,12 @@ public class IngameManager : MonoBehaviour
     }
     public void Pause()
     {
-        InGameUIScripts.TogglePause();
+        inGameUIScripts.TogglePause();
         Time.timeScale = 0f;
     }
     public void Resume()
     {
-        InGameUIScripts.TogglePlay();
+        inGameUIScripts.TogglePlay();
         Time.timeScale = 1f;
     }
 
