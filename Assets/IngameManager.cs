@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
-    public IngameUI InGameUIScripts;
-    public bool win;
-    public bool lose;
+    public IngameUI inGameUIScripts;
+    public int wert;
+    private bool win;
+    private bool lose;
     float timeLeft = 5.0f;
 
     // Use this for initialization
@@ -16,8 +17,8 @@ public class IngameManager : MonoBehaviour
         win = false;
         lose = false;
         Resume();
-        InGameUIScripts.HideLevelCompletePanel();
-        InGameUIScripts.HideGameOverPanel();
+        inGameUIScripts.HideLevelCompletePanel();
+        inGameUIScripts.HideGameOverPanel();
 
     }
 
@@ -30,54 +31,57 @@ public class IngameManager : MonoBehaviour
         Debug.Log(timeLeft);
 
         //if lose
-        lose |= timeLeft < 0;
-        if (lose)
+        if (!win)
         {
-            Lose();
-        }
+            lose |= timeLeft < 0;
+            if (lose)
+            {
+                Lose();
 
-        //if win
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Win();
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Win();
 
+            }
         }
     }
 
     void Win()
     {
-        InGameUIScripts.ShowLevelCompletePanel();
+        inGameUIScripts.ShowLevelCompletePanel(wert);
         win = true;
-        Time.timeScale = 0f;
     }
     void Lose()
     {
-        InGameUIScripts.ShowGameOverPanel();
+        inGameUIScripts.ShowGameOverPanel();
         lose = true;
-        Time.timeScale = 0f;
     }
 
     public void Next()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        Time.timeScale = 1f;
     }
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1f;
     }
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("Home");
+        SceneManager.LoadScene("MainMenu");
+        Time.timeScale = 1f;
     }
     public void Pause()
     {
-        InGameUIScripts.TogglePause();
+        inGameUIScripts.TogglePause();
         Time.timeScale = 0f;
     }
     public void Resume()
     {
-        InGameUIScripts.TogglePlay();
+        inGameUIScripts.TogglePlay();
         Time.timeScale = 1f;
     }
 
