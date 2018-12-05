@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class IngameUI : MonoBehaviour {
-    public GameObject LevelCompleteMenu;
+    public GameObject levelCompleteMenu;
     Image myImageComponent;
-    public GameObject GameOverMenu;
-    public Sprite Star1;
-    public Sprite Star2;
-    public Sprite Star3;
-    public GameObject PauseButton;
-    public GameObject PlayButton;
-    public GameObject PauseMenuButton;
-    public GameObject PausePlayButton;
-    private string[] Star3Texts = new string[] { "You did it!", "You rock it!", "Awesome!" };
-    private string[] Star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] Star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    public GameObject gameOverMenu;
+    public Sprite star1;
+    public Sprite star2;
+    public Sprite star3;
+    public GameObject pauseButton;
+    public GameObject playButton;
+    public GameObject pauseMenuButton;
+    public GameObject pausePlayButton;
+    private string[] star3Texts = new string[] { "You did it!", "You rock it!", "Awesome!" };
+    private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
+    private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     Text levelCompleteText;
 
     // Use this for initialization
@@ -34,60 +34,60 @@ public class IngameUI : MonoBehaviour {
     {
 
         Debug.Log("You Win!");
-        levelCompleteText = LevelCompleteMenu.transform.Find("LevelCompleteText").gameObject.GetComponent<Text>();
-        myImageComponent = LevelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        levelCompleteText = levelCompleteMenu.transform.Find("LevelCompleteText").gameObject.GetComponent<Text>();
+        myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
         switch (wert)
         {
             case 1:
-                levelCompleteText.text = Star1Texts[Random.Range(0, 3)];
-                myImageComponent.sprite = Star1;
+                levelCompleteText.text = star1Texts[Random.Range(0, 3)];
+                myImageComponent.sprite = star1;
                 break;
             case 2:
-                levelCompleteText.text = Star2Texts[Random.Range(0, 3)];
-                myImageComponent.sprite = Star2;
+                levelCompleteText.text = star2Texts[Random.Range(0, 3)];
+                myImageComponent.sprite = star2;
                 break;
             case 3:
-                levelCompleteText.text = Star3Texts[Random.Range(0, 3)];
-                myImageComponent.sprite = Star3;
+                levelCompleteText.text = star3Texts[Random.Range(0, 3)];
+                myImageComponent.sprite = star3;
                 break;
         }
 
-        LevelCompleteMenu.SetActive(true);
-        PausePlayButton.SetActive(false);
-        PauseMenuButton.SetActive(false);
+        levelCompleteMenu.SetActive(true);
+        pausePlayButton.SetActive(false);
+        pauseMenuButton.SetActive(false);
 
     }
 
     public void TogglePause()
     {
-        PauseButton.SetActive(false);
-        PlayButton.SetActive(true);
-        PauseMenuButton.SetActive(true);
+        pauseButton.SetActive(false);
+        //PlayButton.SetActive(true);
+        pauseMenuButton.SetActive(true);
 
 
     }
     public void TogglePlay()
     {
-        PauseButton.SetActive(true);
-        PlayButton.SetActive(false);
-        PauseMenuButton.SetActive(false);
+        pauseButton.SetActive(true);
+        //PlayButton.SetActive(false);
+        pauseMenuButton.SetActive(false);
 
     }
     public void ShowGameOverPanel()
     {
         Debug.Log("You lose!");
-        GameOverMenu.SetActive(true);
-        PausePlayButton.SetActive(false);
+        gameOverMenu.SetActive(true);
+        pausePlayButton.SetActive(false);
     }
     public void HideLevelCompletePanel()
     {
-        LevelCompleteMenu.SetActive(false);
-        PausePlayButton.SetActive(true);
+        levelCompleteMenu.SetActive(false);
+        pausePlayButton.SetActive(true);
 
     }
     public void HideGameOverPanel()
     {
-        GameOverMenu.SetActive(false);
-        PausePlayButton.SetActive(true);
+        gameOverMenu.SetActive(false);
+        pausePlayButton.SetActive(true);
     }
 }
