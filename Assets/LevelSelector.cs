@@ -52,15 +52,15 @@ public class LevelSelector : MonoBehaviour
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level1", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level2", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level4", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("level8", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
 
     }
 
@@ -151,6 +151,7 @@ public class LevelSelector : MonoBehaviour
         //GameObject rawImage = GameObject.Find("RawImage");
         //rawImage.GetComponent<RawImage>().texture = image;
 
+        scenePreview.GetComponent<RawImage>().enabled = true; 
         scenePreview.GetComponent<RawImage>().texture = image;
     }
 
