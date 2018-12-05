@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 public class IngameManager : MonoBehaviour
 {
     public IngameUI InGameUIScripts;
-    public bool win;
-    public bool lose;
+    public int wert;
+    private bool win;
+    private bool lose;
     float timeLeft = 5.0f;
 
     // Use this for initialization
@@ -46,7 +47,7 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        InGameUIScripts.ShowLevelCompletePanel();
+        InGameUIScripts.ShowLevelCompletePanel(wert);
         win = true;
         Time.timeScale = 0f;
     }

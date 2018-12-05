@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IngameUI : MonoBehaviour {
     public GameObject LevelCompleteMenu;
+    Image myImageComponent;
     public GameObject GameOverMenu;
+    public Sprite Star1;
+    public Sprite Star2;
+    public Sprite Star3;
     public GameObject PauseButton;
     public GameObject PlayButton;
     public GameObject PauseMenuButton;
@@ -22,9 +27,24 @@ public class IngameUI : MonoBehaviour {
     {
 
     }
-    public void ShowLevelCompletePanel()
+    public void ShowLevelCompletePanel(int wert)
     {
+
         Debug.Log("You Win!");
+        myImageComponent = LevelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        switch (wert)
+        {
+            case 1:
+                myImageComponent.sprite = Star1;
+                break;
+            case 2:
+                myImageComponent.sprite = Star2;
+                break;
+            case 3:
+                myImageComponent.sprite = Star3;
+                break;
+        }
+
         LevelCompleteMenu.SetActive(true);
         PausePlayButton.SetActive(false);
         PauseMenuButton.SetActive(false);
