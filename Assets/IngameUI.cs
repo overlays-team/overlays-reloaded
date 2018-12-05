@@ -14,7 +14,10 @@ public class IngameUI : MonoBehaviour {
     public GameObject PlayButton;
     public GameObject PauseMenuButton;
     public GameObject PausePlayButton;
-
+    private string[] Star3Texts = new string[] { "You did it!", "You rock it!", "Awesome!" };
+    private string[] Star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
+    private string[] Star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    Text levelCompleteText;
 
     // Use this for initialization
     void Start()
@@ -31,16 +34,20 @@ public class IngameUI : MonoBehaviour {
     {
 
         Debug.Log("You Win!");
+        levelCompleteText = LevelCompleteMenu.transform.Find("LevelCompleteText").gameObject.GetComponent<Text>();
         myImageComponent = LevelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
         switch (wert)
         {
             case 1:
+                levelCompleteText.text = Star1Texts[Random.Range(0, 3)];
                 myImageComponent.sprite = Star1;
                 break;
             case 2:
+                levelCompleteText.text = Star2Texts[Random.Range(0, 3)];
                 myImageComponent.sprite = Star2;
                 break;
             case 3:
+                levelCompleteText.text = Star3Texts[Random.Range(0, 3)];
                 myImageComponent.sprite = Star3;
                 break;
         }
