@@ -70,7 +70,7 @@ public class ImageOutput : BlockObject {
 
             }
         }
-        Debug.Log(biggestError);
+        //Debug.Log(biggestError);
         if (biggestError > 0) isCorrect = false;
         return isCorrect;
     }
