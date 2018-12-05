@@ -42,7 +42,7 @@ public class GridSystem : MonoBehaviour
 
             foreach (GridPlane gridPlane in gridPlanes)
             {
-                if(gridPlane.taken == false && !gridPlane.empthy)
+                if(gridPlane.taken == false && !gridPlane.empty)
                 {
                     float currentDistance = Vector3.Distance(gridPlane.transform.position, blockObject.transform.position);
                     if (currentDistance < nearestDistance)

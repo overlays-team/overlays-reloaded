@@ -11,11 +11,11 @@ public class GridPlane : MonoBehaviour
     public MeshCollider meshCollider;
     public MeshRenderer meshRenderer;
 
-    public bool empthy = false; //if empthy, the plane is a hole where we cant position blocks
+    public bool empty = false; //if empthy, the plane is a hole where we cant position blocks
 
     private void Start()
     {
-        SetEmpthy(empthy);
+        SetEmpthy(empty);
     
 
         positiveHalo.SetActive(false);
@@ -47,13 +47,13 @@ public class GridPlane : MonoBehaviour
     {
         if (_empthy)
         {
-            empthy = true;
+            empty = true;
             meshCollider.enabled = false;
             meshRenderer.enabled = false;
         }
         else
         {
-            empthy = false;
+            empty = false;
             meshCollider.enabled = true;
             meshRenderer.enabled = true;
         }

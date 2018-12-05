@@ -11,12 +11,14 @@ public class ImageOutput : BlockObject {
 
     public Texture2D noImage; //just a white texture we show when no image is present
     public Texture2D goalImage;
+    public Texture2D yepImage; //gets displayed when we get the goal image right
 
     protected override void Start()
     {
         base.Start();
         inputImage = null;
-        debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+        //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+        debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
     }
 
 
@@ -30,12 +32,13 @@ public class ImageOutput : BlockObject {
             if (laserInputs[0].active)
             {
                 inputImage = laserInputs[0].inputLaser.image;
-                debugImage.sprite = Sprite.Create(inputImage, new Rect(0, 0, inputImage.width, inputImage.height), new Vector2(0.5f, 0.5f));
+                if(CheckIfImageIsCorrect()) debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+                //debugImage.sprite = Sprite.Create(inputImage, new Rect(0, 0, inputImage.width, inputImage.height), new Vector2(0.5f, 0.5f));
             }
             else
             {
                 inputImage = null;
-                debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+                //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
             }
         }
 
@@ -67,6 +70,7 @@ public class ImageOutput : BlockObject {
 
             }
         }
+        //Debug.Log(biggestError);
         if (biggestError > 0) isCorrect = false;
         return isCorrect;
     }
