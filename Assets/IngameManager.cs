@@ -31,17 +31,19 @@ public class IngameManager : MonoBehaviour
         Debug.Log(timeLeft);
 
         //if lose
-        lose |= timeLeft < 0;
-        if (lose)
+        if (!win)
         {
-            Lose();
-        }
+            lose |= timeLeft < 0;
+            if (lose)
+            {
+                Lose();
 
-        //if win
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Win();
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Win();
 
+            }
         }
     }
 
@@ -49,13 +51,11 @@ public class IngameManager : MonoBehaviour
     {
         inGameUIScripts.ShowLevelCompletePanel(wert);
         win = true;
-        Time.timeScale = 0f;
     }
     void Lose()
     {
         inGameUIScripts.ShowGameOverPanel();
         lose = true;
-        Time.timeScale = 0f;
     }
 
     public void Next()
