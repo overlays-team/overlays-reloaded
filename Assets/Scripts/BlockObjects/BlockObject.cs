@@ -62,6 +62,10 @@ public class BlockObject : MonoBehaviour {
     public Image debugImage; //just for now
 
 
+    public BlockObject()
+    {
+        // the default constructor
+    }
 
     // Use this for initialization
     protected virtual void Start ()
@@ -255,7 +259,7 @@ public class BlockObject : MonoBehaviour {
         }
     }
 
-    //diese Funktion sorgt dafür dass unser Block nach der bewegung shön weich landed
+    //diese Funktion sorgt dafür dass unser Block nach der bewegung schön weich landet
     public void SnapToPosition(GridPlane gridPlane)
     {
         movementState = BlockMovementState.Dropping;
