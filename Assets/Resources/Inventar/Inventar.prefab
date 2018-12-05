@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222240602573107408}
   - component: {fileID: 114848773113884704}
   - component: {fileID: 114045423020528888}
-  - component: {fileID: 114347661979503160}
+  - component: {fileID: 114875914784121242}
   m_Layer: 5
   m_Name: Inventar
   m_TagString: Untagged
@@ -52,19 +52,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
---- !u!114 &114347661979503160
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088874422300636}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6cde9573988f5945bab6dc42dde168d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wallBlocksAmount: 1
-  mirrorsAmount: 1
 --- !u!114 &114848773113884704
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -92,6 +79,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114875914784121242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088874422300636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6cde9573988f5945bab6dc42dde168d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallBlocksAmount: 0
+  mirrorsAmount: 0
+  additiveBlocksAmount: 0
 --- !u!222 &222240602573107408
 CanvasRenderer:
   m_ObjectHideFlags: 1

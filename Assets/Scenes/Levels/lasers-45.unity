@@ -180,7 +180,7 @@ Canvas:
   m_GameObject: {fileID: 73124606}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -203,7 +203,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1795252774}
+  - {fileID: 1534782173}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,10 +281,14 @@ Prefab:
       propertyPath: empthy
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4945878049787788, guid: 4ceff7233f919874b9abcfb997118294, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 4.395
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ceff7233f919874b9abcfb997118294, type: 2}
   m_IsPrefabAsset: 0
---- !u!1001 &1612962775
+--- !u!1001 &1402503400
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -381,33 +385,26 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114347661979503160, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
-        type: 2}
-      propertyPath: wallBlockButton
-      value: 
-      objectReference: {fileID: 1503241760105910, guid: 7f3d3e539d726c5448241361973e0547,
-        type: 2}
-    - target: {fileID: 114347661979503160, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
-        type: 2}
-      propertyPath: mirrorButton
-      value: 
-      objectReference: {fileID: 1483265498134776, guid: bbd7b9badd596c24083328c72b927482,
-        type: 2}
-    - target: {fileID: 114347661979503160, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
+    - target: {fileID: 114875914784121242, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
         type: 2}
       propertyPath: wallBlocksAmount
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114347661979503160, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
+    - target: {fileID: 114875914784121242, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
         type: 2}
       propertyPath: mirrorsAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114045423020528888, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad79a846b5ccc3a4096abaf03fdb2c13, type: 2}
   m_IsPrefabAsset: 0
---- !u!224 &1795252774 stripped
+--- !u!224 &1534782173 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224079150300135128, guid: ad79a846b5ccc3a4096abaf03fdb2c13,
     type: 2}
-  m_PrefabInternal: {fileID: 1612962775}
+  m_PrefabInternal: {fileID: 1402503400}

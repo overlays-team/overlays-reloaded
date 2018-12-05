@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     public void setSelectedBlockObject(BlockObject selectedBlock)
     {
         this.selectedBlockObject = selectedBlock;
+        playerMode = PlayerMode.MouseHold;
     }
 
     public enum PlayerMode
