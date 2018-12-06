@@ -13,6 +13,8 @@ public class ImageOutput : BlockObject {
     public Texture2D goalImage;
     public Texture2D yepImage; //gets displayed when we get the goal image right
 
+    public bool imageCorrect; // for the ingameManager, so he knows
+
     protected override void Start()
     {
         base.Start();
@@ -32,13 +34,22 @@ public class ImageOutput : BlockObject {
             if (laserInputs[0].active)
             {
                 inputImage = laserInputs[0].inputLaser.image;
-                if(CheckIfImageIsCorrect()) debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                //debugImage.sprite = Sprite.Create(inputImage, new Rect(0, 0, inputImage.width, inputImage.height), new Vector2(0.5f, 0.5f));
+                if (CheckIfImageIsCorrect())
+                {
+                    debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+                    imageCorrect = true;
+                }
+                else
+                {
+                    debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                    imageCorrect = false;
+                }
             }
             else
             {
+                debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 inputImage = null;
-                //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+                imageCorrect = false;
             }
         }
 
