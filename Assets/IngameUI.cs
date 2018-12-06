@@ -14,7 +14,7 @@ public class IngameUI : MonoBehaviour {
     public GameObject playButton;
     public GameObject pauseMenuButton;
     public GameObject pausePlayButton;
-    private string[] star3Texts = new string[] { "You did it!", "You rock it!", "Awesome!" };
+    private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
     private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     Text levelCompleteText;
@@ -63,8 +63,6 @@ public class IngameUI : MonoBehaviour {
         pauseButton.SetActive(false);
         //PlayButton.SetActive(true);
         pauseMenuButton.SetActive(true);
-
-
     }
     public void TogglePlay()
     {
@@ -75,7 +73,6 @@ public class IngameUI : MonoBehaviour {
     }
     public void ShowGameOverPanel()
     {
-        Debug.Log("You lose!");
         gameOverMenu.SetActive(true);
         pausePlayButton.SetActive(false);
     }
