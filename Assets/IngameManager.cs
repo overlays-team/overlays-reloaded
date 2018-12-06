@@ -11,6 +11,8 @@ public class IngameManager : MonoBehaviour
     private bool lose;
     float timeLeft = 5.0f;
 
+    public ImageOutput[] outputImages; //holds a collection of all output Images
+
     // Use this for initialization
     void Start()
     {
@@ -44,6 +46,7 @@ public class IngameManager : MonoBehaviour
             }
         }
         */
+        CheckIfWeWon();
     }
 
     void Win()
@@ -82,6 +85,27 @@ public class IngameManager : MonoBehaviour
     {
         ingameUI.TogglePlay();
         Time.timeScale = 1f;
+    }
+
+    bool CheckIfWeWon()
+    {
+        bool allCorrect = true;
+
+        foreach (ImageOutput imageOutput in outputImages)
+        {
+            if (!imageOutput.imageCorrect) allCorrect = false;
+        }
+
+        if (allCorrect) StartCoroutine("WinCoroutine");
+
+        //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+        return allCorrect;
+    }
+
+    IEnumerator WinCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+        if (CheckIfWeWon()) Win();
     }
 
 
