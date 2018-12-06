@@ -152,10 +152,8 @@ public class Inventar : MonoBehaviour
             GameObject aNewWallBlock = Instantiate(wallBlockPrefab);
             aNewWallBlock.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
         
-            //Here I should begin to drag an object
-            //FIXME: For further development
+            //Here I begin to drag an object
             GameObject.Find("PlayerController").GetComponent<PlayerController>().setSelectedBlockObject(aNewWallBlock.GetComponent<BlockObject>());
-            //wallBlockButton.GetComponent<EventTrigger>().OnPointerDown();
 
             String newAmountOfWallBlocksAvailable = "" + (wallBlocksAvailable - 1);
             wallBlockButton.GetComponentInChildren<Text>().text = newAmountOfWallBlocksAvailable;
