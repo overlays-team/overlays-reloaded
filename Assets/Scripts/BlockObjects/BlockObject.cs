@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BlockObject : MonoBehaviour {
+public class BlockObject : MonoBehaviour
+{ // , IDragHandler,  IEndDragHandler
 
     /*
      * Der Grundbaustein, alle anderen Blocks erben von diesem
@@ -11,9 +13,9 @@ public class BlockObject : MonoBehaviour {
      * die Kinder entscheiden dann was sie mit diesen Lasern tun und 
      * wieviele sie überhaupt wahrnehmen
      */
-    
+
     //für Positionierung
-    [HideInInspector]
+    //[HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
 
@@ -300,6 +302,17 @@ public class BlockObject : MonoBehaviour {
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetDragPosition, PlayerController.Instance.blockDragSpeed * Time.deltaTime);
         transform.position = smoothedPosition;
     }
+
+    /*
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = Input.mousePosition;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        transform.position = Vector3.zero;
+    } */
 
     #endregion
 

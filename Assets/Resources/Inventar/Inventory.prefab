@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114045423020528888}
   - component: {fileID: 114875914784121242}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: Inventar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,9 +90,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6cde9573988f5945bab6dc42dde168d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallBlocksAmount: 2
-  mirrorsAmount: 2
-  additiveBlocksAmount: 2
+  wallBlocksAmount: 0
+  mirrorsAmount: 0
+  additiveBlocksAmount: 0
+  gridPlanePrefab: {fileID: 1424604979968934, guid: 65718ef8a0a3bd845a73100c16bf787f,
+    type: 2}
 --- !u!222 &222240602573107408
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -108,13 +110,13 @@ RectTransform:
   m_GameObject: {fileID: 1088874422300636}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5208334, y: 0.5208334, z: 0.5208334}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -645.3125, y: 22.656311}
-  m_SizeDelta: {x: -1742, y: 86.9}
+  m_AnchoredPosition: {x: -471, y: 43.5}
+  m_SizeDelta: {x: -942, y: 86.9}
   m_Pivot: {x: 0.5, y: 0.5}

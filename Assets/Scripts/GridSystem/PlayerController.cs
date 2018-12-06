@@ -157,6 +157,7 @@ public class PlayerController : MonoBehaviour {
 
                     playerMode = PlayerMode.Default;
                     selectedBlockObject = null;
+                    hittedObject = null;
                 }
                 //welse while we hold the mouse button, the grids where we can position the Object, will be marked with a green or red halo
                 else if (Input.GetMouseButton(0))

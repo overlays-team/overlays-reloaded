@@ -11,10 +11,12 @@ public class Inventar : MonoBehaviour
     private Camera mainCamera;
 
     [SerializeField]
+    private List<GameObject> buttons;
+
+    [SerializeField]
     private int wallBlocksAmount;
     private GameObject wallBlockButton;
     private GameObject wallBlockPrefab;
-
     
     [SerializeField]
     private int mirrorsAmount;
@@ -24,11 +26,41 @@ public class Inventar : MonoBehaviour
     [SerializeField]
     private int additiveBlocksAmount;
     private GameObject additiveBlockButtonPrefab;
+    private GameObject additiveBlockPrefab;
+
+    private bool aBlockIsChosen;
+
+    public void SetABlockIsChosen(bool isChosen)
+    {
+        this.aBlockIsChosen = isChosen;
+    }
 
     public void Start()
     {
+        //finds the FIRST one in the scene, should be the main camera
         mainCamera = FindObjectOfType<Camera>();
         InitializeButtons();
+    }
+
+    public void Update()
+    {
+        //For further refactoring:
+        /* foreach (GameObject button in buttons)
+        {
+            if (button.GetComponent<ButtonInventar>().isPressed())
+            {
+                
+            }
+        } */
+
+        if (wallBlockButton.GetComponent<ButtonInventar>().isPressed() && aBlockIsChosen == false)
+        {
+            chooseWallBlock();
+        }
+        if (mirrorButton.GetComponent<ButtonInventar>().isPressed() && aBlockIsChosen == false)
+        {
+            chooseMirror();
+        }
     }
 
     public void LayAnItemBackIntoInventar(String blockName)
@@ -71,10 +103,15 @@ public class Inventar : MonoBehaviour
             wallBlockPrefab = (GameObject)Resources.Load("Inventar/Blocks/BlockObject");
 
             wallBlockButton = GameObject.Instantiate(wallBlockButtonPrefab); //checked: it has been assigned
-            wallBlockButton.GetComponent<Button>().onClick.AddListener( delegate { chooseWallBlock(); } );
+
+            //wallBlockButton.GetComponent<Button>().onClick.AddListener( delegate { chooseWallBlock(); } ); //so war es funktionierend mit dem Click
 
             wallBlockButton.GetComponentInChildren<Text>().text = "" + wallBlocksAmount;
             wallBlockButton.transform.SetParent(gameObject.transform); //attaching this button as a child to the inventar object
+
+            //Doesn't work, because Blocks can be set only on GridPlanes with enabled MeshRendererd
+            //createNewGridPlane(wallBlockButton.transform.position);
+
         }
     }
 
@@ -88,7 +125,7 @@ public class Inventar : MonoBehaviour
 
 
             mirrorButton = Instantiate(mirrorButtonPrefab);
-            mirrorButton.GetComponent<Button>().onClick.AddListener(delegate { chooseMirror(); });
+            // mirrorButton.GetComponent<Button>().onClick.AddListener(delegate { chooseMirror(); }); //so war es funktionierend mit dem Click
 
             mirrorButton.GetComponentInChildren<Text>().text = "" + mirrorsAmount;
             mirrorButton.transform.SetParent(gameObject.transform);
@@ -98,7 +135,8 @@ public class Inventar : MonoBehaviour
     public void chooseWallBlock()
     {
         Debug.Log("A wall block choosed");
-
+        aBlockIsChosen = true;
+            
         if (wallBlockButton != null)
         {
             Debug.Log("It's all fine with the wall block button");
@@ -114,20 +152,19 @@ public class Inventar : MonoBehaviour
             GameObject aNewWallBlock = Instantiate(wallBlockPrefab);
             aNewWallBlock.transform.position = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
         
-            //Here I should begin to drag an object
-            //For further development
-            //GameObject.Find("PlayerController").GetComponent<PlayerController>().setSelectedBlockObject(aNewWallBlock.GetComponent<BlockObject>());
-            //wallBlockButton.GetComponent<EventTrigger>().OnPointerDown();
+            //Here I begin to drag an object
+            GameObject.Find("PlayerController").GetComponent<PlayerController>().setSelectedBlockObject(aNewWallBlock.GetComponent<BlockObject>());
 
             String newAmountOfWallBlocksAvailable = "" + (wallBlocksAvailable - 1);
             wallBlockButton.GetComponentInChildren<Text>().text = newAmountOfWallBlocksAvailable;
         }
-        
-    }
 
-    public void chooseMirror()
+}
+
+public void chooseMirror()
     {
         Debug.Log("A mirror block choosed");
+        aBlockIsChosen = true;
 
         if (mirrorButton != null)
         {
@@ -159,35 +196,11 @@ public class Inventar : MonoBehaviour
         Debug.Log("An additive block choosed");
     }
 
-   /* private void InitializeMirrorButton1()
+    /* private void createNewGridPlane(Vector3 atPlace)
     {
-        if (mirrorsAmount != 0)
-        {
-            GameObject mirrorButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/MirrorBlockItem"); //checked: it has been loaded
-            GameObject mirrorBlockPrefab = (GameObject)Resources.Load("Inventar/Blocks/Mirror");
-            mirrors = new GameObject[mirrorsAmount];
-
-
-            mirrorButton = (GameObject)Instantiate(mirrorButtonPrefab);
-            mirrorButton.GetComponent<Button>().onClick.AddListener(delegate { chooseMirror(); });
-            //TODO: Hier weiter machen
-            //mirrorButton.GetComponent<EventTrigger>().OnPointerDown().AddListener( delegate { chooseMirror(); } );
-
-            mirrorButton.GetComponentInChildren<Text>().text = "" + mirrorsAmount;
-            mirrorButton.transform.SetParent(gameObject.transform);
-
-            for (int i = 0; i < mirrorsAmount; i++)
-            {
-                GameObject aNewMirror = (GameObject)Instantiate(mirrorBlockPrefab);
-                aNewMirror.SetActive(false);
-
-                //FIXME: make it like in the wall block
-                aNewMirror.transform.position = wallBlockButton.transform.position;
-
-                mirrors[i] = aNewMirror;
-            }
-
-        }
+        GameObject newGridPlane = (GameObject)Instantiate(gridPlanePrefab);
+        newGridPlane.GetComponent<MeshRenderer>().enabled = false;
+        newGridPlane.transform.position = atPlace;
     } */
 
     /* private void InitializeMirrorButton()
