@@ -67,7 +67,7 @@ public class Inventar : MonoBehaviour
 
         if (wallBlocksAmount != 0)
         {
-            GameObject wallBlockButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/WallBlockItem"); //checked: it has been loaded
+            GameObject wallBlockButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/WallBlockButton"); //checked: it has been loaded
             wallBlockPrefab = (GameObject)Resources.Load("Inventar/Blocks/BlockObject");
 
             wallBlockButton = GameObject.Instantiate(wallBlockButtonPrefab); //checked: it has been assigned
@@ -82,7 +82,7 @@ public class Inventar : MonoBehaviour
     {
         if (mirrorsAmount != 0)
         {
-            GameObject mirrorButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/MirrorBlockItem"); //checked: it has been loaded
+            GameObject mirrorButtonPrefab = (GameObject)Resources.Load("Inventar/Buttons/MirrorBlockButton"); //checked: it has been loaded
             mirrorPrefab = (GameObject)Resources.Load("Inventar/Blocks/Mirror");
             //mirrors = new GameObject[mirrorsAmount];
 
