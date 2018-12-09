@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class IngameUI : MonoBehaviour {
     public GameObject levelCompleteMenu;
-    Image myImageComponent;
+    public Image myImageComponent;
     public GameObject gameOverMenu;
     public Sprite star1;
     public Sprite star2;
@@ -17,7 +17,7 @@ public class IngameUI : MonoBehaviour {
     private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
     private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
-    Text levelCompleteText;
+    public Text levelCompleteText;
 
     // Use this for initialization
     void Start()
@@ -34,8 +34,8 @@ public class IngameUI : MonoBehaviour {
     {
 
         Debug.Log("You Win!");
-        levelCompleteText = levelCompleteMenu.transform.Find("LevelCompleteText").gameObject.GetComponent<Text>();
-        myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
+        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
         switch (wert)
         {
             case 1:

@@ -90,15 +90,24 @@ public class IngameManager : MonoBehaviour
     bool CheckIfWeWon()
     {
         bool allCorrect = true;
-
-        foreach (ImageOutput imageOutput in outputImages)
+        if (outputImages.Length > 0)
         {
-            if (!imageOutput.imageCorrect) allCorrect = false;
+            
+
+            foreach (ImageOutput imageOutput in outputImages)
+            {
+                if (!imageOutput.imageCorrect) allCorrect = false;
+            }
+
+            if (allCorrect) StartCoroutine("WinCoroutine");
+
+            //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+
         }
-
-        if (allCorrect) StartCoroutine("WinCoroutine");
-
-        //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+        else
+        {
+            allCorrect = false;
+        }
         return allCorrect;
     }
 
