@@ -10,12 +10,31 @@ public class RedFilter : BlockObject
     //for image processing
     Texture2D inputImage;
     Texture2D outputImage;
+    //testing
+    public enum FilterColor {RED, GREEN, BLUE, NONE};
+    public FilterColor filterMode = FilterColor.NONE;
+    public GameObject laser;
 
 
     protected override void Start()
     {
         base.Start();
         laserOutput.active = false;
+        switch (filterMode)
+        {
+            case FilterColor.RED:
+                laser.GetComponent<LineRenderer>().SetColors(Color.red, Color.red);
+                break;
+            case FilterColor.GREEN:
+                laser.GetComponent<LineRenderer>().SetColors(Color.green, Color.green);
+                break;
+            case FilterColor.BLUE:
+                laser.GetComponent<LineRenderer>().SetColors(Color.blue, Color.blue);
+                break;
+            case FilterColor.NONE:
+                laser.GetComponent<LineRenderer>().SetColors(Color.white, Color.white);
+                break;
+        }
     }
 
     protected override void Update()
@@ -28,10 +47,13 @@ public class RedFilter : BlockObject
             {
                 inputImage = laserInputs[0].inputLaser.image;
                 StartImageProcessing();
+                Animator animator = GetComponent<Animator>();
+                animator.SetTrigger("Laser");
             }
             else
             {
                 inputImage = null;
+                //
                 StopImageProcessing();
             }
 
@@ -66,8 +88,27 @@ public class RedFilter : BlockObject
         for (int y = 0; y < outputImage.height; y++)
         {
             for (int x = 0; x < outputImage.width; x++)
-            {
-                outputImage.SetPixel(x, y, new Color(outputImage.GetPixel(x, y).r, 0f, 0f));
+            {   
+                //testing
+                Color tempC = new Color(0f, 0f, 0f);
+                Color cache = outputImage.GetPixel(x, y);
+
+                switch (filterMode)
+                {
+                    case FilterColor.RED:
+                        tempC.r = cache.r;
+                        break;
+                    case FilterColor.GREEN:
+                        tempC.g = cache.g;
+                        break;
+                    case FilterColor.BLUE:
+                        tempC.b = cache.b;
+                        break;
+                    case FilterColor.NONE:
+                        tempC = cache;
+                        break;
+                }
+                outputImage.SetPixel(x, y, tempC);
             }
             if (y % 10 == 0) yield return null;
         }
@@ -78,4 +119,6 @@ public class RedFilter : BlockObject
 
         laserOutput.laser.image = outputImage;
     }
+
+
 }
