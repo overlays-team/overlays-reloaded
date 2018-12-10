@@ -41,6 +41,7 @@ public class IngameUI : MonoBehaviour {
             pauseMenuButton.GetComponent<Image>().material.SetColor("_Color", newColor);
             pauseMenuButton.GetComponent<Image>().material.SetFloat("_Size", timeBlur * 10f);
 
+
             Debug.Log("timeBlur: "+ timeBlur + " " + pauseMenuButton.GetComponent<Image>().material.color);
             if (timeBlur > 0.3f)
             {
@@ -76,6 +77,7 @@ public class IngameUI : MonoBehaviour {
         levelCompleteMenu.SetActive(true);
         pausePlayButton.SetActive(false);
         pauseMenuButton.SetActive(false);
+        blurStand = true;
 
     }
 
@@ -97,6 +99,7 @@ public class IngameUI : MonoBehaviour {
     {
         gameOverMenu.SetActive(true);
         pausePlayButton.SetActive(false);
+        blurStand = true;
     }
     public void HideLevelCompletePanel()
     {

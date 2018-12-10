@@ -37,8 +37,8 @@ public class IngameManager : MonoBehaviour
 
         timeLeft -= Time.deltaTime;
         Debug.Log(timeLeft);
-        /*
-        if (!win)
+
+        if (!win & !lose)
         {
             lose |= timeLeft < 0;
             if (lose)
@@ -52,7 +52,7 @@ public class IngameManager : MonoBehaviour
 
             }
         }
-        */
+
         CheckIfWeWon();
     }
 
