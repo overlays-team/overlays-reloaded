@@ -10,6 +10,7 @@ public class IngameManager : MonoBehaviour
     private bool win;
     private bool lose;
     float timeLeft = 5.0f;
+    bool paused;
 
     public ImageOutput[] outputImages; //holds a collection of all output Images
 
@@ -28,8 +29,14 @@ public class IngameManager : MonoBehaviour
     void Update()
     {
 
-        timeLeft -= Time.deltaTime;
+        if (!ingameUI.blurStand & paused)
+        {
 
+            Time.timeScale = 0;
+        }
+
+        timeLeft -= Time.deltaTime;
+        Debug.Log(timeLeft);
         /*
         if (!win)
         {
@@ -78,11 +85,13 @@ public class IngameManager : MonoBehaviour
     }
     public void Pause()
     {
+        timeLeft += 0.3f;
+        paused = true;
         ingameUI.TogglePause();
-        Time.timeScale = 0f;
     }
     public void Resume()
     {
+        paused = false;
         ingameUI.TogglePlay();
         Time.timeScale = 1f;
     }

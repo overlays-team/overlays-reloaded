@@ -19,6 +19,8 @@ public class IngameUI : MonoBehaviour {
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public Text levelCompleteText;
 
+    public bool blurStand = false;
+    public float timeBlur = 0f;
 
     // Use this for initialization
     void Start()
@@ -29,7 +31,25 @@ public class IngameUI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        if (blurStand)
+        {
 
+            timeBlur += Time.deltaTime;
+            float ratio = 3 / 2f;
+            Color newColor = new Color(1 - timeBlur * ratio, 1 - timeBlur * ratio, 1 - timeBlur * ratio, 1);
+
+            pauseMenuButton.GetComponent<Image>().material.SetColor("_Color", newColor);
+            pauseMenuButton.GetComponent<Image>().material.SetFloat("_Size", timeBlur * 10f);
+
+            Debug.Log("timeBlur: "+ timeBlur + " " + pauseMenuButton.GetComponent<Image>().material.color);
+            if (timeBlur > 0.3f)
+            {
+
+                blurStand = false;
+
+                timeBlur = 0;
+            }
+        }
     }
     public void ShowLevelCompletePanel(int wert)
     {
@@ -64,6 +84,7 @@ public class IngameUI : MonoBehaviour {
         pauseButton.SetActive(false);
         //PlayButton.SetActive(true);
         pauseMenuButton.SetActive(true);
+        blurStand = true;
     }
     public void TogglePlay()
     {
