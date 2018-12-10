@@ -19,6 +19,7 @@ public class IngameUI : MonoBehaviour {
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public Text levelCompleteText;
 
+
     // Use this for initialization
     void Start()
     {
