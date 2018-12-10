@@ -19,8 +19,9 @@ public class IngameUI : MonoBehaviour {
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public Text levelCompleteText;
 
+    public Material blurMaterial;
     public bool blurStand = false;
-    public float timeBlur = 0f;
+    float timeBlur = 0f;
 
     // Use this for initialization
     void Start()
@@ -33,21 +34,20 @@ public class IngameUI : MonoBehaviour {
     {
         if (blurStand)
         {
-
+            //duration of blur motion
             timeBlur += Time.deltaTime;
+            //Wie stark die Veränderung
             float ratio = 3 / 2f;
+            //Color Motion
             Color newColor = new Color(1 - timeBlur * ratio, 1 - timeBlur * ratio, 1 - timeBlur * ratio, 1);
-
-            pauseMenuButton.GetComponent<Image>().material.SetColor("_Color", newColor);
-            pauseMenuButton.GetComponent<Image>().material.SetFloat("_Size", timeBlur * 10f);
-
+            //Blur motion
+            blurMaterial.SetColor("_Color", newColor);
+            blurMaterial.SetFloat("_Size", timeBlur * 10f);
 
             Debug.Log("timeBlur: "+ timeBlur + " " + pauseMenuButton.GetComponent<Image>().material.color);
             if (timeBlur > 0.3f)
             {
-
                 blurStand = false;
-
                 timeBlur = 0;
             }
         }

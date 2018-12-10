@@ -28,13 +28,12 @@ public class IngameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //wenn blurStand not aktiv und Spiel wurde pausiert
         if (!ingameUI.blurStand & paused)
-        {
-
-            Time.timeScale = 0;
+        { 
+        Time.timeScale = 0;
         }
-
+        //Countdown
         timeLeft -= Time.deltaTime;
         Debug.Log(timeLeft);
 
