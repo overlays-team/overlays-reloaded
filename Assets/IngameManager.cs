@@ -46,6 +46,13 @@ public class IngameManager : MonoBehaviour
             }
         }
         */
+
+        //for debug
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Win();
+        }
+
         CheckIfWeWon();
     }
 
