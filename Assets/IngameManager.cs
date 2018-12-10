@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class IngameManager : MonoBehaviour
 {
     public IngameUI ingameUI;
-    public int wert;
+    public int score;
     private bool win;
     private bool lose;
-    float timeLeft = 5.0f;
+    float timeRemaing = 5.0f;
 
     public ImageOutput[] outputImages; //holds a collection of all output Images
 
@@ -28,7 +28,9 @@ public class IngameManager : MonoBehaviour
     void Update()
     {
 
-        timeLeft -= Time.deltaTime;
+        timeRemaing -= Time.deltaTime;
+        Debug.Log(timeRemaing);
+        ingameUI.ShowCountDown(timeRemaing, win);
 
         /*
         if (!win)
@@ -47,18 +49,21 @@ public class IngameManager : MonoBehaviour
         }
         */
 
-        //for debug
+        //sh, for debug
+        /*
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Win();
         }
+        */
 
         CheckIfWeWon();
     }
 
+
     void Win()
     {
-        ingameUI.ShowLevelCompletePanel(wert);
+        ingameUI.ShowLevelCompletePanel(score);
         win = true;
     }
     void Lose()

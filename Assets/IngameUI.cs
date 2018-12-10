@@ -19,6 +19,9 @@ public class IngameUI : MonoBehaviour {
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public Text levelCompleteText;
 
+    //sh
+    public Text countDownText;
+
     // Use this for initialization
     void Start()
     {
@@ -30,13 +33,13 @@ public class IngameUI : MonoBehaviour {
     {
 
     }
-    public void ShowLevelCompletePanel(int wert)
+    public void ShowLevelCompletePanel(int score)
     {
 
         Debug.Log("You Win!");
         //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
-        switch (wert)
+        switch (score)
         {
             case 1:
                 levelCompleteText.text = star1Texts[Random.Range(0, 3)];
@@ -87,4 +90,20 @@ public class IngameUI : MonoBehaviour {
         gameOverMenu.SetActive(false);
         pausePlayButton.SetActive(true);
     }
+
+    //sh
+    //winをどうかしないといけない。
+    public void ShowCountDown(float timeRemaining, bool win)
+    {
+        Debug.Log("ShowCountDown()");
+
+        countDownText.text = "Time Left: " + Mathf.Round(timeRemaining) + "s";
+        if (win)
+        {
+            countDownText.text = "";
+        }
+    }
+
+
+
 }
