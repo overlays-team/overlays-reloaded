@@ -21,6 +21,7 @@ public class IngameUI : MonoBehaviour {
 
     //sh
     public Text countDownText;
+    public Text totalScoreText;
 
     // Use this for initialization
     void Start()
@@ -33,16 +34,21 @@ public class IngameUI : MonoBehaviour {
     {
 
     }
-    public void ShowLevelCompletePanel(int score)
+    public void ShowLevelCompletePanel(int score, int totalScore)
     {
 
         Debug.Log("You Win!");
+        Debug.Log("totalScore: " + totalScore);
         //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+
+        //sh
+        totalScoreText.text = "TOTAL SCORE: " + totalScore;
+
         switch (score)
         {
             case 1:
-                levelCompleteText.text = star1Texts[Random.Range(0, 3)];
+                levelCompleteText.text = star1Texts[Random.Range(0, 3)]; 
                 myImageComponent.sprite = star1;
                 break;
             case 2:
@@ -92,7 +98,6 @@ public class IngameUI : MonoBehaviour {
     }
 
     //sh
-    //winをどうかしないといけない。
     public void ShowCountDown(float timeRemaining, bool win)
     {
         //Debug.Log("ShowCountDown()");
@@ -103,7 +108,6 @@ public class IngameUI : MonoBehaviour {
             countDownText.text = "";
         }
     }
-
 
 
 }

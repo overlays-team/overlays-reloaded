@@ -9,7 +9,7 @@ public class IngameManager : MonoBehaviour
     public int score;
 
     //sh
-    private int totalScore;
+    private int previousTotalScore;
     private bool timeRunsOut;
 
 
@@ -52,6 +52,7 @@ public class IngameManager : MonoBehaviour
 
     }
 
+
     //sh
     private void CreateTestLevelState()
     {
@@ -66,7 +67,16 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL10", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
 
         GameDataEditor.Instance.data.levels[0].score = 2;
         GameDataEditor.Instance.data.levels[1].score = 1;
@@ -79,11 +89,12 @@ public class IngameManager : MonoBehaviour
     {
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
 
+        previousTotalScore = 0;
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
-                totalScore += GameDataEditor.Instance.data.levels[i].score;
+                previousTotalScore += GameDataEditor.Instance.data.levels[i].score;
             }
         }
     }
@@ -91,11 +102,14 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        ingameUI.ShowLevelCompletePanel(score);
+        int newTotalScore = score + previousTotalScore;
+        ingameUI.ShowLevelCompletePanel(score, newTotalScore);
         win = true;
 
         //sh
         SaveLevelState();
+
+        LoadLevelState(); //for test we need this here.
     }
 
 
@@ -112,7 +126,7 @@ public class IngameManager : MonoBehaviour
     private void SaveLevelStateBBB()
     {
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-        LevelData lastLevelState = GameDataEditor.Instance.data.levels[numberOfLevelsInGameData-1];
+        LevelData lastLevelState = GameDataEditor.Instance.data.levels[numberOfLevelsInGameData - 1];
     }
 
 
@@ -140,15 +154,17 @@ public class IngameManager : MonoBehaviour
         {
             currentLevel = 0; //not necessarily but for security
         }
-        else 
-        { 
-          currentLevel = lastCompletedLevel + 1;
+        else
+        {
+            currentLevel = lastCompletedLevel + 1;
         }
 
 
         //save score and win/lose state
         GameDataEditor.Instance.data.levels[currentLevel].score = this.score;
         GameDataEditor.Instance.data.levels[currentLevel].completed = this.win;
+
+        //Debug.Log(win);
 
         /*
         //if the current level doesn't exists in array, create a new and save
@@ -211,7 +227,7 @@ public class IngameManager : MonoBehaviour
         }
         timeRunsOut = timeRemaing < 0;
 
-       // Debug.Log(timeRemaing);
+        // Debug.Log(timeRemaing);
 
         ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
     }
