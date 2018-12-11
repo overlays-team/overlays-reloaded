@@ -11,7 +11,6 @@ public class Mirror : BlockObject
     Laser inputLaserBack;
     Laser inputLaserFront;
 
-
     protected override void Update()
     {
         base.Update();

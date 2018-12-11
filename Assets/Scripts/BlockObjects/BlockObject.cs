@@ -24,6 +24,8 @@ public class BlockObject : MonoBehaviour
     [Tooltip("if this is true we cant perform the onClickAction;")]
     public bool actionBlocked = false;
 
+    public bool inInventory = false; // if its in the inventory it wont perform the standard start function
+
     #region smoothing variables
 
     enum BlockMovementState
@@ -72,10 +74,13 @@ public class BlockObject : MonoBehaviour
     // Use this for initialization
     protected virtual void Start ()
     {
-        heightCorrector = currentAssignedGridPlane.transform.up;
-        heightCorrector *= transform.localScale.y / 2;
-        transform.position = currentAssignedGridPlane.transform.position + heightCorrector ;
-        currentAssignedGridPlane.taken = true;
+        if (!inInventory)
+        {
+            heightCorrector = currentAssignedGridPlane.transform.up;
+            heightCorrector *= transform.localScale.y / 2;
+            transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
+            currentAssignedGridPlane.taken = true;
+        }
        
         movementState = BlockMovementState.Default;
         rotate = false;
@@ -302,17 +307,6 @@ public class BlockObject : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetDragPosition, PlayerController.Instance.blockDragSpeed * Time.deltaTime);
         transform.position = smoothedPosition;
     }
-
-    /*
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.position = Vector3.zero;
-    } */
 
     #endregion
 
