@@ -13,11 +13,13 @@ public class AdditiveCombine2 : BlockObject {
     Texture2D inputImage1;
     Texture2D inputImage2;
     Texture2D outputImage;
+    Animator animator;
 
     protected override void Start()
     {
         base.Start();
         laserOutput.active = false;
+        animator = GetComponent<Animator>();
     }
 
     protected override void Update()
@@ -30,12 +32,18 @@ public class AdditiveCombine2 : BlockObject {
             {
                 inputImage1 = laserInputs[0].inputLaser.image;
                 inputImage2 = laserInputs[1].inputLaser.image;
+                //doesn't get results
+                animator.SetBool("LaserInput", true);
+                Debug.Log("Two laser inputs");
                 StartImageProcessing();
+                
             }
             else
             {
                 inputImage1 = null;
                 inputImage2 = null;
+                //doesn't get results
+                animator.SetBool("LaserInput", false);
                 StopImageProcessing();
             }
 

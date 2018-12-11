@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedFilter : BlockObject
+public class Filter : BlockObject
 {
     [SerializeField]
     LaserOutput laserOutput;
@@ -14,12 +14,13 @@ public class RedFilter : BlockObject
     public enum FilterColor {RED, GREEN, BLUE, NONE};
     public FilterColor filterMode = FilterColor.NONE;
     public GameObject laser;
-
+    Animator animator;
 
     protected override void Start()
     {
         base.Start();
         laserOutput.active = false;
+        animator = GetComponent<Animator>();
         switch (filterMode)
         {
             case FilterColor.RED:
@@ -39,6 +40,8 @@ public class RedFilter : BlockObject
 
     protected override void Update()
     {
+        //right now here, because doesn't see game object at the beginning
+        
         base.Update();
 
         if (lasersChanged)
@@ -47,14 +50,15 @@ public class RedFilter : BlockObject
             {
                 inputImage = laserInputs[0].inputLaser.image;
                 StartImageProcessing();
-                Animator animator = GetComponent<Animator>();
-                animator.SetTrigger("Laser");
+                //doesn't get immediate results
+                animator.SetBool("LaserInput", true);
             }
             else
             {
                 inputImage = null;
-                //
                 StopImageProcessing();
+                //doesn't get immediate results
+                animator.SetBool("LaserInput", false);
             }
 
         }
