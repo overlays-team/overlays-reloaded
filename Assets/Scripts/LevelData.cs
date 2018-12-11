@@ -10,6 +10,8 @@ public class LevelData
 
     public bool completed;
 
+    public int score;
+
 	public LevelData()
 	{
 

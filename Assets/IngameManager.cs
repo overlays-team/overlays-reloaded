@@ -7,6 +7,7 @@ public class IngameManager : MonoBehaviour
 {
     public IngameUI ingameUI;
     public int score;
+
     private bool win;
     private bool lose;
     float timeRemaing = 5.0f;
@@ -24,60 +25,26 @@ public class IngameManager : MonoBehaviour
         Resume();
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
+        //int sceneNo = GameDataEditor.Instance.data.levels.Count;
 
+        //sh, for testing. generate score randomlly.
+        score = Random.Range(1, 4);
     }
+
+
 
     // Update is called once per frame
     void Update()
-    {
-
-        //timeRemaing -= Time.deltaTime;
-        //Debug.Log(timeRemaing);
-
-       
-
-        // これをcheckIfWeWonの中に入れたい
-        //bool timeRunsOut = timeRemaing < 0;
-        //ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
-
+    {    
         CountTime();
-        //CheckIfTimeRemains();
-        UpdateTimeRunsOut();
-        ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
-
-        if (timeRunsOut)
-        {
-            ingameUI.ShowGameOverPanel();
-        }
-
         CheckIfWeWon();
 
-        /*
-        if (!win)
-        {
-            lose |= timeLeft < 0;
-            if (lose)
-            {
-                Lose();
-
-            }
-            else if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Win();
-
-            }
-        }
-        */
-
-        //sh, for debug
-        /*
+        //sh, for debug, total score
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Win();
         }
-        */
-
-
+       
     }
 
 
@@ -120,61 +87,56 @@ public class IngameManager : MonoBehaviour
     }
 
 
-    //sh
-    /*
-    public bool isTimeRemained()
+    private void CountTime()
     {
-        bool timeRunsOut = timeRemaing < 0;
+        if (!win)
+        {
+            timeRemaing -= Time.deltaTime;
+        }
+        timeRunsOut = timeRemaing < 0;
+
+        Debug.Log(timeRemaing);
+
         ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
-        return timeRunsOut;
-        //return (timeRemaing < 0);
+    }
+
+    /*
+    private void UpdateTimeRunsOut()
+    {
+        timeRunsOut = timeRemaing < 0;
     }
     */
 
 
-    private void CountTime()
-    {
-        timeRemaing -= Time.deltaTime;
-        Debug.Log(timeRemaing);
-    }
-
-
-    private void UpdateTimeRunsOut()
-    {
-         timeRunsOut = timeRemaing < 0;
-    }
-
-
-
-public bool CheckIfWeWon()
+    public bool CheckIfWeWon()
     {
         bool allCorrect = true; //sh: false as default is better and remove else?. 
 
-        if (timeRunsOut) { return false; }
+        //sh
+        if (timeRunsOut) {
 
-        //if (!timeRunsOut)
-        //{
+            // Lose() works here but not in IEnumerator WinCoroutine()
+            Lose();
+            return false; 
+        }
 
-            if (outputImages.Length > 0)
+
+        if (outputImages.Length > 0)
+        {
+            foreach (ImageOutput imageOutput in outputImages)
             {
-                foreach (ImageOutput imageOutput in outputImages)
-                {
-                    if (!imageOutput.imageCorrect) allCorrect = false;
-                }
-
-                if (allCorrect) StartCoroutine("WinCoroutine");
-
-                //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
-
-            }
-            else
-            {
-                allCorrect = false;
+                if (!imageOutput.imageCorrect) allCorrect = false;
             }
 
-        //} else {
-        //    allCorrect = false;
-        //}
+            if (allCorrect) StartCoroutine("WinCoroutine");
+
+            //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+
+        }
+        else
+        {
+            allCorrect = false;
+        }
 
 
         return allCorrect;
@@ -182,10 +144,18 @@ public bool CheckIfWeWon()
 
 
     IEnumerator WinCoroutine()
-{
-    yield return new WaitForSeconds(1);
-    if (CheckIfWeWon()) Win();
-}
+    {
+        yield return new WaitForSeconds(1);
+        if (CheckIfWeWon()) Win();
+
+        /*
+        if (CheckIfWeWon()){
+            Win();
+        } else {
+            Lose();
+        }
+        */
+    }
 
 
     /*
