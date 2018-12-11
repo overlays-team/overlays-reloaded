@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour {
     GridPlane lastHittedGridPlane;
 
     public Inventory inventory;
-    public GridSystem gridSystem;
 
     public enum PlayerMode
     {
@@ -219,10 +218,7 @@ public class PlayerController : MonoBehaviour {
             selectedBlockObject.transform.position = hit.point + (hit.collider.gameObject.transform.up * blockLiftingHeight);
         }
 
-        gridSystem.UpdateBlockObjectsNearestGridPlane(selectedBlock);
-
         selectedBlockObject.gameObject.SetActive(true);
-
     }
 
     public void PutObjectBackToInventory()

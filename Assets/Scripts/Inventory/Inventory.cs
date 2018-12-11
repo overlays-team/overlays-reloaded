@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour {
     public GameObject inventoryButtonPrefab;
     public InventoryItem[] items;
     private InventoryButton[] inventoryButtons;
+    public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
     
 	void Awake () {
 
@@ -21,6 +22,7 @@ public class Inventory : MonoBehaviour {
                 GameObject block = Instantiate(items[i].blockObjectPrefab);
                 block.SetActive(false);
                 BlockObject blockObject = block.GetComponent<BlockObject>();
+                blockObject.currentAssignedGridPlane = inventoryGridPlane;
                 blockObject.inInventory = true;
                 items[i].AddBlockObject(blockObject);
             }

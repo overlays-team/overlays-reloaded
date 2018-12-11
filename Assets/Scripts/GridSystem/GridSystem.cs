@@ -57,28 +57,4 @@ public class GridSystem : MonoBehaviour
             blockObject.currentAssignedGridPlane = nearestPlane;
         }
 	}
-    
-    public void UpdateBlockObjectsNearestGridPlane(BlockObject blockObject)
-    {
-        Debug.Log("nearest Plane:");
-        float nearestDistance = float.PositiveInfinity;
-        GridPlane nearestPlane = null;
-
-        foreach (GridPlane gridPlane in gridPlanes)
-        {
-            if (gridPlane.taken == false && !gridPlane.empty)
-            {
-                float currentDistance = Vector3.Distance(gridPlane.transform.position, blockObject.transform.position);
-                if (currentDistance < nearestDistance)
-                {
-                    nearestDistance = currentDistance;
-                    nearestPlane = gridPlane;
-                }
-            }
-        }
-        Debug.Log("nearest Plane:" + nearestPlane);
-        //blockObject.transform.position = nearestPlane.transform.position + new Vector3(0,0.5f,0);
-        blockObject.currentAssignedGridPlane = nearestPlane;
-    }
-
 }
