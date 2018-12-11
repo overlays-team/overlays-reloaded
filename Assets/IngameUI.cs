@@ -95,9 +95,9 @@ public class IngameUI : MonoBehaviour {
     //winをどうかしないといけない。
     public void ShowCountDown(float timeRemaining, bool win)
     {
-        Debug.Log("ShowCountDown()");
+        //Debug.Log("ShowCountDown()");
 
-        countDownText.text = "Time Left: " + Mathf.Round(timeRemaining) + "s";
+        countDownText.text = "TIME REMAINING: " + Mathf.Round(timeRemaining) + "s";
         if (win)
         {
             countDownText.text = "";

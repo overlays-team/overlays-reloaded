@@ -11,6 +11,9 @@ public class IngameManager : MonoBehaviour
     private bool lose;
     float timeRemaing = 5.0f;
 
+    //sh
+    private bool timeRunsOut;
+
     public ImageOutput[] outputImages; //holds a collection of all output Images
 
     // Use this for initialization
@@ -28,9 +31,26 @@ public class IngameManager : MonoBehaviour
     void Update()
     {
 
-        timeRemaing -= Time.deltaTime;
-        Debug.Log(timeRemaing);
-        ingameUI.ShowCountDown(timeRemaing, win);
+        //timeRemaing -= Time.deltaTime;
+        //Debug.Log(timeRemaing);
+
+       
+
+        // これをcheckIfWeWonの中に入れたい
+        //bool timeRunsOut = timeRemaing < 0;
+        //ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
+
+        CountTime();
+        //CheckIfTimeRemains();
+        UpdateTimeRunsOut();
+        ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
+
+        if (timeRunsOut)
+        {
+            ingameUI.ShowGameOverPanel();
+        }
+
+        CheckIfWeWon();
 
         /*
         if (!win)
@@ -57,7 +77,7 @@ public class IngameManager : MonoBehaviour
         }
         */
 
-        CheckIfWeWon();
+
     }
 
 
@@ -99,35 +119,73 @@ public class IngameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    bool CheckIfWeWon()
-    {
-        bool allCorrect = true;
-        if (outputImages.Length > 0)
-        {
-            
 
-            foreach (ImageOutput imageOutput in outputImages)
+    //sh
+    /*
+    public bool isTimeRemained()
+    {
+        bool timeRunsOut = timeRemaing < 0;
+        ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
+        return timeRunsOut;
+        //return (timeRemaing < 0);
+    }
+    */
+
+
+    private void CountTime()
+    {
+        timeRemaing -= Time.deltaTime;
+        Debug.Log(timeRemaing);
+    }
+
+
+    private void UpdateTimeRunsOut()
+    {
+         timeRunsOut = timeRemaing < 0;
+    }
+
+
+
+public bool CheckIfWeWon()
+    {
+        bool allCorrect = true; //sh: false as default is better and remove else?. 
+
+        if (timeRunsOut) { return false; }
+
+        //if (!timeRunsOut)
+        //{
+
+            if (outputImages.Length > 0)
             {
-                if (!imageOutput.imageCorrect) allCorrect = false;
+                foreach (ImageOutput imageOutput in outputImages)
+                {
+                    if (!imageOutput.imageCorrect) allCorrect = false;
+                }
+
+                if (allCorrect) StartCoroutine("WinCoroutine");
+
+                //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+
+            }
+            else
+            {
+                allCorrect = false;
             }
 
-            if (allCorrect) StartCoroutine("WinCoroutine");
+        //} else {
+        //    allCorrect = false;
+        //}
 
-            //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
 
-        }
-        else
-        {
-            allCorrect = false;
-        }
         return allCorrect;
     }
 
+
     IEnumerator WinCoroutine()
-    {
-        yield return new WaitForSeconds(1);
-        if (CheckIfWeWon()) Win();
-    }
+{
+    yield return new WaitForSeconds(1);
+    if (CheckIfWeWon()) Win();
+}
 
 
     /*
