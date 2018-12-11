@@ -8,12 +8,16 @@ public class IngameManager : MonoBehaviour
     public IngameUI ingameUI;
     public int score;
 
+    //sh
+    private int totalScore;
+    private string sceneID;
+    private bool timeRunsOut;
+
+
     private bool win;
     private bool lose;
     float timeRemaing = 5.0f;
 
-    //sh
-    private bool timeRunsOut;
 
     public ImageOutput[] outputImages; //holds a collection of all output Images
 
@@ -25,17 +29,17 @@ public class IngameManager : MonoBehaviour
         Resume();
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
-        //int sceneNo = GameDataEditor.Instance.data.levels.Count;
 
         //sh, for testing. generate score randomlly.
         score = Random.Range(1, 4);
+        LoadLevelState();
     }
 
 
 
     // Update is called once per frame
     void Update()
-    {    
+    {
         CountTime();
         CheckIfWeWon();
 
@@ -44,7 +48,22 @@ public class IngameManager : MonoBehaviour
         {
             Win();
         }
-       
+
+    }
+
+    //sh
+    private void LoadLevelState()
+    {
+        //int currentLevel = 0;
+        int numberOfLevels = GameDataEditor.Instance.data.levels.Count;
+
+        for (int i = 0; i < numberOfLevels; i++)
+        {
+            if (GameDataEditor.Instance.data.levels[i].completed)
+            {
+                totalScore += GameDataEditor.Instance.data.levels[i].score;
+            }
+        }
     }
 
 
@@ -52,7 +71,56 @@ public class IngameManager : MonoBehaviour
     {
         ingameUI.ShowLevelCompletePanel(score);
         win = true;
+
+        //sh
+        SaveLevelState();
     }
+
+
+    //sh
+    private void SaveLevelState()
+    {
+        LevelData levelData = new LevelData();
+        levelData.score = this.score;
+        levelData.completed = this.win;
+        GameDataEditor.Instance.data.levels.Add(levelData);
+    }
+
+
+    //sh
+    private void SaveLevelStateOLD(){
+
+        int numberOfLevels = GameDataEditor.Instance.data.levels.Count;
+        int lastCompletedLevel = 0;
+        int currentLevel = 0;
+
+        //get index for current level in array
+        for (int i = 0; i < numberOfLevels; i++)
+        {
+            if (GameDataEditor.Instance.data.levels[i].completed)
+            {
+                lastCompletedLevel = i;
+            }
+        }
+        currentLevel = lastCompletedLevel + 1;
+
+
+        //if the current level doesn't exists in array, create a new and save
+        if (numberOfLevels < currentLevel) {  //-->> 間違っていると思う。
+            LevelData levelData = new LevelData();
+            levelData.score = this.score;
+            levelData.completed = this.win;
+            GameDataEditor.Instance.data.levels.Add(levelData);
+
+        } else { // if it exists, update it.
+            GameDataEditor.Instance.data.levels[currentLevel].score = this.score;
+            GameDataEditor.Instance.data.levels[currentLevel].completed = this.win;
+        }
+    }
+
+
+
+
     void Lose()
     {
         ingameUI.ShowGameOverPanel();
@@ -113,11 +181,12 @@ public class IngameManager : MonoBehaviour
         bool allCorrect = true; //sh: false as default is better and remove else?. 
 
         //sh
-        if (timeRunsOut) {
+        if (timeRunsOut)
+        {
 
             // Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
-            return false; 
+            return false;
         }
 
 
