@@ -53,43 +53,14 @@ public class IngameManager : MonoBehaviour
     }
 
 
-    //sh
-    private void CreateTestLevelState()
-    {
-        Debug.Log("こんにちは、CreateTestLevelState()");
-
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
-
-        GameDataEditor.Instance.data.levels[0].score = 2;
-        GameDataEditor.Instance.data.levels[1].score = 1;
-    }
-
 
 
     //sh
-    private void LoadLevelState() //not only used for getting total score
+    private void LoadLevelState() //now only used for getting total score
     {
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-
         previousTotalScore = 0;
+
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
             if (GameDataEditor.Instance.data.levels[i].completed)
@@ -111,24 +82,6 @@ public class IngameManager : MonoBehaviour
 
         LoadLevelState(); //for test we need this here.
     }
-
-
-    //sh
-    private void SaveLevelStateAAA()
-    {
-        LevelData levelData = new LevelData();
-        levelData.score = this.score;
-        levelData.completed = this.win;
-        GameDataEditor.Instance.data.levels.Add(levelData);
-    }
-
-
-    private void SaveLevelStateBBB()
-    {
-        int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-        LevelData lastLevelState = GameDataEditor.Instance.data.levels[numberOfLevelsInGameData - 1];
-    }
-
 
 
     //sh
@@ -161,26 +114,9 @@ public class IngameManager : MonoBehaviour
 
 
         //save score and win/lose state
-        GameDataEditor.Instance.data.levels[currentLevel].score = this.score;
-        GameDataEditor.Instance.data.levels[currentLevel].completed = this.win;
-
-        //Debug.Log(win);
-
-        /*
-        //if the current level doesn't exists in array, create a new and save
-        if (currentLevel > numberOfLevelsInGameData) { 
-            LevelData levelData = new LevelData();
-            levelData.score = this.score;
-            levelData.completed = this.win;
-            GameDataEditor.Instance.data.levels.Add(levelData);
-
-        } else { // if it exists, update it.
-            GameDataEditor.Instance.data.levels[currentLevel].score = this.score;
-            GameDataEditor.Instance.data.levels[currentLevel].completed = this.win;
-        }
-        */
+        GameDataEditor.Instance.data.levels[currentLevel].score = score;
+        GameDataEditor.Instance.data.levels[currentLevel].completed = win;
     }
-
 
 
 
@@ -232,13 +168,6 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
     }
 
-    /*
-    private void UpdateTimeRunsOut()
-    {
-        timeRunsOut = timeRemaing < 0;
-    }
-    */
-
 
     public bool CheckIfWeWon()
     {
@@ -247,8 +176,7 @@ public class IngameManager : MonoBehaviour
         //sh
         if (timeRunsOut)
         {
-
-            // Lose() works here but not in IEnumerator WinCoroutine()
+            //sh, Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
             return false;
         }
@@ -291,6 +219,38 @@ public class IngameManager : MonoBehaviour
     }
 
 
+
+   //sh
+    private void CreateTestLevelState()
+    {
+        Debug.Log("こんにちは、CreateTestLevelState()");
+
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
+
+        GameDataEditor.Instance.data.levels[0].score = 2;
+        GameDataEditor.Instance.data.levels[1].score = 1;
+    }
+
+
+
     /*
     GameData gameData;
     //GoalBlock goalBlock; //uncomment when here IS a goalBlock
@@ -321,4 +281,6 @@ public class IngameManager : MonoBehaviour
 
     }
     */
+
+
 }
