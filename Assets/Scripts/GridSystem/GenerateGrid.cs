@@ -10,9 +10,9 @@ public class GenerateGrid : MonoBehaviour {
     public GameObject tile;
     [Header("(Margins in World Coordinates)")]
     [Tooltip("This is the margin from the borders of the screenspace.")]
-    public int borderMargin;
+    public float borderMargin;
     [Tooltip("Margin between the tiles.")]
-    public int cellMargin;
+    public float cellMargin;
     [Tooltip("How far the grid is going to be away from the camera.")]
     public float zPos;
 
@@ -30,12 +30,14 @@ public class GenerateGrid : MonoBehaviour {
         cam = Camera.main;
         minWorldV3 = cam.ScreenToWorldPoint(new Vector3(0, 0, zPos));
         maxWorldV3 = cam.ScreenToWorldPoint(new Vector3(width, height, zPos));
+        print("MinV3: " + minWorldV3 + "\nMaxV3: " + maxWorldV3);
 
-
-        for (int x = (int) minWorldV3.x + borderMargin; x <= maxWorldV3.x - borderMargin; x += cellMargin)
+        for (float x = minWorldV3.x + borderMargin; x <= maxWorldV3.x - borderMargin; x += cellMargin)
         {
-            for(int y = (int) minWorldV3.y + borderMargin; y <= maxWorldV3.y - borderMargin; y += cellMargin)
+            print("First Loop");
+            for(float y = minWorldV3.y + borderMargin; y <= maxWorldV3.y - borderMargin; y += cellMargin)
             {
+                print("Second Loop");
                 tile.name = "BGPlane" + x.ToString() + " " + y.ToString();
                 Instantiate(tile, new Vector3(x, y, 0.6f), Quaternion.identity);
             }
