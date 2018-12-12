@@ -34,10 +34,4 @@ public class InventoryItem
         blockAmount--;
         return block;
     }
-
-    public bool CheckIfBlockBelongsToThisItem(BlockObject block)
-    {
-        if (takenBlockObjects.Contains(block)) return true;
-        else return false;
-    }
 }

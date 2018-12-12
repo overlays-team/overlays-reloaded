@@ -66,5 +66,12 @@ public class Mirror : BlockObject
         }
         
     }
+
+    public override void ReturnToInventory()
+    {
+        outputLaserFront.laser.active = false;
+        outputLaserBack.laser.active = false;
+        base.ReturnToInventory();
+    }
 }
         

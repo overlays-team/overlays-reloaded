@@ -25,6 +25,7 @@ public class BlockObject : MonoBehaviour
     public bool actionBlocked = false;
 
     public bool inInventory = false; // if its in the inventory it wont perform the standard start function
+    public int inventoryIndex;
     public Sprite inventoryIcon;
 
     #region smoothing variables
@@ -65,12 +66,6 @@ public class BlockObject : MonoBehaviour
 
     //for development debugging
     public Image debugImage; //just for now
-
-
-    public BlockObject()
-    {
-        // the default constructor
-    }
 
     // Use this for initialization
     protected virtual void Start ()
@@ -124,6 +119,13 @@ public class BlockObject : MonoBehaviour
         //for debug image
         if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
         if (debugImage != null) debugImage.gameObject.transform.up = Camera.main.transform.up;
+    }
+
+    //before returning to inventory some objects needs to deassign some variables or disable lasers
+    public virtual void ReturnToInventory()
+    {
+        currentAssignedGridPlane.taken = false;
+        gameObject.SetActive(false);
     }
 
 

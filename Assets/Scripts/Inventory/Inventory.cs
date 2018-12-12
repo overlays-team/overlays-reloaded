@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour {
                 BlockObject blockObject = block.GetComponent<BlockObject>();
                 blockObject.currentAssignedGridPlane = inventoryGridPlane;
                 blockObject.inInventory = true;
+                blockObject.inventoryIndex = i;
                 items[i].AddBlockObject(blockObject);
             }
             
@@ -56,14 +57,8 @@ public class Inventory : MonoBehaviour {
 
     public void  ReturnItemToInventory(BlockObject blockObject)
     {
-        for (int i = 0; i < items.Length; i++)
-        {
-            if (items[i].CheckIfBlockBelongsToThisItem(blockObject))
-            {
-                items[i].ReturnBlockObject(blockObject);
-                UpdateItems();
-            }
-        }
+        items[blockObject.inventoryIndex].ReturnBlockObject(blockObject);
+        UpdateItems();
     }
 
     //updates the counter on the buttons
