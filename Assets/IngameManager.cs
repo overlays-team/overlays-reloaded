@@ -116,6 +116,23 @@ public class IngameManager : MonoBehaviour
         //save score and win/lose state
         GameDataEditor.Instance.data.levels[currentLevel].score = score;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
+
+
+        //for future development
+        /*
+        Scene thisScene = SceneManager.GetActiveScene();
+        for (int i = 0; i<numberOfLevelsInGameData; i++)
+        {
+            if (GameDataEditor.Instance.data.levels[i].sceneID == thisScene.name)
+            {
+                GameDataEditor.Instance.data.levels[i].score = score;
+                GameDataEditor.Instance.data.levels[i].completed = win; 
+            }
+        }
+        */
+
+        //for saving test
+        //GameDataEditor.Instance.SaveData();
     }
 
 
