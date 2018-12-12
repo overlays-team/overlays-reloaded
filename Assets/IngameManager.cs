@@ -9,7 +9,7 @@ public class IngameManager : MonoBehaviour
     public int wert;
     private bool win;
     private bool lose;
-    float timeLeft = 5.0f;
+    public float timeLeft = 500.0f;
     bool paused;
 
     public ImageOutput[] outputImages; //holds a collection of all output Images
@@ -28,18 +28,16 @@ public class IngameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timeLeft -= Time.deltaTime;
+        Debug.Log(timeLeft);
         //im Spiel
         if (!win & !lose & !paused)
         {
-            //wenn blurStand not aktiv und Spiel wurde pausiert
-            if (!ingameUI.blurStand & paused)
-            {
-                Time.timeScale = 0;
-            }
+            //wenn blurStand fertig ist und Spiel wurde pausiert
+           
 
             //Countdown
-            timeLeft -= Time.deltaTime;
-            Debug.Log(timeLeft);
+
 
             //wenn lose
             lose |= timeLeft < 0;
@@ -89,7 +87,7 @@ public class IngameManager : MonoBehaviour
     }
     public void Pause()
     {
-        timeLeft += 0.3f;
+        //timeLeft += 0.3f;
         paused = true;
         ingameUI.TogglePause();
     }

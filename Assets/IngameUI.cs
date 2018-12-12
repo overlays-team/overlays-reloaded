@@ -12,7 +12,7 @@ public class IngameUI : MonoBehaviour {
     public Sprite star3;
     public GameObject pauseButton;
     public GameObject playButton;
-    public GameObject pauseMenuButton;
+    public GameObject pauseMenuPanel;
     public GameObject pausePlayButton;
     private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
     private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
@@ -20,7 +20,7 @@ public class IngameUI : MonoBehaviour {
     public Text levelCompleteText;
 
     public Material blurMaterial;
-    public bool blurStand = false;
+    public bool blurring = false;
     float timeBlur = 0f;
     float newValue = 0f;
     // Use this for initialization
@@ -33,7 +33,7 @@ public class IngameUI : MonoBehaviour {
     void Update()
     {
 
-        if (blurStand)
+        if (blurring)
         {
             //duration of blur motion
             timeBlur += Time.deltaTime;
@@ -49,7 +49,7 @@ public class IngameUI : MonoBehaviour {
             Debug.Log("timeBlur: "+ timeBlur + " New Value:  " + newValue);
             if (timeBlur > 0.3f)
             {
-                blurStand = false;
+                blurring = false;
                 timeBlur = 0;
                 newValue = 0;
             }
@@ -79,8 +79,8 @@ public class IngameUI : MonoBehaviour {
 
         levelCompleteMenu.SetActive(true);
         pausePlayButton.SetActive(false);
-        pauseMenuButton.SetActive(false);
-        blurStand = true;
+        pauseMenuPanel.SetActive(false);
+        blurring = true;
 
     }
 
@@ -88,21 +88,21 @@ public class IngameUI : MonoBehaviour {
     {
         pauseButton.SetActive(false);
         //PlayButton.SetActive(true);
-        pauseMenuButton.SetActive(true);
-        blurStand = true;
+        pauseMenuPanel.SetActive(true);
+        blurring = true;
     }
     public void TogglePlay()
     {
         pauseButton.SetActive(true);
         //PlayButton.SetActive(false);
-        pauseMenuButton.SetActive(false);
+        pauseMenuPanel.SetActive(false);
 
     }
     public void ShowGameOverPanel()
     {
         gameOverMenu.SetActive(true);
         pausePlayButton.SetActive(false);
-        blurStand = true;
+        blurring = true;
     }
     public void HideLevelCompletePanel()
     {
