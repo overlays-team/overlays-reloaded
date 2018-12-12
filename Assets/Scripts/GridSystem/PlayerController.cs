@@ -16,11 +16,7 @@ public class PlayerController : MonoBehaviour {
     BlockObject selectedBlockObject; // the object we move during our hold phase
     GridPlane lastHittedGridPlane;
 
-    public void setSelectedBlockObject(BlockObject selectedBlock)
-    {
-        this.selectedBlockObject = selectedBlock;
-        playerMode = PlayerMode.MouseHold;
-    }
+    public Inventory inventory;
 
     public enum PlayerMode
     {
@@ -140,11 +136,20 @@ public class PlayerController : MonoBehaviour {
                                     if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                                 }
 
-                            }else
+                            }
+                            else
                             {
-                                //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                                selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                                if (!selectedBlockObject.inInventory)
+                                {
+                                    //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
+                                    selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);             
+                                }
+                                else
+                                {
+                                    PutObjectBackToInventory();
+                                }
                                 if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+
                             }
                         }else
                         {
@@ -195,6 +200,34 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
         
+    }
+
+    public void GetObjectFromInventory(BlockObject selectedBlock)
+    {
+        this.selectedBlockObject = selectedBlock;
+        playerMode = PlayerMode.MouseHold;
+
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Bit shift the index of the layer (9) to get a bit mask
+        int layerMask = 1 << 9;
+
+        if (Physics.Raycast(ray, out hit, 100, layerMask))
+        {
+            selectedBlockObject.transform.position = hit.point + (hit.collider.gameObject.transform.up * blockLiftingHeight);
+        }
+
+        selectedBlockObject.gameObject.SetActive(true);
+    }
+
+    public void PutObjectBackToInventory()
+    {
+        selectedBlockObject.currentAssignedGridPlane.taken = false;
+        selectedBlockObject.gameObject.SetActive(false);
+        inventory.ReturnItemToInventory(selectedBlockObject);
+        selectedBlockObject = null;
+        playerMode = PlayerMode.Default;
     }
 
 
