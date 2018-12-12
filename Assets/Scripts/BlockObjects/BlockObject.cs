@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BlockObject : MonoBehaviour
-{ // , IDragHandler,  IEndDragHandler
+{ 
 
     /*
      * Der Grundbaustein, alle anderen Blocks erben von diesem
@@ -15,7 +15,7 @@ public class BlockObject : MonoBehaviour
      */
 
     //für Positionierung
-    //[HideInInspector]
+    [HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
 
@@ -23,6 +23,10 @@ public class BlockObject : MonoBehaviour
     public bool stationary = false;
     [Tooltip("if this is true we cant perform the onClickAction;")]
     public bool actionBlocked = false;
+
+    public bool inInventory = false; // if its in the inventory it wont perform the standard start function
+    public int inventoryIndex;
+    public Sprite inventoryIcon;
 
     #region smoothing variables
 
@@ -63,19 +67,16 @@ public class BlockObject : MonoBehaviour
     //for development debugging
     public Image debugImage; //just for now
 
-
-    public BlockObject()
-    {
-        // the default constructor
-    }
-
     // Use this for initialization
     protected virtual void Start ()
     {
-        heightCorrector = currentAssignedGridPlane.transform.up;
-        heightCorrector *= transform.localScale.y / 2;
-        transform.position = currentAssignedGridPlane.transform.position + heightCorrector ;
-        currentAssignedGridPlane.taken = true;
+        if (!inInventory)
+        {
+            heightCorrector = currentAssignedGridPlane.transform.up;
+            heightCorrector *= transform.localScale.y / 2;
+            transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
+            currentAssignedGridPlane.taken = true;
+        }
        
         movementState = BlockMovementState.Default;
         rotate = false;
@@ -118,6 +119,13 @@ public class BlockObject : MonoBehaviour
         //for debug image
         if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
         if (debugImage != null) debugImage.gameObject.transform.up = Camera.main.transform.up;
+    }
+
+    //before returning to inventory some objects needs to deassign some variables or disable lasers
+    public virtual void ReturnToInventory()
+    {
+        currentAssignedGridPlane.taken = false;
+        gameObject.SetActive(false);
     }
 
 
@@ -302,17 +310,6 @@ public class BlockObject : MonoBehaviour
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, targetDragPosition, PlayerController.Instance.blockDragSpeed * Time.deltaTime);
         transform.position = smoothedPosition;
     }
-
-    /*
-    public void OnDrag(PointerEventData eventData)
-    {
-        transform.position = Input.mousePosition;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        transform.position = Vector3.zero;
-    } */
 
     #endregion
 

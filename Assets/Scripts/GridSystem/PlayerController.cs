@@ -16,11 +16,7 @@ public class PlayerController : MonoBehaviour {
     BlockObject selectedBlockObject; // the object we move during our hold phase
     GridPlane lastHittedGridPlane;
 
-    public void setSelectedBlockObject(BlockObject selectedBlock)
-    {
-        this.selectedBlockObject = selectedBlock;
-        playerMode = PlayerMode.MouseHold;
-    }
+    public Inventory inventory;
 
     public enum PlayerMode
     {
@@ -66,6 +62,7 @@ public class PlayerController : MonoBehaviour {
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0))
                 {
+                    //Debug.Log("mouse clicked");
                     timeOfLastClick = Time.time;
 
                     RaycastHit hit;
@@ -76,27 +73,27 @@ public class PlayerController : MonoBehaviour {
                     if (Physics.Raycast(ray, out hit, 100, layerMask))
                     {
                         hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
-
                     }
 
 
                 }
                 //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
-                else if (Input.GetMouseButtonUp(0))
+                if (Input.GetMouseButtonUp(0))
                 {
                     if (clickTime <= timeToHoldToInitiateHoldAction)
                     {
                         if (hittedObject != null)
                         {
+                            //Debug.Log("step4");
                             hittedObject.OnMouseClick();
                             hittedObject = null;
                         }
                     }
+                    clickTime = 0;
                 }
                 //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
                 else if (Input.GetMouseButton(0))
                 {
-
                     clickTime = Time.time - timeOfLastClick;
                     if (clickTime >= timeToHoldToInitiateHoldAction)
                     {
@@ -140,11 +137,20 @@ public class PlayerController : MonoBehaviour {
                                     if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                                 }
 
-                            }else
+                            }
+                            else
                             {
-                                //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                                selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                                if (!selectedBlockObject.inInventory)
+                                {
+                                    //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
+                                    selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);             
+                                }
+                                else
+                                {
+                                    PutObjectBackToInventory();
+                                }
                                 if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+
                             }
                         }else
                         {
@@ -158,6 +164,7 @@ public class PlayerController : MonoBehaviour {
                     playerMode = PlayerMode.Default;
                     selectedBlockObject = null;
                     hittedObject = null;
+                    clickTime = 0;
                 }
                 //welse while we hold the mouse button, the grids where we can position the Object, will be marked with a green or red halo
                 else if (Input.GetMouseButton(0))
@@ -195,6 +202,33 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
         
+    }
+
+    public void GetObjectFromInventory(BlockObject selectedBlock)
+    {
+        this.selectedBlockObject = selectedBlock;
+        playerMode = PlayerMode.MouseHold;
+
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Bit shift the index of the layer (9) to get a bit mask
+        int layerMask = 1 << 9;
+
+        if (Physics.Raycast(ray, out hit, 100, layerMask))
+        {
+            selectedBlockObject.transform.position = hit.point + (hit.collider.gameObject.transform.up * blockLiftingHeight);
+        }
+
+        selectedBlockObject.gameObject.SetActive(true);
+    }
+
+    public void PutObjectBackToInventory()
+    {
+        selectedBlockObject.ReturnToInventory();
+        inventory.ReturnItemToInventory(selectedBlockObject);
+        selectedBlockObject = null;
+        playerMode = PlayerMode.Default;
     }
 
 
