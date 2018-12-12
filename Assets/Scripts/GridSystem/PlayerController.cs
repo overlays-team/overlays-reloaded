@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour {
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0))
                 {
+                    //Debug.Log("mouse clicked");
                     timeOfLastClick = Time.time;
 
                     RaycastHit hit;
@@ -72,27 +73,27 @@ public class PlayerController : MonoBehaviour {
                     if (Physics.Raycast(ray, out hit, 100, layerMask))
                     {
                         hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
-
                     }
 
 
                 }
                 //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
-                else if (Input.GetMouseButtonUp(0))
+                if (Input.GetMouseButtonUp(0))
                 {
                     if (clickTime <= timeToHoldToInitiateHoldAction)
                     {
                         if (hittedObject != null)
                         {
+                            //Debug.Log("step4");
                             hittedObject.OnMouseClick();
                             hittedObject = null;
                         }
                     }
+                    clickTime = 0;
                 }
                 //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
                 else if (Input.GetMouseButton(0))
                 {
-
                     clickTime = Time.time - timeOfLastClick;
                     if (clickTime >= timeToHoldToInitiateHoldAction)
                     {
@@ -163,6 +164,7 @@ public class PlayerController : MonoBehaviour {
                     playerMode = PlayerMode.Default;
                     selectedBlockObject = null;
                     hittedObject = null;
+                    clickTime = 0;
                 }
                 //welse while we hold the mouse button, the grids where we can position the Object, will be marked with a green or red halo
                 else if (Input.GetMouseButton(0))
