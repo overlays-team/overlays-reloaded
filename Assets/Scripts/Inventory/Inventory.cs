@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour {
             GameObject button = Instantiate(inventoryButtonPrefab);
             button.transform.SetParent(transform);
             button.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
-            button.GetComponent<Image>().sprite = items[i].icon;
+            button.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
             InventoryButton buttonScript = button.GetComponent<InventoryButton>();
             buttonScript.inventory = this;
             inventoryButtons[i] = buttonScript;

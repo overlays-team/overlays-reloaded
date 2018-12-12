@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BlockObject : MonoBehaviour
-{ // , IDragHandler,  IEndDragHandler
+{ 
 
     /*
      * Der Grundbaustein, alle anderen Blocks erben von diesem
@@ -15,7 +15,7 @@ public class BlockObject : MonoBehaviour
      */
 
     //für Positionierung
-    //[HideInInspector]
+    [HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
 
@@ -25,6 +25,7 @@ public class BlockObject : MonoBehaviour
     public bool actionBlocked = false;
 
     public bool inInventory = false; // if its in the inventory it wont perform the standard start function
+    public Sprite inventoryIcon;
 
     #region smoothing variables
 

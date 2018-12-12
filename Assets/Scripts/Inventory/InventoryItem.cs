@@ -11,7 +11,6 @@ public class InventoryItem
 {
     public GameObject blockObjectPrefab;
     public int blockAmount;
-    public Sprite icon;
     Stack<BlockObject> aviableBlockObjects = new Stack<BlockObject>();
     HashSet<BlockObject> takenBlockObjects = new HashSet<BlockObject>();
 
