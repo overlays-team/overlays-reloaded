@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4766681691050720}
   - component: {fileID: 120645178382475358}
+  - component: {fileID: 114434451663898774}
   m_Layer: 0
   m_Name: PlexusLine
   m_TagString: Untagged
@@ -40,6 +41,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114434451663898774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1671597109358114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de64d2840d458aa459b71ffa31cdc719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lerpSpeed: 0.1
+  fadeDuration: 1
+  maxLength: 10
 --- !u!120 &120645178382475358
 LineRenderer:
   m_ObjectHideFlags: 1
