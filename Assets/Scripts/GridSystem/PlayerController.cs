@@ -225,8 +225,7 @@ public class PlayerController : MonoBehaviour {
 
     public void PutObjectBackToInventory()
     {
-        selectedBlockObject.currentAssignedGridPlane.taken = false;
-        selectedBlockObject.gameObject.SetActive(false);
+        selectedBlockObject.ReturnToInventory();
         inventory.ReturnItemToInventory(selectedBlockObject);
         selectedBlockObject = null;
         playerMode = PlayerMode.Default;

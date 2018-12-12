@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14068574, g: 0.14068574, b: 0.14068574, a: 1}
+  m_IndirectSpecularColor: {r: 0.14068577, g: 0.14068577, b: 0.14068577, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2999,6 +2999,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114637835385561734, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: items.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224987549993291594, guid: 46e01424d6a0f5d48a51701bfa165ee1,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -3216,6 +3221,47 @@ Prefab:
         type: 2}
       propertyPath: m_ChildControlHeight
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114798700480992534, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1572433603}
+    - target: {fileID: 114798700480992534, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MainMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 114573176486285720, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1572433603}
+    - target: {fileID: 114573176486285720, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Retry
+      objectReference: {fileID: 0}
+    - target: {fileID: 114492999160488268, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1572433603}
+    - target: {fileID: 114492999160488268, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Next
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637835385561734, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: items.Array.data[1].blockObjectPrefab
+      value: 
+      objectReference: {fileID: 1743793235135258, guid: 18c6a3a9f84fd094dbc756c0fd09b594,
+        type: 2}
+    - target: {fileID: 114637835385561734, guid: 46e01424d6a0f5d48a51701bfa165ee1,
+        type: 2}
+      propertyPath: items.Array.data[1].blockAmount
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46e01424d6a0f5d48a51701bfa165ee1, type: 2}
