@@ -51,14 +51,16 @@ public class Filter : BlockObject
                 inputImage = laserInputs[0].inputLaser.image;
                 StartImageProcessing();
                 //doesn't get immediate results
-                animator.SetBool("LaserInput", true);
+                laser.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
+                //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
             }
             else
             {
                 inputImage = null;
                 StopImageProcessing();
                 //doesn't get immediate results
-                animator.SetBool("LaserInput", false);
+                //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
+                laser.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
             }
 
         }
