@@ -28,23 +28,28 @@ public class IngameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //wenn blurStand not aktiv und Spiel wurde pausiert
-        if (!ingameUI.blurStand & paused)
-        { 
-        Time.timeScale = 0;
-        }
-        //Countdown
-        timeLeft -= Time.deltaTime;
-        Debug.Log(timeLeft);
-
-        if (!win & !lose)
+        //im Spiel
+        if (!win & !lose & !paused)
         {
+            //wenn blurStand not aktiv und Spiel wurde pausiert
+            if (!ingameUI.blurStand & paused)
+            {
+                Time.timeScale = 0;
+            }
+
+            //Countdown
+            timeLeft -= Time.deltaTime;
+            Debug.Log(timeLeft);
+
+            //wenn lose
             lose |= timeLeft < 0;
             if (lose)
             {
                 Lose();
 
             }
+
+            //wenn win
             else if (Input.GetKeyDown(KeyCode.Space))
             {
                 Win();

@@ -22,7 +22,7 @@ public class IngameUI : MonoBehaviour {
     public Material blurMaterial;
     public bool blurStand = false;
     float timeBlur = 0f;
-
+    float newValue = 0f;
     // Use this for initialization
     void Start()
     {
@@ -32,23 +32,26 @@ public class IngameUI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+
         if (blurStand)
         {
             //duration of blur motion
             timeBlur += Time.deltaTime;
+            newValue += 0.01f;
             //Wie stark die Veränderung
-            float ratio = 3 / 2f;
+            float ratio = 7f;
             //Color Motion
-            Color newColor = new Color(1 - timeBlur * ratio, 1 - timeBlur * ratio, 1 - timeBlur * ratio, 1);
+            Color newColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
             //Blur motion
             blurMaterial.SetColor("_Color", newColor);
-            blurMaterial.SetFloat("_Size", timeBlur * 10f);
+            blurMaterial.SetFloat("_Size", newValue*50.0f);
 
-            Debug.Log("timeBlur: "+ timeBlur + " " + pauseMenuButton.GetComponent<Image>().material.color);
+            Debug.Log("timeBlur: "+ timeBlur + " New Value:  " + newValue);
             if (timeBlur > 0.3f)
             {
                 blurStand = false;
                 timeBlur = 0;
+                newValue = 0;
             }
         }
     }
