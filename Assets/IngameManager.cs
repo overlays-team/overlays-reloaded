@@ -6,11 +6,20 @@ using UnityEngine.SceneManagement;
 public class IngameManager : MonoBehaviour
 {
     public IngameUI ingameUI;
-    public int score;
+
 
     //sh
+    public int star;
+    private int scoreFactor = 10;
+    private int thisLevelScore;
     private int previousTotalScore;
+    private int newTotalScore;
+    //private string playerName;
+    //private int highestTotalScore;
+    //private string highestTotalScorePlayerName;
+
     private bool timeRunsOut;
+    private bool attackMode;
 
 
     private bool win;
@@ -30,12 +39,20 @@ public class IngameManager : MonoBehaviour
         ingameUI.HideGameOverPanel();
 
 
-        score = Random.Range(1, 4); //sh, for testing. generate score randomlly.
-        CreateTestLevelState(); //sh, needed for test
+        setTestParameters();
 
         LoadLevelState();
     }
 
+    private void setTestParameters(){
+        SetAttackMode(false); //sh, for testing
+
+        star = Random.Range(1, 4); //sh, for testing. generate score randomlly.
+        CreateTestLevelState(); //sh, needed for test
+        GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
+        ingameUI.ShowCountDownText(attackMode);
+        ingameUI.ShowHighestScorePanel(attackMode);
+    }
 
 
     // Update is called once per frame
@@ -52,12 +69,14 @@ public class IngameManager : MonoBehaviour
 
     }
 
-
-
+   
 
     //sh
     private void LoadLevelState() //now only used for getting total score
     {
+        //highestTotalScore = GameDataEditor.Instance.data.highestTotalScore;
+        //highestTotalScorePlayerName = GameDataEditor.Instance.data.highestTotalScorePlayerName;
+
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
         previousTotalScore = 0;
 
@@ -73,8 +92,12 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        int newTotalScore = score + previousTotalScore;
-        ingameUI.ShowLevelCompletePanel(score, newTotalScore);
+        thisLevelScore = star * scoreFactor;
+
+        UpdateTotalScore(); 
+        CheckHighestTotalScore();
+        ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
+
         win = true;
 
         //sh
@@ -83,6 +106,36 @@ public class IngameManager : MonoBehaviour
         LoadLevelState(); //for test we need this here.
     }
 
+
+
+    private void UpdateTotalScore()
+    {   
+        newTotalScore = thisLevelScore + previousTotalScore;
+    }
+
+
+    private void CheckHighestTotalScore()
+    {
+        //if it's not attack mode, do nothing.
+        if (!attackMode) return;
+
+        if (GameDataEditor.Instance.data.highestTotalScore < newTotalScore)
+        {
+            SaveHighestTotalScore();
+        }
+    }
+
+    private void SaveHighestTotalScore()
+    {
+        GameDataEditor.Instance.data.highestTotalScore = newTotalScore;
+        GameDataEditor.Instance.data.highestTotalScorePlayerName = GameDataEditor.Instance.data.playerName;
+    }
+
+    //sh
+    public void SetAttackMode(bool attackMode)
+    {
+        this.attackMode = attackMode;
+    }
 
     //sh
     private void SaveLevelState()
@@ -114,8 +167,10 @@ public class IngameManager : MonoBehaviour
 
 
         //save score and win/lose state
-        GameDataEditor.Instance.data.levels[currentLevel].score = score;
+        GameDataEditor.Instance.data.levels[currentLevel].star = star;
+        GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
+
 
 
         //for future development
@@ -148,6 +203,13 @@ public class IngameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1f;
     }
+
+    //reload same scene for test
+    public void NextTest()
+    {
+        Retry();
+    }
+
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -174,15 +236,13 @@ public class IngameManager : MonoBehaviour
     //sh
     private void CountTime()
     {
-        if (!win)
+        if (!win && attackMode)
         {
             timeRemaing -= Time.deltaTime;
         }
         timeRunsOut = timeRemaing < 0;
 
-        // Debug.Log(timeRemaing);
-
-        ingameUI.ShowCountDown(timeRemaing, timeRunsOut);
+        ingameUI.UpdateCountDown(timeRemaing, timeRunsOut);
     }
 
 
@@ -237,7 +297,7 @@ public class IngameManager : MonoBehaviour
 
 
 
-   //sh
+    //sh
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -261,9 +321,19 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
 
-        GameDataEditor.Instance.data.levels[0].score = 2;
-        GameDataEditor.Instance.data.levels[1].score = 1;
+        //GameDataEditor.Instance.data.levels[0].score = 2;
+        //GameDataEditor.Instance.data.levels[1].score = 1;
     }
 
 

@@ -21,7 +21,10 @@ public class IngameUI : MonoBehaviour {
 
     //sh
     public Text countDownText;
+    public GameObject countDownPanel;
+    public GameObject highestScorePanel;
     public Text totalScoreText;
+    public Text highestScoreText;
 
     // Use this for initialization
     void Start()
@@ -34,7 +37,7 @@ public class IngameUI : MonoBehaviour {
     {
 
     }
-    public void ShowLevelCompletePanel(int score, int totalScore)
+    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore)
     {
 
         Debug.Log("You Win!");
@@ -43,9 +46,10 @@ public class IngameUI : MonoBehaviour {
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
 
         //sh
-        totalScoreText.text = "TOTAL SCORE: " + totalScore;
+        totalScoreText.text = "YOUR SCORE: " + totalScore;
+        highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
 
-        switch (score)
+        switch (star)
         {
             case 1:
                 levelCompleteText.text = star1Texts[Random.Range(0, 3)]; 
@@ -98,7 +102,21 @@ public class IngameUI : MonoBehaviour {
     }
 
     //sh
-    public void ShowCountDown(float timeRemaining, bool win)
+    public void ShowCountDownText(bool isEnabled)
+    {
+        countDownPanel.SetActive(isEnabled);
+        countDownText.enabled = isEnabled;
+    }
+
+    public void ShowHighestScorePanel(bool isEnabled)
+    {
+        highestScorePanel.SetActive(isEnabled);
+        highestScoreText.enabled = isEnabled;
+    }
+
+
+    //sh
+    public void UpdateCountDown(float timeRemaining, bool win)
     {
         //Debug.Log("ShowCountDown()");
 

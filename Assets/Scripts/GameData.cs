@@ -9,6 +9,11 @@ public class GameData
     public bool isMuted;
     public List<LevelData> levels;
 
+    public string playerName;
+    public int highestTotalScore;
+    public string highestTotalScorePlayerName;
+
+
     public GameData()
     {
         levels = new List<LevelData>();
