@@ -49,11 +49,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1671597109358114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de64d2840d458aa459b71ffa31cdc719, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1a2156115c3da4d9876f9b6bdc5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpSpeed: 0.1
-  fadeDuration: 1
+  lerpSpeed: 0.5
+  fadeDuration: 0
   maxLength: 10
 --- !u!120 &120645178382475358
 LineRenderer:
@@ -95,7 +95,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.1
+    widthMultiplier: 0.08
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -113,8 +113,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 0.10720008, g: 0.1455167, b: 0.6886792, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -130,7 +130,7 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 29684
+      atime1: 65535
       atime2: 0
       atime3: 0
       atime4: 0

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlexusLine : MonoBehaviour {
-
+public class PlexusLine : MonoBehaviour
+{
     bool startFade;
     public float lerpSpeed;
     public float fadeDuration;
@@ -19,36 +19,30 @@ public class PlexusLine : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //CalculateTargetColor();
+        CalculateTargetColor();
         lr.startColor = Color.Lerp(lr.startColor, targetColor, lerpSpeed);
         lr.endColor = Color.Lerp(lr.endColor, targetColor, lerpSpeed);
-
 	}
-
-    public void FadeIn()
-    {
-     
-    }
 
     void CalculateTargetColor()
     {
         float lineLength = Vector3.Distance(lr.GetPosition(0), lr.GetPosition(1));    
         targetColor = new Color(lr.startColor.r, lr.startColor.g, lr.startColor.b, 1 - (lineLength/maxLength));
-        Debug.Log(targetColor);
     }
 
     void OnDisable()
     {
-        ResetColor();
+        //ResetColor();
     }
 
     void OnEnable()
     {
-        ResetColor();
+        //ResetColor();
     }
 
    void ResetColor()
-    {
+    {/*
         lr.startColor = new Color(lr.startColor.r, lr.startColor.g, lr.startColor.b, 0);
+        lr.endColor = new Color(lr.endColor.r, lr.endColor.g, lr.endColor.b, 0);*/
     }
 }
