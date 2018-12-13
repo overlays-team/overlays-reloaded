@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AdditiveCombine2 : BlockObject {
+public class AdditiveCombine2 : BlockObject
+{
 
     //takes 2 lasers as Input and gives one as output
 
@@ -13,6 +14,7 @@ public class AdditiveCombine2 : BlockObject {
     Texture2D inputImage1;
     Texture2D inputImage2;
     Texture2D outputImage;
+    public GameObject graphic;
 
     protected override void Start()
     {
@@ -30,27 +32,34 @@ public class AdditiveCombine2 : BlockObject {
             {
                 inputImage1 = laserInputs[0].inputLaser.image;
                 inputImage2 = laserInputs[1].inputLaser.image;
+                //doesn't get results
+                //animator.SetBool("LaserInput", true);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", true);
+                Debug.Log("Two laser inputs");
                 StartImageProcessing();
+
             }
             else
             {
                 inputImage1 = null;
                 inputImage2 = null;
+                //doesn't get results
+                //animator.SetBool("LaserInput", false);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", false);
                 StopImageProcessing();
             }
 
         }
 
-        if (imageReady && !imageDisplaying)
+        if (imageReady)
         {
             laserOutput.active = true;
-            imageDisplaying = true;
 
             //added with 13-graphics update
             debugImage.gameObject.SetActive(true);
             debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
         }
-        else if(!imageReady)
+        else
         {
             debugImage.gameObject.SetActive(false);
             laserOutput.active = false;
