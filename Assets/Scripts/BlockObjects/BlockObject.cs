@@ -63,6 +63,7 @@ public class BlockObject : MonoBehaviour
     //for image processing
     protected bool imageReady;
     protected bool imageInProcess;
+    protected bool imageDisplaying; //refactor this to states, if image is displaying, we dont need to create the sprite anymore
 
     //for development debugging
     public Image debugImage; //just for now
@@ -118,7 +119,7 @@ public class BlockObject : MonoBehaviour
 
         //for debug image
         if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
-        if (debugImage != null) debugImage.gameObject.transform.up = Camera.main.transform.up;
+        if (debugImage != null) debugImage.transform.parent.gameObject.transform.up = Camera.main.transform.up;
     }
 
     //before returning to inventory some objects needs to deassign some variables or disable lasers
@@ -232,6 +233,7 @@ public class BlockObject : MonoBehaviour
     {
         //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
         imageReady = false;
+        imageDisplaying = false;
         imageInProcess = true;
 
         StartCoroutine("ImageProcessingEnumerator");

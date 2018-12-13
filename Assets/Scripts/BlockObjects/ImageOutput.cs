@@ -29,12 +29,27 @@ public class ImageOutput : BlockObject {
     {
         base.Update();
 
+        ImageOutputUpdate();
+
+        //export function to get a goal image
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            ExportCurrentImage();
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Debug.Log(CheckIfImageIsCorrect(inputImage));
+        }
+    }
+
+    protected virtual void ImageOutputUpdate()
+    {
         if (lasersChanged)
         {
             if (laserInputs[0].active)
             {
                 inputImage = laserInputs[0].inputLaser.image;
-                if (CheckIfImageIsCorrect())
+                if (CheckIfImageIsCorrect(inputImage))
                 {
                     debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
                     imageCorrect = true;
@@ -52,27 +67,17 @@ public class ImageOutput : BlockObject {
                 imageCorrect = false;
             }
         }
-
-        //export function to get a goal image
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ExportCurrentImage();
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log(CheckIfImageIsCorrect());
-        }
     }
 
-    bool CheckIfImageIsCorrect()
+    protected bool CheckIfImageIsCorrect(Texture2D image)
     {
         float biggestError = 0;
         bool isCorrect = true;
-        for (int y = 0; y < inputImage.height; y++)
+        for (int y = 0; y < image.height; y++)
         {
-            for (int x = 0; x < inputImage.width; x++)
+            for (int x = 0; x < image.width; x++)
             {
-                Color color1 = inputImage.GetPixel(x, y);
+                Color color1 = image.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
 
                 if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
@@ -86,7 +91,7 @@ public class ImageOutput : BlockObject {
         return isCorrect;
     }
 
-    void ExportCurrentImage()
+   protected void ExportCurrentImage()
     {
         if (inputImage != null)
         {

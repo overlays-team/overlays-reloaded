@@ -32,8 +32,6 @@ public class IngameUI : MonoBehaviour {
     }
     public void ShowLevelCompletePanel(int wert)
     {
-
-        Debug.Log("You Win!");
         //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
         switch (wert)
