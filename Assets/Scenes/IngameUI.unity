@@ -224,6 +224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ingameUI: {fileID: 556846561}
   star: 0
+  timeLeft: 5
   outputImages: []
 --- !u!4 &239305925
 Transform:
@@ -432,7 +433,7 @@ MonoBehaviour:
   star3: {fileID: 21300000, guid: aaee0fb30a8634064bfea38cf60bba6e, type: 3}
   pauseButton: {fileID: 1626284903}
   playButton: {fileID: 937703808}
-  pauseMenuButton: {fileID: 694748747}
+  pauseMenuPanel: {fileID: 694748747}
   pausePlayButton: {fileID: 1976778886}
   levelCompleteText: {fileID: 1145551133}
   countDownText: {fileID: 2090078815}
@@ -440,6 +441,8 @@ MonoBehaviour:
   highestScorePanel: {fileID: 1261331625}
   totalScoreText: {fileID: 864064148}
   highestScoreText: {fileID: 904821939}
+  blurMaterial: {fileID: 2100000, guid: 3a5d253f3e4a5424fa03ec16f70e96b5, type: 2}
+  blurring: 0
 --- !u!1 &614495918 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1091086826223266, guid: 51493e4f3093d4c198e83e6844385380,
@@ -1289,6 +1292,26 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: NextTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 114928171049083358, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 239305924}
+    - target: {fileID: 114928171049083358, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Retry
+      objectReference: {fileID: 0}
+    - target: {fileID: 114274775406627282, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 239305924}
+    - target: {fileID: 114274775406627282, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c033290c39f317a4e9ef55ae45b7fb04, type: 2}

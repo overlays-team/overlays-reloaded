@@ -24,7 +24,8 @@ public class IngameManager : MonoBehaviour
 
     private bool win;
     private bool lose;
-    float timeRemaing = 5.0f;
+    public float timeLeft = 5.0f;
+    bool paused;
 
 
     public ImageOutput[] outputImages; //holds a collection of all output Images
@@ -43,7 +44,8 @@ public class IngameManager : MonoBehaviour
         LoadLevelState();
     }
 
-    private void setTestParameters(){
+    private void setTestParameters()
+    {
         SetAttackMode(true); //sh, for testing
 
         star = Random.Range(1, 4); //sh, for testing. generate score randomlly.
@@ -61,15 +63,28 @@ public class IngameManager : MonoBehaviour
         CountTime();
         CheckIfWeWon();
 
-        //sh, for debug, force win
-        if (Input.GetKeyDown(KeyCode.Space))
+
+        if (!win & !lose & !paused)
         {
-            Win();
+            if (lose)
+            {
+                Lose();
+
+            }
+
         }
+            //sh, for debug, force win
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Win();
+            }
+
+        
+
 
     }
 
-   
+
 
     //sh
     private void LoadLevelState() //now only used for getting total score
@@ -94,7 +109,7 @@ public class IngameManager : MonoBehaviour
     {
         thisLevelScore = star * scoreFactor;
 
-        UpdateTotalScore(); 
+        UpdateTotalScore();
         CheckHighestTotalScore();
         ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
 
@@ -109,7 +124,7 @@ public class IngameManager : MonoBehaviour
 
 
     private void UpdateTotalScore()
-    {   
+    {
         newTotalScore = thisLevelScore + previousTotalScore;
     }
 
@@ -223,11 +238,13 @@ public class IngameManager : MonoBehaviour
     }
     public void Pause()
     {
+        paused = true;
         ingameUI.TogglePause();
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
     }
     public void Resume()
     {
+        paused = false;
         ingameUI.TogglePlay();
         Time.timeScale = 1f;
     }
@@ -238,11 +255,11 @@ public class IngameManager : MonoBehaviour
     {
         if (!win && attackMode)
         {
-            timeRemaing -= Time.deltaTime;
+            timeLeft -= Time.deltaTime;
         }
-        timeRunsOut = timeRemaing < 0;
+        timeRunsOut = timeLeft < 0;
 
-        ingameUI.UpdateCountDown(timeRemaing, timeRunsOut);
+        ingameUI.UpdateCountDown(timeLeft, timeRunsOut);
     }
 
 
@@ -251,7 +268,7 @@ public class IngameManager : MonoBehaviour
         bool allCorrect = true; //sh: false as default is better and remove else?. 
 
         //sh
-        if (timeRunsOut)
+        if (timeRunsOut &!lose)
         {
             //sh, Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
