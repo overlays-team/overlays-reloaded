@@ -12,7 +12,11 @@ public class ImageMultiOutput : ImageOutput
     Texture2D inputImage2;
     Texture2D outputImage;
 
-    public LineRenderer frame; 
+    protected override void Start()
+    {
+        base.Start();
+        frame.SetColors(Color.red, Color.red);
+    }
 
     // Update is called once per frame
     protected override void ImageOutputUpdate()
