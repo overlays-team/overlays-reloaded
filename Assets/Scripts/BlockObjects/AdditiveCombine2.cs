@@ -14,6 +14,7 @@ public class AdditiveCombine2 : BlockObject {
     Texture2D inputImage2;
     Texture2D outputImage;
     Animator animator;
+    public GameObject graphic;
 
     protected override void Start()
     {
@@ -33,7 +34,8 @@ public class AdditiveCombine2 : BlockObject {
                 inputImage1 = laserInputs[0].inputLaser.image;
                 inputImage2 = laserInputs[1].inputLaser.image;
                 //doesn't get results
-                animator.SetBool("LaserInput", true);
+                //animator.SetBool("LaserInput", true);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", true);
                 Debug.Log("Two laser inputs");
                 StartImageProcessing();
                 
@@ -43,7 +45,8 @@ public class AdditiveCombine2 : BlockObject {
                 inputImage1 = null;
                 inputImage2 = null;
                 //doesn't get results
-                animator.SetBool("LaserInput", false);
+                //animator.SetBool("LaserInput", false);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", false);
                 StopImageProcessing();
             }
 

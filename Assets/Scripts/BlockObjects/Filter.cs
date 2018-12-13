@@ -15,6 +15,7 @@ public class Filter : BlockObject
     public FilterColor filterMode = FilterColor.NONE;
     public GameObject laser;
     Animator animator;
+    public GameObject graphic;
 
     protected override void Start()
     {
@@ -49,18 +50,24 @@ public class Filter : BlockObject
             if (laserInputs[0].active)
             {
                 inputImage = laserInputs[0].inputLaser.image;
+                //animator.SetBool("LaserInput", true);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", true);
+                Debug.Log("Laser in");
                 StartImageProcessing();
                 //doesn't get immediate results
-                laser.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
+                //laser.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
                 //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
             }
             else
             {
                 inputImage = null;
+                //animator.SetBool("LaserInput", false);
+                graphic.GetComponent<Animator>().SetBool("LaserInput", false);
                 StopImageProcessing();
                 //doesn't get immediate results
                 //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
-                laser.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
+                //laser.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
+                
             }
 
         }
