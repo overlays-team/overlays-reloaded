@@ -65,7 +65,7 @@ public class LevelSelector : MonoBehaviour
     }
 
 
-   /* private void LoadTestLevelStateFromFile()
+    private void LoadTestLevelStateFromFile()
     {
         Debug.Log("そして、LoadFromFile()");
 
@@ -87,7 +87,7 @@ public class LevelSelector : MonoBehaviour
             level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
         }
     }
-*/
+
 
 
 
@@ -105,12 +105,9 @@ public class LevelSelector : MonoBehaviour
             //string buttonText = "Level " + currentLevel;
             string sceneID = GameDataEditor.Instance.data.levels[i].sceneID;
 
-			GameObject level = Instantiate(levelPrefab, content.transform);
-            //level.transform.parent = content.transform;
-
-			RectTransform recttransform = level.GetComponent<RectTransform> ();
-
-			level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
+            GameObject level = Instantiate(levelPrefab);
+            level.transform.parent = content.transform;
+            level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().name = GameDataEditor.Instance.data.levels[i].sceneID;
             level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
 

@@ -57,4 +57,9 @@ public class GridSystem : MonoBehaviour
             blockObject.currentAssignedGridPlane = nearestPlane;
         }
 	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 }

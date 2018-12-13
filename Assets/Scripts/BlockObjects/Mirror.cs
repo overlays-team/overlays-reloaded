@@ -11,6 +11,7 @@ public class Mirror : BlockObject
     Laser inputLaserBack;
     Laser inputLaserFront;
 
+
     protected override void Update()
     {
         base.Update();
@@ -65,13 +66,6 @@ public class Mirror : BlockObject
             outputLaserBack.active = false;
         }
         
-    }
-
-    public override void ReturnToInventory()
-    {
-        outputLaserFront.laser.active = false;
-        outputLaserBack.laser.active = false;
-        base.ReturnToInventory();
     }
 }
         

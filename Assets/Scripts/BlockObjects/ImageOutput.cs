@@ -15,14 +15,12 @@ public class ImageOutput : BlockObject {
 
     public bool imageCorrect; // for the ingameManager, so he knows
 
-
     protected override void Start()
     {
         base.Start();
         inputImage = null;
         //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-        frame.SetColors(Color.red, Color.red);
     }
 
 
@@ -31,7 +29,29 @@ public class ImageOutput : BlockObject {
     {
         base.Update();
 
-        ImageOutputUpdate();
+        if (lasersChanged)
+        {
+            if (laserInputs[0].active)
+            {
+                inputImage = laserInputs[0].inputLaser.image;
+                if (CheckIfImageIsCorrect())
+                {
+                    debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+                    imageCorrect = true;
+                }
+                else
+                {
+                    debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                    imageCorrect = false;
+                }
+            }
+            else
+            {
+                debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                inputImage = null;
+                imageCorrect = false;
+            }
+        }
 
         //export function to get a goal image
         if (Input.GetKeyDown(KeyCode.E))
@@ -40,49 +60,19 @@ public class ImageOutput : BlockObject {
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log(CheckIfImageIsCorrect(inputImage));
+            Debug.Log(CheckIfImageIsCorrect());
         }
     }
 
-    protected virtual void ImageOutputUpdate()
-    {
-        if (lasersChanged)
-        {
-            if (laserInputs[0].active)
-            {
-                inputImage = laserInputs[0].inputLaser.image;
-                if (CheckIfImageIsCorrect(inputImage))
-                {
-                    //debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = true;
-                    frame.SetColors(Color.green, Color.green);
-                }
-                else
-                {
-                    //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = false;
-                    frame.SetColors(Color.red, Color.red);
-                }
-            }
-            else
-            {
-                //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.red, Color.red);
-                inputImage = null;
-                imageCorrect = false;
-            }
-        }
-    }
-
-    protected bool CheckIfImageIsCorrect(Texture2D image)
+    bool CheckIfImageIsCorrect()
     {
         float biggestError = 0;
         bool isCorrect = true;
-        for (int y = 0; y < image.height; y++)
+        for (int y = 0; y < inputImage.height; y++)
         {
-            for (int x = 0; x < image.width; x++)
+            for (int x = 0; x < inputImage.width; x++)
             {
-                Color color1 = image.GetPixel(x, y);
+                Color color1 = inputImage.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
 
                 if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
@@ -96,7 +86,7 @@ public class ImageOutput : BlockObject {
         return isCorrect;
     }
 
-   protected void ExportCurrentImage()
+    void ExportCurrentImage()
     {
         if (inputImage != null)
         {
