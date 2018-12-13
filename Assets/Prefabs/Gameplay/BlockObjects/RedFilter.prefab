@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 4320806957424300}
   - component: {fileID: 65228805636501940}
   - component: {fileID: 114922373630944004}
-  - component: {fileID: 95350564527358236}
   m_Layer: 10
   m_Name: RedFilter
   m_TagString: blockObject
@@ -405,7 +404,7 @@ Animator:
   m_GameObject: {fileID: 1189458342616948}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9278e95645ba74a41b080711fc53830f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -424,24 +423,6 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!95 &95350564527358236
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1653124289831142}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9278e95645ba74a41b080711fc53830f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -560,8 +541,9 @@ MonoBehaviour:
   - {fileID: 114463113834479890}
   debugImage: {fileID: 114440049426348920}
   laserOutput: {fileID: 114192765486675970}
-  filterMode: 3
+  filterMode: 0
   laser: {fileID: 1041194402069456}
+  graphic: {fileID: 1189458342616948}
 --- !u!120 &120911219370927060
 LineRenderer:
   m_ObjectHideFlags: 1
