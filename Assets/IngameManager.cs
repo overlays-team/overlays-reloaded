@@ -183,10 +183,11 @@ public class IngameManager : MonoBehaviour
 
 
         //save score and win/lose state
+        /*
         GameDataEditor.Instance.data.levels[currentLevel].star = star;
         GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
-
+        */
 
 
         //for future development
