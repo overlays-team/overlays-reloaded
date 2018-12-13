@@ -15,14 +15,12 @@ public class ImageOutput : BlockObject {
 
     public bool imageCorrect; // for the ingameManager, so he knows
 
-
     protected override void Start()
     {
         base.Start();
         inputImage = null;
         //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-        frame.SetColors(Color.red, Color.red);
     }
 
 
@@ -53,21 +51,18 @@ public class ImageOutput : BlockObject {
                 inputImage = laserInputs[0].inputLaser.image;
                 if (CheckIfImageIsCorrect(inputImage))
                 {
-                    //debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+                    debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
                     imageCorrect = true;
-                    frame.SetColors(Color.green, Color.green);
                 }
                 else
                 {
-                    //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                    debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                     imageCorrect = false;
-                    frame.SetColors(Color.red, Color.red);
                 }
             }
             else
             {
-                //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.red, Color.red);
+                debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 inputImage = null;
                 imageCorrect = false;
             }

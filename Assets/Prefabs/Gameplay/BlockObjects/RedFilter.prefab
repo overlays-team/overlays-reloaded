@@ -52,7 +52,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4152325899661838}
   - component: {fileID: 65570923805573058}
-  - component: {fileID: 95535367011757910}
   m_Layer: 11
   m_Name: Graphics
   m_TagString: Untagged
@@ -174,7 +173,7 @@ GameObject:
   - component: {fileID: 65228805636501940}
   - component: {fileID: 114922373630944004}
   m_Layer: 10
-  m_Name: Filter
+  m_Name: RedFilter
   m_TagString: blockObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,24 +766,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!95 &95535367011757910
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1189458342616948}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f5291165f02c7414bb2b03a51df71fc3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114192765486675970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -894,13 +875,10 @@ MonoBehaviour:
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 0}
-  frame: {fileID: 120911219370927060}
   laserInputs:
   - {fileID: 114463113834479890}
   debugImage: {fileID: 114440049426348920}
   laserOutput: {fileID: 114192765486675970}
-  filterMode: 0
-  graphic: {fileID: 1189458342616948}
 --- !u!120 &120911219370927060
 LineRenderer:
   m_ObjectHideFlags: 1

@@ -52,8 +52,6 @@ public class BlockObject : MonoBehaviour
     //For Lasers
     protected List<Laser> inputLasers;
 
-    public LineRenderer frame;
-
     //for laser inputs
     [SerializeField]
     protected LaserInput[] laserInputs;
