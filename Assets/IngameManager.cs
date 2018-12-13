@@ -38,18 +38,18 @@ public class IngameManager : MonoBehaviour
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
 
-
         setTestParameters();
 
         LoadLevelState();
     }
 
     private void setTestParameters(){
-        SetAttackMode(false); //sh, for testing
+        SetAttackMode(true); //sh, for testing
 
         star = Random.Range(1, 4); //sh, for testing. generate score randomlly.
         CreateTestLevelState(); //sh, needed for test
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
+        GameDataEditor.Instance.data.playerName = "SHUYA";
         ingameUI.ShowCountDownText(attackMode);
         ingameUI.ShowHighestScorePanel(attackMode);
     }
@@ -61,7 +61,7 @@ public class IngameManager : MonoBehaviour
         CountTime();
         CheckIfWeWon();
 
-        //sh, for debug, total score
+        //sh, for debug, force win
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Win();

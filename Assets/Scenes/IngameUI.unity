@@ -500,7 +500,7 @@ Prefab:
     - target: {fileID: 224470397872233448, guid: 8317b86e64e1345fbb1826bd80c73d7c,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00091552734
+      value: 0.0008544922
       objectReference: {fileID: 0}
     - target: {fileID: 224470397872233448, guid: 8317b86e64e1345fbb1826bd80c73d7c,
         type: 2}
@@ -1078,8 +1078,9 @@ MonoBehaviour:
   data:
     isMuted: 0
     levels: []
-    highestScore: 0
-    highestScorePlayerName: 
+    playerName: 
+    highestTotalScore: 0
+    highestTotalScorePlayerName: 
 --- !u!4 &1805777736
 Transform:
   m_ObjectHideFlags: 0
@@ -1278,6 +1279,16 @@ Prefab:
     - target: {fileID: 1731448548930182, guid: c033290c39f317a4e9ef55ae45b7fb04, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114290511308343436, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 239305924}
+    - target: {fileID: 114290511308343436, guid: c033290c39f317a4e9ef55ae45b7fb04,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextTest
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c033290c39f317a4e9ef55ae45b7fb04, type: 2}
@@ -1505,7 +1516,7 @@ Prefab:
     - target: {fileID: 224027663331502982, guid: 3a51ec018e4d94fa49ef27c74e00191b,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -10.700012
+      value: -10.700073
       objectReference: {fileID: 0}
     - target: {fileID: 224027663331502982, guid: 3a51ec018e4d94fa49ef27c74e00191b,
         type: 2}

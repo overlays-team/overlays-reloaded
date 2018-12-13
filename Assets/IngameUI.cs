@@ -46,8 +46,11 @@ public class IngameUI : MonoBehaviour {
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
 
         //sh
-        totalScoreText.text = "YOUR SCORE: " + totalScore;
+        //totalScoreText.text = "YOUR SCORE: " + totalScore;
+        totalScoreText.text = GameDataEditor.Instance.data.playerName +"'s SCORE: " + totalScore;
+
         highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
+
 
         switch (star)
         {
