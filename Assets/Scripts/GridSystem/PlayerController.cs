@@ -132,9 +132,16 @@ public class PlayerController : MonoBehaviour {
                                 }
                                 else
                                 {
-                                    //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                                    selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                                    if (!selectedBlockObject.inInventory)
+                                    {
+                                        selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                                    }
+                                    else
+                                    {
+                                        PutObjectBackToInventory();
+                                    }
                                     if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+
                                 }
 
                             }

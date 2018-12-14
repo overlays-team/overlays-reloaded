@@ -61,12 +61,12 @@ public class IngameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CountTime();
-        CheckIfWeWon();
-
-
-        if (!win & !lose & !paused)
+        if (!win && !lose && !paused)
         {
+            if (attackMode)CountTime();
+            CheckIfWeWon();
+
+        
             if (lose)
             {
                 Lose();
@@ -108,6 +108,7 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
+        StopCoroutine("WinCoroutine");
         thisLevelScore = star * scoreFactor;
 
         UpdateTotalScore();
