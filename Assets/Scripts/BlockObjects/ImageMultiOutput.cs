@@ -73,7 +73,7 @@ public class ImageMultiOutput : ImageOutput
         {
 
             imageDisplaying = true;
-            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
             if (CheckIfImageIsCorrect(outputImage))
             {
                 //validityImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
@@ -119,5 +119,18 @@ public class ImageMultiOutput : ImageOutput
 
         imageInProcess = false;
         imageReady = true;
+    }
+
+    protected override void ExportCurrentImage()
+    {
+        if (outputImage != null)
+        {
+            byte[] bytes = outputImage.EncodeToPNG();
+            File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
+        }
+        else
+        {
+            Debug.Log("input image is Null");
+        }
     }
 }

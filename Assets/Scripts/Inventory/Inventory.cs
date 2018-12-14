@@ -7,12 +7,15 @@ public class Inventory : MonoBehaviour {
 
     public GameObject inventoryButtonPrefab;
     public InventoryItem[] items;
-    private InventoryButton[] inventoryButtons;
+    public InventoryButton[] inventoryButtons;
     public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
     
 	void Awake () {
 
-        inventoryButtons = new InventoryButton[items.Length];
+        foreach(InventoryButton button in inventoryButtons)
+        {
+            button.gameObject.SetActive(false);
+        }
 
         for (int i = 0; i < items.Length; i++)
         {
@@ -27,16 +30,15 @@ public class Inventory : MonoBehaviour {
                 blockObject.inventoryIndex = i;
                 items[i].AddBlockObject(blockObject);
             }
-            
+
 
             //now instantiate all the buttons we need
-            GameObject button = Instantiate(inventoryButtonPrefab);
-            button.transform.SetParent(transform);
-            button.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
-            button.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
-            InventoryButton buttonScript = button.GetComponent<InventoryButton>();
-            buttonScript.inventory = this;
-            inventoryButtons[i] = buttonScript;
+            //GameObject button = Instantiate(inventoryButtonPrefab);
+            inventoryButtons[i].gameObject.SetActive(true);
+            inventoryButtons[i].gameObject.transform.SetParent(transform);
+            inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
+            inventoryButtons[i].gameObject.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
+            inventoryButtons[i].inventory = this;
         }
     }
 

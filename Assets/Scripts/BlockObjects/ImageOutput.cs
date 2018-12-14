@@ -9,9 +9,7 @@ public class ImageOutput : BlockObject {
     //wenn wir nur einen ImageInput haben wollen das:
     Texture2D inputImage;
 
-    public Texture2D noImage; //just a white texture we show when no image is present
     public Texture2D goalImage;
-    public Texture2D yepImage; //gets displayed when we get the goal image right
 
     public bool imageCorrect; // for the ingameManager, so he knows
 
@@ -96,7 +94,7 @@ public class ImageOutput : BlockObject {
         return isCorrect;
     }
 
-   protected void ExportCurrentImage()
+   protected virtual void ExportCurrentImage()
     {
         if (inputImage != null)
         {
