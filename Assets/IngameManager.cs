@@ -184,11 +184,11 @@ public class IngameManager : MonoBehaviour
 
 
         //save score and win/lose state
-        /*
+
         GameDataEditor.Instance.data.levels[currentLevel].star = star;
         GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
-        */
+        //GameDataEditor.Instance.data.levels[currentLevel+1].completed = true;
 
 
         //for future development
@@ -318,6 +318,7 @@ public class IngameManager : MonoBehaviour
 
     
     //sh
+    /*
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -355,6 +356,7 @@ public class IngameManager : MonoBehaviour
         //GameDataEditor.Instance.data.levels[0].score = 2;
         //GameDataEditor.Instance.data.levels[1].score = 1;
     }
+    */
        
 
 
