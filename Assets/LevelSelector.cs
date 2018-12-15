@@ -154,7 +154,7 @@ public class LevelSelector : MonoBehaviour
         //GameObject rawImage = GameObject.Find("RawImage");
         //rawImage.GetComponent<RawImage>().texture = image;
 
-        scenePreview.GetComponent<RawImage>().enabled = true; 
+        scenePreview.GetComponent<RawImage>().color = new Color(1, 1, 1, 1); 
         scenePreview.GetComponent<RawImage>().texture = image;
     }
 
