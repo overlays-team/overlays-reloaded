@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ public class LevelSelector : MonoBehaviour
     public GameObject levelPrefab;
     public GameObject content;
     public RawImage scenePreview;
-    public Button startButton;
+    public Button playButton;
 
     private ToggleGroup toggleGrp;
     private string selectedLevel;
@@ -124,33 +123,26 @@ public class LevelSelector : MonoBehaviour
         selectedLevel = GetSelectedLevel();
         if (selectedLevel != null)
         {
-            startButton.interactable = true;
+            playButton.interactable = true;
             LoadPreview();
         }
         else
         {
             scenePreview.texture = null;
+            playButton.interactable = false;
             scenePreview.color = new Color(1, 1, 1, 0.05f);
         }
     }
 
     public void LoadPreview()
-    {
-     
+    {    
         image = Resources.Load("LevelPreviews/" + selectedLevel) as Texture2D;
-
-        Debug.Log(image);
-
-        //GameObject rawImage = GameObject.Find("RawImage");
-        //rawImage.GetComponent<RawImage>().texture = image;
-
         scenePreview.GetComponent<RawImage>().color = new Color(1, 1, 1, 1); 
         scenePreview.GetComponent<RawImage>().texture = image;
     }
 
     public void Save()
     {
-
         /*
         //debug
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
@@ -167,7 +159,6 @@ public class LevelSelector : MonoBehaviour
         //debug: saveing state
         LevelSelectorIO io = new LevelSelectorIO(GameDataEditor.Instance.data);
         io.SaveData();
-
     }
 
     private void OnDisable()
