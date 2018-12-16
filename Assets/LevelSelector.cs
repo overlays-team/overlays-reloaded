@@ -6,28 +6,22 @@ using System.Collections.Generic;
 
 public class LevelSelector : MonoBehaviour
 {
-
-
     public SceneFader fader;
-
     public GameObject levelPrefab;
     public GameObject content;
-
-    private string selectedLevel;
-
-    private Texture2D image;
     public RawImage scenePreview;
     public Button startButton;
 
+    private ToggleGroup toggleGrp;
+    private string selectedLevel;
+    private Texture2D image;
 
     public void Start()
     {
+        toggleGrp = GetComponent<ToggleGroup>();
         CreateTestLevelState();
-
-        //LoadTestLevelStateFromFile();
-        LoadTestLevelStateFromGameDataEditor();
+        LoadTestLevelStateFromGameDataEditor();   
     }
-
 
     /*
     public void Select(string levelName)
@@ -46,24 +40,18 @@ public class LevelSelector : MonoBehaviour
     }
     */
 
-
-
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
-
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-
     }
-
 
    /* private void LoadTestLevelStateFromFile()
     {
@@ -89,8 +77,6 @@ public class LevelSelector : MonoBehaviour
     }
 */
 
-
-
     private void LoadTestLevelStateFromGameDataEditor()
     {
         Debug.Log("そして、LoadFromGDE()");
@@ -98,52 +84,56 @@ public class LevelSelector : MonoBehaviour
 
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
         {
-            //Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID + "," + GameDataEditor.Instance.data.levels[i].completed);
-
-            //int currentLevel = i + 1;
-            //string sceneName = "Level" + currentLevel;
-            //string buttonText = "Level " + currentLevel;
             string sceneID = GameDataEditor.Instance.data.levels[i].sceneID;
 
 			GameObject level = Instantiate(levelPrefab, content.transform);
-            //level.transform.parent = content.transform;
+			RectTransform recttransform = level.GetComponent<RectTransform>();
+            Toggle levelToggle = level.GetComponent<Toggle>();
 
-			RectTransform recttransform = level.GetComponent<RectTransform> ();
-
-			level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
-            level.GetComponent<Button>().name = GameDataEditor.Instance.data.levels[i].sceneID;
-            level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
-
-            level.GetComponent<Button>().onClick.AddListener(delegate { Select(sceneID); });
-            //level.GetComponent<Button>().onClick.AddListener(delegate { Select(GameDataEditor.Instance.data.levels[i].sceneID); });
+            level.transform.GetComponentInChildren<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
+            levelToggle.name = GameDataEditor.Instance.data.levels[i].sceneID;
+            levelToggle.interactable = GameDataEditor.Instance.data.levels[i].completed;
+            levelToggle.onValueChanged.AddListener(delegate { SelectLevel(); });
+            if (GameDataEditor.Instance.data.levels[i].completed)
+            {
+                levelToggle.group = toggleGrp;
+            }
+            level.GetComponent<LevelToggle>().levelName = sceneID;
         }
     }
 
+    string GetSelectedLevel()
+    {
+        foreach (Toggle toggle in toggleGrp.ActiveToggles())
+        {
+            return toggle.GetComponent<LevelToggle>().levelName;
+        }
+        return null;
+    }
 
     public void ChangeScene()
     {
-        Debug.Log(selectedLevel);
-
-        if (selectedLevel != null)
+        if (GetSelectedLevel() != null)
         {
-            Debug.Log("clicked: " + "changeScene()");
             fader.FadeTo(selectedLevel);
         }
     }
 
-
-    public void Select(string levelName)
+    public void SelectLevel()
     {
-
-        this.selectedLevel = levelName;
-        Debug.Log("has set: " + selectedLevel);
-
-        startButton.interactable = true;
-        LoadPreview();
+        selectedLevel = GetSelectedLevel();
+        if (selectedLevel != null)
+        {
+            startButton.interactable = true;
+            LoadPreview();
+        }
+        else
+        {
+            scenePreview.texture = null;
+            scenePreview.color = new Color(1, 1, 1, 0.05f);
+        }
     }
 
-
-   
     public void LoadPreview()
     {
      
@@ -157,8 +147,6 @@ public class LevelSelector : MonoBehaviour
         scenePreview.GetComponent<RawImage>().color = new Color(1, 1, 1, 1); 
         scenePreview.GetComponent<RawImage>().texture = image;
     }
-
-
 
     public void Save()
     {
@@ -182,7 +170,12 @@ public class LevelSelector : MonoBehaviour
 
     }
 
-
-
-
+    private void OnDisable()
+    {
+        foreach (Toggle toggle in toggleGrp.ActiveToggles())
+        {
+            toggle.isOn = false;
+            toggle.GetComponent<LevelToggle>().SetAnimationState();
+        }
+    }
 }
