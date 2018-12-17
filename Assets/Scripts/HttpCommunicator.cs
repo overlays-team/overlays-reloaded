@@ -62,11 +62,19 @@ public class HttpCommunicator : MonoBehaviour
 
     private IEnumerator ConnectionJSON()
     {
-        string url = "http://localhost:3000/scores";
+        //string host = "http://localhost:3000/scores";
+        string host = "localhost";
+        int port = 3000;
+
+        string protocol = "http://";
+        string path = "/scores";
+        string url = protocol + host + ":" + port + path;
+
         string header = "Content-Type";
         string contentType = "application/json";
-        string score = "3070";
-        string player = "p3070";
+
+        string score = "3090";
+        string player = "p3090";
 
         //sorry, ignoreance of json in unity
         string testJson = " {\"score\" : {\"score\": \"" +score+ "\", \"player\": \"" +player+ "\"}} ";
