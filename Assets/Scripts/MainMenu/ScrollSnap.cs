@@ -10,15 +10,12 @@ public class ScrollSnap : MonoBehaviour
     public float selectedScaleSpeed;
     public Vector3 selectedScaleFactor;
     public int selectedItem;
-
     public List<RectTransform> items;
     public Transform itemContainer;
 
     private RectTransform rect;
-
     private float focusItem;
     private float itemDistance;
-    private int minItem;
     private bool dragging = false;
     private float[] distances;
 
@@ -45,8 +42,6 @@ public class ScrollSnap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        selectedItem = (int) Mathf.Round(Mathf.Clamp(-scrollSlide.transform.position.x / itemDistance, 0, items.Count - 1));
-
         ScaleSelected();
 
         if (items != null)
@@ -57,14 +52,13 @@ public class ScrollSnap : MonoBehaviour
             }
 
             float minDistance = Mathf.Min(distances);
-            minItem = Array.FindIndex(distances, distance => distance == minDistance);
+            selectedItem = Array.FindIndex(distances, distance => distance == minDistance);
 
             if (!dragging)
             {
                 if (!float.IsNaN(focusItem))
                 {
                     LerpToPosition(focusItem);
-
                     if (Mathf.Abs(Mathf.Abs(scrollSlide.anchoredPosition.x) - Mathf.Abs(focusItem)) < 1)
                     {
                         focusItem = float.NaN;
@@ -72,8 +66,7 @@ public class ScrollSnap : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log(minItem * -itemDistance);
-                    LerpToPosition(minItem * -itemDistance);
+                    LerpToPosition(selectedItem * -itemDistance);
                 }
             }
         }
@@ -98,7 +91,7 @@ public class ScrollSnap : MonoBehaviour
     {
         if (float.IsNaN(focusItem))
         {
-            focusItem = (minItem - 1) * -itemDistance;       
+            focusItem = (selectedItem - 1) * -itemDistance;       
         }
     }
 
@@ -106,7 +99,7 @@ public class ScrollSnap : MonoBehaviour
     {
         if (float.IsNaN(focusItem))
         {
-            focusItem = (minItem + 1) * -itemDistance;
+            focusItem = (selectedItem + 1) * -itemDistance;
         }
     }
 
