@@ -16,6 +16,8 @@ public class IngameManager : MonoBehaviour
     private int thisLevelScore;
     private int previousTotalScore;
     private int newTotalScore;
+    public HttpCommunicator httpCommunicator;
+
     //private string playerName;
     //private int highestTotalScore;
     //private string highestTotalScorePlayerName;
@@ -119,8 +121,27 @@ public class IngameManager : MonoBehaviour
 
         //sh
         SaveLevelState();
+        TestSaveInServer();
+
 
         LoadLevelState(); //for test we need this here.
+    }
+
+    private void TestSaveInServer()
+    {
+        //string url = "localhost:3000";
+        //httpCommunicator = new HttpCommunicator(url);
+
+
+        //httpCommunicator = new HttpCommunicator();
+        //httpCommunicator.SendScore();
+
+        //string responseText = httpCommunicator.Request();
+        //Debug.Log("InGameManager:" + responseText);
+
+        //httpCommunicator.RequestPage();
+
+        httpCommunicator.ConnectionStart();
     }
 
 
