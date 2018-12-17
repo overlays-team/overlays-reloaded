@@ -6,12 +6,7 @@ using System.IO;
 
 public class ImageMultiOutput : ImageOutput
 {
-
-    //for image processing
-    Texture2D inputImage1;
-    Texture2D inputImage2;
-    Texture2D outputImage;
-
+    
     protected override void Start()
     {
         base.Start();
@@ -23,7 +18,7 @@ public class ImageMultiOutput : ImageOutput
     { 
         if (lasersChanged)
         {
-            imageReady = false;
+            imageProcessingState = ImageProcessingState.NoImage;
             List<LaserInput> activeLasers = new List<LaserInput>();
             foreach (LaserInput laserInput in laserInputs)
             {
@@ -69,18 +64,19 @@ public class ImageMultiOutput : ImageOutput
             }
         }
 
-        if (imageReady && !imageDisplaying)
+        if (imageProcessingState != ImageProcessingState.Displaying)
         {
-
-            imageDisplaying = true;
-            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
-            if (CheckIfImageIsCorrect(outputImage))
+            if (imageProcessingState == ImageProcessingState.Ready)
             {
-                //validityImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.green, Color.green);
-                imageCorrect = true;
+                debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                if (CheckIfImageIsCorrect(outputImage))
+                {
+                    //validityImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
+                    frame.SetColors(Color.green, Color.green);
+                    imageCorrect = true;
+                }
             }
-            else if  (!imageReady)
+            else 
             {
                 //validityImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
                 frame.SetColors(Color.red, Color.red);
@@ -92,14 +88,14 @@ public class ImageMultiOutput : ImageOutput
 
     
 
-    protected override void StartImageProcessing()
+    /*protected override void StartImageProcessing()
     {
         outputImage = Instantiate(inputImage1); // wir erstellen uns ein neues output Image - welches eine Kopie eines Inputs ist, wird soweiso gleih überschrieben - könnte man schlauer lösen
         if (inputImage1.width != inputImage2.width) Debug.Log("different resolutions!");
 
         base.StartImageProcessing();
-    }
-
+    }*/
+    /*
     IEnumerator ImageProcessingEnumerator()
     {
         for (int y = 0; y < outputImage.height; y++)
@@ -117,8 +113,16 @@ public class ImageMultiOutput : ImageOutput
         }
         outputImage.Apply();
 
-        imageInProcess = false;
-        imageReady = true;
+        imageProcessingState = ImageProcessingState.Ready;
+    }
+    */
+    protected override Color ProcessPixel(int x, int y)
+    {
+        return new Color(
+                        1 - (1 - inputImage1.GetPixel(x, y).r) * (1 - inputImage2.GetPixel(x, y).r) / 1,
+                        1 - (1 - inputImage1.GetPixel(x, y).g) * (1 - inputImage2.GetPixel(x, y).g) / 1,
+                        1 - (1 - inputImage1.GetPixel(x, y).b) * (1 - inputImage2.GetPixel(x, y).b) / 1
+                        );
     }
 
     protected override void ExportCurrentImage()
@@ -130,7 +134,7 @@ public class ImageMultiOutput : ImageOutput
         }
         else
         {
-            Debug.Log("input image is Null");
+            Debug.Log("output image is Null");
         }
     }
 }

@@ -8,17 +8,30 @@ public class ImageOutput : BlockObject {
 
     //wenn wir nur einen ImageInput haben wollen das:
     Texture2D inputImage;
+    [SerializeField]
+    Texture2D goalImage;
 
-    public Texture2D goalImage;
+    protected Texture2D imageToCheck; //which image are we checking for correctness
 
     public bool imageCorrect; // for the ingameManager, so he knows
+
+    //in which imageCheckingstate are we - are we currently checking if this image is correct or ...
+    protected enum ImageCheckingState
+    {
+        NoImage,
+        Checking,
+        Checked,
+        Displaying //we already set the correct color after the imageChekc
+    }
+
+    [SerializeField]
+    protected ImageCheckingState imageCheckingState = ImageCheckingState.NoImage;
 
 
     protected override void Start()
     {
         base.Start();
         inputImage = null;
-        //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
         frame.SetColors(Color.red, Color.red);
     }
@@ -38,7 +51,7 @@ public class ImageOutput : BlockObject {
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log(CheckIfImageIsCorrect(inputImage));
+            Debug.Log(imageCorrect);
         }
     }
 
@@ -46,41 +59,56 @@ public class ImageOutput : BlockObject {
     {
         if (lasersChanged)
         {
+            imageCorrect = false;
+            frame.SetColors(Color.red, Color.red);
+            StopCoroutine("ImageCheckingEnumerator");
+
             if (laserInputs[0].active)
             {
                 inputImage = laserInputs[0].inputLaser.image;
-                if (CheckIfImageIsCorrect(inputImage))
+                imageCheckingState = ImageCheckingState.Checking;
+                frame.SetColors(Color.yellow, Color.yellow);
+                CheckIfImageIsCorrect(inputImage);
+            }
+            else
+            {
+                inputImage = null;
+                imageCheckingState = ImageCheckingState.NoImage;
+            }
+        }
+
+        if (imageCheckingState != ImageCheckingState.Displaying)
+        {
+            if (imageCheckingState == ImageCheckingState.Checked)
+            {
+                imageCheckingState = ImageCheckingState.Displaying;
+                if (imageCorrect)
                 {
-                    //debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = true;
                     frame.SetColors(Color.green, Color.green);
                 }
                 else
                 {
-                    //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = false;
                     frame.SetColors(Color.red, Color.red);
                 }
             }
-            else
-            {
-                //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.red, Color.red);
-                inputImage = null;
-                imageCorrect = false;
-            }
-        }
+
+        }         
     }
 
-    protected bool CheckIfImageIsCorrect(Texture2D image)
+    protected void CheckIfImageIsCorrect(Texture2D image)
+    {
+        imageToCheck = image;
+        StartCoroutine("ImageCheckingEnumerator");
+    }
+
+    IEnumerator ImageCheckingEnumerator()
     {
         float biggestError = 0;
-        bool isCorrect = true;
-        for (int y = 0; y < image.height; y++)
+        for (int y = 0; y < imageToCheck.height; y++)
         {
-            for (int x = 0; x < image.width; x++)
+            for (int x = 0; x < imageToCheck.width; x++)
             {
-                Color color1 = image.GetPixel(x, y);
+                Color color1 = imageToCheck.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
 
                 if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
@@ -88,13 +116,17 @@ public class ImageOutput : BlockObject {
                 if (Mathf.Abs(color2.b - color1.b) > biggestError) biggestError = Mathf.Abs(color2.b - color1.b);
 
             }
+            if (y % 10 == 0) yield return null;
         }
         //Debug.Log(biggestError);
-        if (biggestError > 0) isCorrect = false;
-        return isCorrect;
+        if (biggestError > 0) imageCorrect = false;
+        else imageCorrect = true;
+
+        imageCheckingState = ImageCheckingState.Checked;
+
     }
 
-   protected virtual void ExportCurrentImage()
+    protected virtual void ExportCurrentImage()
     {
         if (inputImage != null)
         {

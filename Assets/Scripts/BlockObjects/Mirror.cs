@@ -5,6 +5,8 @@ using UnityEngine;
 public class Mirror : BlockObject
 {
 
+    //needs refactoring
+
     public LaserOutput outputLaserFront;
     public LaserOutput outputLaserBack;
 

@@ -127,14 +127,14 @@ public class PlayerController : MonoBehaviour {
                                 if (!hittedPlane.taken)
                                 {
                                     //SnapPosition(selectedBlockObject,hittedPlane);
-                                    selectedBlockObject.SnapToPosition(hittedPlane);
+                                    selectedBlockObject.SetPositionToSnapTo(hittedPlane);
                                     if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                                 }
                                 else
                                 {
                                     if (!selectedBlockObject.inInventory)
                                     {
-                                        selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                                        selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
                                     }
                                     else
                                     {
@@ -150,7 +150,7 @@ public class PlayerController : MonoBehaviour {
                                 if (!selectedBlockObject.inInventory)
                                 {
                                     //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                                    selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);             
+                                    selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);             
                                 }
                                 else
                                 {
@@ -162,7 +162,7 @@ public class PlayerController : MonoBehaviour {
                         }else
                         {
                             //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                            selectedBlockObject.SnapToPosition(selectedBlockObject.currentAssignedGridPlane);
+                            selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
                             if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                         }
                     }
