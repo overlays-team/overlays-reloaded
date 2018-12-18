@@ -17,24 +17,16 @@ public class BlockObject : MonoBehaviour
      * das blockObjekt hatt defaultmäßig nur einen Laser Output- kinder die mehr wollen, überschreiben
      */
 
+    [Header("Gameplay")]
     [Tooltip("if this is true - then we cant move the object from its position - good for some puzzle objects like walls etc")]
     public bool stationary = false;
     [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far")]
     public bool actionBlocked = false;
 
     #region positioning variables
-    //[HideInInspector]
+    [HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
-    #endregion
-
-    #region variables only only used by invenory objects
-    [HideInInspector]
-    public bool inInventory = false; //if its in the inventory it wont perform the standard start function
-    [HideInInspector]
-    public int inventoryIndex; //index zu welchem Invenotry item/button dieser BLock gehört, damit er seinen Weg zurückfindet
-    [Tooltip("the icon which will represent this blockObject in the inventory")]
-    public Sprite inventoryIcon;
     #endregion
 
     #region smooth movement variables
@@ -59,12 +51,17 @@ public class BlockObject : MonoBehaviour
     #endregion
 
     #region  laser Logic variables 
-    protected List<Laser> inputLasers;
+
+    [Header("Laser Logic")]
     [SerializeField]
+    [Tooltip("assign the laserInputs here")]
     protected LaserInput[] laserInputs;
-    //die laser Outputs setzt jedes Kind selber falls es mehr braucht
+
+    [Tooltip("default nur ein output, falls ein kind mehr braucht, kann es sich selber welche setzen")]
     [SerializeField]
     protected LaserOutput laserOutput;
+
+    protected List<Laser> inputLasers;
     bool[] activeLasersLastFrame;
     Texture2D[] imagesLastFrame;
 
@@ -74,14 +71,25 @@ public class BlockObject : MonoBehaviour
     #endregion
 
     #region graphics 
-
+    [Header("Graphics")]
     [SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected GameObject graphics;
     [SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected LineRenderer frame;
-    //shows the current image
+    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
 
+    #endregion
+
+    #region variables only only used by invenory objects
+    [HideInInspector]
+    public bool inInventory = false; //if its in the inventory it wont perform the standard start function
+    [HideInInspector]
+    public int inventoryIndex; //index zu welchem Invenotry item/button dieser BLock gehört, damit er seinen Weg zurückfindet
+    [Tooltip("the icon which will represent this blockObject in the inventory")]
+    public Sprite inventoryIcon;
     #endregion
 
     #region  image processing

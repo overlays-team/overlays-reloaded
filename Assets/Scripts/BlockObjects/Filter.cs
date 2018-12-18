@@ -6,6 +6,7 @@ public class Filter : BlockObject
 {
 
     public enum FilterColor { RED, GREEN, BLUE, NONE };
+    [Header("Filter")]
     public FilterColor filterMode = FilterColor.NONE;
 
 

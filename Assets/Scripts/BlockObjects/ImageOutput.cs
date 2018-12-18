@@ -6,13 +6,15 @@ using System.IO;
 
 public class ImageOutput : BlockObject {
 
-    //wenn wir nur einen ImageInput haben wollen das:
+    [Header("Image Output")]
     [SerializeField]
+    [Tooltip("which image needs to be passed to this object to win?")]
     protected Texture2D goalImage;
 
-    protected Texture2D imageToCheck; //which image are we checking for correctness
+    protected Texture2D imageToCheck; //which image are we currently checking for correctness
 
-    public bool imageCorrect; // for the ingameManager, so he knows
+    [Tooltip("this bool tells the gameManager if we suceeded with this outputImage")]
+    public bool imageCorrect; 
 
     //in which imageCheckingstate are we - are we currently checking if this image is correct or ...
     protected enum ImageCheckingState
@@ -23,7 +25,6 @@ public class ImageOutput : BlockObject {
         Displaying //we already set the correct color after the imageChekc
     }
 
-    [SerializeField]
     protected ImageCheckingState imageCheckingState = ImageCheckingState.NoImage;
 
 

@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Mirror : BlockObject
 {
-
+    [Header("Mirror")]
+    [Tooltip("needs to have the same forward direction as the mirror")]
     public LaserOutput outputLaserFront;
+    [Tooltip("needs to have the opposite direction as the mirror")]
     public LaserOutput outputLaserBack;
 
     //inputLaser[0] is on the forwrd side of the mirror, inputLaser[1] on the backside
-    //Laser inputLaserBack;
-    //Laser inputLaserFront;
 
     protected override void Start()
     {
@@ -26,7 +26,6 @@ public class Mirror : BlockObject
 
         if (laserInputs[0].active)
         {
-            //int angleDifference = (int)Vector3.Angle(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
             outputLaserFront.gameObject.transform.forward = Vector3.Reflect(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
             outputLaserFront.laser.image = laserInputs[0].inputLaser.image;
             outputLaserFront.active = true;
@@ -38,7 +37,6 @@ public class Mirror : BlockObject
         }
         if (laserInputs[1].active)
         {
-            //int angleDifference = (int)Vector3.Angle(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
             outputLaserBack.gameObject.transform.forward = Vector3.Reflect(laserInputs[1].inputLaser.laserOutput.forward, transform.forward);
             outputLaserBack.laser.image = laserInputs[1].inputLaser.image;
             outputLaserBack.active = true;
@@ -48,12 +46,5 @@ public class Mirror : BlockObject
             outputLaserBack.laser.image = null;
             outputLaserBack.active = false;
         }
-    }
-
-    public override void ReturnToInventory()
-    {
-        outputLaserFront.laser.active = false;
-        outputLaserBack.laser.active = false;
-        base.ReturnToInventory();
     }
 }

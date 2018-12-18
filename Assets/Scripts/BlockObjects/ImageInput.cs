@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ImageInput : BlockObject
 {
+    [Header("Image Input")]
     [SerializeField]
     private Texture2D inputImage;
     [SerializeField]

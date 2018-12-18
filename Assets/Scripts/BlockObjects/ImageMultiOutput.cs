@@ -17,7 +17,6 @@ public class ImageMultiOutput : ImageOutput
             imageCheckingState = ImageCheckingState.NoImage;
             StopImageProcessing();
 
-            // imageProcessingState = ImageProcessingState.NoImage;
             List<LaserInput> activeLasers = new List<LaserInput>();
             foreach (LaserInput laserInput in laserInputs)
             {
