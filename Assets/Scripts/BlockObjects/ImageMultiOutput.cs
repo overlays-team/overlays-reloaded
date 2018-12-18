@@ -6,23 +6,22 @@ using System.IO;
 
 public class ImageMultiOutput : ImageOutput
 {
-    
-    protected override void Start()
-    {
-        base.Start();
-        frame.SetColors(Color.red, Color.red);
-    }
 
-    // Update is called once per frame
     protected override void ImageOutputUpdate()
-    { 
+    {
         if (lasersChanged)
         {
-            imageProcessingState = ImageProcessingState.NoImage;
+            imageCorrect = false;
+            frame.SetColors(Color.red, Color.red);
+            StopCoroutine("ImageCheckingEnumerator");
+            imageCheckingState = ImageCheckingState.NoImage;
+            StopImageProcessing();
+
+            // imageProcessingState = ImageProcessingState.NoImage;
             List<LaserInput> activeLasers = new List<LaserInput>();
             foreach (LaserInput laserInput in laserInputs)
             {
-                if(laserInput.active)
+                if (laserInput.active)
                 {
                     activeLasers.Add(laserInput);
                 }
@@ -34,31 +33,17 @@ public class ImageMultiOutput : ImageOutput
                 inputImage2 = activeLasers[1].inputLaser.image;
                 StartImageProcessing();
             }
-            else if(activeLasers.Count == 1)
+            else if (activeLasers.Count == 1)
             {
-                StopImageProcessing();
                 debugImage.sprite = Sprite.Create(activeLasers[0].inputLaser.image, new Rect(0, 0, activeLasers[0].inputLaser.image.width, activeLasers[0].inputLaser.image.height), new Vector2(0.5f, 0.5f));
-                if (CheckIfImageIsCorrect(activeLasers[0].inputLaser.image))
-                {
-                    //validityImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                    frame.SetColors(Color.green, Color.green);
-                    imageCorrect = true;
-                }
-                else
-                {
-                    // validityImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
-                    frame.SetColors(Color.red, Color.red);
-                    imageCorrect = false;
-                }
+                CheckIfImageIsCorrect(activeLasers[0].inputLaser.image);
             }
             else
             {
                 inputImage1 = null;
                 inputImage2 = null;
-                StopImageProcessing();
 
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                //validityImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
                 frame.SetColors(Color.red, Color.red);
                 imageCorrect = false;
             }
@@ -69,53 +54,39 @@ public class ImageMultiOutput : ImageOutput
             if (imageProcessingState == ImageProcessingState.Ready)
             {
                 debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
-                if (CheckIfImageIsCorrect(outputImage))
+
+                //start checking if our image is processed
+                imageCheckingState = ImageCheckingState.Checking;
+                frame.SetColors(Color.yellow, Color.yellow);
+                CheckIfImageIsCorrect(outputImage);
+                imageProcessingState = ImageProcessingState.Displaying;
+            }
+        }
+
+        if (imageCheckingState != ImageCheckingState.Displaying)
+        {
+            if (imageCheckingState == ImageCheckingState.Checked)
+            {
+                imageCheckingState = ImageCheckingState.Displaying;
+                if (imageCorrect)
                 {
-                    //validityImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                    frame.SetColors(Color.green, Color.green);
-                    imageCorrect = true;
+                    frame.SetColors(Color.green, Color.green);   
+                }
+                else
+                {
+                    frame.SetColors(Color.red, Color.red);
                 }
             }
-            else 
-            {
-                //validityImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.red, Color.red);
-                imageCorrect = false;
-            }
         }
 
-    }
 
-    
-
-    /*protected override void StartImageProcessing()
-    {
-        outputImage = Instantiate(inputImage1); // wir erstellen uns ein neues output Image - welches eine Kopie eines Inputs ist, wird soweiso gleih überschrieben - könnte man schlauer lösen
-        if (inputImage1.width != inputImage2.width) Debug.Log("different resolutions!");
-
-        base.StartImageProcessing();
-    }*/
-    /*
-    IEnumerator ImageProcessingEnumerator()
-    {
-        for (int y = 0; y < outputImage.height; y++)
+        //export function to get a goal image
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            for (int x = 0; x < outputImage.width; x++)
-            {
-                outputImage.SetPixel(x, y,
-                   new Color(
-                       1 - (1 - inputImage1.GetPixel(x, y).r) * (1 - inputImage2.GetPixel(x, y).r) / 1,
-                       1 - (1 - inputImage1.GetPixel(x, y).g) * (1 - inputImage2.GetPixel(x, y).g) / 1,
-                       1 - (1 - inputImage1.GetPixel(x, y).b) * (1 - inputImage2.GetPixel(x, y).b) / 1
-                   ));
-            }
-            if (y % 10 == 0) yield return null;
+            if(outputImage!=null)ExportImage(outputImage);
         }
-        outputImage.Apply();
-
-        imageProcessingState = ImageProcessingState.Ready;
     }
-    */
+
     protected override Color ProcessPixel(int x, int y)
     {
         return new Color(
@@ -125,16 +96,4 @@ public class ImageMultiOutput : ImageOutput
                         );
     }
 
-    protected override void ExportCurrentImage()
-    {
-        if (outputImage != null)
-        {
-            byte[] bytes = outputImage.EncodeToPNG();
-            File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
-        }
-        else
-        {
-            Debug.Log("output image is Null");
-        }
-    }
 }

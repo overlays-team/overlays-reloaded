@@ -5,68 +5,49 @@ using UnityEngine;
 public class Mirror : BlockObject
 {
 
-    //needs refactoring
-
     public LaserOutput outputLaserFront;
     public LaserOutput outputLaserBack;
 
-    Laser inputLaserBack;
-    Laser inputLaserFront;
+    //inputLaser[0] is on the forwrd side of the mirror, inputLaser[1] on the backside
+    //Laser inputLaserBack;
+    //Laser inputLaserFront;
+
+    protected override void Start()
+    {
+        base.Start();
+
+        laserInputMaxIncidenceAngle = 85;
+    }
 
     protected override void Update()
     {
         base.Update();
 
 
-        //reset the mevery time
-        inputLaserBack = null;
-        inputLaserFront = null;
-
-        foreach (Laser laser in inputLasers)
+        if (laserInputs[0].active)
         {
-
-            //check for input lasers
-           
-            int angleDifference = (int)Vector3.Angle(laser.laserOutput.forward, transform.forward);
-            //Debug.Log("angle Difference: " + angleDifference);
-            //zwischen 0 und 45 - back, zwischen 135 und 180 front
-            if (angleDifference >= 0 && angleDifference <= 85)
-            {
-                inputLaserBack = laser;
-                outputLaserBack.gameObject.transform.forward = Vector3.Reflect(inputLaserBack.laserOutput.forward, transform.forward);
-
-            }
-            else if (angleDifference >= 95 && angleDifference <= 180)
-            {
-                inputLaserFront = laser;
-                outputLaserFront.gameObject.transform.forward = Vector3.Reflect(inputLaserFront.laserOutput.forward, transform.forward);
-            }
-
-        }
-
-        //decide what to do with the lasers
-        if (inputLaserFront != null)
-        {
+            //int angleDifference = (int)Vector3.Angle(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
+            outputLaserFront.gameObject.transform.forward = Vector3.Reflect(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
+            outputLaserFront.laser.image = laserInputs[0].inputLaser.image;
             outputLaserFront.active = true;
-            //here we would copy the values of the input laser to the output laser - the mirror does not change them
-            outputLaserFront.laser.image = inputLaserFront.image;
         }
         else
         {
+            outputLaserFront.laser.image = null;
             outputLaserFront.active = false;
         }
-        if (inputLaserBack != null)
+        if (laserInputs[1].active)
         {
+            //int angleDifference = (int)Vector3.Angle(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
+            outputLaserBack.gameObject.transform.forward = Vector3.Reflect(laserInputs[1].inputLaser.laserOutput.forward, transform.forward);
+            outputLaserBack.laser.image = laserInputs[1].inputLaser.image;
             outputLaserBack.active = true;
-            //here we would copy the values of the input laser to the output laser
-            outputLaserBack.laser.image = inputLaserBack.image;
-
         }
         else
         {
+            outputLaserBack.laser.image = null;
             outputLaserBack.active = false;
         }
-        
     }
 
     public override void ReturnToInventory()
@@ -76,4 +57,3 @@ public class Mirror : BlockObject
         base.ReturnToInventory();
     }
 }
-        

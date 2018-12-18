@@ -7,9 +7,8 @@ using System.IO;
 public class ImageOutput : BlockObject {
 
     //wenn wir nur einen ImageInput haben wollen das:
-    Texture2D inputImage;
     [SerializeField]
-    Texture2D goalImage;
+    protected Texture2D goalImage;
 
     protected Texture2D imageToCheck; //which image are we checking for correctness
 
@@ -31,7 +30,7 @@ public class ImageOutput : BlockObject {
     protected override void Start()
     {
         base.Start();
-        inputImage = null;
+        inputImage1 = null;
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
         frame.SetColors(Color.red, Color.red);
     }
@@ -44,11 +43,7 @@ public class ImageOutput : BlockObject {
 
         ImageOutputUpdate();
 
-        //export function to get a goal image
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ExportCurrentImage();
-        }
+      
         if (Input.GetKeyDown(KeyCode.C))
         {
             Debug.Log(imageCorrect);
@@ -62,18 +57,18 @@ public class ImageOutput : BlockObject {
             imageCorrect = false;
             frame.SetColors(Color.red, Color.red);
             StopCoroutine("ImageCheckingEnumerator");
+             imageCheckingState = ImageCheckingState.NoImage;
 
             if (laserInputs[0].active)
             {
-                inputImage = laserInputs[0].inputLaser.image;
+                inputImage1 = laserInputs[0].inputLaser.image;
                 imageCheckingState = ImageCheckingState.Checking;
                 frame.SetColors(Color.yellow, Color.yellow);
-                CheckIfImageIsCorrect(inputImage);
+                CheckIfImageIsCorrect(inputImage1);
             }
             else
             {
-                inputImage = null;
-                imageCheckingState = ImageCheckingState.NoImage;
+                inputImage1 = null;
             }
         }
 
@@ -92,7 +87,13 @@ public class ImageOutput : BlockObject {
                 }
             }
 
-        }         
+        }
+
+        //export function to get a goal image
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(inputImage1!=null)ExportImage(inputImage1);
+        }
     }
 
     protected void CheckIfImageIsCorrect(Texture2D image)
@@ -126,11 +127,11 @@ public class ImageOutput : BlockObject {
 
     }
 
-    protected virtual void ExportCurrentImage()
+    protected virtual void ExportImage(Texture2D imageToExport)
     {
-        if (inputImage != null)
+        if (imageToExport != null)
         {
-            byte[] bytes = inputImage.EncodeToPNG();
+            byte[] bytes = imageToExport.EncodeToPNG();
             File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
         }
         else

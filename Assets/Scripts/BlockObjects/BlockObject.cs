@@ -23,7 +23,7 @@ public class BlockObject : MonoBehaviour
     public bool actionBlocked = false;
 
     #region positioning variables
-    [HideInInspector]
+    //[HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
     #endregion
@@ -67,6 +67,8 @@ public class BlockObject : MonoBehaviour
     protected LaserOutput laserOutput;
     bool[] activeLasersLastFrame;
     Texture2D[] imagesLastFrame;
+
+    protected int laserInputMaxIncidenceAngle = 5; //was ist der größte Winkel unter dem ein Laser in einen LaserInputEinfallen kann und trotzdem akzeptiert wird
 
     protected bool lasersChanged; //did the laserInputs change last frame?
     #endregion
@@ -265,7 +267,7 @@ public class BlockObject : MonoBehaviour
             //nun schauen wir ob irgend ein Laser einen unserer LaserInputs trifft
             foreach (Laser laser in inputLasers)
             {
-                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < 5)
+                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < laserInputMaxIncidenceAngle)
                 {
                     laserInput.active = true;
                     laserInput.inputLaser = laser;
