@@ -24,7 +24,7 @@ public class BlockObject : MonoBehaviour
     public bool actionBlocked = false;
 
     #region positioning variables
-    [HideInInspector]
+    //[HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
     #endregion

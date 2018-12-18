@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     float timeOfLastClick;
     float clickTime;
@@ -44,13 +45,13 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-   
+
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         playerMode = PlayerMode.Default;
-	}
+    }
 
     // Update is called once per frame
     void Update()
@@ -101,7 +102,7 @@ public class PlayerController : MonoBehaviour {
                         {
                             selectedBlockObject = hittedObject;
                             playerMode = PlayerMode.MouseHold;
-                        } 
+                        }
                     }
                 }
                 break;
@@ -112,60 +113,55 @@ public class PlayerController : MonoBehaviour {
                 //when we release the mouse, the object will be placed
                 if (Input.GetMouseButtonUp(0))
                 {
-                    if (clickTime >= timeToHoldToInitiateHoldAction)
+
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    // Bit shift the index of the layer (9) to get a bit mask
+                    int layerMask = 1 << 9;
+
+                    if (Physics.Raycast(ray, out hit, 100, layerMask))
                     {
-                        RaycastHit hit;
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        // Bit shift the index of the layer (9) to get a bit mask
-                        int layerMask = 1 << 9;
-
-                        if (Physics.Raycast(ray, out hit, 100, layerMask))
+                        if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                        hittedPlane = hit.collider.gameObject.GetComponent<GridPlane>();
+                        if (hittedPlane != null)
                         {
-                            hittedPlane = hit.collider.gameObject.GetComponent<GridPlane>();
-                            if (hittedPlane != null)
+                            if (!hittedPlane.taken || hittedPlane == selectedBlockObject.currentAssignedGridPlane)
                             {
-                                if (!hittedPlane.taken)
-                                {
-                                    //SnapPosition(selectedBlockObject,hittedPlane);
-                                    selectedBlockObject.SetPositionToSnapTo(hittedPlane);
-                                    if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
-                                }
-                                else
-                                {
-                                    if (!selectedBlockObject.inInventory)
-                                    {
-                                        selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
-                                    }
-                                    else
-                                    {
-                                        PutObjectBackToInventory();
-                                    }
-                                    if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
-
-                                }
-
+                                selectedBlockObject.SetPositionToSnapTo(hittedPlane);
                             }
                             else
                             {
                                 if (!selectedBlockObject.inInventory)
                                 {
-                                    //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                                    selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);             
+                                    selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
                                 }
                                 else
                                 {
                                     PutObjectBackToInventory();
                                 }
-                                if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
-
                             }
-                        }else
-                        {
-                            //SnapPosition(selectedBlockObject, selectedBlockObject.currentAssignedGridPlane);
-                            selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
-                            if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+
                         }
+                        else
+                        {
+                            if (!selectedBlockObject.inInventory)
+                            {
+                                selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
+                            }
+                            else
+                            {
+                                PutObjectBackToInventory();
+                            }
+                        }
+
+
                     }
+                    else
+                    {
+                        Debug.Log("raycast didnt hit anything, try scaling the background plane up");
+                        if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                    }
+
 
 
                     playerMode = PlayerMode.Default;
@@ -185,30 +181,37 @@ public class PlayerController : MonoBehaviour {
 
                     if (Physics.Raycast(ray, out hit, 100, layerMask))
                     {
-                        selectedBlockObject.SetMovePosition(hit.point + (hit.collider.gameObject.transform.up*blockLiftingHeight));
+                        selectedBlockObject.SetMovePosition(hit.point + (hit.collider.gameObject.transform.up * blockLiftingHeight));
 
                         hittedPlane = hit.collider.gameObject.GetComponent<GridPlane>();
+
                         if (hittedPlane != null)
                         {
-                            if(lastHittedGridPlane!= hittedPlane)
+                            if (lastHittedGridPlane != hittedPlane)
                             {
-                                if(lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
-                                if(hittedPlane!= selectedBlockObject.currentAssignedGridPlane) hittedPlane.ShowHalo();
+                                if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                                if (hittedPlane != selectedBlockObject.currentAssignedGridPlane)
+                                {
+                                    Debug.Log(hittedPlane + " != " + selectedBlockObject.currentAssignedGridPlane);
+                                    hittedPlane.ShowHalo();
+                                }
                                 lastHittedGridPlane = hittedPlane;
                             }
-                        }else
+                        }
+                        else
                         {
                             if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                         }
-                    }else
+                    }
+                    else
                     {
                         if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                     }
                 }
-          
+
                 break;
         }
-        
+
     }
 
     public void GetObjectFromInventory(BlockObject selectedBlock)
