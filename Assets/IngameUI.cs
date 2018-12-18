@@ -22,9 +22,11 @@ public class IngameUI : MonoBehaviour {
     //sh
     public Text countDownText;
     public GameObject countDownPanel;
+    public GameObject totalScorePanel;
     public GameObject highestScorePanel;
     public Text totalScoreText;
     public Text highestScoreText;
+    public InputField nameInputField;
 
     public Material blurMaterial;
     public bool blurring = false;
@@ -58,7 +60,7 @@ public class IngameUI : MonoBehaviour {
             blurMaterial.SetColor("_Color", newColor);
             blurMaterial.SetFloat("_Size", newValue * 50.0f);
 
-            Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
+            //Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
             if (timeBlur > 0.3f)
             {
                 blurring = false;
@@ -144,11 +146,19 @@ public class IngameUI : MonoBehaviour {
         countDownText.enabled = isEnabled;
     }
 
+    public void ShowTotalScorePanel(bool isEnabled)
+    {
+        totalScorePanel.SetActive(isEnabled);
+        totalScoreText.enabled = isEnabled;
+    }
+
     public void ShowHighestScorePanel(bool isEnabled)
     {
         highestScorePanel.SetActive(isEnabled);
         highestScoreText.enabled = isEnabled;
     }
+
+ 
 
 
     //sh

@@ -52,11 +52,14 @@ public class IngameManager : MonoBehaviour
         SetAttackMode(attackMode); //sh, for testing
 
         star = Random.Range(1, 4); //sh, for testing. generate score randomlly.
-        //CreateTestLevelState(); //sh, needed for test
+
+        CreateTestLevelState(); //sh, needed for test
+
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
         GameDataEditor.Instance.data.playerName = "SHUYA";
-        if(attackMode)ingameUI.ShowCountDownText(attackMode);
-        if(attackMode)ingameUI.ShowHighestScorePanel(attackMode);
+        if (attackMode) ingameUI.ShowCountDownText(attackMode);
+        if (attackMode) ingameUI.ShowTotalScorePanel(attackMode);
+        if (attackMode) ingameUI.ShowHighestScorePanel(attackMode);
     }
 
 
@@ -65,24 +68,29 @@ public class IngameManager : MonoBehaviour
     {
         if (!win && !lose && !paused)
         {
-            if (attackMode)CountTime();
+            if (attackMode) CountTime();
             CheckIfWeWon();
 
-        
+
             if (lose)
             {
                 Lose();
 
             }
 
-        }
-            //sh, for debug, force win
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Win();
-            }
 
-        
+        }
+
+        //sh, for debug, force win
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Win();
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Lose();
+        }
 
 
     }
@@ -121,7 +129,7 @@ public class IngameManager : MonoBehaviour
 
         //sh
         SaveLevelState();
-        TestSaveInServer();
+        //TestSaveInServer();
 
 
         LoadLevelState(); //for test we need this here.
@@ -129,21 +137,18 @@ public class IngameManager : MonoBehaviour
 
     private void TestSaveInServer()
     {
-        //string url = "localhost:3000";
-        //httpCommunicator = new HttpCommunicator(url);
+        //httpCommunicator.ConnectionStart();
 
-
-        //httpCommunicator = new HttpCommunicator();
-        //httpCommunicator.SendScore();
-
-        //string responseText = httpCommunicator.Request();
-        //Debug.Log("InGameManager:" + responseText);
-
-        //httpCommunicator.RequestPage();
-
-        httpCommunicator.ConnectionStart();
+        //httpCommunicator.SendScoreToServer("aaa", newTotalScore);
     }
 
+
+    public void SubmitScore()
+    {
+        //TODO: doent't work if "c" is being inputed in inputTextField. 
+        string playerName = ingameUI.nameInputField.text;
+        httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+    }
 
 
     private void UpdateTotalScore()
@@ -183,14 +188,27 @@ public class IngameManager : MonoBehaviour
 
         int lastCompletedLevel = 0;
         int currentLevel = 0;
+        //int nextLevel = 0;
 
         //get last completed level 
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
+            //string sceneName = "Level" + (i + 1);
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
                 lastCompletedLevel = i;
             }
+
+            //nextLevel = i + 1;
+            /*
+            if (SceneManager.GetActiveScene().name.Equals(sceneName))
+            {
+                Debug.Log("scene name is same");
+                nextLevel = i + 1;
+                currentLevel = i;
+            }
+            */
+
         }
 
         //get currentLevel
@@ -198,18 +216,23 @@ public class IngameManager : MonoBehaviour
         {
             currentLevel = 0; //not necessarily but for security
         }
+
         else
         {
             currentLevel = lastCompletedLevel + 1;
         }
 
 
+
         //save score and win/lose state
-        /*
+
+        Debug.Log("currentLevel:" + currentLevel);
+        //Debug.Log("nextLevel:" + nextLevel);
+
         GameDataEditor.Instance.data.levels[currentLevel].star = star;
         GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
-        */
+        //GameDataEditor.Instance.data.levels[nextLevel].completed = true;
 
 
         //for future development
@@ -235,7 +258,10 @@ public class IngameManager : MonoBehaviour
     {
         ingameUI.ShowGameOverPanel();
         lose = true;
+
+        TestSaveInServer();
     }
+
 
     public void Next()
     {
@@ -283,7 +309,7 @@ public class IngameManager : MonoBehaviour
         }
         timeRunsOut = timeLeft < 0;
 
-        if(attackMode)ingameUI.UpdateCountDown(timeLeft, timeRunsOut);
+        if (attackMode) ingameUI.UpdateCountDown(timeLeft, timeRunsOut);
     }
 
 
@@ -292,7 +318,7 @@ public class IngameManager : MonoBehaviour
         bool allCorrect = true; //sh: false as default is better and remove else?. 
 
         //sh
-        if (timeRunsOut &!lose)
+        if (timeRunsOut & !lose)
         {
             //sh, Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
@@ -337,46 +363,46 @@ public class IngameManager : MonoBehaviour
     }
 
 
-    
-    //sh
+
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
+        if (GameDataEditor.Instance.data.levels.Count == 0)
+        {
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
+        }
 
-        //GameDataEditor.Instance.data.levels[0].score = 2;
-        //GameDataEditor.Instance.data.levels[1].score = 1;
     }
-       
+
 
 
     /*

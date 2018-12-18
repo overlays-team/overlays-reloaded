@@ -4,8 +4,22 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class HttpCommunicator : MonoBehaviour
-{ //startcoroutinを使うためには、monobehaiviourを継承している必要があるようだ。
-  //その他には　ScriptableObject などがあるようだ。
+{
+
+    private const string host = "localhost"; //remove const after implementing setter
+    private const int port = 3000; //remove const after implementing setter
+
+    private const string protocol = "http://";
+    private const string path = "/scores";
+   
+    private const string header = "Content-Type";
+    private const string contentType = "application/json";
+
+    //private  const int score = 3098; //remove const and default value after implementing constructor or method
+    //private  const string player = "p3098"; //remove const and default value after implementing constructor or method
+
+    private int score;
+    private string player;
 
 
     void Start () {	
@@ -14,8 +28,13 @@ public class HttpCommunicator : MonoBehaviour
 	void Update () {
 	}
 
-    //private  string url = "localhost:3000";
-    //private string url;
+    public HttpCommunicator(string player, int score)
+    {
+        //this.player = player;
+        //this.score = score;
+    }
+
+    /*
     public HttpCommunicator(string url)
     {
         //this.url = url;
@@ -24,14 +43,75 @@ public class HttpCommunicator : MonoBehaviour
     public HttpCommunicator()
     {
     }
+    */
+
+    public void SendScoreToServer(string player, int score)
+    {      
+        this.player = player;
+        this.score = score;
+
+        ConnectionStart();
+
+    }
 
 
     public void ConnectionStart()
     {
-        //StartCoroutine(ConnectionWebForm());
         StartCoroutine(ConnectionJSON());
     }
 
+
+    private IEnumerator ConnectionJSON()
+    {
+        /*
+        string host = "localhost";
+        int port = 3000;
+
+        string protocol = "http://";
+        string path = "/scores";
+        string url = protocol + host + ":" + port + path;
+
+        string header = "Content-Type";
+        string contentType = "application/json";
+
+        string score = "3090";
+        string player = "p3090";
+        */
+
+        string url = protocol + host + ":" + port + path;
+
+        //sorry, ignoreance of json in unity
+        string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
+        //Debug.Log(testJson);
+
+        //byte[] payload = new byte[1024];
+        byte[] payload = new byte[scoreDataJson.Length];
+        payload = System.Text.Encoding.UTF8.GetBytes(scoreDataJson);
+
+
+        UnityWebRequest request = new UnityWebRequest(url);
+        request.timeout = 60;
+        request.method = UnityWebRequest.kHttpVerbPOST;
+        request.SetRequestHeader(header, contentType);
+        request.uploadHandler = new UploadHandlerRaw(payload); ;
+
+
+        // send request
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log("ERROR:" + request.error);
+        }
+        else
+        {
+            Debug.Log("Response Code: " + request.responseCode);
+        }
+
+    }
+
+
+    //old version, not being updated more 
     private IEnumerator ConnectionWebForm()
     {
 
@@ -59,49 +139,5 @@ public class HttpCommunicator : MonoBehaviour
             
     }
 
-
-    private IEnumerator ConnectionJSON()
-    {
-        //string host = "http://localhost:3000/scores";
-        string host = "localhost";
-        int port = 3000;
-
-        string protocol = "http://";
-        string path = "/scores";
-        string url = protocol + host + ":" + port + path;
-
-        string header = "Content-Type";
-        string contentType = "application/json";
-
-        string score = "3090";
-        string player = "p3090";
-
-        //sorry, ignoreance of json in unity
-        string testJson = " {\"score\" : {\"score\": \"" +score+ "\", \"player\": \"" +player+ "\"}} ";
-
-        byte[] payload = new byte[1024];
-        payload = System.Text.Encoding.UTF8.GetBytes(testJson);
-
-
-        UnityWebRequest request = new UnityWebRequest(url);
-        request.timeout = 60;
-        request.method = UnityWebRequest.kHttpVerbPOST;
-        request.SetRequestHeader(header, contentType);
-        request.uploadHandler = new UploadHandlerRaw(payload);;
-
-
-        // send request
-        yield return request.SendWebRequest();
-
-        if (request.isNetworkError || request.isHttpError)
-        {
-            Debug.Log("ERROR:" + request.error);
-        }
-        else
-        {
-            Debug.Log("Response Code: " + request.responseCode);
-        }
-
-    }
 
 }
