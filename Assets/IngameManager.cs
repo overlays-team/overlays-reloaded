@@ -130,9 +130,24 @@ public class IngameManager : MonoBehaviour
         //sh
         SaveLevelState();
         //TestSaveInServer();
-
+        GetRandomPlayerName();
 
         LoadLevelState(); //for test we need this here.
+    }
+
+    private string GetRandomPlayerName()
+    {
+        //string datetimeStr = System.DateTime.Now.ToString();
+        //Debug.Log("time:" + datetimeStr);
+
+        string year = System.DateTime.Now.Year.ToString();
+        string month = System.DateTime.Now.Month.ToString();
+        string day = System.DateTime.Now.Day.ToString();
+
+        int random = Random.Range(1000, 9999);
+
+        //return ("player" + year + month + day + "-" + random);
+        return ("player" + "-" + random);
     }
 
     private void TestSaveInServer()
@@ -145,8 +160,19 @@ public class IngameManager : MonoBehaviour
 
     public void SubmitScore()
     {
-        //TODO: doent't work if "c" is being inputed in inputTextField. 
-        string playerName = ingameUI.nameInputField.text;
+        string playerName;
+
+        if (ingameUI.nameInputField.text.Equals(""))
+        {
+            playerName = GetRandomPlayerName();
+        }
+        else
+        { 
+            //TODO: doent't work if "c" is being inputed in inputTextField. 
+            playerName = ingameUI.nameInputField.text;
+        }
+        Debug.Log(playerName);
+
         httpCommunicator.SendScoreToServer(playerName, newTotalScore);
     }
 
