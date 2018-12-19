@@ -47,13 +47,13 @@ public class LevelSelector : MonoBehaviour
     */
 
 
-
+    /*
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
 
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", true));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
 
@@ -61,20 +61,67 @@ public class LevelSelector : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+    }
+    */
 
+
+    private void CreateTestLevelState()
+    {
+        Debug.Log("こんにちは、CreateTestLevelState()");
+
+        if (GameDataEditor.Instance.data.levels.Count == 0)
+        {
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
+        }
+        //GameDataEditor.Instance.data.levels[0].score = 2;
+        //GameDataEditor.Instance.data.levels[1].score = 1;
     }
 
 
-   /* private void LoadTestLevelStateFromFile()
+
+
+    private void LoadTestLevelStateFromFile()
     {
         Debug.Log("そして、LoadFromFile()");
 
         //debug: loading state with original io class
         LevelSelectorIO io = new LevelSelectorIO();
-        io.LoadData();
+
+        io.LoadData(); // only for test
+        GameDataEditor.Instance.LoadData(); //<== das funktioniert nicht!
+
         GameDataEditor.Instance.data = io.data;
         Debug.Log(GameDataEditor.Instance.data.levels.Count);
 
+       
 
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
         {
@@ -87,7 +134,7 @@ public class LevelSelector : MonoBehaviour
             level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
         }
     }
-*/
+
 
 
 

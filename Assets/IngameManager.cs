@@ -162,13 +162,21 @@ public class IngameManager : MonoBehaviour
 
         int lastCompletedLevel = 0;
         int currentLevel = 0;
+        int nextLevel = 0;
 
         //get last completed level 
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
+            string sceneName = "Level" + (i + 1);
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
                 lastCompletedLevel = i;
+            }
+            if (SceneManager.GetActiveScene().name.Equals(sceneName))
+            {
+                Debug.Log("scene name is same");
+                nextLevel = i + 1;
+                currentLevel = i;
             }
         }
 
@@ -177,18 +185,20 @@ public class IngameManager : MonoBehaviour
         {
             currentLevel = 0; //not necessarily but for security
         }
+        /*
         else
         {
             currentLevel = lastCompletedLevel + 1;
         }
-
+        */
 
         //save score and win/lose state
-        /*
+
         GameDataEditor.Instance.data.levels[currentLevel].star = star;
         GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
-        */
+
+        GameDataEditor.Instance.data.levels[nextLevel].completed = true;
 
 
         //for future development
@@ -318,6 +328,7 @@ public class IngameManager : MonoBehaviour
 
     
     //sh
+    /*
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -355,6 +366,7 @@ public class IngameManager : MonoBehaviour
         //GameDataEditor.Instance.data.levels[0].score = 2;
         //GameDataEditor.Instance.data.levels[1].score = 1;
     }
+    */
        
 
 
