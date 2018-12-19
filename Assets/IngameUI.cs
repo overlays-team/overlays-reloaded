@@ -134,6 +134,11 @@ public class IngameUI : MonoBehaviour {
         nameInputPanel.SetActive(true);
     }
 
+    public void HideNameInputPanel()
+    {
+        nameInputPanel.SetActive(false);
+    }
+
     public void HideLevelCompletePanel()
     {
         levelCompleteMenu.SetActive(false);

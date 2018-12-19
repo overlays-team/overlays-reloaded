@@ -289,9 +289,11 @@ public class IngameManager : MonoBehaviour
         if (newTotalScore > 0)
         {
             ingameUI.ShowNameInputPanel();
+        } else {
+            ingameUI.HideNameInputPanel();
         }
 
-        //TestSaveInServer();
+       
     }
 
 
