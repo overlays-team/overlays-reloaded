@@ -43,12 +43,6 @@ public class ImageOutput : BlockObject {
         base.Update();
 
         ImageOutputUpdate();
-
-      
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log(imageCorrect);
-        }
     }
 
     protected virtual void ImageOutputUpdate()
@@ -91,7 +85,7 @@ public class ImageOutput : BlockObject {
         }
 
         //export function to get a goal image
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.LeftControl))
         {
             if(inputImage1!=null)ExportImage(inputImage1);
         }
@@ -130,6 +124,7 @@ public class ImageOutput : BlockObject {
 
     protected virtual void ExportImage(Texture2D imageToExport)
     {
+        Debug.Log("Export");
         if (imageToExport != null)
         {
             byte[] bytes = imageToExport.EncodeToPNG();
