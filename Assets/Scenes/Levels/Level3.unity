@@ -1445,6 +1445,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114258330935808434, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
+        type: 2}
+      propertyPath: blockLiftingHeight
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09b6dc5a23788114e9c2deb67ea34d6c, type: 2}
   m_IsPrefabAsset: 0
@@ -1619,14 +1624,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d3ab92f0f9c7540b80dc5bf73a7776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAssignedGridPlane: {fileID: 0}
   stationary: 1
   actionBlocked: 1
+  currentAssignedGridPlane: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
-  frame: {fileID: 0}
   laserInputs: []
+  laserOutput: {fileID: 0}
+  graphics: {fileID: 0}
+  frame: {fileID: 0}
   debugImage: {fileID: 0}
 --- !u!65 &439555954
 BoxCollider:

@@ -5,30 +5,31 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BlockObject : MonoBehaviour
-{ 
+{
 
     /*
      * Der Grundbaustein, alle anderen Blocks erben von diesem
      * Er hat eine Collection von Lasern, welche ihn hitten, 
      * die Kinder entscheiden dann was sie mit diesen Lasern tun und 
      * wieviele sie überhaupt wahrnehmen
+     * 
+     * Jedes Kind übernimmt die LaserInputs und inputImage 1 bis 4 und outputImage 1 bis 4 von der Vaterklasse, 
+     * das blockObjekt hatt defaultmäßig nur einen Laser Output- kinder die mehr wollen, überschreiben
      */
 
-    //für Positionierung
+    [Header("Gameplay")]
+    [Tooltip("if this is true - then we cant move the object from its position - good for some puzzle objects like walls etc")]
+    public bool stationary = false;
+    [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far")]
+    public bool actionBlocked = false;
+
+    #region positioning variables
     //[HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
+    #endregion
 
-    [Tooltip("if this is true - then we cant move the object from its position - good for some puzzle objects like walls etc")]
-    public bool stationary = false;
-    [Tooltip("if this is true we cant perform the onClickAction;")]
-    public bool actionBlocked = false;
-
-    public bool inInventory = false; // if its in the inventory it wont perform the standard start function
-    public int inventoryIndex;
-    public Sprite inventoryIcon;
-
-    #region smoothing variables
+    #region smooth movement variables
 
     enum BlockMovementState
     {
@@ -41,7 +42,7 @@ public class BlockObject : MonoBehaviour
 
     //for smoothed rotation
     Quaternion desiredRotation;
-    protected float degreesToRotate ; //how many degrees do we roatet
+    protected float degreesToRotate ; //how many degrees do we rotate 90 or 45? or something completely different - 90 for the current game
     bool rotate;
 
 
@@ -49,44 +50,94 @@ public class BlockObject : MonoBehaviour
     Vector3 targetDragPosition;
     #endregion
 
-    //For Lasers
-    protected List<Laser> inputLasers;
+    #region  laser Logic variables 
 
-    public LineRenderer frame;
-
-    //for laser inputs
+    [Header("Laser Logic")]
     [SerializeField]
+    [Tooltip("assign the laserInputs here")]
     protected LaserInput[] laserInputs;
 
-    protected bool lasersChanged; //did the laserInputs change last frame?
+    [Tooltip("default nur ein output, falls ein kind mehr braucht, kann es sich selber welche setzen")]
+    [SerializeField]
+    protected LaserOutput laserOutput;
+
+    protected List<Laser> inputLasers;
     bool[] activeLasersLastFrame;
     Texture2D[] imagesLastFrame;
 
-    //for image processing
-    protected bool imageReady;
-    protected bool imageInProcess;
-    protected bool imageDisplaying; //refactor this to states, if image is displaying, we dont need to create the sprite anymore
+    protected int laserInputMaxIncidenceAngle = 5; //was ist der größte Winkel unter dem ein Laser in einen LaserInputEinfallen kann und trotzdem akzeptiert wird
 
-    //for development debugging
-    public Image debugImage; //just for now
+    protected bool lasersChanged; //did the laserInputs change last frame?
+    #endregion
 
-    // Use this for initialization
+    #region graphics 
+    [Header("Graphics")]
+    [SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
+    protected GameObject graphics;
+    [SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
+    protected LineRenderer frame;
+    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
+    public Image debugImage;
+
+    #endregion
+
+    #region variables only only used by invenory objects
+    [HideInInspector]
+    public bool inInventory = false; //if its in the inventory it wont perform the standard start function
+    [HideInInspector]
+    public int inventoryIndex; //index zu welchem Invenotry item/button dieser BLock gehört, damit er seinen Weg zurückfindet
+    [Tooltip("the icon which will represent this blockObject in the inventory")]
+    public Sprite inventoryIcon;
+    #endregion
+
+    #region  image processing
+
+    protected enum ImageProcessingState
+    {
+        NoImage, //no image is being processed or displyed
+        Ready,  //image was calculated and waits to be displayed
+        Processing, //image is being calculated and cant be displayed right now
+        Displaying //image was calculate and is displaying on top of the blockObject in the "debugImage"
+    }
+
+    protected ImageProcessingState imageProcessingState = ImageProcessingState.NoImage;
+
+    //every block can have a maximum of 4
+    protected Texture2D inputImage1;
+    protected Texture2D inputImage2;
+    protected Texture2D inputImage3;
+    protected Texture2D inputImage4;
+
+    //some blocks can have more than one but they will change this on their own
+    protected Texture2D outputImage;
+
+
+    #endregion
+
     protected virtual void Start ()
     {
+        #region position set up
+        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
+        heightCorrector = currentAssignedGridPlane.transform.up;
+        heightCorrector *= transform.localScale.y / 2;
         if (!inInventory)
         {
-            heightCorrector = currentAssignedGridPlane.transform.up;
-            heightCorrector *= transform.localScale.y / 2;
             transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
             currentAssignedGridPlane.taken = true;
         }
-       
+        #endregion
+
+        #region smooth movement set up
         movementState = BlockMovementState.Default;
         rotate = false;
         desiredRotation = transform.localRotation;
         degreesToRotate = 90;
 
-        #region  or laserInputUpdate
+        #endregion
+
+        #region  laser logic Set up
         inputLasers = LaserManager.Instance.GetInputLasers(this);
 
         activeLasersLastFrame = new bool[laserInputs.Length];
@@ -98,52 +149,116 @@ public class BlockObject : MonoBehaviour
             if (laserInputs[i].inputLaser != null) imagesLastFrame[i] = laserInputs[i].inputLaser.image;
             else imagesLastFrame[i] = null;
         }
+
+        if(laserOutput!=null) laserOutput.active = false;
         #endregion
     }
 
     protected virtual void Update()
     {
-        #region smooth movement update
-        if (rotate) PerformRotation();
-        switch (movementState)
-        {
-            case BlockMovementState.Moving:
-                PerformDrag();
-                break;
-            case BlockMovementState.Dropping:
-                PerformSnapToPosition();
-                break;
-        }
-        #endregion
-
+        SmoothMovementUpdate();
         UpdateLaserInputs();
-        //every child decides here what to do with the input Lasers
-
-        //for debug image
-        if (Input.GetKeyDown(KeyCode.I)) ToogleDebugImage();
+        //reposition the image shown above our object
         if (debugImage != null) debugImage.transform.parent.gameObject.transform.up = Camera.main.transform.up;
+
+        //every child decides here what to do with their lasers
     }
 
-    //before returning to inventory some objects needs to deassign some variables or disable lasers
     public virtual void ReturnToInventory()
     {
+        //before returning to inventory some objects needs to deassign some variables or disable lasers
         currentAssignedGridPlane.taken = false;
         gameObject.SetActive(false);
     }
 
-
-
-
     public virtual void OnMouseClick()
     {
-        //most of the mneed to rotate, if they need something else they just override
+        //most of the need to rotate, if they need something else they just override
         if (!actionBlocked)
         {
             Rotate();
-        }
-        
+        } 
     }
 
+    #region graphics code
+
+    protected void Grow()
+    {
+        graphics.GetComponent<Animator>().SetBool("LaserInput", true);
+    }
+
+    protected void Shrink()
+    {
+        graphics.GetComponent<Animator>().SetBool("LaserInput", false);
+    }
+
+    #endregion
+
+    #region image processing code
+
+    protected virtual void StartImageProcessing()
+    {
+        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
+        outputImage = Instantiate(inputImage1);
+        imageProcessingState = ImageProcessingState.Processing;
+
+        StartCoroutine("ImageProcessingEnumerator");
+    }
+
+    protected virtual void StopImageProcessing()
+    {
+        //is called when the lasr leaves the node - > active image processing is stopped and the image is deleted
+        imageProcessingState = ImageProcessingState.NoImage;
+        StopCoroutine("ImageProcessingEnumerator");
+    }
+
+    IEnumerator ImageProcessingEnumerator()
+    {
+        for (int y = 0; y < outputImage.height; y++)
+        {
+            for (int x = 0; x < outputImage.width; x++)
+            {
+                outputImage.SetPixel(x, y, ProcessPixel(x,y));
+            }
+            if (y % 10 == 0) yield return null;
+        }
+        outputImage.Apply();
+
+        imageProcessingState = ImageProcessingState.Ready;
+    }
+
+    //this gets called on every pixel, every image processing block overrides this
+    protected virtual Color ProcessPixel(int x, int y)
+    {
+        return new Color();
+    }
+
+    protected void UpdateOutputImageDisplayAndSendThroughLaser()
+    {
+        if (imageProcessingState != ImageProcessingState.Displaying)
+        {
+            if (imageProcessingState == ImageProcessingState.Ready)
+            {
+                laserOutput.laser.image = outputImage;
+                laserOutput.active = true;
+
+                debugImage.gameObject.SetActive(true);
+                debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                imageProcessingState = ImageProcessingState.Displaying;
+            }
+            else
+            {
+                debugImage.gameObject.SetActive(false);
+                laserOutput.active = false;
+            }
+        }
+    }
+
+
+
+    #endregion
+
+    # region laser logic code
     private void UpdateLaserInputs()
     {
 
@@ -160,7 +275,7 @@ public class BlockObject : MonoBehaviour
             //nun schauen wir ob irgend ein Laser einen unserer LaserInputs trifft
             foreach (Laser laser in inputLasers)
             {
-                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < 5)
+                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < laserInputMaxIncidenceAngle)
                 {
                     laserInput.active = true;
                     laserInput.inputLaser = laser;
@@ -191,7 +306,7 @@ public class BlockObject : MonoBehaviour
 
         }
 
-        //dieses frame fürs nächste speichern
+        //dieses frame für den check im nächsten frame speichern
         for (int i = 0; i < laserInputs.Length; i++)
         {
             activeLasersLastFrame[i] = laserInputs[i].active;
@@ -214,46 +329,25 @@ public class BlockObject : MonoBehaviour
         return hittedInput;
     }
 
-    void ToogleDebugImage()
-    {
-        if (debugImage != null)
-        {
-            if (debugImage.gameObject.activeSelf)
-            {
-                debugImage.gameObject.SetActive(false);
-            }
-            else
-            {
-                debugImage.gameObject.SetActive(true);
-            }
-        }
-    }
-
-    #region image processing
-
-    protected virtual void StartImageProcessing()
-    {
-        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
-        imageReady = false;
-        imageDisplaying = false;
-        imageInProcess = true;
-
-        StartCoroutine("ImageProcessingEnumerator");
-    }
-
-    protected virtual void StopImageProcessing()
-    {
-        //is called when the lasr leaves the node - > active image processing is stoppen and the image is deleted
-        imageReady = false;
-        imageInProcess = false;
-        StopCoroutine("ImageProcessingEnumerator");
-    }
-
     #endregion
 
     #region smooth movement code
 
-        void Rotate()
+    void SmoothMovementUpdate()
+    {
+        if (rotate) PerformRotation();
+        switch (movementState)
+        {
+            case BlockMovementState.Moving:
+                PerformDrag();
+                break;
+            case BlockMovementState.Dropping:
+                PerformSnapToPosition();
+                break;
+        }
+    }
+
+    void Rotate()
     {
         rotate = true;
         desiredRotation = desiredRotation*Quaternion.Euler(0, degreesToRotate, 0);
@@ -274,7 +368,7 @@ public class BlockObject : MonoBehaviour
     }
 
     //diese Funktion sorgt dafür dass unser Block nach der bewegung schön weich landet
-    public void SnapToPosition(GridPlane gridPlane)
+    public void SetPositionToSnapTo(GridPlane gridPlane)
     {
         movementState = BlockMovementState.Dropping;
         if (currentAssignedGridPlane != null) currentAssignedGridPlane.taken = false;

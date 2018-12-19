@@ -59,6 +59,7 @@ public class Inventory : MonoBehaviour {
 
     public void  ReturnItemToInventory(BlockObject blockObject)
     {
+        blockObject.currentAssignedGridPlane = inventoryGridPlane;
         items[blockObject.inventoryIndex].ReturnBlockObject(blockObject);
         UpdateItems();
     }

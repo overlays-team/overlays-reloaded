@@ -4,23 +4,18 @@ using UnityEngine;
 
 public class Filter : BlockObject
 {
-    [SerializeField]
-    LaserOutput laserOutput;
 
-    //for image processing
-    Texture2D inputImage;
-    Texture2D outputImage;
-    //testing
     public enum FilterColor { RED, GREEN, BLUE, NONE };
+    [Header("Filter")]
     public FilterColor filterMode = FilterColor.NONE;
-    public GameObject graphic;
+
 
     protected override void Start()
     {
         base.Start();
         laserOutput.active = false;
 
-        /* falls wir den filter färben wollen
+        /* falls wir den laser färben wollen
         switch (filterMode)
         {
             case FilterColor.RED:
@@ -45,92 +40,46 @@ public class Filter : BlockObject
 
     protected override void Update()
     {
-        //right now here, because doesn't see game object at the beginning
-
         base.Update();
 
         if (lasersChanged)
         {
+            imageProcessingState = ImageProcessingState.NoImage;
             if (laserInputs[0].active)
             {
-                inputImage = laserInputs[0].inputLaser.image;
-                //animator.SetBool("LaserInput", true);
-                graphic.GetComponent<Animator>().SetBool("LaserInput", true);
-                Debug.Log("Laser in");
+                inputImage1 = laserInputs[0].inputLaser.image;
+                Grow();
                 StartImageProcessing();
-                //doesn't get immediate results
-                //laser.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
-                //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", true);
             }
             else
             {
-                inputImage = null;
-                //animator.SetBool("LaserInput", false);
-                graphic.GetComponent<Animator>().SetBool("LaserInput", false);
+                inputImage1 = null;
+                Shrink();
                 StopImageProcessing();
-                //doesn't get immediate results
-                //laser.transform.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
-                //laser.GetComponentInChildren<Animator>().SetBool("LaserInput", false);
-
             }
-
         }
 
-        if (imageReady)
-        {
-            laserOutput.active = true;
-
-            //added with 13-graphics update
-            debugImage.gameObject.SetActive(true);
-            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
-        }
-        else
-        {
-            debugImage.gameObject.SetActive(false);
-            laserOutput.active = false;
-        }
-
+        UpdateOutputImageDisplayAndSendThroughLaser();
     }
 
-    protected override void StartImageProcessing()
+    protected override Color ProcessPixel(int x, int y)
     {
-        outputImage = Instantiate(inputImage);
-        base.StartImageProcessing();
-    }
-
-
-    //könnte auch in die Vaterklasse verlagert werden, nur weiß ich nicht wie das schlau mit enumeratoren geht
-    IEnumerator ImageProcessingEnumerator()
-    {
-        for (int y = 0; y < outputImage.height; y++)
+        switch (filterMode)
         {
-            for (int x = 0; x < outputImage.width; x++)
-            {
-                switch (filterMode)
-                {
-                    case FilterColor.RED:
-                        outputImage.SetPixel(x, y, new Color(outputImage.GetPixel(x, y).r, 0f, 0f));
-                        break;
-                    case FilterColor.GREEN:
-                        outputImage.SetPixel(x, y, new Color(0f, outputImage.GetPixel(x, y).g, 0f));
-                        break;
-                    case FilterColor.BLUE:
-                        outputImage.SetPixel(x, y, new Color(0f, 0f, outputImage.GetPixel(x, y).b));
-                        break;
-                    case FilterColor.NONE:
-                        outputImage.SetPixel(x, y, outputImage.GetPixel(x, y));
-                        break;
-                }
-            }
-            if (y % 10 == 0) yield return null;
+            case FilterColor.RED:
+                return new Color(inputImage1.GetPixel(x, y).r, 0f, 0f);
+
+            case FilterColor.GREEN:
+                return new Color(0f, inputImage1.GetPixel(x, y).g, 0f);
+
+            case FilterColor.BLUE:
+                return new Color(0f, 0f, inputImage1.GetPixel(x, y).b);
+
+            case FilterColor.NONE:
+                return inputImage1.GetPixel(x, y);
+
+            default:
+                return new Color();
         }
-        outputImage.Apply();
-
-        imageInProcess = false;
-        imageReady = true;
-
-        laserOutput.laser.image = outputImage;
     }
-
-
 }

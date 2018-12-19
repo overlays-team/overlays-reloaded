@@ -6,19 +6,32 @@ using System.IO;
 
 public class ImageOutput : BlockObject {
 
-    //wenn wir nur einen ImageInput haben wollen das:
-    Texture2D inputImage;
+    [Header("Image Output")]
+    [SerializeField]
+    [Tooltip("which image needs to be passed to this object to win?")]
+    protected Texture2D goalImage;
 
-    public Texture2D goalImage;
+    protected Texture2D imageToCheck; //which image are we currently checking for correctness
 
-    public bool imageCorrect; // for the ingameManager, so he knows
+    [Tooltip("this bool tells the gameManager if we suceeded with this outputImage")]
+    public bool imageCorrect; 
+
+    //in which imageCheckingstate are we - are we currently checking if this image is correct or ...
+    protected enum ImageCheckingState
+    {
+        NoImage,
+        Checking,
+        Checked,
+        Displaying //we already set the correct color after the imageChekc
+    }
+
+    protected ImageCheckingState imageCheckingState = ImageCheckingState.NoImage;
 
 
     protected override void Start()
     {
         base.Start();
-        inputImage = null;
-        //debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+        inputImage1 = null;
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
         frame.SetColors(Color.red, Color.red);
     }
@@ -31,14 +44,10 @@ public class ImageOutput : BlockObject {
 
         ImageOutputUpdate();
 
-        //export function to get a goal image
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            ExportCurrentImage();
-        }
+      
         if (Input.GetKeyDown(KeyCode.C))
         {
-            Debug.Log(CheckIfImageIsCorrect(inputImage));
+            Debug.Log(imageCorrect);
         }
     }
 
@@ -46,41 +55,62 @@ public class ImageOutput : BlockObject {
     {
         if (lasersChanged)
         {
+            imageCorrect = false;
+            frame.SetColors(Color.red, Color.red);
+            StopCoroutine("ImageCheckingEnumerator");
+             imageCheckingState = ImageCheckingState.NoImage;
+
             if (laserInputs[0].active)
             {
-                inputImage = laserInputs[0].inputLaser.image;
-                if (CheckIfImageIsCorrect(inputImage))
+                inputImage1 = laserInputs[0].inputLaser.image;
+                imageCheckingState = ImageCheckingState.Checking;
+                frame.SetColors(Color.yellow, Color.yellow);
+                CheckIfImageIsCorrect(inputImage1);
+            }
+            else
+            {
+                inputImage1 = null;
+            }
+        }
+
+        if (imageCheckingState != ImageCheckingState.Displaying)
+        {
+            if (imageCheckingState == ImageCheckingState.Checked)
+            {
+                imageCheckingState = ImageCheckingState.Displaying;
+                if (imageCorrect)
                 {
-                    //debugImage.sprite = Sprite.Create(yepImage, new Rect(0, 0, yepImage.width, yepImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = true;
                     frame.SetColors(Color.green, Color.green);
                 }
                 else
                 {
-                    //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                    imageCorrect = false;
                     frame.SetColors(Color.red, Color.red);
                 }
             }
-            else
-            {
-                //debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-                frame.SetColors(Color.red, Color.red);
-                inputImage = null;
-                imageCorrect = false;
-            }
+
+        }
+
+        //export function to get a goal image
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(inputImage1!=null)ExportImage(inputImage1);
         }
     }
 
-    protected bool CheckIfImageIsCorrect(Texture2D image)
+    protected void CheckIfImageIsCorrect(Texture2D image)
+    {
+        imageToCheck = image;
+        StartCoroutine("ImageCheckingEnumerator");
+    }
+
+    IEnumerator ImageCheckingEnumerator()
     {
         float biggestError = 0;
-        bool isCorrect = true;
-        for (int y = 0; y < image.height; y++)
+        for (int y = 0; y < imageToCheck.height; y++)
         {
-            for (int x = 0; x < image.width; x++)
+            for (int x = 0; x < imageToCheck.width; x++)
             {
-                Color color1 = image.GetPixel(x, y);
+                Color color1 = imageToCheck.GetPixel(x, y);
                 Color color2 = goalImage.GetPixel(x, y);
 
                 if (Mathf.Abs(color2.r - color1.r) > biggestError) biggestError = Mathf.Abs(color2.r - color1.r);
@@ -88,17 +118,21 @@ public class ImageOutput : BlockObject {
                 if (Mathf.Abs(color2.b - color1.b) > biggestError) biggestError = Mathf.Abs(color2.b - color1.b);
 
             }
+            if (y % 10 == 0) yield return null;
         }
         //Debug.Log(biggestError);
-        if (biggestError > 0) isCorrect = false;
-        return isCorrect;
+        if (biggestError > 0) imageCorrect = false;
+        else imageCorrect = true;
+
+        imageCheckingState = ImageCheckingState.Checked;
+
     }
 
-   protected virtual void ExportCurrentImage()
+    protected virtual void ExportImage(Texture2D imageToExport)
     {
-        if (inputImage != null)
+        if (imageToExport != null)
         {
-            byte[] bytes = inputImage.EncodeToPNG();
+            byte[] bytes = imageToExport.EncodeToPNG();
             File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
         }
         else
