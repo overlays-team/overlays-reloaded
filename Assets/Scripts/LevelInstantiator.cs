@@ -2,10 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class LevelInstantiator : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public static LevelInstantiator CreateFromJSON(string jsonString)
+    {
+        return JsonUtility.FromJson<LevelInstantiator>(jsonString);
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
