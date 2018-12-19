@@ -285,6 +285,9 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowGameOverPanel();
         lose = true;
 
+        //sh, for test
+        ingameUI.levelCompleteMenu.SetActive(false);
+
         TestSaveInServer();
     }
 
