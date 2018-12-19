@@ -80,9 +80,9 @@ public class ImageMultiOutput : ImageOutput
 
 
         //export function to get a goal image
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.LeftControl))
         {
-            if(outputImage!=null)ExportImage(outputImage);
+            if (outputImage!=null)ExportImage(outputImage);
         }
     }
 

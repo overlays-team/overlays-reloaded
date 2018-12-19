@@ -192,7 +192,6 @@ public class PlayerController : MonoBehaviour
                                 if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                                 if (hittedPlane != selectedBlockObject.currentAssignedGridPlane)
                                 {
-                                    Debug.Log(hittedPlane + " != " + selectedBlockObject.currentAssignedGridPlane);
                                     hittedPlane.ShowHalo();
                                 }
                                 lastHittedGridPlane = hittedPlane;
