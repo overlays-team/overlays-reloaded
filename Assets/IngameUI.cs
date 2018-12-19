@@ -26,6 +26,7 @@ public class IngameUI : MonoBehaviour {
     public GameObject highestScorePanel;
     public Text totalScoreText;
     public Text highestScoreText;
+    public GameObject nameInputPanel;
     public InputField nameInputField;
 
     public Material blurMaterial;
@@ -127,6 +128,12 @@ public class IngameUI : MonoBehaviour {
         pausePlayButton.SetActive(false);
         blurring = true;
     }
+
+    public void ShowNameInputPanel()
+    {
+        nameInputPanel.SetActive(true);
+    }
+
     public void HideLevelCompletePanel()
     {
         levelCompleteMenu.SetActive(false);

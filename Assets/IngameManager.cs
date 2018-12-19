@@ -285,10 +285,13 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowGameOverPanel();
         lose = true;
 
-        //sh, for test
-        ingameUI.levelCompleteMenu.SetActive(false);
+        //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
+        if (newTotalScore > 0)
+        {
+            ingameUI.ShowNameInputPanel();
+        }
 
-        TestSaveInServer();
+        //TestSaveInServer();
     }
 
 
