@@ -22,9 +22,12 @@ public class IngameUI : MonoBehaviour {
     //sh
     public Text countDownText;
     public GameObject countDownPanel;
+    public GameObject totalScorePanel;
     public GameObject highestScorePanel;
     public Text totalScoreText;
     public Text highestScoreText;
+    public GameObject nameInputPanel;
+    public InputField nameInputField;
 
     public Material blurMaterial;
 
@@ -104,7 +107,7 @@ public class IngameUI : MonoBehaviour {
             levelCompleteMenu.GetComponent<Image>().material = blurMaterialInLevelCompleteMenu;
             gameOverMenu.GetComponent<Image>().material = blurMateriaInGameOverMenu;
 
-            Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
+            //Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
             if (timeBlur > 0.3f)
             {
                 blurring = false;
@@ -171,6 +174,19 @@ public class IngameUI : MonoBehaviour {
         pausePlayButton.SetActive(false);
         blurring = true;
     }
+
+    public void ShowNameInputPanel()
+    {
+        nameInputPanel.SetActive(true);
+    }
+    public void HideNameInputPanel()
+    {
+        nameInputPanel.SetActive(false);
+    }
+
+
+
+
     public void HideLevelCompletePanel()
     {
         levelCompleteMenu.SetActive(false);
@@ -188,6 +204,12 @@ public class IngameUI : MonoBehaviour {
     {
         countDownPanel.SetActive(isEnabled);
         countDownText.enabled = isEnabled;
+    }
+
+    public void ShowTotalScorePanel(bool isEnabled)
+    {
+        totalScorePanel.SetActive(isEnabled);
+        totalScoreText.enabled = isEnabled;
     }
 
     public void ShowHighestScorePanel(bool isEnabled)

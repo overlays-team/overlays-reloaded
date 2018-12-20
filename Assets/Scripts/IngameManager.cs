@@ -16,6 +16,8 @@ public class IngameManager : MonoBehaviour
     private int thisLevelScore;
     private int previousTotalScore;
     private int newTotalScore;
+    public HttpCommunicator httpCommunicator;
+
     //private string playerName;
     //private int highestTotalScore;
     //private string highestTotalScorePlayerName;
@@ -49,12 +51,17 @@ public class IngameManager : MonoBehaviour
     {
         SetAttackMode(attackMode); //sh, for testing
 
-        star = Random.Range(1, 4); //sh, for testing. generate score randomlly.
-        //CreateTestLevelState(); //sh, needed for test
+        star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
+
+        // needed for test
+        CreateTestLevelState(); //sh, 
+
+
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
         GameDataEditor.Instance.data.playerName = "SHUYA";
         if(attackMode)ingameUI.ShowCountDownText(attackMode);
-        if(attackMode)ingameUI.ShowHighestScorePanel(attackMode);
+        if (attackMode) ingameUI.ShowTotalScorePanel(attackMode);
+        if (attackMode)ingameUI.ShowHighestScorePanel(attackMode);
     }
 
 
@@ -74,13 +81,18 @@ public class IngameManager : MonoBehaviour
             }
 
         }
-            //sh, for debug, force win
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Win();
-            }
+        //sh, for debug, force win
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Win();
+        }
 
-        
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Lose();
+        }
+
+
 
 
     }
@@ -122,6 +134,41 @@ public class IngameManager : MonoBehaviour
 
         LoadLevelState(); //for test we need this here.
     }
+
+    private string GetRandomPlayerName()
+    {
+        //string datetimeStr = System.DateTime.Now.ToString();
+        //Debug.Log("time:" + datetimeStr);
+
+        string year = System.DateTime.Now.Year.ToString();
+        string month = System.DateTime.Now.Month.ToString();
+        string day = System.DateTime.Now.Day.ToString();
+
+        int random = Random.Range(1000, 9999);
+
+        //return ("player" + year + month + day + "-" + random);
+        return ("player" + "-" + random);
+    }
+
+
+    public void SubmitScore()
+    {
+        string playerName;
+
+        if (ingameUI.nameInputField.text.Equals(""))
+        {
+            playerName = GetRandomPlayerName();
+        }
+        else
+        {
+            //TODO: doent't work if "c" is being inputed in inputTextField. 
+            playerName = ingameUI.nameInputField.text;
+        }
+        Debug.Log(playerName);
+
+        httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+    }
+
 
 
 
@@ -224,6 +271,16 @@ public class IngameManager : MonoBehaviour
     {
         ingameUI.ShowGameOverPanel();
         lose = true;
+
+        //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
+        if (newTotalScore > 0)
+        {
+            ingameUI.ShowNameInputPanel();
+        }
+        else
+        {
+            ingameUI.HideNameInputPanel();
+        }
     }
 
     public void Next()
@@ -328,7 +385,7 @@ public class IngameManager : MonoBehaviour
 
     
     //sh
-    /*
+    // remove comment line when testing only with IngameUi Scene
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -366,7 +423,7 @@ public class IngameManager : MonoBehaviour
         //GameDataEditor.Instance.data.levels[0].score = 2;
         //GameDataEditor.Instance.data.levels[1].score = 1;
     }
-    */
+
        
 
 
