@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class GridPlane : MonoBehaviour
 {
+    [Tooltip("if empthy, the plane is a hole where we cant position blocks")]
+    public bool empty = false; 
+
+    [HideInInspector]
     public bool taken = false;
     public GameObject positiveHalo;
     public GameObject negativeHalo;
@@ -11,7 +16,7 @@ public class GridPlane : MonoBehaviour
     public MeshCollider meshCollider;
     public MeshRenderer meshRenderer;
 
-    public bool empty = false; //if empthy, the plane is a hole where we cant position blocks
+    
 
     private void Start()
     {
@@ -20,6 +25,11 @@ public class GridPlane : MonoBehaviour
 
         positiveHalo.SetActive(false);
         negativeHalo.SetActive(false);
+    }
+
+    private void Update()
+    {
+        SetEmpthy(empty);
     }
 
     public void ShowHalo()
