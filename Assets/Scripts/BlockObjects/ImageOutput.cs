@@ -115,7 +115,7 @@ public class ImageOutput : BlockObject {
             if (y % 10 == 0) yield return null;
         }
         //Debug.Log(biggestError);
-        if (biggestError > 0) imageCorrect = false;
+        if (biggestError > 0.01) imageCorrect = false;
         else imageCorrect = true;
 
         imageCheckingState = ImageCheckingState.Checked;

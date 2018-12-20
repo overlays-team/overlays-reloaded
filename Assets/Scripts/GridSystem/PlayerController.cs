@@ -200,6 +200,7 @@ public class PlayerController : MonoBehaviour
                         else
                         {
                             if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                            lastHittedGridPlane = null;
                         }
                     }
                     else
