@@ -5,13 +5,28 @@ using UnityEngine.Networking;
 
 public class HttpCommunicator : MonoBehaviour
 {
-
+    /*
+    //local
     private const string host = "localhost"; //remove const after implementing setter
     private const int port = 3000; //remove const after implementing setter
-
     private const string protocol = "http://";
+    */
+
+
+    // you can see score online
+    // https://overlays-webapp.herokuapp.com/scores
+    //
+    // Server will be waken up if being accessed. 
+    // If thee are no accesses, server fall in sleep again after 30 minutes.
+    //
+
+
+    private const string host = "https://overlays-webapp.herokuapp.com"; //remove const after implementing setter
+    private const int port = 443; //remove const after implementing setter
+    //private const string protocol = "https://";
+    //private const string protocol = "https";
+
     private const string path = "/scores";
-   
     private const string header = "Content-Type";
     private const string contentType = "application/json";
 
@@ -78,7 +93,12 @@ public class HttpCommunicator : MonoBehaviour
         string player = "p3090";
         */
 
-        string url = protocol + host + ":" + port + path;
+        //string url00 = protocol + host + ":" + port + path;
+
+        //string url = protocol + "://" + host + ":" + port + path;
+
+        string url = host + ":" + port + path;
+
 
         //sorry, ignoreance of json in unity
         string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
