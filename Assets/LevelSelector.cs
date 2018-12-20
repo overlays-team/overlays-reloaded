@@ -39,6 +39,7 @@ public class LevelSelector : MonoBehaviour
     }
     */
 
+
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -51,6 +52,12 @@ public class LevelSelector : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
     }
+    */
+
+
+    private void CreateTestLevelState()
+    {
+        Debug.Log("こんにちは、CreateTestLevelState()");
 
    /* private void LoadTestLevelStateFromFile()
     {
@@ -58,10 +65,14 @@ public class LevelSelector : MonoBehaviour
 
         //debug: loading state with original io class
         LevelSelectorIO io = new LevelSelectorIO();
-        io.LoadData();
+
+        io.LoadData(); // only for test
+        GameDataEditor.Instance.LoadData(); //<== das funktioniert nicht!
+
         GameDataEditor.Instance.data = io.data;
         Debug.Log(GameDataEditor.Instance.data.levels.Count);
 
+       
 
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
         {

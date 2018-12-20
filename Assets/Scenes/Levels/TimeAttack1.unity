@@ -1375,7 +1375,7 @@ Prefab:
         type: 2}
       propertyPath: inventory
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 512143333}
     - target: {fileID: 114258330935808434, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
         type: 2}
       propertyPath: timeToHoldToInitiateHoldAction
@@ -1389,7 +1389,12 @@ Prefab:
     - target: {fileID: 114151105996803214, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
         type: 2}
       propertyPath: timeLeft
-      value: 10
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 114258330935808434, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
+        type: 2}
+      propertyPath: blockLiftingHeight
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09b6dc5a23788114e9c2deb67ea34d6c, type: 2}
@@ -1486,14 +1491,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d3ab92f0f9c7540b80dc5bf73a7776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAssignedGridPlane: {fileID: 0}
   stationary: 1
   actionBlocked: 1
+  currentAssignedGridPlane: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
-  frame: {fileID: 0}
   laserInputs: []
+  laserOutput: {fileID: 0}
+  graphics: {fileID: 0}
+  frame: {fileID: 0}
   debugImage: {fileID: 0}
 --- !u!65 &453011223
 BoxCollider:
@@ -1931,6 +1938,12 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: You did it!
+--- !u!114 &512143333 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114123357176779040, guid: 9539ea1434331034a91013a0caed96ae,
+    type: 2}
+  m_PrefabInternal: {fileID: 1453146238}
+  m_Script: {fileID: 11500000, guid: aa0ed7a324bb31a4ab53f33fb8ce371c, type: 3}
 --- !u!1 &513931854
 GameObject:
   m_ObjectHideFlags: 0
@@ -5598,6 +5611,126 @@ Prefab:
       propertyPath: items.Array.data[0].blockAmount
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224822240613697242, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224540507116483248, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224777491427009234, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224643176289337332, guid: 9539ea1434331034a91013a0caed96ae,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9539ea1434331034a91013a0caed96ae, type: 2}
   m_IsPrefabAsset: 0
@@ -6273,14 +6406,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d3ab92f0f9c7540b80dc5bf73a7776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAssignedGridPlane: {fileID: 0}
   stationary: 1
   actionBlocked: 1
+  currentAssignedGridPlane: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
-  frame: {fileID: 0}
   laserInputs: []
+  laserOutput: {fileID: 0}
+  graphics: {fileID: 0}
+  frame: {fileID: 0}
   debugImage: {fileID: 0}
 --- !u!65 &1570148854
 BoxCollider:
@@ -7408,6 +7543,40 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1914253675}
   m_CullTransparentMesh: 0
+--- !u!1 &1914563632 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1101388545926506, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
+    type: 2}
+  m_PrefabInternal: {fileID: 406159933}
+--- !u!114 &1914563635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1914563632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -745406591, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Trigger:
+    m_IsTriggerExpanded: 1
+    m_Type: 0
+    m_LifecycleEvent: 0
+    m_ApplyRules: 0
+    m_Rules:
+      m_Rules: []
+    m_TriggerBool: 0
+    m_InitTime: 5
+    m_RepeatTime: 5
+    m_Repetitions: 0
+    repetitionCount: 0
+  m_EventPayload:
+    m_IsEventExpanded: 1
+    m_StandardEventType: CustomEvent
+    m_Parameters:
+      m_Parameters: []
+    m_Name: 
 --- !u!1 &1915916601
 GameObject:
   m_ObjectHideFlags: 0
