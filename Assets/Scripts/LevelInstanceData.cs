@@ -5,10 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public class LevelInstanceData : MonoBehaviour {
 
-    public string[][] levelaArr;
+    public int I00;
+    public int I01;
+    public int I10;
+    public int I11;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
