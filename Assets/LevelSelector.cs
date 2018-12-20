@@ -52,12 +52,7 @@ public class LevelSelector : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
     }
-    */
 
-
-    private void CreateTestLevelState()
-    {
-        Debug.Log("こんにちは、CreateTestLevelState()");
 
    /* private void LoadTestLevelStateFromFile()
     {
