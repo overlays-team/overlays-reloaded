@@ -155,22 +155,24 @@ public class IngameManager : MonoBehaviour
     {
         string playerName = "";
 
+        //random player name
+        //playerName = GetRandomPlayerName();
+
         if (ingameUI.nameInputField.text.Equals(""))
         {
-            //playerName = GetRandomPlayerName();
+
             ingameUI.ShowMessageDialogPanel("Please enter your name!", "return");
         }
         else
         {
             //TODO: doent't work if "c" is being inputed in inputTextField. 
             playerName = ingameUI.nameInputField.text;
+            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+            GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
+
+            Debug.Log(playerName);
+            ingameUI.ShowSubmitCompleteMessage();
         }
-        Debug.Log(playerName);
-
-        httpCommunicator.SendScoreToServer(playerName, newTotalScore);
-
-        //TODO: show thanks message and disable name input field and submitt button 
-        ingameUI.ShowSubmitCompleteMessage();
     }
 
 

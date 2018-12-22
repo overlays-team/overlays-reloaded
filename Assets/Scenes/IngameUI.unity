@@ -894,6 +894,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &209466644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 209466645}
+  m_Layer: 5
+  m_Name: NameInputSubPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &209466645
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 209466644}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1461672733}
+  - {fileID: 1311023899}
+  m_Father: {fileID: 1302904961}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &210482223
 GameObject:
   m_ObjectHideFlags: 0
@@ -2477,7 +2512,7 @@ GameObject:
   - component: {fileID: 1011359385}
   - component: {fileID: 1011359384}
   m_Layer: 5
-  m_Name: EnterYourNameText
+  m_Name: NameInputPanelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3282,7 +3317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1302904961
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3295,8 +3330,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1011359383}
-  - {fileID: 1461672733}
-  - {fileID: 1311023899}
+  - {fileID: 209466645}
   m_Father: {fileID: 1426044272}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3336,12 +3370,12 @@ RectTransform:
   m_LocalScale: {x: 1.5428021, y: 0.8815992, z: 1.5428021}
   m_Children:
   - {fileID: 598140104}
-  m_Father: {fileID: 1302904961}
-  m_RootOrder: 2
+  m_Father: {fileID: 209466645}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.000014305115, y: 47.800003}
+  m_AnchoredPosition: {x: -0.000014305115, y: -38.5}
   m_SizeDelta: {x: 150, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1311023900
@@ -3907,8 +3941,8 @@ RectTransform:
   m_Children:
   - {fileID: 1133186935}
   - {fileID: 1165834670}
-  m_Father: {fileID: 1302904961}
-  m_RootOrder: 1
+  m_Father: {fileID: 209466645}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5029,6 +5063,8 @@ MonoBehaviour:
   totalScoreText: {fileID: 16018064}
   highestScoreText: {fileID: 2051350787}
   nameInputPanel: {fileID: 1302904960}
+  nameInputPanelText: {fileID: 1011359384}
+  nameInputSubPanel: {fileID: 209466644}
   nameInputField: {fileID: 978424349}
   messageDialogPanel: {fileID: 2300828}
   messageDialogText: {fileID: 559088211}

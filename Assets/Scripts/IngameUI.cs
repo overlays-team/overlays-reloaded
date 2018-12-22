@@ -26,6 +26,8 @@ public class IngameUI : MonoBehaviour {
     public Text totalScoreText;
     public Text highestScoreText;
     public GameObject nameInputPanel;
+    public Text nameInputPanelText;
+    public GameObject nameInputSubPanel;
     public InputField nameInputField;
     public GameObject messageDialogPanel;
     public Text messageDialogText;
@@ -236,7 +238,8 @@ public class IngameUI : MonoBehaviour {
 
     public void ShowSubmitCompleteMessage()
     {
-
+        nameInputPanelText.text = "THANK YOU!";
+        nameInputSubPanel.SetActive(false);
     }
 
 
