@@ -153,11 +153,12 @@ public class IngameManager : MonoBehaviour
 
     public void SubmitScore()
     {
-        string playerName;
+        string playerName = "";
 
         if (ingameUI.nameInputField.text.Equals(""))
         {
-            playerName = GetRandomPlayerName();
+            //playerName = GetRandomPlayerName();
+            ingameUI.ShowMessageDialogPanel("Please enter your name!", "return");
         }
         else
         {
@@ -167,6 +168,9 @@ public class IngameManager : MonoBehaviour
         Debug.Log(playerName);
 
         httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+
+        //TODO: show thanks message and disable name input field and submitt button 
+        ingameUI.ShowSubmitCompleteMessage();
     }
 
 

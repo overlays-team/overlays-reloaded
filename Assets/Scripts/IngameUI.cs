@@ -19,7 +19,6 @@ public class IngameUI : MonoBehaviour {
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public Text levelCompleteText;
 
-    //sh
     public Text countDownText;
     public GameObject countDownPanel;
     public GameObject totalScorePanel;
@@ -28,6 +27,9 @@ public class IngameUI : MonoBehaviour {
     public Text highestScoreText;
     public GameObject nameInputPanel;
     public InputField nameInputField;
+    public GameObject messageDialogPanel;
+    public Text messageDialogText;
+    public Text mesageDialogButtonText;
 
     public Material blurMaterial;
 
@@ -199,7 +201,6 @@ public class IngameUI : MonoBehaviour {
         pausePlayButton.SetActive(true);
     }
 
-    //sh
     public void ShowCountDownText(bool isEnabled)
     {
         countDownPanel.SetActive(isEnabled);
@@ -218,12 +219,29 @@ public class IngameUI : MonoBehaviour {
         highestScoreText.enabled = isEnabled;
     }
 
+    public void ShowMessageDialogPanel(string message, string buttonText)
+    {
+        messageDialogText.text = message;
+        //messageDialogButton.GetComponentInChildren<Text>().text = "abc";
+        mesageDialogButtonText.text = buttonText;
+        gameOverMenu.SetActive(false);
+        messageDialogPanel.SetActive(true);
+    }
 
-    //sh
+    public void HideMessageDialogPanel()
+    {
+        messageDialogPanel.SetActive(false);
+        gameOverMenu.SetActive(true);
+    }
+
+    public void ShowSubmitCompleteMessage()
+    {
+
+    }
+
+
     public void UpdateCountDown(float timeRemaining, bool win)
     {
-        //Debug.Log("ShowCountDown()");
-
         countDownText.text = "TIME REMAINING: " + Mathf.Round(timeRemaining) + "s";
         if (win)
         {
