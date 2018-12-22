@@ -58,7 +58,7 @@ public class IngameManager : MonoBehaviour
 
 
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
-        GameDataEditor.Instance.data.playerName = "SHUYA";
+        GameDataEditor.Instance.data.playerName = "Player"; //sh. for testing
         if(attackMode)ingameUI.ShowCountDownText(attackMode);
         if (attackMode) ingameUI.ShowTotalScorePanel(attackMode);
         if (attackMode)ingameUI.ShowHighestScorePanel(attackMode);
@@ -99,8 +99,7 @@ public class IngameManager : MonoBehaviour
 
 
 
-    //sh
-    private void LoadLevelState() //now only used for getting total score
+    private void LoadLevelState() //now only used for getting total score for testing
     {
         //highestTotalScore = GameDataEditor.Instance.data.highestTotalScore;
         //highestTotalScorePlayerName = GameDataEditor.Instance.data.highestTotalScorePlayerName;
@@ -252,23 +251,6 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
 
         GameDataEditor.Instance.data.levels[nextLevel].completed = true;
-
-
-        //for future development
-        /*
-        Scene thisScene = SceneManager.GetActiveScene();
-        for (int i = 0; i<numberOfLevelsInGameData; i++)
-        {
-            if (GameDataEditor.Instance.data.levels[i].sceneID == thisScene.name)
-            {
-                GameDataEditor.Instance.data.levels[i].score = score;
-                GameDataEditor.Instance.data.levels[i].completed = win; 
-            }
-        }
-        */
-
-        //for saving test
-        //GameDataEditor.Instance.SaveData();
     }
 
 
@@ -316,7 +298,6 @@ public class IngameManager : MonoBehaviour
     {
         paused = true;
         ingameUI.TogglePause();
-        //Time.timeScale = 0f;
     }
     public void Resume()
     {
@@ -326,7 +307,6 @@ public class IngameManager : MonoBehaviour
     }
 
 
-    //sh
     private void CountTime()
     {
         if (!win && attackMode)
@@ -343,7 +323,6 @@ public class IngameManager : MonoBehaviour
     {
         bool allCorrect = true; //sh: false as default is better and remove else?. 
 
-        //sh
         if (timeRunsOut &!lose)
         {
             //sh, Lose() works here but not in IEnumerator WinCoroutine()
@@ -391,7 +370,7 @@ public class IngameManager : MonoBehaviour
 
     
     //sh
-    // remove comment line when testing only with IngameUi Scene
+    //needed for testing with InGameUI Scene
     private void CreateTestLevelState()
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
@@ -429,40 +408,5 @@ public class IngameManager : MonoBehaviour
         //GameDataEditor.Instance.data.levels[0].score = 2;
         //GameDataEditor.Instance.data.levels[1].score = 1;
     }
-
-       
-
-
-    /*
-    GameData gameData;
-    //GoalBlock goalBlock; //uncomment when here IS a goalBlock
-    Scene thisScene;
-
-    // Use this for initialization
-    void Start () {
-
-        thisScene = SceneManager.GetActiveScene();
-
-    }
-
-    // Update is called once per frame
-    void Update () {
-
-        //if (goalBlock.isGoalAchieved) //uncomment when here IS a goalBlock
-        {
-            List<LevelData> levels = gameData.levels; //why public field and not a getter?
-            foreach (LevelData level in levels)
-            {
-                if (level.sceneID == thisScene.name)
-                {
-                    level.completed = true; //better rename it to isCompleted 
-                }
-            }
-            SceneManager.LoadScene("LevelComplete"); //or otherwise 
-        }
-
-    }
-    */
-
 
 }
