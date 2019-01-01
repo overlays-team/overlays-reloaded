@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    float timeOfLastClick;
+    float timeOfLastMouseDown;
     float clickTime;
+
     public float timeToHoldToInitiateHoldAction;
 
     public float blockRotationSpeed;
@@ -63,8 +64,7 @@ public class PlayerController : MonoBehaviour
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //Debug.Log("mouse clicked");
-                    timeOfLastClick = Time.time;
+                    timeOfLastMouseDown = Time.time;
 
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -85,8 +85,8 @@ public class PlayerController : MonoBehaviour
                     {
                         if (hittedObject != null)
                         {
-                            //Debug.Log("step4");
-                            hittedObject.OnMouseClick();
+                            if (Input.touchCount == 2) hittedObject.OnTwoFingerTap();
+                            else hittedObject.OnMouseClick();
                             hittedObject = null;
                         }
                     }
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
                 //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
                 else if (Input.GetMouseButton(0))
                 {
-                    clickTime = Time.time - timeOfLastClick;
+                    clickTime = Time.time - timeOfLastMouseDown;
                     if (clickTime >= timeToHoldToInitiateHoldAction)
                     {
                         if (hittedObject != null && !hittedObject.stationary)
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 //welse while we hold the mouse button, the grids where we can position the Object, will be marked with a green or red halo
                 else if (Input.GetMouseButton(0))
                 {
-                    clickTime = Time.time - timeOfLastClick;
+                    clickTime = Time.time - timeOfLastMouseDown;
 
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

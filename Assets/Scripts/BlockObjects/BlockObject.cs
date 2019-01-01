@@ -22,6 +22,8 @@ public class BlockObject : MonoBehaviour
     public bool stationary = false;
     [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far")]
     public bool actionBlocked = false;
+    [Tooltip("if this is true we cant perform the onDoubleClickAction - only used in sandbox mode so far")]
+    public bool doubleClickActionBlocked = false;
 
     #region positioning variables
     //[HideInInspector]
@@ -178,6 +180,20 @@ public class BlockObject : MonoBehaviour
         {
             Rotate();
         } 
+    }
+
+    public void OnTwoFingerTap()
+    {
+        //most of the need to rotate, if they need something else they just override
+        if (!doubleClickActionBlocked)
+        {
+            DoubleClickAction();
+        }
+    }
+
+    protected virtual void DoubleClickAction()
+    {
+        Debug.Log("double clikc action");
     }
 
     #region graphics code
