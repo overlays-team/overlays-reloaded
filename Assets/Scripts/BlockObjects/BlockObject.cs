@@ -24,9 +24,13 @@ public class BlockObject : MonoBehaviour
     public bool actionBlocked = false;
     [Tooltip("if this is true we cant perform the onDoubleClickAction - only used in sandbox mode so far")]
     public bool doubleClickActionBlocked = false;
+    [Space(5)]
+    [SerializeField]
+    [Tooltip("this panel shows the detailed node view and can contain further options for settings in the nodes - used for sandbox mode")]
+    protected GameObject detailedNodeView;
 
     #region positioning variables
-    //[HideInInspector]
+    [HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
     #endregion
@@ -182,19 +186,31 @@ public class BlockObject : MonoBehaviour
         } 
     }
 
+    #region detailed Node View
+
     public void OnTwoFingerTap()
     {
         //most of the need to rotate, if they need something else they just override
         if (!doubleClickActionBlocked)
         {
-            DoubleClickAction();
+            TwoFingerTapAction();
         }
     }
 
-    protected virtual void DoubleClickAction()
+    protected virtual void TwoFingerTapAction()
     {
-        Debug.Log("double clikc action");
+        detailedNodeView.SetActive(true);
+        PlayerController.Instance.Disable();
     }
+
+    //when we click the return Button in the detailedNode view
+    public void OnReturnClicked()
+    {
+        detailedNodeView.SetActive(false);
+        PlayerController.Instance.Enable();
+    }
+
+    #endregion
 
     #region graphics code
 

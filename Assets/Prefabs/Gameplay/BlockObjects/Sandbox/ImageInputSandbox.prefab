@@ -636,6 +636,7 @@ MonoBehaviour:
   stationary: 0
   actionBlocked: 0
   doubleClickActionBlocked: 0
+  detailedNodeView: {fileID: 3550165677442042695}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs: []
   laserOutput: {fileID: 2357557143559208316}
@@ -647,7 +648,6 @@ MonoBehaviour:
   inventoryIcon: {fileID: 0}
   inputImage: {fileID: 2800000, guid: 4357df5f8c90dba49b8b3f5ae901dac2, type: 3}
   textureFormat: 4
-  inputImagePanel: {fileID: 0}
 --- !u!1 &2389142690365067564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,7 +1149,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2702325088029575160}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2388868974223208121}
+        m_MethodName: OnImportButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &6797048517821866881
@@ -1267,7 +1278,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7441175385814230456}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2388868974223208121}
+        m_MethodName: OnReturnClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &6838725711217447884

@@ -8,10 +8,6 @@ public class ImageOutputSandbox : BlockObject
     [Tooltip("assign the checker Texture here, what do we see if theres no image here")]
     public Texture2D noImage;
 
-    [SerializeField]
-    [Tooltip("this panel shows the detailed node view and can contain further options for settings in the nodes - used for sandbox mode")]
-    GameObject detailedNodeView;
-
     protected override void Start()
     {
         base.Start();
@@ -38,9 +34,8 @@ public class ImageOutputSandbox : BlockObject
         }
     }
 
-    protected override void DoubleClickAction()
+    public void OnExportButtonClicked()
     {
-
-        detailedNodeView.SetActive(true);
+        Debug.Log("exportButton clicked");
     }
 }

@@ -64,6 +64,7 @@ MonoBehaviour:
   stationary: 0
   actionBlocked: 0
   doubleClickActionBlocked: 0
+  detailedNodeView: {fileID: 2357809691452993316}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs:
   - {fileID: 236589705517770841}
@@ -1036,7 +1037,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5755861032290056317}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 205268634046305504}
+        m_MethodName: OnExportButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &6395443566551354124
@@ -1233,7 +1245,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8441999457118116781}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 205268634046305504}
+        m_MethodName: OnReturnClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &7617080442423175054
