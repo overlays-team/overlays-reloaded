@@ -17,6 +17,7 @@ public class ImageInput : BlockObject
         base.Start();
 
         SetUpImage(inputImage);
+        detailedNodeViewImage.sprite = debugImage.sprite;
     }
 
     //convert the picture into the RGBA32 texture format and set it up

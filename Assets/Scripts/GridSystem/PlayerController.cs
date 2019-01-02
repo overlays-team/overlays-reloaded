@@ -146,8 +146,6 @@ public class PlayerController : MonoBehaviour
                     //for development instead of 2 finger tap - middle mous button
                     else if (Input.GetMouseButtonUp(2))
                     {
-                        Debug.Log("up");
-                        Debug.Log("hittedo: " + hittedObject);
                         if(hittedObject != null)
                         {
                             hittedObject.OnTwoFingerTap();

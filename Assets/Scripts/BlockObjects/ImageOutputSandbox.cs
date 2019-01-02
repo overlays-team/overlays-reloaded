@@ -11,8 +11,7 @@ public class ImageOutputSandbox : BlockObject
     protected override void Start()
     {
         base.Start();
-        debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
-        detailedNodeViewImage.sprite = debugImage.sprite;
+        debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));     
     }
 
     // Update is called once per frame

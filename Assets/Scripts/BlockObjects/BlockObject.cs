@@ -83,11 +83,15 @@ public class BlockObject : MonoBehaviour
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected GameObject graphics;
+    [Tooltip("das Canvas, welches unser Bild und unser Icon zusammenhält")]
+    public GameObject imageCanvas;
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected LineRenderer frame;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
+    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
+    public GameObject blockImage;
 
     #endregion
 
@@ -167,7 +171,12 @@ public class BlockObject : MonoBehaviour
         SmoothMovementUpdate();
         UpdateLaserInputs();
         //reposition the image shown above our object
-        if (debugImage != null) debugImage.transform.parent.gameObject.transform.up = Camera.main.transform.up;
+        if (imageCanvas != null)
+        {
+            imageCanvas.transform.up = Camera.main.transform.up;
+            if (!debugImage.isActiveAndEnabled && blockImage != null) blockImage.SetActive(true);
+            else if (blockImage != null) blockImage.SetActive(false);
+        }
 
         //every child decides here what to do with their lasers
     }
