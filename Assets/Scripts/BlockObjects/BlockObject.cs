@@ -22,9 +22,17 @@ public class BlockObject : MonoBehaviour
     public bool stationary = false;
     [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far")]
     public bool actionBlocked = false;
+    [Tooltip("if this is true we cant perform the onDoubleClickAction - only used in sandbox mode so far")]
+    public bool doubleClickActionBlocked = false;
+    [Space(5)]
+    [SerializeField]
+    [Tooltip("this panel shows the detailed node view and can contain further options for settings in the nodes - used for sandbox mode")]
+    protected GameObject detailedNodeView;
+    [SerializeField]
+    protected Image detailedNodeViewImage;
 
     #region positioning variables
-    //[HideInInspector]
+    [HideInInspector]
     public GridPlane currentAssignedGridPlane;
     protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
     #endregion
@@ -75,11 +83,15 @@ public class BlockObject : MonoBehaviour
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected GameObject graphics;
+    [Tooltip("das Canvas, welches unser Bild und unser Icon zusammenhält")]
+    public GameObject imageCanvas;
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected LineRenderer frame;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
+    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
+    public GameObject blockImage;
 
     #endregion
 
@@ -159,7 +171,12 @@ public class BlockObject : MonoBehaviour
         SmoothMovementUpdate();
         UpdateLaserInputs();
         //reposition the image shown above our object
-        if (debugImage != null) debugImage.transform.parent.gameObject.transform.up = Camera.main.transform.up;
+        if (imageCanvas != null)
+        {
+            imageCanvas.transform.up = Camera.main.transform.up;
+            if (!debugImage.isActiveAndEnabled && blockImage != null) blockImage.SetActive(true);
+            else if (blockImage != null) blockImage.SetActive(false);
+        }
 
         //every child decides here what to do with their lasers
     }
@@ -179,6 +196,32 @@ public class BlockObject : MonoBehaviour
             Rotate();
         } 
     }
+
+    #region detailed Node View
+
+    public void OnTwoFingerTap()
+    {
+        //most of the need to rotate, if they need something else they just override
+        if (!doubleClickActionBlocked)
+        {
+            TwoFingerTapAction();
+        }
+    }
+
+    protected virtual void TwoFingerTapAction()
+    {
+        detailedNodeView.SetActive(true);
+        PlayerController.Instance.Disable();
+    }
+
+    //when we click the return Button in the detailedNode view
+    public void OnReturnClicked()
+    {
+        detailedNodeView.SetActive(false);
+        PlayerController.Instance.Enable();
+    }
+
+    #endregion
 
     #region graphics code
 
@@ -244,12 +287,18 @@ public class BlockObject : MonoBehaviour
 
                 debugImage.gameObject.SetActive(true);
                 debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                if (detailedNodeViewImage != null)
+                {
+                    detailedNodeViewImage.gameObject.SetActive(true);
+                    detailedNodeViewImage.sprite = debugImage.sprite;
+                }
                 imageProcessingState = ImageProcessingState.Displaying;
             }
             else
             {
                 debugImage.gameObject.SetActive(false);
                 laserOutput.active = false;
+                if (detailedNodeViewImage != null) detailedNodeViewImage.gameObject.SetActive(false);
             }
         }
     }

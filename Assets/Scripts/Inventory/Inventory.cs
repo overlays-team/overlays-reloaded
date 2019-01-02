@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour {
 
-    public GameObject inventoryButtonPrefab;
     public InventoryItem[] items;
     public InventoryButton[] inventoryButtons;
     public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
@@ -19,7 +18,7 @@ public class Inventory : MonoBehaviour {
 
         for (int i = 0; i < items.Length; i++)
         {
-            //instantiate the blockObjects we need for our Inventory
+            //instantiate the blockObjects we need for our Inventory if not infinite
             for (int n = 0; n < items[i].blockAmount; n++)
             {
                 GameObject block = Instantiate(items[i].blockObjectPrefab);
@@ -31,11 +30,7 @@ public class Inventory : MonoBehaviour {
                 items[i].AddBlockObject(blockObject);
             }
 
-
-            //now instantiate all the buttons we need
-            //GameObject button = Instantiate(inventoryButtonPrefab);
             inventoryButtons[i].gameObject.SetActive(true);
-            inventoryButtons[i].gameObject.transform.SetParent(transform);
             inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
             inventoryButtons[i].gameObject.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
             inventoryButtons[i].inventory = this;

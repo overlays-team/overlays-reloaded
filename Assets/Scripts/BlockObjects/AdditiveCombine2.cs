@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AdditiveCombine2 : BlockObject
 {
 
     //takes 2 lasers as Input and gives one as output
+
+    float image1Weight = 1;
+    float image2Weight = 1;
 
 
     protected override void Update()
@@ -45,10 +49,19 @@ public class AdditiveCombine2 : BlockObject
     protected override Color ProcessPixel(int x, int y)
     {
         return new Color(
-                        1 - (1 - inputImage1.GetPixel(x, y).r) * (1 - inputImage2.GetPixel(x, y).r) / 1,
-                        1 - (1 - inputImage1.GetPixel(x, y).g) * (1 - inputImage2.GetPixel(x, y).g) / 1,
-                        1 - (1 - inputImage1.GetPixel(x, y).b) * (1 - inputImage2.GetPixel(x, y).b) / 1
+                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).r)) * (1 - (image2Weight * inputImage2.GetPixel(x, y).r)) / 1,
+                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).g)) * (1 - (image2Weight *  inputImage2.GetPixel(x, y).g)) / 1,
+                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).b)) * (1 - (image2Weight *  inputImage2.GetPixel(x, y).b)) / 1
                         );
+    }
+
+    //gets called by the slider in the detsiled node view, updates the weight of the two images
+    public void UpdateImageWeight(Slider slider)
+    {
+        Debug.Log(slider.value);
+        image1Weight = slider.value * 2;
+        image2Weight = (1 - slider.value) * 2;
+        StartImageProcessing();
     }
 
         

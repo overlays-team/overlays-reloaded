@@ -7,17 +7,23 @@ public class ImageInput : BlockObject
 {
     [Header("Image Input")]
     [SerializeField]
-    private Texture2D inputImage;
+    protected Texture2D inputImage;
     [SerializeField]
     [Tooltip("Which texture format will we be working with in the game - every image needs to be importet in this format to prevent pixel errors")]
-    TextureFormat textureFormat = TextureFormat.RGBA32;
+    protected TextureFormat textureFormat = TextureFormat.RGBA32;
 
     protected override void Start()
     {
         base.Start();
 
-        //convert the picture into the RGBA32 texture format
-        Texture2D outputImage = new Texture2D(inputImage.width, inputImage.height, textureFormat, false);
+        SetUpImage(inputImage);
+        detailedNodeViewImage.sprite = debugImage.sprite;
+    }
+
+    //convert the picture into the RGBA32 texture format and set it up
+    protected void SetUpImage(Texture2D image)
+    {
+        Texture2D outputImage = new Texture2D(image.width, image.height, textureFormat, false);
         for (int y = 0; y < outputImage.height; y++)
         {
             for (int x = 0; x < outputImage.width; x++)
