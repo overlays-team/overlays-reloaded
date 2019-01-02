@@ -95,8 +95,9 @@ public class PlayerController : MonoBehaviour
                 case PlayerMode.Default:
 
                     //if we press the mouse button, we save the object we hitted with the raycast
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2))
                     {
+                        Debug.Log("down");
                         timeOfLastMouseDown = Time.time;
 
                         RaycastHit hit;
@@ -140,6 +141,17 @@ public class PlayerController : MonoBehaviour
                             {
                                 playerMode = PlayerMode.MouseHoldDragCamera;
                             }
+                        }
+                    }
+                    //for development instead of 2 finger tap - middle mous button
+                    else if (Input.GetMouseButtonUp(2))
+                    {
+                        Debug.Log("up");
+                        Debug.Log("hittedo: " + hittedObject);
+                        if(hittedObject != null)
+                        {
+                            hittedObject.OnTwoFingerTap();
+                            hittedObject = null;
                         }
                     }
                     break;
