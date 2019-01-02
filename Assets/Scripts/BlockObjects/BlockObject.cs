@@ -28,6 +28,8 @@ public class BlockObject : MonoBehaviour
     [SerializeField]
     [Tooltip("this panel shows the detailed node view and can contain further options for settings in the nodes - used for sandbox mode")]
     protected GameObject detailedNodeView;
+    [SerializeField]
+    protected Image detailedNodeViewImage;
 
     #region positioning variables
     [HideInInspector]
@@ -276,12 +278,18 @@ public class BlockObject : MonoBehaviour
 
                 debugImage.gameObject.SetActive(true);
                 debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                if (detailedNodeViewImage != null)
+                {
+                    detailedNodeViewImage.gameObject.SetActive(true);
+                    detailedNodeViewImage.sprite = debugImage.sprite;
+                }
                 imageProcessingState = ImageProcessingState.Displaying;
             }
             else
             {
                 debugImage.gameObject.SetActive(false);
                 laserOutput.active = false;
+                if (detailedNodeViewImage != null) detailedNodeViewImage.gameObject.SetActive(false);
             }
         }
     }

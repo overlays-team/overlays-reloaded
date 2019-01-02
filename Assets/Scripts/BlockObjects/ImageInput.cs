@@ -17,7 +17,6 @@ public class ImageInput : BlockObject
         base.Start();
 
         SetUpImage(inputImage);
-        
     }
 
     //convert the picture into the RGBA32 texture format and set it up

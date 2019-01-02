@@ -12,6 +12,7 @@ public class ImageOutputSandbox : BlockObject
     {
         base.Start();
         debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+        detailedNodeViewImage.sprite = debugImage.sprite;
     }
 
     // Update is called once per frame

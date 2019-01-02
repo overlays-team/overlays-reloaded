@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class ImageInputSandbox : ImageInput
 {
-   public void OnImportButtonClicked()
+    protected override void Start()
+    {
+        base.Start();
+        detailedNodeViewImage.sprite = debugImage.sprite;
+    }
+
+    public void OnImportButtonClicked()
    {
         Debug.Log("import Button clicked");
    }
