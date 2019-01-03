@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if (UNITY_EDITOR) 
+
 [CustomEditor(typeof(GridPositioner))]
 public class GridPositionerEditor : Editor
 {
@@ -21,4 +23,6 @@ public class GridPositionerEditor : Editor
         }
     }
 }
+
+#endif
 

@@ -29,8 +29,10 @@ public class PlayerController : MonoBehaviour
     int autoMovementBorderRight;
     int autoMovementBorderLeft;
     int autoMovementBorderDown;
+    bool mouseWasOutsideAutoMovementBorder; // this bool prevends the camera sliding downwards when we pick up an item from the inventory 
 
     public float movementSpeed = 10f;
+    public float moveCameraTreshold; //what distance must our finger go in 1 frame, that we start moving the camera
     Vector2 lastMousePosition;
 
     //pinchZoom - for development puposes it woks with mouse wheel on pc, on touch, its the normal 2 finger zoom
@@ -152,10 +154,9 @@ public class PlayerController : MonoBehaviour
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
                                 }
-                                else if (hittedObject == null && cameraMovementEnabled)
-                                {
-                                    playerMode = PlayerMode.MouseHoldDragCamera;
-                                }
+                            }else if (cameraMovementEnabled)
+                            {
+                                if (Vector2.Distance(Input.mousePosition ,lastMousePosition)>moveCameraTreshold) playerMode = PlayerMode.MouseHoldDragCamera;
                             }
                         }
                     }
@@ -170,18 +171,29 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
 
-                case PlayerMode.MouseHoldMoveBlock:
+                case PlayerMode.MouseHoldMoveBlock:                
 
                     //when camera movement enabled we move when we hold the block to the sides
                     if (cameraMovementEnabled)
                     {
-                        Vector3 camMove = Vector3.zero;
-                        if (Input.mousePosition.x > autoMovementBorderRight) camMove += Vector3.right;
-                        else if (Input.mousePosition.x < autoMovementBorderLeft) camMove += -Vector3.right;
-                        if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
-                        else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
+                        if (mouseWasOutsideAutoMovementBorder)
+                        {
+                            Vector3 camMove = Vector3.zero;
+                            if (Input.mousePosition.x > autoMovementBorderRight) camMove += Vector3.right;
+                            else if (Input.mousePosition.x < autoMovementBorderLeft) camMove += -Vector3.right;
+                            if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
+                            else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
 
-                        cameraHolder.transform.position += camMove * movementSpeed / 50 * cameraHolder.transform.position.y;
+                            cameraHolder.transform.position += camMove * movementSpeed / 50 * cameraHolder.transform.position.y;
+                        }
+                        else
+                        {
+                            if (Input.mousePosition.x < autoMovementBorderRight
+                            && Input.mousePosition.x > autoMovementBorderLeft
+                            && Input.mousePosition.y < autoMovementBorderUp
+                            && Input.mousePosition.y > autoMovementBorderDown) mouseWasOutsideAutoMovementBorder = true;
+                        }
+                        
                     }
 
                     //when we release the mouse, the object will be placed
@@ -322,6 +334,7 @@ public class PlayerController : MonoBehaviour
             }
 
             lastMousePosition = Input.mousePosition;
+            Debug.Log(lastMousePosition);
             if (Input.touchCount == 2) distanceBetweenFingersLastFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
             else distanceBetweenFingersLastFrame = 0;
         }
@@ -331,6 +344,7 @@ public class PlayerController : MonoBehaviour
     {
         this.selectedBlockObject = selectedBlock;
         playerMode = PlayerMode.MouseHoldMoveBlock;
+        mouseWasOutsideAutoMovementBorder = false; //set to false on the beginning, so the camera does not move downwards when we  pcik up an item
 
 
         RaycastHit hit;
