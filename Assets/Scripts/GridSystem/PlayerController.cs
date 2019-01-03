@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     public float maxHeight = 20f;
     public float zoomTreshhold; //what distance must the 2 fingers go between 2 frames to start zooming
     float distanceBetweenFingersLastFrame;
+    bool didWeTouchLastFrame; //we need this for android- because it does not have a hover mouse for starting the camera movement
     
     
 
@@ -105,9 +106,8 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //if we press the mouse button, we save the object we hitted with the raycast
-                    if (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2))
-                    {
-                        Debug.Log("down");
+                    if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
+                    {    
                         timeOfLastMouseDown = Time.time;
 
                         RaycastHit hit;
@@ -118,9 +118,8 @@ public class PlayerController : MonoBehaviour
                         if (Physics.Raycast(ray, out hit, 100, layerMask))
                         {
                             hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
-                        } 
-
-                        }
+                        }       
+                    }
                     //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
                     if (Input.GetMouseButtonUp(0))
                     {
@@ -128,8 +127,7 @@ public class PlayerController : MonoBehaviour
                         {
                             if (hittedObject != null)
                             {
-                                if (Input.touchCount == 2) hittedObject.OnTwoFingerTap();
-                                else hittedObject.OnMouseClick();
+                                if(Input.touchCount==1) hittedObject.OnMouseClick();
                                 hittedObject = null;
                             }
                         }
@@ -142,8 +140,14 @@ public class PlayerController : MonoBehaviour
 
                         if(Input.touchCount == 2)
                         {
+                            //check if we want to zoom, if our 2 fingers are changing distance between them
                             float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
                             if(distanceBetweenFingersLastFrame!=0 && Mathf.Abs(distanceBetweenFingersThisFrame / distanceBetweenFingersLastFrame) >= zoomTreshhold) playerMode = PlayerMode.TwoFingerZoom;
+                            //if not, check if we want to get the detailed node view of an image, for this we send 2 raycasts, on of this fingers must work
+                            else
+                            {
+                                 hittedObject.OnTwoFingerTap();
+                            }
                         }
                         else
                         {
@@ -156,7 +160,20 @@ public class PlayerController : MonoBehaviour
                                 }
                             }else if (cameraMovementEnabled)
                             {
-                                if (Vector2.Distance(Input.mousePosition ,lastMousePosition)>moveCameraTreshold) playerMode = PlayerMode.MouseHoldDragCamera;
+                                /*we can also move the camera while haveing the finger over a block if we are fast enough,
+                                 * but for this in touch we need to make sure, that we touched the display last frame, bacause 
+                                 * if not, we will use our old position for determining the finger movement, 
+                                 * which could be on the other side of the sreen, thus enabling camera movement on the 
+                                 * first frame of our touch down*/
+
+                                if (hittedObject != null && didWeTouchLastFrame)
+                                {
+                                    if (Vector2.Distance(Input.mousePosition, lastMousePosition) / Screen.width * 1000 > moveCameraTreshold) playerMode = PlayerMode.MouseHoldDragCamera;
+                                }
+                                else if (hittedObject == null)
+                                {
+                                    playerMode = PlayerMode.MouseHoldDragCamera;
+                                }
                             }
                         }
                     }
@@ -171,8 +188,8 @@ public class PlayerController : MonoBehaviour
                     }
                     break;
 
-                case PlayerMode.MouseHoldMoveBlock:                
-
+                case PlayerMode.MouseHoldMoveBlock:
+                   
                     //when camera movement enabled we move when we hold the block to the sides
                     if (cameraMovementEnabled)
                     {
@@ -298,7 +315,7 @@ public class PlayerController : MonoBehaviour
                     break;
 
                 case PlayerMode.MouseHoldDragCamera:
-
+                    Debug.Log("drag camera");
                     Vector2 currentPos = Input.mousePosition;
                     Vector3 moveVector = new Vector3(lastMousePosition.x - currentPos.x, 0, lastMousePosition.y - currentPos.y);
 
@@ -334,7 +351,9 @@ public class PlayerController : MonoBehaviour
             }
 
             lastMousePosition = Input.mousePosition;
-            Debug.Log(lastMousePosition);
+            if(Input.GetMouseButton(0)) didWeTouchLastFrame = true;
+            else didWeTouchLastFrame = false;
+
             if (Input.touchCount == 2) distanceBetweenFingersLastFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
             else distanceBetweenFingersLastFrame = 0;
         }
