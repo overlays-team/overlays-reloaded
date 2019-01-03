@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     public float zoomSpeed = 0.5f;
     public float minHeight = 10f;
     public float maxHeight = 20f;
-    float zoomTreshhold; //what distance must the 2 fingers go between 2 frames to start zooming
+    public float zoomTreshhold; //what distance must the 2 fingers go between 2 frames to start zooming
     float distanceBetweenFingersLastFrame;
     
     
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
                     //for development purposes
                     if (cameraMovementEnabled)
                     {
-                        cameraHolder.transform.position = new Vector3(cameraHolder.transform.position.x, Mathf.Clamp(cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel")*zoomSpeed * cameraHolder.transform.position.y, minHeight, maxHeight), cameraHolder.transform.position.z);
+                        cameraHolder.transform.position = new Vector3(cameraHolder.transform.position.x, Mathf.Clamp(cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel")*zoomSpeed/10 * cameraHolder.transform.position.y, minHeight, maxHeight), cameraHolder.transform.position.z);
                     }
 
                     //if we press the mouse button, we save the object we hitted with the raycast
@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
                         if(Input.touchCount == 2)
                         {
                             float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
-                            if(Mathf.Abs(distanceBetweenFingersThisFrame - distanceBetweenFingersLastFrame) >= zoomTreshhold) playerMode = PlayerMode.TwoFingerZoom;
+                            if(distanceBetweenFingersLastFrame!=0 && Mathf.Abs(distanceBetweenFingersThisFrame / distanceBetweenFingersLastFrame) >= zoomTreshhold) playerMode = PlayerMode.TwoFingerZoom;
                         }
                         else
                         {
@@ -181,7 +181,7 @@ public class PlayerController : MonoBehaviour
                         if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
                         else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
 
-                        cameraHolder.transform.position += camMove * movementSpeed / 100 * cameraHolder.transform.position.y;
+                        cameraHolder.transform.position += camMove * movementSpeed / 50 * cameraHolder.transform.position.y;
                     }
 
                     //when we release the mouse, the object will be placed
@@ -305,15 +305,15 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
-
-                        float zoom;
-
-                        if (distanceBetweenFingersThisFrame >= distanceBetweenFingersLastFrame) zoom = cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel");
-                        else zoom = cameraHolder.transform.position.y + Input.GetAxis("Mouse ScrollWheel");
+                        
+                        float difference = 1-(distanceBetweenFingersLastFrame / distanceBetweenFingersThisFrame);
+                        if (difference > 0) Debug.Log("zoom in");
+                        else if (difference < 0) Debug.Log("zoom out");
+                        else Debug.Log("no zoom");
 
                         cameraHolder.transform.position = new Vector3(
                                                                       cameraHolder.transform.position.x, 
-                                                                      Mathf.Clamp(zoom * zoomSpeed * cameraHolder.transform.position.y, minHeight, maxHeight), 
+                                                                      Mathf.Clamp(cameraHolder.transform.position.y - difference * zoomSpeed, minHeight, maxHeight), 
                                                                       cameraHolder.transform.position.z
                                                                      );
                     }
