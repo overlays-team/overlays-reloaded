@@ -1131,8 +1131,7 @@ PrefabInstance:
         type: 3}
       propertyPath: profile
       value: 
-      objectReference: {fileID: 11400000, guid: 66f3f5ae41c8a91409b74b707b50552d,
-        type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d66bccd07bf804a93132404e730892, type: 3}
 --- !u!1 &453011220
@@ -1187,12 +1186,15 @@ MonoBehaviour:
   actionBlocked: 1
   doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 0}
+  detailedNodeViewImage: {fileID: 0}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs: []
   laserOutput: {fileID: 0}
   graphics: {fileID: 0}
+  imageCanvas: {fileID: 0}
   frame: {fileID: 0}
   debugImage: {fileID: 0}
+  blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
@@ -1628,6 +1630,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 513931854}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &517111437 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1876966334645424, guid: 07d66bccd07bf804a93132404e730892,
+    type: 3}
+  m_PrefabInstance: {fileID: 417927466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &569013002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2726,12 +2734,15 @@ MonoBehaviour:
   actionBlocked: 1
   doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 0}
+  detailedNodeViewImage: {fileID: 0}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs: []
   laserOutput: {fileID: 0}
   graphics: {fileID: 0}
+  imageCanvas: {fileID: 0}
   frame: {fileID: 0}
   debugImage: {fileID: 0}
+  blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
@@ -4043,12 +4054,15 @@ MonoBehaviour:
   actionBlocked: 1
   doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 0}
+  detailedNodeViewImage: {fileID: 0}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs: []
   laserOutput: {fileID: 0}
   graphics: {fileID: 0}
+  imageCanvas: {fileID: 0}
   frame: {fileID: 0}
   debugImage: {fileID: 0}
+  blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 1acc0bbc993c07b478c335305f1c1138, type: 3}
@@ -5371,6 +5385,11 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 701150157}
+    - target: {fileID: 114258330935808434, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
+        type: 3}
+      propertyPath: cameraHolder
+      value: 
+      objectReference: {fileID: 517111437}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09b6dc5a23788114e9c2deb67ea34d6c, type: 3}
 --- !u!1 &2126297049

@@ -33,10 +33,12 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 10f;
     Vector2 lastMousePosition;
 
-    //pinchZoom - not yet implemented
+    //pinchZoom - for development puposes it woks with mouse wheel on pc, on touch, its the normal 2 finger zoom
     public float zoomSpeed = 0.5f;
-    public float minHeight = 2f;
-    public float maxHeight = 40f;
+    public float minHeight = 10f;
+    public float maxHeight = 20f;
+    float zoomTreshhold; //what distance must the 2 fingers go between 2 frames to start zooming
+    float distanceBetweenFingersLastFrame;
     
     
 
@@ -94,6 +96,12 @@ public class PlayerController : MonoBehaviour
             {
                 case PlayerMode.Default:
 
+                    //for development purposes
+                    if (cameraMovementEnabled)
+                    {
+                        cameraHolder.transform.position = new Vector3(cameraHolder.transform.position.x, Mathf.Clamp(cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel")*zoomSpeed * cameraHolder.transform.position.y, minHeight, maxHeight), cameraHolder.transform.position.z);
+                    }
+
                     //if we press the mouse button, we save the object we hitted with the raycast
                     if (Input.GetMouseButtonDown(0)||Input.GetMouseButtonDown(2))
                     {
@@ -108,10 +116,9 @@ public class PlayerController : MonoBehaviour
                         if (Physics.Raycast(ray, out hit, 100, layerMask))
                         {
                             hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
+                        } 
+
                         }
-
-
-                    }
                     //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
                     if (Input.GetMouseButtonUp(0))
                     {
@@ -130,16 +137,25 @@ public class PlayerController : MonoBehaviour
                     else if (Input.GetMouseButton(0))
                     {
                         clickTime = Time.time - timeOfLastMouseDown;
-                        if (clickTime >= timeToHoldToInitiateHoldAction)
+
+                        if(Input.touchCount == 2)
                         {
-                            if (hittedObject != null && !hittedObject.stationary)
+                            float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
+                            if(Mathf.Abs(distanceBetweenFingersThisFrame - distanceBetweenFingersLastFrame) >= zoomTreshhold) playerMode = PlayerMode.TwoFingerZoom;
+                        }
+                        else
+                        {
+                            if (clickTime >= timeToHoldToInitiateHoldAction)
                             {
-                                selectedBlockObject = hittedObject;
-                                playerMode = PlayerMode.MouseHoldMoveBlock;
-                            }
-                            else if (hittedObject == null && cameraMovementEnabled)
-                            {
-                                playerMode = PlayerMode.MouseHoldDragCamera;
+                                if (hittedObject != null && !hittedObject.stationary)
+                                {
+                                    selectedBlockObject = hittedObject;
+                                    playerMode = PlayerMode.MouseHoldMoveBlock;
+                                }
+                                else if (hittedObject == null && cameraMovementEnabled)
+                                {
+                                    playerMode = PlayerMode.MouseHoldDragCamera;
+                                }
                             }
                         }
                     }
@@ -160,12 +176,12 @@ public class PlayerController : MonoBehaviour
                     if (cameraMovementEnabled)
                     {
                         Vector3 camMove = Vector3.zero;
-                        if (Input.mousePosition.x > autoMovementBorderRight) camMove += Vector3.right * movementSpeed / 50;
-                        else if (Input.mousePosition.x < autoMovementBorderLeft) camMove += -Vector3.right * movementSpeed / 50;
-                        if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward * movementSpeed / 50;
-                        else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward * movementSpeed / 50;
+                        if (Input.mousePosition.x > autoMovementBorderRight) camMove += Vector3.right;
+                        else if (Input.mousePosition.x < autoMovementBorderLeft) camMove += -Vector3.right;
+                        if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
+                        else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
 
-                        cameraHolder.transform.position += camMove;
+                        cameraHolder.transform.position += camMove * movementSpeed / 100 * cameraHolder.transform.position.y;
                     }
 
                     //when we release the mouse, the object will be placed
@@ -274,14 +290,40 @@ public class PlayerController : MonoBehaviour
                     Vector2 currentPos = Input.mousePosition;
                     Vector3 moveVector = new Vector3(lastMousePosition.x - currentPos.x, 0, lastMousePosition.y - currentPos.y);
 
-                    cameraHolder.transform.position += moveVector * movementSpeed / 1000;
+                    cameraHolder.transform.position += moveVector * movementSpeed / 2000  * cameraHolder.transform.position.y;
 
                     if (Input.GetMouseButtonUp(0)) playerMode = PlayerMode.Default;
+
+                    break;
+
+                case PlayerMode.TwoFingerZoom:
+
+                    if (Input.touchCount != 2)
+                    {
+                        playerMode = PlayerMode.Default;
+                    }
+                    else
+                    {
+                        float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
+
+                        float zoom;
+
+                        if (distanceBetweenFingersThisFrame >= distanceBetweenFingersLastFrame) zoom = cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel");
+                        else zoom = cameraHolder.transform.position.y + Input.GetAxis("Mouse ScrollWheel");
+
+                        cameraHolder.transform.position = new Vector3(
+                                                                      cameraHolder.transform.position.x, 
+                                                                      Mathf.Clamp(zoom * zoomSpeed * cameraHolder.transform.position.y, minHeight, maxHeight), 
+                                                                      cameraHolder.transform.position.z
+                                                                     );
+                    }
 
                     break;
             }
 
             lastMousePosition = Input.mousePosition;
+            if (Input.touchCount == 2) distanceBetweenFingersLastFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
+            else distanceBetweenFingersLastFrame = 0;
         }
     }
 
