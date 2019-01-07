@@ -7,37 +7,29 @@ public class CameraSmoothFollow : MonoBehaviour
     /*
      *  this code lets the camera smoothly transition to the desired position
      */
-    public Transform target;
-    float offset;
 
-    [Tooltip("how fast does the camera follow the player")]
+    [Tooltip("how fast does the camera go to the target position")]
     public float smoothSpeed = 0.125f;
-    [Tooltip("how fast does the camera change rotation to face the player")]
-    public float smoothSpeedTurning = 10f;
 
-    Vector3 smoothedPosition;
     Vector3 desiredPosition;
 
-    void Start()
+    private void Start()
     {
-        offset = (target.position - transform.position).magnitude;
+        desiredPosition = transform.position;
     }
 
     private void Update()
     {
-        //position
-        desiredPosition = target.up * offset;
+        if(transform.position != desiredPosition)
+        {
+            transform.position = Vector3.Slerp(transform.position, desiredPosition, smoothSpeed / 10 * Time.time);
+        }
+       
+    }
 
-        //rotation
-        Vector3 desiredlookDirection = target.position - transform.position;
-
-        smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed/1000 * Time.time);
-
-        Vector3 smoothedlookDirection = Vector3.Slerp(transform.forward, desiredlookDirection, smoothSpeedTurning * Time.deltaTime);
-
-        transform.position = smoothedPosition;
-        transform.forward = smoothedlookDirection;
-
+    public void SetTargetPosition(Vector3 desiredPosition)
+    {
+        this.desiredPosition = desiredPosition;
     }
 
 

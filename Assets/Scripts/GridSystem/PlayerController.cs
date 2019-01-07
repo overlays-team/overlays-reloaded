@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Camera Movement")]
     public bool cameraMovementEnabled = false;
-    public GameObject cameraHolder;
+    public CameraSmoothFollow cameraHolder;
     [Tooltip("Bounds in x and y - 0.1 means when we have a block in our hand and reach the border 10% of our screen - our camera will move")]
     public float autoMovementBorder;
     int autoMovementBorderUp;
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     int autoMovementBorderLeft;
     int autoMovementBorderDown;
     bool mouseWasOutsideAutoMovementBorder; // this bool prevends the camera sliding downwards when we pick up an item from the inventory 
+
 
     public float movementSpeed = 10f;
     public float moveCameraTreshold; //what distance must our finger go in 1 frame, that we start moving the camera
@@ -40,10 +41,10 @@ public class PlayerController : MonoBehaviour
     public float minHeight = 10f;
     public float maxHeight = 20f;
     public float zoomTreshhold; //what distance must the 2 fingers go between 2 frames to start zooming
-    float distanceBetweenFingersLastFrame;
-    bool didWeTouchLastFrame; //we need this for android- because it does not have a hover mouse for starting the camera movement
-    
-    
+    float distanceBetweenFingersLastFrame = 0;
+    bool didWeSingleTouchLastFrame; //we need this for android- because it does not have a hover mouse for starting the camera movement
+
+
 
     public enum PlayerMode
     {
@@ -82,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
         //for camera movement
         lastMousePosition = Input.mousePosition;
-        autoMovementBorderUp = (int)(Screen.height * (1-autoMovementBorder));
+        autoMovementBorderUp = (int)(Screen.height * (1 - autoMovementBorder));
         autoMovementBorderRight = (int)(Screen.width * (1 - autoMovementBorder));
         autoMovementBorderLeft = (int)(Screen.width * autoMovementBorder);
         autoMovementBorderDown = (int)(Screen.height * autoMovementBorder);
@@ -93,103 +94,114 @@ public class PlayerController : MonoBehaviour
     {
         if (isEnabled)
         {
+#if UNITY_STANDALONE_WIN
+                WindowsAndEditorUpdate();
+#elif UNITY_EDITOR
+            WindowsAndEditorUpdate();
+#else
+                MobileUpdate();
+#endif
+        }
+    }
 
+    void MobileUpdate()
+    {
+        switch (playerMode)
+        {
+            case PlayerMode.Default:
+                //if we press rmb or mmb or beginn tap with one finger, we save the object we hitted with the raycast in "hittedObject"
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
+                {
+                    timeOfLastMouseDown = Time.time;
 
-            switch (playerMode)
-            {
-                case PlayerMode.Default:
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    // Bit shift the index of the layer (9) to get a bit mask
+                    int layerMask = 1 << 10;
 
-                    //for development purposes
-                    if (cameraMovementEnabled)
+                    if (Physics.Raycast(ray, out hit, 100, layerMask))
                     {
-                        cameraHolder.transform.position = new Vector3(cameraHolder.transform.position.x, Mathf.Clamp(cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel")*zoomSpeed/10 * cameraHolder.transform.position.y, minHeight, maxHeight), cameraHolder.transform.position.z);
+                        hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
                     }
-
-                    //if we press the mouse button, we save the object we hitted with the raycast
-                    if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
-                    {    
-                        timeOfLastMouseDown = Time.time;
-
-                        RaycastHit hit;
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        // Bit shift the index of the layer (9) to get a bit mask
-                        int layerMask = 1 << 10;
-
-                        if (Physics.Raycast(ray, out hit, 100, layerMask))
-                        {
-                            hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
-                        }       
-                    }
-                    //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
-                    if (Input.GetMouseButtonUp(0))
+                }
+                //if we touch the screen with a second finger, we activate the on2Finger Tap action of the object hitted with the first finger
+                else if (Input.touchCount == 2 && Input.GetTouch(1).phase == TouchPhase.Began)
+                {
+                    Debug.Log("secondTouch");
+                    if (hittedObject != null)
                     {
-                        if (clickTime <= timeToHoldToInitiateHoldAction)
-                        {
-                            if (hittedObject != null)
-                            {
-                                if(Input.touchCount==1) hittedObject.OnMouseClick();
-                                hittedObject = null;
-                            }
-                        }
-                        clickTime = 0;
+                        hittedObject.OnTwoFingerTap();
+                        hittedObject = null;
                     }
-                    //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
-                    else if (Input.GetMouseButton(0))
-                    {
-                        clickTime = Time.time - timeOfLastMouseDown;
+                }
 
-                        if(Input.touchCount == 2)
-                        {
-                            //check if we want to zoom, if our 2 fingers are changing distance between them
-                            float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
-                            if(distanceBetweenFingersLastFrame!=0 && Mathf.Abs(distanceBetweenFingersThisFrame / distanceBetweenFingersLastFrame) >= zoomTreshhold) playerMode = PlayerMode.TwoFingerZoom;
-                            //if not, check if we want to get the detailed node view of an image, for this we send 2 raycasts, on of this fingers must work
-                            else
-                            {
-                                 hittedObject.OnTwoFingerTap();
-                            }
-                        }
-                        else
-                        {
-                            if (clickTime >= timeToHoldToInitiateHoldAction)
-                            {
-                                if (hittedObject != null && !hittedObject.stationary)
-                                {
-                                    selectedBlockObject = hittedObject;
-                                    playerMode = PlayerMode.MouseHoldMoveBlock;
-                                }
-                            }else if (cameraMovementEnabled)
-                            {
-                                /*we can also move the camera while haveing the finger over a block if we are fast enough,
-                                 * but for this in touch we need to make sure, that we touched the display last frame, bacause 
-                                 * if not, we will use our old position for determining the finger movement, 
-                                 * which could be on the other side of the sreen, thus enabling camera movement on the 
-                                 * first frame of our touch down*/
-
-                                if (hittedObject != null && didWeTouchLastFrame)
-                                {
-                                    if (Vector2.Distance(Input.mousePosition, lastMousePosition) / Screen.width * 1000 > moveCameraTreshold) playerMode = PlayerMode.MouseHoldDragCamera;
-                                }
-                                else if (hittedObject == null)
-                                {
-                                    playerMode = PlayerMode.MouseHoldDragCamera;
-                                }
-                            }
-                        }
-                    }
-                    //for development instead of 2 finger tap - middle mous button
-                    else if (Input.GetMouseButtonUp(2))
+                //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject - mostly rotate
+                if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
+                {
+                    Debug.Log(Input.touchCount);
+                    Debug.Log("release one click");
+                    if (clickTime <= timeToHoldToInitiateHoldAction)
                     {
-                        if(hittedObject != null)
+                        if (hittedObject != null)
                         {
-                            hittedObject.OnTwoFingerTap();
+                            hittedObject.OnMouseClick();
                             hittedObject = null;
                         }
                     }
-                    break;
+                    clickTime = 0;
+                }
+                //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
+                else if (Input.touchCount == 1)
+                {
+                    clickTime = Time.time - timeOfLastMouseDown;
+                    Debug.Log("hold one finger");
+                    if (clickTime >= timeToHoldToInitiateHoldAction)
+                    {
+                        if (hittedObject != null && !hittedObject.stationary)
+                        {
+                            selectedBlockObject = hittedObject;
+                            playerMode = PlayerMode.MouseHoldMoveBlock;
+                        }
+                    }
 
-                case PlayerMode.MouseHoldMoveBlock:
-                   
+                    if (cameraMovementEnabled)
+                    {
+                        Debug.Log("enabled");
+                        Debug.Log("hittedObject: " + hittedObject);
+                        /*we can also move the camera while haveing the finger over a block if we are fast enough,
+                            * but for this in touch we need to make sure, that we touched the display last frame, bacause 
+                            * if not, we will use our old position for determining the finger movement, 
+                            * which could be on the other side of the sreen, thus enabling camera movement on the 
+                            * first frame of our touch down*/
+
+                        if (hittedObject == null)
+                        {
+                            playerMode = PlayerMode.MouseHoldDragCamera;
+                            lastMousePosition = Input.GetTouch(0).position;
+                        }
+                    }
+                }
+                else if (Input.touchCount == 2)
+                {
+                    //check if we want to zoom, if our 2 fingers are changing distance between them
+                    float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
+
+                    if (distanceBetweenFingersLastFrame != 0 && Mathf.Abs((distanceBetweenFingersThisFrame / distanceBetweenFingersLastFrame) - 1) >= zoomTreshhold)
+                    {
+                        playerMode = PlayerMode.TwoFingerZoom;
+                    }
+
+                    distanceBetweenFingersLastFrame = distanceBetweenFingersThisFrame;
+                }
+
+                break;
+
+            case PlayerMode.MouseHoldMoveBlock:
+
+                if (Input.touchCount == 1)
+                {
+
+
                     //when camera movement enabled we move when we hold the block to the sides
                     if (cameraMovementEnabled)
                     {
@@ -201,7 +213,8 @@ public class PlayerController : MonoBehaviour
                             if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
                             else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
 
-                            cameraHolder.transform.position += camMove * movementSpeed / 50 * cameraHolder.transform.position.y;
+                            cameraHolder.SetTargetPosition(cameraHolder.transform.position + camMove * movementSpeed / 50 * cameraHolder.transform.position.y);
+
                         }
                         else
                         {
@@ -210,7 +223,7 @@ public class PlayerController : MonoBehaviour
                             && Input.mousePosition.y < autoMovementBorderUp
                             && Input.mousePosition.y > autoMovementBorderDown) mouseWasOutsideAutoMovementBorder = true;
                         }
-                        
+
                     }
 
                     //when we release the mouse, the object will be placed
@@ -311,53 +324,288 @@ public class PlayerController : MonoBehaviour
                             if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
                         }
                     }
+                }
+                else if (Input.touchCount == 2)
+                {
+                    selectedBlockObject.OnTwoFingerTap();
+                }
 
-                    break;
+                break;
 
-                case PlayerMode.MouseHoldDragCamera:
-                    Debug.Log("drag camera");
-                    Vector2 currentPos = Input.mousePosition;
+            case PlayerMode.MouseHoldDragCamera:
+
+                if (Input.touchCount == 1)
+                {
+                    Vector2 currentPos = Input.GetTouch(0).position;
                     Vector3 moveVector = new Vector3(lastMousePosition.x - currentPos.x, 0, lastMousePosition.y - currentPos.y);
 
-                    cameraHolder.transform.position += moveVector * movementSpeed / 2000  * cameraHolder.transform.position.y;
+                    cameraHolder.SetTargetPosition(cameraHolder.transform.position + moveVector * movementSpeed / 2000 * cameraHolder.transform.position.y);
 
-                    if (Input.GetMouseButtonUp(0)) playerMode = PlayerMode.Default;
+                    lastMousePosition = currentPos;
 
-                    break;
-
-                case PlayerMode.TwoFingerZoom:
-
-                    if (Input.touchCount != 2)
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended)
                     {
                         playerMode = PlayerMode.Default;
                     }
-                    else
-                    {
-                        float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
-                        
-                        float difference = 1-(distanceBetweenFingersLastFrame / distanceBetweenFingersThisFrame);
-                        if (difference > 0) Debug.Log("zoom in");
-                        else if (difference < 0) Debug.Log("zoom out");
-                        else Debug.Log("no zoom");
 
-                        cameraHolder.transform.position = new Vector3(
-                                                                      cameraHolder.transform.position.x, 
-                                                                      Mathf.Clamp(cameraHolder.transform.position.y - difference * zoomSpeed, minHeight, maxHeight), 
-                                                                      cameraHolder.transform.position.z
-                                                                     );
-                    }
+                }
+                else
+                {
+                    playerMode = PlayerMode.Default;
+                }
+                break;
 
-                    break;
-            }
+            case PlayerMode.TwoFingerZoom:
 
-            lastMousePosition = Input.mousePosition;
-            if(Input.GetMouseButton(0)) didWeTouchLastFrame = true;
-            else didWeTouchLastFrame = false;
+                if (Input.touchCount != 2)
+                {
+                    playerMode = PlayerMode.Default;
+                    distanceBetweenFingersLastFrame = 0;
+                }
+                else
+                {
+                    float distanceBetweenFingersThisFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
 
-            if (Input.touchCount == 2) distanceBetweenFingersLastFrame = Vector2.Distance(Input.GetTouch(0).position, Input.GetTouch(1).position);
-            else distanceBetweenFingersLastFrame = 0;
+                    float difference = 1 - (distanceBetweenFingersLastFrame / distanceBetweenFingersThisFrame);
+                    //if (difference > 0) Debug.Log("zoom in");
+                    //else if (difference < 0) Debug.Log("zoom out");
+                    //else Debug.Log("no zoom");
+
+                    cameraHolder.SetTargetPosition(new Vector3(
+                                                                  cameraHolder.transform.position.x,
+                                                                  Mathf.Clamp(cameraHolder.transform.position.y - difference * zoomSpeed, minHeight, maxHeight),
+                                                                  cameraHolder.transform.position.z
+                                                                 )
+                                                   );
+
+                    distanceBetweenFingersLastFrame = distanceBetweenFingersThisFrame;
+                }
+
+                break;
         }
     }
+
+    /* this code dublicated function will be deleted for the showtime? - just for development*/
+    void WindowsAndEditorUpdate()
+    {
+        //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            Debug.Log("clickTime: " + clickTime);
+            if (clickTime <= timeToHoldToInitiateHoldAction)
+            {
+                if (hittedObject != null)
+                {
+                    hittedObject.OnMouseClick();
+                    hittedObject = null;
+                }
+            }
+            clickTime = 0;
+        }
+
+        switch (playerMode)
+        {
+            case PlayerMode.Default:
+
+                //for development purposes
+                if (cameraMovementEnabled)
+                {
+                    cameraHolder.SetTargetPosition(new Vector3(cameraHolder.transform.position.x, Mathf.Clamp(cameraHolder.transform.position.y - Input.GetAxis("Mouse ScrollWheel") * zoomSpeed / 10 * cameraHolder.transform.position.y, minHeight, maxHeight), cameraHolder.transform.position.z));
+                }
+
+                //if we press the mouse button, we save the object we hitted with the raycast
+                if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
+                {
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    timeOfLastMouseDown = Time.time;
+                    // Bit shift the index of the layer (9) to get a bit mask
+                    int layerMask = 1 << 10;
+
+                    if (Physics.Raycast(ray, out hit, 100, layerMask))
+                    {
+                        hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
+                    }
+                }
+               
+                //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
+                if (Input.GetMouseButton(0))
+                {
+                    clickTime = Time.time - timeOfLastMouseDown;
+
+                    if (clickTime >= timeToHoldToInitiateHoldAction)
+                    {
+                        if (hittedObject != null && !hittedObject.stationary)
+                        {
+                            selectedBlockObject = hittedObject;
+                            playerMode = PlayerMode.MouseHoldMoveBlock;
+                        }
+                    }
+                    if (cameraMovementEnabled)
+                    {
+                        if (hittedObject == null)
+                        {
+                            lastMousePosition = Input.mousePosition;
+                            playerMode = PlayerMode.MouseHoldDragCamera;
+                        }
+                    }
+                }
+
+
+                //for development instead of 2 finger tap - middle mous button
+                else if (Input.GetMouseButtonUp(2))
+                {
+                    if (hittedObject != null)
+                    {
+                        hittedObject.OnTwoFingerTap();
+                        hittedObject = null;
+                    }
+                }
+                break;
+
+            case PlayerMode.MouseHoldMoveBlock:
+
+                //when camera movement enabled we move when we hold the block to the sides
+                if (cameraMovementEnabled)
+                {
+                    if (mouseWasOutsideAutoMovementBorder)
+                    {
+                        Vector3 camMove = Vector3.zero;
+                        if (Input.mousePosition.x > autoMovementBorderRight) camMove += Vector3.right;
+                        else if (Input.mousePosition.x < autoMovementBorderLeft) camMove += -Vector3.right;
+                        if (Input.mousePosition.y > autoMovementBorderUp) camMove += Vector3.forward;
+                        else if (Input.mousePosition.y < autoMovementBorderDown) camMove += -Vector3.forward;
+
+                        cameraHolder.SetTargetPosition(cameraHolder.transform.position + camMove * movementSpeed / 50 * cameraHolder.transform.position.y);
+                    }
+                    else
+                    {
+                        if (Input.mousePosition.x < autoMovementBorderRight
+                        && Input.mousePosition.x > autoMovementBorderLeft
+                        && Input.mousePosition.y < autoMovementBorderUp
+                        && Input.mousePosition.y > autoMovementBorderDown) mouseWasOutsideAutoMovementBorder = true;
+                    }
+
+                }
+
+                //when we release the mouse, the object will be placed
+                if (Input.GetMouseButtonUp(0))
+                {
+
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    // Bit shift the index of the layer (9) to get a bit mask
+                    int layerMask = 1 << 9;
+
+                    if (Physics.Raycast(ray, out hit, 100, layerMask))
+                    {
+                        if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                        hittedPlane = hit.collider.gameObject.GetComponent<GridPlane>();
+                        if (hittedPlane != null)
+                        {
+                            if (!hittedPlane.taken || hittedPlane == selectedBlockObject.currentAssignedGridPlane)
+                            {
+                                selectedBlockObject.SetPositionToSnapTo(hittedPlane);
+                            }
+                            else
+                            {
+                                if (!selectedBlockObject.inInventory)
+                                {
+                                    selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
+                                }
+                                else
+                                {
+                                    PutObjectBackToInventory();
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (!selectedBlockObject.inInventory)
+                            {
+                                selectedBlockObject.SetPositionToSnapTo(selectedBlockObject.currentAssignedGridPlane);
+                            }
+                            else
+                            {
+                                PutObjectBackToInventory();
+                            }
+                        }
+
+
+                    }
+                    else
+                    {
+                        Debug.Log("raycast didnt hit anything, try scaling the background plane up");
+                        if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                    }
+
+
+
+                    playerMode = PlayerMode.Default;
+                    selectedBlockObject = null;
+                    hittedObject = null;
+                    clickTime = 0;
+                }
+                //welse while we hold the mouse button, the grids where we can position the Object, will be marked with a green or red halo
+                else if (Input.GetMouseButton(0))
+                {
+                    clickTime = Time.time - timeOfLastMouseDown;
+
+                    RaycastHit hit;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    // Bit shift the index of the layer (9) to get a bit mask
+                    int layerMask = 1 << 9;
+
+                    if (Physics.Raycast(ray, out hit, 100, layerMask))
+                    {
+                        selectedBlockObject.SetMovePosition(hit.point + (hit.collider.gameObject.transform.up * blockLiftingHeight));
+
+                        hittedPlane = hit.collider.gameObject.GetComponent<GridPlane>();
+
+                        if (hittedPlane != null)
+                        {
+                            if (lastHittedGridPlane != hittedPlane)
+                            {
+                                if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                                if (hittedPlane != selectedBlockObject.currentAssignedGridPlane)
+                                {
+                                    hittedPlane.ShowHalo();
+                                }
+                                lastHittedGridPlane = hittedPlane;
+                            }
+                        }
+                        else
+                        {
+                            if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                            lastHittedGridPlane = null;
+                        }
+                    }
+                    else
+                    {
+                        if (lastHittedGridPlane != null) lastHittedGridPlane.HideHalo();
+                    }
+                }
+
+                break;
+
+            case PlayerMode.MouseHoldDragCamera:
+
+                Vector2 currentPos = Input.mousePosition;
+                Vector3 moveVector = new Vector3(lastMousePosition.x - currentPos.x, 0, lastMousePosition.y - currentPos.y);
+
+                cameraHolder.SetTargetPosition(cameraHolder.transform.position + moveVector * movementSpeed / 2000 * cameraHolder.transform.position.y);
+
+                lastMousePosition = currentPos;
+
+                if (Input.GetMouseButtonUp(0)) playerMode = PlayerMode.Default;
+
+                break;
+        }
+
+    }
+
 
     public void GetObjectFromInventory(BlockObject selectedBlock)
     {
