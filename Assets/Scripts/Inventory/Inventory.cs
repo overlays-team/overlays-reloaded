@@ -10,8 +10,8 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     public InventoryItem[] items;
     public InventoryButton[] inventoryButtons;
     public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
-    [Tooltip("only true for the sandbox mode")]
-    public bool scrollable;
+    [Tooltip("in sandbox mode we can scroll through the inventory and instantiate the buttons when we take them")]
+    public bool sandboxMode;
 
     [Header("only needed if scrollable")]
     //whis variables are needed to determine if thw player wants to scroll the inventory(in sandbox mode) or just take an item from it
@@ -22,7 +22,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
 
     void Awake () {
-
+        
         foreach(InventoryButton button in inventoryButtons)
         {
             button.gameObject.SetActive(false);
@@ -30,20 +30,25 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
         for (int i = 0; i < items.Length; i++)
         {
-            //instantiate the blockObjects we need for our Inventory if not infinite
-            for (int n = 0; n < items[i].blockAmount; n++)
+            if (!sandboxMode)
             {
-                GameObject block = Instantiate(items[i].blockObjectPrefab);
-                block.SetActive(false);
-                BlockObject blockObject = block.GetComponent<BlockObject>();
-                blockObject.currentAssignedGridPlane = inventoryGridPlane;
-                blockObject.inInventory = true;
-                blockObject.inventoryIndex = i;
-                items[i].AddBlockObject(blockObject);
+                //instantiate the blockObjects we need for our Inventory if not sandbox
+                for (int n = 0; n < items[i].blockAmount; n++)
+                {
+                    GameObject block = Instantiate(items[i].blockObjectPrefab);
+                    block.SetActive(false);
+                    BlockObject blockObject = block.GetComponent<BlockObject>();
+                    blockObject.currentAssignedGridPlane = inventoryGridPlane;
+                    blockObject.inInventory = true;
+                    blockObject.inventoryIndex = i;
+                    items[i].AddBlockObject(blockObject);
+                }
             }
+            
 
             inventoryButtons[i].gameObject.SetActive(true);
-            inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
+            if (!sandboxMode) inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
+            else inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = "∞";
             inventoryButtons[i].gameObject.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
             inventoryButtons[i].inventory = this;
         }
@@ -51,9 +56,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     private void Update()
     {
-        //Debug.Log("pos: " + rectTransform.position.x);
-        //Debug.Log("xmin: " + rectTransform.rect.xMin);
-        //Debug.Log("xmax: " + rectTransform.rect.xMax);
         if (mouseDown)
         {    
             //abbruchbedingung
@@ -78,7 +80,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
             }
             else if ( mouseChange.x > 1||mouseChange.x < -1)
             {
-                //if we move our finger right or left
                 selectedButton = null;
 
                 
@@ -92,7 +93,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
                     ),
                     rectTransform.localPosition.y
                  );
-                //}
             }
             else
             {
@@ -110,7 +110,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     void OnPointerDown()
     {
-        if (scrollable)
+        if (sandboxMode)
         {
             Debug.Log("on pointerDown");
             PlayerController.Instance.Disable();
@@ -122,7 +122,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     //this method is called by the button, it messages the inventory that it was clicked
     public void PlayerSelectedThisButton(InventoryButton clickedButton)
     {
-        if (!scrollable)
+        if (!sandboxMode)
         {
             TakeItemFromInventory(clickedButton);
 
@@ -139,22 +139,41 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     {
         for (int i = 0; i < items.Length; i++)
         {
-            if (inventoryButtons[i] == clickedButton )
+            if (inventoryButtons[i] == clickedButton)
             {
-                if (items[i].blockAmount > 0)
+                if (!sandboxMode)
                 {
-                    PlayerController.Instance.GetObjectFromInventory(items[i].RemoveBlockObject());
-                    UpdateItems();
-                } 
+                    if (items[i].blockAmount > 0)
+                    {
+                        PlayerController.Instance.GetObjectFromInventory(items[i].RemoveBlockObject());
+                        UpdateItems();
+                    }
+                }
+                else
+                {
+                    BlockObject block = Instantiate(items[i].blockObjectPrefab).GetComponent<BlockObject>();
+                    block.currentAssignedGridPlane = inventoryGridPlane;
+                    block.inInventory = true;
+                    PlayerController.Instance.GetObjectFromInventory(block);
+                }
+
             }
         }
     }
 
     public void  ReturnItemToInventory(BlockObject blockObject)
     {
-        blockObject.currentAssignedGridPlane = inventoryGridPlane;
-        items[blockObject.inventoryIndex].ReturnBlockObject(blockObject);
-        UpdateItems();
+        if (!sandboxMode)
+        {
+            blockObject.currentAssignedGridPlane = inventoryGridPlane;
+            items[blockObject.inventoryIndex].ReturnBlockObject(blockObject);
+            UpdateItems();
+        }
+        else
+        {
+            Destroy(blockObject);
+        }
+        
     }
 
     //updates the counter on the buttons
