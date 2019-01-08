@@ -38,22 +38,20 @@ public class GameDataEditor : MonoBehaviour
         Debug.Log("dataFileName == \"\" " + (dataFileName == ""));
         Debug.Log("dataFileName == null " + (dataFileName == null));
 
-        if (string.IsNullOrEmpty(dataFileName)) //TODO: nullではなく、""では？ ->正解！！ただし、string.IsNullOrEmpty()を使うべき。
+        if (string.IsNullOrEmpty(dataFileName)) //TODO: it's not null but "". better use string.IsNullOrEmpty()
         {
             Debug.Log("4, if");
             dataFileName = "/gameData.json";
             Debug.Log("5, dataFileName" + dataFileName);
 
-            //CreateLevelState();
         }
 
         Debug.Log("5-1: loadFromFile:" + loadFromFile);
+        //if file exist load it,  if not, create levels.
         loadFromFile = File.Exists(getFilePath());
         Debug.Log("5-2: loadFromFile:" + loadFromFile);
 
         Debug.Log("6, before, if(loadFromFile): " + loadFromFile);
-        //TODO : THIS IS IMPORTANT! これなにやってるん？？　ここtrueにせなあかんのちゃうん？
-        //しかも、上のifのelseにかかなあかんのちゃう?->いや、関係ない。上のifはファイル名をセットしているだけ。
         if (loadFromFile)  
         {
             Debug.Log("6-2, in, if(loadFromFile)" + loadFromFile);
@@ -72,7 +70,6 @@ public class GameDataEditor : MonoBehaviour
 
     }
 
-    //TODO: というか先に、保存問題に取り組むべきか！？！？　いや、Gamedataが空だから保存できないのでは？
     private void ShowGameData()
     {
         Debug.Log("7: "+GameDataEditor.Instance.data.levels.Count);
@@ -163,8 +160,6 @@ public class GameDataEditor : MonoBehaviour
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
 
-        //GameDataEditor.Instance.data.levels[0].score = 2;
-        //GameDataEditor.Instance.data.levels[1].score = 1;
     }
 
 }
