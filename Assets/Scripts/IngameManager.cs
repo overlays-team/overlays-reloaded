@@ -54,8 +54,7 @@ public class IngameManager : MonoBehaviour
         star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
 
         // needed for test
-        CreateTestLevelState(); //sh, 
-
+        //CreateTestLevelState(); //sh, 
 
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
         GameDataEditor.Instance.data.playerName = "Player"; //sh. for testing
@@ -131,7 +130,8 @@ public class IngameManager : MonoBehaviour
         //sh
         SaveLevelState();
 
-        LoadLevelState(); //for test we need this here.
+        //for test we need this here.
+        //LoadLevelState(); 
     }
 
     private string GetRandomPlayerName()
@@ -375,7 +375,7 @@ public class IngameManager : MonoBehaviour
     {
         Debug.Log("こんにちは、CreateTestLevelState()");
 
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
+        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
         GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));

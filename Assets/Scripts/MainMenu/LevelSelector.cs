@@ -18,7 +18,7 @@ public class LevelSelector : MonoBehaviour
     public void Start()
     {
         toggleGrp = GetComponent<ToggleGroup>();
-        CreateTestLevelState();
+        //CreateTestLevelState();
         LoadTestLevelStateFromGameDataEditor();   
     }
 
