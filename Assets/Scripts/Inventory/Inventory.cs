@@ -2,14 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Inventory : MonoBehaviour {
+public class Inventory : MonoBehaviour, IPointerDownHandler
+{
 
     public InventoryItem[] items;
     public InventoryButton[] inventoryButtons;
     public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
-    
-	void Awake () {
+    [Tooltip("only true for the sandbox mode")]
+    public bool scrollable;
+
+    [Header("only needed if scrollable")]
+    //whis variables are needed to determine if thw player wants to scroll the inventory(in sandbox mode) or just take an item from it
+    public RectTransform rectTransform;
+    bool mouseDown = false;
+    Vector2 lastMousePosition;
+    InventoryButton selectedButton;
+
+
+    void Awake () {
 
         foreach(InventoryButton button in inventoryButtons)
         {
@@ -37,7 +49,93 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public void TakeItemFromInventory(InventoryButton clickedButton)
+    private void Update()
+    {
+        //Debug.Log("pos: " + rectTransform.position.x);
+        //Debug.Log("xmin: " + rectTransform.rect.xMin);
+        //Debug.Log("xmax: " + rectTransform.rect.xMax);
+        if (mouseDown)
+        {    
+            //abbruchbedingung
+            if(Input.mousePosition.y > rectTransform.rect.height*2 || Input.GetMouseButtonUp(0))
+            {
+                mouseDown = false;
+                PlayerController.Instance.Enable();
+            }
+
+            //nun schauen wir ob wir den Finger/Maus zur Seite bewegen -> inventory scroll
+            //oder ob wir den Finger/Maus nach oben bewegen -> get Item from Inventory
+
+            Vector2 mouseChange = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - lastMousePosition;
+
+            if (mouseChange.y > 1 && selectedButton != null && Mathf.Abs(mouseChange.x)<mouseChange.y)
+            {
+                //if we move our finger up 
+                mouseDown = false;
+                PlayerController.Instance.Enable();
+                TakeItemFromInventory(selectedButton);
+                selectedButton = null;
+            }
+            else if ( mouseChange.x > 1||mouseChange.x < -1)
+            {
+                //if we move our finger right or left
+                selectedButton = null;
+
+                
+                rectTransform.localPosition = new Vector2
+                (
+                    Mathf.Clamp
+                    (
+                        rectTransform.localPosition.x + mouseChange.x,
+                        rectTransform.rect.xMin + 347,  // this 420 needs to be changed, but i dont know wherwe to get it from
+                        rectTransform.rect.xMax - 347
+                    ),
+                    rectTransform.localPosition.y
+                 );
+                //}
+            }
+            else
+            {
+                //if our finger stays at the same position
+            }
+
+            lastMousePosition = Input.mousePosition;
+        }
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        OnPointerDown();
+    }
+
+    void OnPointerDown()
+    {
+        if (scrollable)
+        {
+            Debug.Log("on pointerDown");
+            PlayerController.Instance.Disable();
+            mouseDown = true;
+            lastMousePosition = Input.mousePosition;
+        }
+    }
+
+    //this method is called by the button, it messages the inventory that it was clicked
+    public void PlayerSelectedThisButton(InventoryButton clickedButton)
+    {
+        if (!scrollable)
+        {
+            TakeItemFromInventory(clickedButton);
+
+        }
+        else
+        {
+            selectedButton = clickedButton;
+            OnPointerDown();
+            Debug.Log("to be implemented");
+        }
+    }
+
+    void TakeItemFromInventory(InventoryButton clickedButton)
     {
         for (int i = 0; i < items.Length; i++)
         {

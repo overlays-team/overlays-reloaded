@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public CameraSmoothFollow cameraHolder;
     [Tooltip("Bounds in x and y - 0.1 means when we have a block in our hand and reach the border 10% of our screen - our camera will move")]
     public float autoMovementBorder;
+
     int autoMovementBorderUp;
     int autoMovementBorderRight;
     int autoMovementBorderLeft;
@@ -116,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    // Bit shift the index of the layer (9) to get a bit mask
+                    // Bit shift the index of the layer (10) to get a bit mask - 10 are the blockObjects , 5  is the UI
                     int layerMask = 1 << 10;
 
                     if (Physics.Raycast(ray, out hit, 100, layerMask))
@@ -166,8 +167,6 @@ public class PlayerController : MonoBehaviour
 
                     if (cameraMovementEnabled)
                     {
-                        Debug.Log("enabled");
-                        Debug.Log("hittedObject: " + hittedObject);
                         /*we can also move the camera while haveing the finger over a block if we are fast enough,
                             * but for this in touch we need to make sure, that we touched the display last frame, bacause 
                             * if not, we will use our old position for determining the finger movement, 
