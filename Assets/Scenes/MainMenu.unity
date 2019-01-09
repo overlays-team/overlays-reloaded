@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311912, g: 0.3807398, b: 0.3587271, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4855,7 +4855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 177638, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22451668, guid: 0abab5bb77339e4428787a870eb31bd3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5299,31 +5299,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 95119152447105402, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
-    - target: {fileID: 95659091353272110, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
-    - target: {fileID: 95589502941793898, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
-    - target: {fileID: 114708576436960026, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
-        type: 3}
-      propertyPath: logo
-      value: 
-      objectReference: {fileID: 669148479}
     - target: {fileID: 223335455869364658, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
         type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1855416505}
+    - target: {fileID: 114708576436960026, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
+        type: 3}
+      propertyPath: logo
+      value: 
+      objectReference: {fileID: 669148479}
     - target: {fileID: 224446688719669858, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -5419,6 +5404,21 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 95589502941793898, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
+    - target: {fileID: 95659091353272110, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
+    - target: {fileID: 95119152447105402, guid: b77d9d69b2810c54abd9f96fdb2da4f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 499d56a5a354449e2999180eea6f38df, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b77d9d69b2810c54abd9f96fdb2da4f9, type: 3}
 --- !u!1 &977580187
@@ -15235,7 +15235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: eda304befd429784b862c27c552957c3, type: 2}
 --- !u!1 &1858644334
 GameObject:
   m_ObjectHideFlags: 0

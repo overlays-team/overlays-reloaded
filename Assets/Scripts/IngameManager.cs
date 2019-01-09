@@ -119,7 +119,7 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        StopCoroutine("WinCoroutine");
+        //StopCoroutine("WinCoroutine");
         thisLevelScore = star * scoreFactor;
 
         UpdateTotalScore();
@@ -338,10 +338,8 @@ public class IngameManager : MonoBehaviour
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
 
-            if (allCorrect) StartCoroutine("WinCoroutine");
-
+            if (allCorrect) Win();
             //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
-
         }
         else
         {
