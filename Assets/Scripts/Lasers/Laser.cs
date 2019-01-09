@@ -37,7 +37,7 @@ public class Laser : MonoBehaviour {
             //activate visuals
             lineRenderer.enabled = true;
             directionFlowParticle.SetActive(true);
-            particleLight.SetActive(true);
+            //particleLight.SetActive(true);
 
             RaycastHit hit;
             // Bit shift the index of the layer (0) to get a bit mask
@@ -55,7 +55,7 @@ public class Laser : MonoBehaviour {
                 impactParticle.SetActive(true);
 
                 //set light position
-                particleLight.transform.position = laserOutput.position + (hit.point - laserOutput.position)/2;
+                //particleLight.transform.position = laserOutput.position + (hit.point - laserOutput.position)/2;
 
                 //set flow particle position and length
                 directionFlowParticle.transform.position = laserOutput.position;
@@ -97,7 +97,7 @@ public class Laser : MonoBehaviour {
                 lineRenderer.SetPosition(1, laserOutput.position + laserOutput.forward*100);
 
                 //set light position if we dont hit anything just 2 in front of laser
-                particleLight.transform.position = laserOutput.position + laserOutput.forward*2;
+                //particleLight.transform.position = laserOutput.position + laserOutput.forward*2;
 
                 //set flow particle position
                 directionFlowParticle.transform.position = laserOutput.position;
@@ -114,7 +114,7 @@ public class Laser : MonoBehaviour {
             lineRenderer.enabled = false;
             impactParticle.SetActive(false);
             directionFlowParticle.SetActive(false);
-            particleLight.SetActive(false);
+            //particleLight.SetActive(false);
         }
 
     }

@@ -25,11 +25,13 @@ public class ImageOutputSandbox : BlockObject
             {
                 inputImage1 = laserInputs[0].inputLaser.image;
                 debugImage.sprite = Sprite.Create(inputImage1, new Rect(0, 0, inputImage1.width, inputImage1.height), new Vector2(0.5f, 0.5f));
+                detailedNodeViewImage.sprite = debugImage.sprite;
             }
             else
             {
                 inputImage1 = null;
                 debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+                detailedNodeViewImage.sprite = debugImage.sprite;
             }
         }
     }
@@ -37,5 +39,13 @@ public class ImageOutputSandbox : BlockObject
     public void OnExportButtonClicked()
     {
         Debug.Log("exportButton clicked");
+
+        byte[] bytes = inputImage1.EncodeToPNG();
+
+        NativeGallery.SaveImageToGallery(
+            bytes, 
+            "Overlays", 
+            "exported image {0}.png"
+            );
     }
 }
