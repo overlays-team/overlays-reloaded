@@ -48,7 +48,7 @@ public class GameDataEditor : MonoBehaviour
 
         Debug.Log("5-1: loadFromFile:" + loadFromFile);
         //if file exist load it,  if not, create levels.
-        loadFromFile = File.Exists(getFilePath());
+        //loadFromFile = File.Exists(getFilePath());
         Debug.Log("5-2: loadFromFile:" + loadFromFile);
 
         Debug.Log("6, before, if(loadFromFile): " + loadFromFile);

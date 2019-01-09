@@ -99,7 +99,6 @@ public class HttpCommunicator : MonoBehaviour
 
         string url = host + ":" + port + path;
 
-
         //sorry, ignoreance of json in unity
         string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
         //Debug.Log(testJson);
