@@ -11,18 +11,22 @@ public class LevelInstantiator : MonoBehaviour {
 
     public string dataFileName;
     LevelInstanceData myLevel;
-    //Example for 2x2 Array
-    private int I00;
-    private int I01;
-    private int I10;
-    private int I11;
-    //private string[,] array;
+    public string[,] levelData;
+
+    //Input for managers
+    public GameObject Grid;
 
     // Use this for initialization
     void Start () {
         myLevel = new LevelInstanceData{};
         LoadData();
         //print("Split data: " + myLevel.rows[0]);
+        ApplyLevelData();
+    }
+
+    private void ApplyLevelData()
+    {
+
     }
 
     public void LoadData()
@@ -44,7 +48,7 @@ public class LevelInstantiator : MonoBehaviour {
     private void SplitData(string dataAsJson)
     {
         string[] rows = dataAsJson.Split('"');
-        string[] temp = rows;
+        //foreach (string s in rows) { print("s in rows(direkt nach Initialisierung): " + s); }
         int count = 0;
 
         //Split the jsonData into an array containing strings with a row each.
@@ -52,14 +56,17 @@ public class LevelInstantiator : MonoBehaviour {
             string row = rows[s];
             if (row.Contains(",") && row.Any(char.IsDigit))
             {
-                temp[count] = row;
+                rows[count] = row;
                 count++;
-                print("[" + count + "] " + temp[s]);
+                //print("[" + count + "] " + temp[s]);
             }
         }
+        //foreach (string s in rows) { print("s in rows(nach erster Sortierung): " + s); }
+        //print("count nach Sortierung: " + count);
+        Array.Resize(ref rows, count);
+        //foreach (string s in rows){print("s in rows(nach resizing): " + s);}
 
-        Array.Resize(ref temp, rows.Length - count + 1);
-        rows = temp;
+        //print("rowsLength: " + rows.Length);
 
         string[] colLength = rows[0].Split(',');
         string[,] data2d = new string[rows.Length, colLength.Length];
@@ -71,10 +78,11 @@ public class LevelInstantiator : MonoBehaviour {
             for(int j = 0; j < colLength.Length; j++)
             {
                 data2d[i, j] = split[j];
-                print("["+i+"]["+j+"] " + data2d[i, j]);
+                //print("["+i+"]["+j+"] " + data2d[i, j]);
             }
         }
-        
+
+        this.levelData = data2d;
     }
     
     /*
