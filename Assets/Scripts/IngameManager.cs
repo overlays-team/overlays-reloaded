@@ -38,7 +38,6 @@ public class IngameManager : MonoBehaviour
     {
         win = false;
         lose = false;
-        Resume();
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
 
