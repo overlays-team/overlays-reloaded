@@ -16,21 +16,28 @@ public class GridPlane : MonoBehaviour
     public MeshCollider meshCollider;
     public MeshRenderer meshRenderer;
 
-    
 
     private void Start()
     {
-        SetEmpthy(empty);
+        //SetEmpthy(empty);
     
 
         positiveHalo.SetActive(false);
         negativeHalo.SetActive(false);
     }
 
+   
     private void Update()
     {
-        SetEmpthy(empty);
+        //gets only executed in editor in edit mode
+        #if UNITY_EDITOR
+        if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            SetEmpthy(empty);
+        }
+        #endif
     }
+
 
     public void ShowHalo()
     {

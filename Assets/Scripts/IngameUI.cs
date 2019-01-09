@@ -33,8 +33,6 @@ public class IngameUI : MonoBehaviour {
     public Text messageDialogText;
     public Text mesageDialogButtonText;
 
-    public Material blurMaterial;
-
     Material blurMateriaInPauseMenuPanel;
     Material blurMaterialInLevelCompleteMenu;
     Material blurMateriaInGameOverMenu;
@@ -59,31 +57,6 @@ public class IngameUI : MonoBehaviour {
 
     private void blurEffect()
     {
-        //früher (unfixed)
-        /*
-        if (blurring)
-        {
-            //duration of blur motion
-            timeBlur += Time.deltaTime;
-            newValue += 0.01f;
-            //Wie stark die Veränderung
-            float ratio = 7f;
-            //Color Motion
-            Color newColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
-            //Blur motion
-            blurMaterial.SetColor("_Color", newColor);
-            blurMaterial.SetFloat("_Size", newValue * 50.0f);
-                       
-            Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
-            if (timeBlur > 0.3f)
-            {
-                blurring = false;
-                timeBlur = 0;
-                newValue = 0;
-            }
-        }
-        */
-
         //fixed methode
         if (blurring)
         {
@@ -94,8 +67,8 @@ public class IngameUI : MonoBehaviour {
             float ratio = 7f;
             //Color Motion
             Color pausePanelNewColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
-            Color levelCompleteMenuNewColor = new Color(1 - newValue * ratio, 1, 1 - newValue * ratio, 1);
-            Color gameOverMenuNewColor = new Color(1, 1 - newValue * ratio, 1 - newValue * ratio, 1);
+            Color levelCompleteMenuNewColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
+            Color gameOverMenuNewColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
 
             //Blur motion
             blurMateriaInPauseMenuPanel.SetColor("_Color", pausePanelNewColor);
