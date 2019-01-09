@@ -61,7 +61,7 @@ public class AdditiveCombine2 : BlockObject
         Debug.Log(slider.value);
         image1Weight = slider.value * 2;
         image2Weight = (1 - slider.value) * 2;
-        StartImageProcessing();
+        if (inputImage1 != null && inputImage2 != null) StartImageProcessing();
     }
 
         

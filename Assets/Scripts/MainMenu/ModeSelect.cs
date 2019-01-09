@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ModeSelect : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class ModeSelect : MonoBehaviour
                 break;
 
             case 2:
-                Debug.Log("TO BE IMPLEMENTED");
+                SceneManager.LoadScene("Sandbox");
                 break;
 
             default:
