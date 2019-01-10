@@ -37,6 +37,10 @@ public class PlayerController : MonoBehaviour
     public float moveCameraTreshold; //what distance must our finger go in 1 frame, that we start moving the camera
     Vector2 lastMousePosition;
 
+    //for detailed node view- we hold the finger on the block without moving it
+    Vector2 mouseDownPosition;
+    public float moveBlockTreshold; //how much does our finger need to move to drag the block?
+
     //pinchZoom - for development puposes it woks with mouse wheel on pc, on touch, its the normal 2 finger zoom
     public float zoomSpeed = 0.5f;
     public float minHeight = 10f;
@@ -115,6 +119,8 @@ public class PlayerController : MonoBehaviour
                 {
                     timeOfLastMouseDown = Time.time;
 
+                    mouseDownPosition = Input.mousePosition;
+
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     // Bit shift the index of the layer (10) to get a bit mask - 10 are the blockObjects , 5  is the UI
@@ -125,7 +131,7 @@ public class PlayerController : MonoBehaviour
                         hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
                     }
                 }
-                //if we touch the screen with a second finger, we activate the on2Finger Tap action of the object hitted with the first finger
+               /* //if we touch the screen with a second finger, we activate the on2Finger Tap action of the object hitted with the first finger
                 else if (Input.touchCount == 2 && Input.GetTouch(1).phase == TouchPhase.Began)
                 {
                     Debug.Log("secondTouch");
@@ -134,7 +140,7 @@ public class PlayerController : MonoBehaviour
                         hittedObject.OnTwoFingerTap();
                         hittedObject = null;
                     }
-                }
+                }*/
 
                 //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject - mostly rotate
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -155,15 +161,38 @@ public class PlayerController : MonoBehaviour
                 else if (Input.touchCount == 1)
                 {
                     clickTime = Time.time - timeOfLastMouseDown;
-                    Debug.Log("hold one finger");
+
                     if (clickTime >= timeToHoldToInitiateHoldAction)
                     {
-                        if (hittedObject != null && !hittedObject.stationary)
+                        if (hittedObject != null)
                         {
-                            selectedBlockObject = hittedObject;
-                            playerMode = PlayerMode.MouseHoldMoveBlock;
+                            Vector2 thisMousePosition = Input.mousePosition;
+
+                            if (hittedObject.doubleClickActionBlocked)
+                            {
+                                if (!hittedObject.stationary)
+                                {
+                                    selectedBlockObject = hittedObject;
+                                    playerMode = PlayerMode.MouseHoldMoveBlock;
+                                }
+                            }
+                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) * Screen.width / 1000 > moveBlockTreshold)
+                            {
+                                if (!hittedObject.stationary)
+                                {
+                                    selectedBlockObject = hittedObject;
+                                    playerMode = PlayerMode.MouseHoldMoveBlock;
+                                }
+                            }
+                            else
+                            {
+                                hittedObject.OnTwoFingerTap();
+                                hittedObject = null;
+                                return;
+                            }
                         }
                     }
+
 
                     if (cameraMovementEnabled)
                     {
@@ -391,7 +420,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("clickTime: " + clickTime);
             if (clickTime <= timeToHoldToInitiateHoldAction)
             {
                 if (hittedObject != null)
@@ -419,6 +447,8 @@ public class PlayerController : MonoBehaviour
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     timeOfLastMouseDown = Time.time;
+
+                    mouseDownPosition = Input.mousePosition;
                     // Bit shift the index of the layer (9) to get a bit mask
                     int layerMask = 1 << 10;
 
@@ -435,12 +465,35 @@ public class PlayerController : MonoBehaviour
 
                     if (clickTime >= timeToHoldToInitiateHoldAction)
                     {
-                        if (hittedObject != null && !hittedObject.stationary)
+                        if (hittedObject != null)
                         {
-                            selectedBlockObject = hittedObject;
-                            playerMode = PlayerMode.MouseHoldMoveBlock;
+                            Vector2 thisMousePosition = Input.mousePosition;
+
+                            if (hittedObject.doubleClickActionBlocked)
+                            {
+                                if (!hittedObject.stationary)
+                                {
+                                    selectedBlockObject = hittedObject;
+                                    playerMode = PlayerMode.MouseHoldMoveBlock;
+                                }
+                            }
+                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) * Screen.width / 1000 > moveBlockTreshold)
+                            {
+                                if (!hittedObject.stationary)
+                                {
+                                    selectedBlockObject = hittedObject;
+                                    playerMode = PlayerMode.MouseHoldMoveBlock;
+                                }
+                            }
+                            else
+                            {
+                                hittedObject.OnTwoFingerTap();
+                                hittedObject = null;
+                                return;
+                            }
                         }
                     }
+
                     if (cameraMovementEnabled)
                     {
                         if (hittedObject == null)

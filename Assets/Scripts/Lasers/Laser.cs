@@ -125,4 +125,9 @@ public class Laser : MonoBehaviour {
         lineRenderer.material.SetColor("_EmissionColor", color);
     }
 
+    public void OnDestroy()
+    {
+        LaserManager.Instance.RemoveLaser(this);
+    }
+
 }

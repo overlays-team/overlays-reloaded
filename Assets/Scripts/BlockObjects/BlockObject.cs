@@ -188,6 +188,12 @@ public class BlockObject : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    //is used by the sandbox inventory to delete the objects
+    public void OnDestroy()
+    {
+        if(laserOutput!=null && laserOutput.laser!=null) Destroy(laserOutput.laser.gameObject);
+    }
+
     public virtual void OnMouseClick()
     {
         //most of the need to rotate, if they need something else they just override

@@ -56,8 +56,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     private void Update()
     {
-        Debug.Log("mpos: " + Input.mousePosition.y);
-        Debug.Log("border: " + rectTransform.rect.height * 2);
         if (mouseDown)
         {    
             //abbruchbedingung
@@ -173,7 +171,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
         }
         else
         {
-            Destroy(blockObject);
+            Destroy(blockObject.gameObject);
         }
         
     }
