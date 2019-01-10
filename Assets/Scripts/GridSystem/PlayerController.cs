@@ -97,16 +97,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isEnabled)
-        {
-#if UNITY_STANDALONE_WIN
+        #if UNITY_STANDALONE_WIN
                 WindowsAndEditorUpdate();
-#elif UNITY_EDITOR
-            WindowsAndEditorUpdate();
-#else
+        #elif UNITY_EDITOR
+                WindowsAndEditorUpdate();
+        #else
                 MobileUpdate();
-#endif
-        }
+        #endif
     }
 
     void MobileUpdate()
@@ -686,16 +683,4 @@ public class PlayerController : MonoBehaviour
         selectedBlockObject = null;
         playerMode = PlayerMode.Default;
     }
-
-    public void Disable()
-    {
-        isEnabled = false;
-    }
-
-    public void Enable()
-    {
-        isEnabled = true;
-    }
-
-
 }

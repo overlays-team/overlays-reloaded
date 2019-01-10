@@ -20,6 +20,8 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     Vector2 lastMousePosition;
     InventoryButton selectedButton;
 
+    bool isEnabled;
+
 
     void Awake () {
         
@@ -62,7 +64,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
             if(Input.mousePosition.y > rectTransform.rect.height*2 || Input.GetMouseButtonUp(0))
             {
                 mouseDown = false;
-                PlayerController.Instance.Enable();
+                PlayerController.Instance.enabled = true;
             }
 
             //nun schauen wir ob wir den Finger/Maus zur Seite bewegen -> inventory scroll
@@ -74,7 +76,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
             {
                 //if we move our finger up 
                 mouseDown = false;
-                PlayerController.Instance.Enable();
+                PlayerController.Instance.enabled = true;
                 TakeItemFromInventory(selectedButton);
                 selectedButton = null;
             }
@@ -113,7 +115,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
         if (sandboxMode)
         {
             //Debug.Log("on pointerDown");
-            PlayerController.Instance.Disable();
+            PlayerController.Instance.enabled = false;
             mouseDown = true;
             lastMousePosition = Input.mousePosition;
         }

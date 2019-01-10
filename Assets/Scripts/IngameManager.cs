@@ -31,7 +31,22 @@ public class IngameManager : MonoBehaviour
     bool paused;
 
 
-    public ImageOutput[] outputImages; //holds a collection of all output Images
+    List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+
+    public static IngameManager Instance;
+
+    //Singletoncode
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            DestroyImmediate(Instance); // es kann passieren wenn wir eine neue Scene laden dass immer noch eine Instanz existiert
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -44,6 +59,18 @@ public class IngameManager : MonoBehaviour
         setTestParameters();
 
         LoadLevelState();
+
+        //get out ImageOutputs
+        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
+
+        foreach (GameObject go in imageOutputGO)
+        {
+            if (go.GetComponent<ImageOutput>() != null)
+            {
+                outputImages.Add(go.GetComponent<ImageOutput>());
+            }
+        }
+
     }
 
     private void setTestParameters()
@@ -297,12 +324,28 @@ public class IngameManager : MonoBehaviour
     {
         paused = true;
         ingameUI.TogglePause();
+        PauseGame();
     }
+
+    //pauses the inventory and layerController
+    public void PauseGame()
+    {
+        PlayerController.Instance.enabled = false;
+        PlayerController.Instance.inventory.enabled = false;
+    }
+
     public void Resume()
     {
         paused = false;
         ingameUI.TogglePlay();
         Time.timeScale = 1f;
+        ResumeGame();
+    }
+
+    public void ResumeGame()
+    {
+        PlayerController.Instance.enabled = true;
+        PlayerController.Instance.inventory.enabled = true;
     }
 
 
@@ -330,7 +373,7 @@ public class IngameManager : MonoBehaviour
         }
 
 
-        if (outputImages.Length > 0)
+        if (outputImages.Count> 0)
         {
             foreach (ImageOutput imageOutput in outputImages)
             {
