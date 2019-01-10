@@ -112,7 +112,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     {
         if (sandboxMode)
         {
-            Debug.Log("on pointerDown");
+            //Debug.Log("on pointerDown");
             PlayerController.Instance.Disable();
             mouseDown = true;
             lastMousePosition = Input.mousePosition;
@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
         {
             selectedButton = clickedButton;
             OnPointerDown();
-            Debug.Log("to be implemented");
+            //Debug.Log("to be implemented");
         }
     }
 
