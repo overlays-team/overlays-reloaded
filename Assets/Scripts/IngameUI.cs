@@ -104,14 +104,12 @@ public class IngameUI : MonoBehaviour {
     public void TogglePause()
     {
         pauseButton.SetActive(false);
-        //PlayButton.SetActive(true);
         pauseMenuPanel.SetActive(true);
         StartCoroutine(AnimateBlurIn(pauseMenuPanel, blurAnimDuration));
     }
     public void TogglePlay()
     {
         pauseButton.SetActive(true);
-        //PlayButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
     }
     public void ShowGameOverPanel()
@@ -163,7 +161,6 @@ public class IngameUI : MonoBehaviour {
     public void ShowMessageDialogPanel(string message, string buttonText)
     {
         messageDialogText.text = message;
-        //messageDialogButton.GetComponentInChildren<Text>().text = "abc";
         mesageDialogButtonText.text = buttonText;
         gameOverMenu.SetActive(false);
         messageDialogPanel.SetActive(true);

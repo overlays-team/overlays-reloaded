@@ -53,7 +53,7 @@ public class IngameManager : MonoBehaviour
         star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
 
         // needed for test
-        CreateTestLevelState(); //sh, 
+        //CreateTestLevelState(); //sh, 
 
 
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
@@ -135,16 +135,12 @@ public class IngameManager : MonoBehaviour
 
     private string GetRandomPlayerName()
     {
-        //string datetimeStr = System.DateTime.Now.ToString();
-        //Debug.Log("time:" + datetimeStr);
-
         string year = System.DateTime.Now.Year.ToString();
         string month = System.DateTime.Now.Month.ToString();
         string day = System.DateTime.Now.Day.ToString();
 
         int random = Random.Range(1000, 9999);
 
-        //return ("player" + year + month + day + "-" + random);
         return ("player" + "-" + random);
     }
 
@@ -152,9 +148,6 @@ public class IngameManager : MonoBehaviour
     public void SubmitScore()
     {
         string playerName = "";
-
-        //random player name
-        //playerName = GetRandomPlayerName();
 
         if (ingameUI.nameInputField.text.Equals(""))
         {
@@ -320,11 +313,10 @@ public class IngameManager : MonoBehaviour
 
     public bool CheckIfWeWon()
     {
-        bool allCorrect = true; //sh: false as default is better and remove else?. 
+        bool allCorrect = true; 
 
         if (timeRunsOut &!lose)
         {
-            //sh, Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
             return false;
         }
@@ -364,46 +356,5 @@ public class IngameManager : MonoBehaviour
         */
     }
 
-
-    
-    //sh
-    //needed for testing with InGameUI Scene
-    private void CreateTestLevelState()
-    {
-        Debug.Log("こんにちは、CreateTestLevelState()");
-
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
-
-        //GameDataEditor.Instance.data.levels[0].score = 2;
-        //GameDataEditor.Instance.data.levels[1].score = 1;
-    }
 
 }

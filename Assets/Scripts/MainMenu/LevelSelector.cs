@@ -18,73 +18,12 @@ public class LevelSelector : MonoBehaviour
     public void Start()
     {
         toggleGrp = GetComponent<ToggleGroup>();
-        CreateTestLevelState();
-        LoadTestLevelStateFromGameDataEditor();   
-    }
-
-    /*
-    public void Select(string levelName)
-    {
-        fader.FadeTo(levelName);
-    }
-    */
-
-
-    /*
-    public void SelectLevel(Button btn)
-    {
-        Debug.Log(btn.name);
-
-        fader.FadeTo(btn.name);
-    }
-    */
-
-
-    private void CreateTestLevelState()
-    {
-        Debug.Log("こんにちは、CreateTestLevelState()");
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+        LoadLevelStateFromGameDataEditor();   
     }
 
 
-   /* private void LoadTestLevelStateFromFile()
+    private void LoadLevelStateFromGameDataEditor()
     {
-        Debug.Log("そして、LoadFromFile()");
-
-        //debug: loading state with original io class
-        LevelSelectorIO io = new LevelSelectorIO();
-
-        io.LoadData(); // only for test
-        GameDataEditor.Instance.LoadData(); //<== das funktioniert nicht!
-
-        GameDataEditor.Instance.data = io.data;
-        Debug.Log(GameDataEditor.Instance.data.levels.Count);
-
-       
-
-        for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
-        {
-            //Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID + "," + GameDataEditor.Instance.data.levels[i].completed);
-
-            GameObject level = Instantiate(levelPrefab);
-            level.transform.parent = content.transform;
-            level.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
-            level.GetComponent<Button>().name = GameDataEditor.Instance.data.levels[i].sceneID;
-            level.GetComponent<Button>().interactable = GameDataEditor.Instance.data.levels[i].completed;
-        }
-    }
-*/
-
-    private void LoadTestLevelStateFromGameDataEditor()
-    {
-        Debug.Log("そして、LoadFromGDE()");
         Debug.Log(GameDataEditor.Instance.data.levels.Count);
 
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
@@ -95,10 +34,12 @@ public class LevelSelector : MonoBehaviour
 			RectTransform recttransform = level.GetComponent<RectTransform>();
             Toggle levelToggle = level.GetComponent<Toggle>();
 
+            //load data
             level.transform.GetComponentInChildren<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
             levelToggle.name = GameDataEditor.Instance.data.levels[i].sceneID;
             levelToggle.interactable = GameDataEditor.Instance.data.levels[i].completed;
             levelToggle.onValueChanged.AddListener(delegate { SelectLevel(); });
+
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
                 levelToggle.group = toggleGrp;
@@ -106,6 +47,9 @@ public class LevelSelector : MonoBehaviour
             level.GetComponent<LevelToggle>().levelName = sceneID;
         }
     }
+
+
+
 
     string GetSelectedLevel()
     {
@@ -147,25 +91,6 @@ public class LevelSelector : MonoBehaviour
         scenePreview.GetComponent<RawImage>().texture = image;
     }
 
-    public void Save()
-    {
-        /*
-        //debug
-        for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
-        {
-            Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID + "," + GameDataEditor.Instance.data.levels[i].completed);
-        }
-
-
-        //save state with GameDataEditor
-        GameDataEditor.Instance.SaveData();
-        */
-
-
-        //debug: saveing state
-        LevelSelectorIO io = new LevelSelectorIO(GameDataEditor.Instance.data);
-        io.SaveData();
-    }
 
     private void OnDisable()
     {
