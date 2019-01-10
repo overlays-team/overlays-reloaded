@@ -217,14 +217,14 @@ public class BlockObject : MonoBehaviour
     protected virtual void TwoFingerTapAction()
     {
         detailedNodeView.SetActive(true);
-        PlayerController.Instance.Disable();
+        IngameManager.Instance.PauseGame();
     }
 
     //when we click the return Button in the detailedNode view
     public void OnReturnClicked()
     {
         detailedNodeView.SetActive(false);
-        PlayerController.Instance.Enable();
+        IngameManager.Instance.ResumeGame();
     }
 
     #endregion
