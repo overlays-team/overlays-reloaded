@@ -94,35 +94,38 @@ public class GameDataEditor : MonoBehaviour
 
     private void CreateLevelStates()
     {
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
+        if (GameDataEditor.Instance.data.levels.Count == 0)
+        {
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", true));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
+            GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
+        }
     }
 
 }

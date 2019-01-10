@@ -34,8 +34,8 @@ public class LevelSelector : MonoBehaviour
 			RectTransform recttransform = level.GetComponent<RectTransform>();
             Toggle levelToggle = level.GetComponent<Toggle>();
 
-            //load data
             level.transform.GetComponentInChildren<Text>().text = GameDataEditor.Instance.data.levels[i].sceneID;
+
             levelToggle.name = GameDataEditor.Instance.data.levels[i].sceneID;
             levelToggle.interactable = GameDataEditor.Instance.data.levels[i].completed;
             levelToggle.onValueChanged.AddListener(delegate { SelectLevel(); });
