@@ -23,6 +23,7 @@ public class Laser : MonoBehaviour {
     [Header("Image Processing")]
     public Texture2D image;
 
+
     private void Start()
     {
         LaserManager.Instance.AddLaser(this);

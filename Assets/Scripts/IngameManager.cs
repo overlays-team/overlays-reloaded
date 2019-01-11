@@ -337,6 +337,7 @@ public class IngameManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         PlayerController.Instance.inventory.enabled = true;
     }

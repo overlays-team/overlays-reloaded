@@ -406,6 +406,7 @@ public class BlockObject : MonoBehaviour
     {
         rotate = true;
         desiredRotation = desiredRotation*Quaternion.Euler(0, degreesToRotate, 0);
+
     }
 
     void PerformRotation()

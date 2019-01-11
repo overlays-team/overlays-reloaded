@@ -97,13 +97,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #if UNITY_STANDALONE_WIN
-                WindowsAndEditorUpdate();
-        #elif UNITY_EDITOR
-                WindowsAndEditorUpdate();
-        #else
-                MobileUpdate();
-        #endif
+         #if UNITY_STANDALONE_WIN
+                 WindowsAndEditorUpdate();
+         #elif UNITY_EDITOR
+                 WindowsAndEditorUpdate();
+         #else
+                 MobileUpdate();
+         #endif
     }
 
     void MobileUpdate()
@@ -111,9 +111,10 @@ public class PlayerController : MonoBehaviour
         switch (playerMode)
         {
             case PlayerMode.Default:
-                //if we press rmb or mmb or beginn tap with one finger, we save the object we hitted with the raycast in "hittedObject"
+                //if we  beginn tap with one finger, we save the object we hitted with the raycast in "hittedObject"
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Began) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
                 {
+                    Debug.Log("touched");
                     timeOfLastMouseDown = Time.time;
 
                     mouseDownPosition = Input.mousePosition;
@@ -127,17 +128,8 @@ public class PlayerController : MonoBehaviour
                     {
                         hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
                     }
+                    Debug.Log("hitted object: " + hittedObject);
                 }
-               /* //if we touch the screen with a second finger, we activate the on2Finger Tap action of the object hitted with the first finger
-                else if (Input.touchCount == 2 && Input.GetTouch(1).phase == TouchPhase.Began)
-                {
-                    Debug.Log("secondTouch");
-                    if (hittedObject != null)
-                    {
-                        hittedObject.OnTwoFingerTap();
-                        hittedObject = null;
-                    }
-                }*/
 
                 //if we release the mouse key before timeToHoldToInitiateHoldAction - we call the onMouseClickAction of the hittedObject - mostly rotate
                 if (Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Ended)
@@ -198,7 +190,6 @@ public class PlayerController : MonoBehaviour
                             * if not, we will use our old position for determining the finger movement, 
                             * which could be on the other side of the sreen, thus enabling camera movement on the 
                             * first frame of our touch down*/
-
                         if (hittedObject == null)
                         {
                             playerMode = PlayerMode.MouseHoldDragCamera;
@@ -441,6 +432,7 @@ public class PlayerController : MonoBehaviour
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
                 {
+                    Debug.Log("clickedDown");
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     timeOfLastMouseDown = Time.time;
@@ -453,6 +445,7 @@ public class PlayerController : MonoBehaviour
                     {
                         hittedObject = hit.collider.gameObject.GetComponent<BlockObject>();
                     }
+
                 }
                
                 //otherwise we move the object with our mouse/hand while the mouse/finger is held Down
@@ -495,6 +488,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if (hittedObject == null)
                         {
+                            Debug.Log("activated camera drag");
                             lastMousePosition = Input.mousePosition;
                             playerMode = PlayerMode.MouseHoldDragCamera;
                         }
@@ -681,6 +675,11 @@ public class PlayerController : MonoBehaviour
         selectedBlockObject.ReturnToInventory();
         inventory.ReturnItemToInventory(selectedBlockObject);
         selectedBlockObject = null;
+        playerMode = PlayerMode.Default;
+    }
+
+    public void Reset()
+    {
         playerMode = PlayerMode.Default;
     }
 }
