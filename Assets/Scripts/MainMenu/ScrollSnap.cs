@@ -10,6 +10,7 @@ public class ScrollSnap : MonoBehaviour
     public float selectedScaleSpeed;
     public Vector3 selectedScaleFactor;
     public int selectedItem;
+    public int lastSelectedItem;
     public List<RectTransform> items;
     public Transform itemContainer;
 
@@ -17,6 +18,8 @@ public class ScrollSnap : MonoBehaviour
     private float focusItem;
     private float itemDistance;
     private bool dragging = false;
+    private Vector2 dragStartPos;
+    private Vector2 dragEndPos;
     private float[] distances;
 
 	// Use this for initialization
@@ -34,13 +37,10 @@ public class ScrollSnap : MonoBehaviour
         distances = new float[items.Count];
 
         itemDistance = items[1].anchoredPosition.x - items[0].anchoredPosition.x;
-        Debug.Log("itemDistance: " + itemDistance);
-        Debug.Log("item 1 x: " + items[1].GetComponent<RectTransform>().anchoredPosition.x);
-        Debug.Log("item 2 x: " + items[0].GetComponent<RectTransform>().anchoredPosition.x);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         ScaleSelected();
 
@@ -78,11 +78,31 @@ public class ScrollSnap : MonoBehaviour
         {
             if (i == selectedItem)
             {
-                items[i].localScale = Vector3.Lerp(items[i].localScale, selectedScaleFactor, selectedScaleSpeed);
+                if(!items[i].localScale.Equals(selectedScaleFactor))
+                {
+                    if (Vector3.Distance(items[i].localScale, selectedScaleFactor) > 0.1f)
+                    {
+                        items[i].localScale = Vector3.Lerp(items[i].localScale, selectedScaleFactor, selectedScaleSpeed);
+                    }
+                    else
+                    {
+                        items[i].localScale = selectedScaleFactor;
+                    }
+                }
             }
             else
             {
-                items[i].localScale = Vector3.Lerp(items[i].localScale, new Vector3(1, 1, 1), selectedScaleSpeed);
+                if (!items[i].localScale.Equals(Vector3.one))
+                {
+                    if (Vector3.Distance(items[i].localScale, Vector3.one) > 0.1f)
+                    {
+                        items[i].localScale = Vector3.Lerp(items[i].localScale, Vector3.one, selectedScaleSpeed);
+                    }
+                    else
+                    {
+                        items[i].localScale = Vector3.one;
+                    }
+                }
             }
         }
     }
@@ -107,18 +127,49 @@ public class ScrollSnap : MonoBehaviour
     {
         float newX = Mathf.Lerp(scrollSlide.anchoredPosition.x, position, Time.deltaTime * snapSpeed);
 
-        Vector2 newPosition = new Vector2(newX, scrollSlide.anchoredPosition.y);
+        if(Mathf.Abs(scrollSlide.anchoredPosition.x - position) < 0.1)
+        {
+            scrollSlide.anchoredPosition = new Vector2(position, scrollSlide.anchoredPosition.y);
+        }
 
-        scrollSlide.anchoredPosition = newPosition;
+        if(scrollSlide.anchoredPosition.x == position)
+        {
+            lastSelectedItem = selectedItem;
+        }
+        else
+        {
+            Vector2 newPosition = new Vector2(newX, scrollSlide.anchoredPosition.y);
+
+            scrollSlide.anchoredPosition = newPosition;
+        }
+
+
     }
 
     public void StartDrag()
     {
         dragging = true;
+        dragStartPos = Input.mousePosition;
     }
 
     public void EndDrag()
     {
         dragging = false;
+        dragEndPos = Input.mousePosition;
+        
+        float dragDistance = dragStartPos.x - dragEndPos.x;
+        print(dragDistance);
+
+        if(lastSelectedItem == selectedItem)
+        {
+            if (dragDistance > 0 && dragDistance < itemDistance * 0.7)
+            {
+                FocusRightItem();
+            }
+            else if (dragDistance < 0 && Mathf.Abs(dragDistance) < itemDistance * 0.7)
+            {
+                FocusLeftItem();
+            }
+        }
     }
 }
