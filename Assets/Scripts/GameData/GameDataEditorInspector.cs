@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CanEditMultipleObjects]
 [CustomEditor(typeof(GameDataEditor))]
 public class ObjectBuilderEditor : Editor
@@ -39,4 +40,5 @@ public class ObjectBuilderEditor : Editor
 		EditorGUILayout.Space();
     }
 }
+#endif
 
