@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class AdditiveCombine2 : BlockObject
 {
+    [SerializeField]
+    private Color activecolor = new Color(1, 0, 0); //if laser output is active
+    [SerializeField]
+    private Color inactivecolor = new Color(1, 1, 1);//if laser output is inactive
 
     //takes 2 lasers as Input and gives one as output
 
@@ -25,6 +29,7 @@ public class AdditiveCombine2 : BlockObject
                 inputImage2 = laserInputs[1].inputLaser.image;
                 Grow();
                 StartImageProcessing();
+                ChangeMaterial(activecolor);
 
             }
             else
@@ -33,6 +38,7 @@ public class AdditiveCombine2 : BlockObject
                 inputImage2 = null;
                 Shrink();
                 StopImageProcessing();
+                ChangeMaterial(inactivecolor);
             }
 
         }
@@ -64,5 +70,21 @@ public class AdditiveCombine2 : BlockObject
         StartImageProcessing();
     }
 
-        
+    void ChangeMaterial(Color emissioncolor)
+    {
+        if (this.transform.childCount == 0)
+        {
+            return;
+        }
+        foreach (Transform child in graphics.transform)
+        {
+            GameObject gochild = child.gameObject;
+            LineRenderer renderer = gochild.GetComponent<LineRenderer>();
+            if (renderer != null)
+            {
+                renderer.endColor = emissioncolor;
+                renderer.startColor = emissioncolor;
+            }
+        }
+    }
 }
