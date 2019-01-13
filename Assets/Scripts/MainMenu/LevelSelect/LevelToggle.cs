@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LevelToggle : MonoBehaviour {
 
-    public string levelName;
+    public LevelData level;
     public RectTransform selectedBar;
     public Image background;
     private Toggle toggle;

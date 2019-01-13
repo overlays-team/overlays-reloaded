@@ -7,12 +7,12 @@ using UnityEngine;
 public class GameData
 {
     public bool isMuted;
-    public List<LevelData> levels;
-
+    public float bloomSetting;
     public string playerName;
     public int highestTotalScore;
     public string highestTotalScorePlayerName;
 
+    public List<LevelData> levels;
 
     public GameData()
     {
@@ -23,6 +23,4 @@ public class GameData
     {
         this.levels = levels;
     }
-
-
 }
