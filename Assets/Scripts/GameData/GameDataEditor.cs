@@ -63,6 +63,11 @@ public class GameDataEditor : MonoBehaviour
         SaveData();
     }
 
+    private void OnApplicationPause(bool isPaused)
+    {
+        SaveData();
+    }
+
     public string getFilePath()
     {
         return Application.persistentDataPath + dataFilePath;
@@ -119,7 +124,6 @@ public class GameDataEditor : MonoBehaviour
         bloomSettings.bloom.intensity = bloomValue;
         postProcessingProfile.bloom.settings = bloomSettings;
         data.bloomSetting = bloomValue;
-        SaveData();
     }
 
     public float GetBloomSetting()
