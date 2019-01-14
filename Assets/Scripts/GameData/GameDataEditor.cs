@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.PostProcessing;
 
 public class GameDataEditor : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameDataEditor : MonoBehaviour
     public string defaultDataPath = "Data/DefaultGameData";
     public bool loadFromDefault;
     public GameData data;
+
+    public PostProcessingProfile postProcessingProfile;
 
     private void Awake()
     {
@@ -39,7 +42,7 @@ public class GameDataEditor : MonoBehaviour
 
     private void Start()
     {
-
+        SetInitBloomSetting();
     }
 
     void ForceSingletonPattern()
@@ -99,5 +102,28 @@ public class GameDataEditor : MonoBehaviour
             Debug.Log(GameDataEditor.Instance.data.levels[i].completed);
             Debug.Log(GameDataEditor.Instance.data.levels[i].sceneID);
         }
+    }
+
+    public void SetInitBloomSetting()
+    {
+        float bloomValue = data.bloomSetting;
+        BloomModel.Settings bloomSettings = postProcessingProfile.bloom.settings;
+        bloomSettings.bloom.intensity = bloomValue;
+        postProcessingProfile.bloom.settings = bloomSettings; 
+    }
+
+    public void SetBloomSetting(float bloomValue)
+    {
+        data.bloomSetting = bloomValue;
+        BloomModel.Settings bloomSettings = postProcessingProfile.bloom.settings;
+        bloomSettings.bloom.intensity = bloomValue;
+        postProcessingProfile.bloom.settings = bloomSettings;
+        data.bloomSetting = bloomValue;
+        SaveData();
+    }
+
+    public float GetBloomSetting()
+    {
+        return postProcessingProfile.bloom.settings.bloom.intensity;
     }
 }
