@@ -23,11 +23,17 @@ public class Laser : MonoBehaviour {
     [Header("Image Processing")]
     public Texture2D image;
 
+    [Header("removing the \"glitch in the matrix\"")]
+    public bool isMovingFast = false; //if this is true inputs and mirrors ignore tis laser - to prevent too fast laser movements
+    public float fastMovementTreshhold = 0.2f;
+    Quaternion lastRotation;
+
 
     private void Start()
     {
         LaserManager.Instance.AddLaser(this);
         SetLaserColor(new Color(1f, 0.5f, 0.5f,0.7f));
+        fastMovementTreshhold *= PlayerController.Instance.blockRotationSpeed;
     }
 
     //this function shoots a raycast to see which block we hit and draws the laser accordingly
@@ -35,6 +41,16 @@ public class Laser : MonoBehaviour {
     {
         if (active)
         {
+            //check if isMovingFast should Be true
+            if(Quaternion.Angle(lastRotation, laserOutput.rotation) > fastMovementTreshhold)
+            {
+                isMovingFast = true;
+            }
+            else
+            {
+                isMovingFast = false;
+            }
+
             //activate visuals
             lineRenderer.enabled = true;
             directionFlowParticle.SetActive(true);
@@ -52,7 +68,8 @@ public class Laser : MonoBehaviour {
 
                 //set impact particle position and activation
                 impactParticle.transform.position = hit.point;
-                impactParticle.transform.forward = (laserOutput.position - hit.point);
+                Vector3 forwardOfImpactParticle = (laserOutput.position - hit.point);
+                if (forwardOfImpactParticle != Vector3.zero) impactParticle.transform.forward = forwardOfImpactParticle;
                 impactParticle.SetActive(true);
 
                 //set light position
@@ -106,6 +123,9 @@ public class Laser : MonoBehaviour {
 
                 directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = 100; //lifetime = laser Length
             }
+
+            lastRotation = laserOutput.rotation;
+
         }
         else
         {
@@ -129,6 +149,11 @@ public class Laser : MonoBehaviour {
     public void OnDestroy()
     {
         LaserManager.Instance.RemoveLaser(this);
+    }
+
+    public Vector3 GetHitPoint()
+    {
+        return endPoint;
     }
 
 }
