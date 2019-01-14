@@ -86,12 +86,16 @@ public class BlockObject : MonoBehaviour
     [Tooltip("das Canvas, welches unser Bild und unser Icon zusammenhält")]
     public GameObject imageCanvas;
     [SerializeField]
-    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
-    protected LineRenderer frame;
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt. Nur bei stationären Blöcke")]
+    protected LineRenderer stationaryframe;
+    [SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt. Nur bei nicht stationäre Blöcke")]
+    protected LineRenderer movableframe;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
     public GameObject blockImage;
+    protected LineRenderer frame;
 
     #endregion
 
@@ -130,6 +134,22 @@ public class BlockObject : MonoBehaviour
 
     protected virtual void Start ()
     {
+        #region stationary and movable set up
+        //
+        if (stationary == false)
+        {
+            stationaryframe.gameObject.SetActive(false);
+            movableframe.gameObject.SetActive(true);
+            frame = movableframe;
+        }
+        else if (stationary == true)
+        {
+            stationaryframe.gameObject.SetActive(true);
+            movableframe.gameObject.SetActive(false);
+            frame = stationaryframe;
+        }
+        #endregion
+
         #region position set up
         //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
         heightCorrector = currentAssignedGridPlane.transform.up;

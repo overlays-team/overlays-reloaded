@@ -26,6 +26,7 @@ public class ImageOutputSandbox : BlockObject
                 inputImage1 = laserInputs[0].inputLaser.image;
                 debugImage.sprite = Sprite.Create(inputImage1, new Rect(0, 0, inputImage1.width, inputImage1.height), new Vector2(0.5f, 0.5f));
                 detailedNodeViewImage.sprite = debugImage.sprite;
+                
             }
             else
             {
