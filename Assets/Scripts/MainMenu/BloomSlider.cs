@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PostProcessing;
 using UnityEngine.UI;
 
 public class BloomSlider : MonoBehaviour
 {
-    public PostProcessingProfile postProcessingProfile;
     public Text percentageText;
     private Slider slider;
     // Start is called before the first frame update
