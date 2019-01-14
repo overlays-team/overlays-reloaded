@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour {
     public GameObject mainMenu;
     public GameObject modeSelect;
     public GameObject levelSelect;
+    public GameObject options;
 
 	// Use this for initialization
 	void Start () {
@@ -46,5 +47,11 @@ public class MainMenuManager : MonoBehaviour {
         logo.SetActive(true);
         modeSelect.SetActive(false);
         levelSelect.SetActive(false);
+        options.SetActive(false);
+    }
+
+    public void ShowOptions()
+    {
+        options.SetActive(true);
     }
 }
