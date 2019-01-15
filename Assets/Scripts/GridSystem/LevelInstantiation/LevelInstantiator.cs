@@ -14,11 +14,19 @@ public class LevelInstantiator : MonoBehaviour {
     public string[,] levelData;
 
     //Input for managers
-    public GameObject Grid;
+    public GameObject grid;
+    GridPositioner gridPositioner;
+    //BlockObjects
+    public GameObject wall;
+    public GameObject mirror;
+    [Tooltip("ImageInput")]
+    public GameObject source;
+    [Tooltip("ImageOutputMulti")]
+    public GameObject targetMulti;
 
     // Use this for initialization
     void Start () {
-        myLevel = new LevelInstanceData{};
+        gridPositioner = grid.GetComponent<GridPositioner>();
         LoadData();
         //print("Split data: " + myLevel.rows[0]);
         ApplyLevelData();
@@ -26,7 +34,44 @@ public class LevelInstantiator : MonoBehaviour {
 
     private void ApplyLevelData()
     {
+        int rowLength = levelData.GetLength(0); //first index
+        int colLength = levelData.GetLength(1); //second index
+        gridPositioner.UpdatePlanes(rowLength, colLength, gridPositioner.getPadding());
+        //Get 2d array of gridPlanes to use transoforms for intantiation
+        GameObject[,] gridPlaneArray = gridPositioner.getGridArray();
+        //Instantiation
+        int counter = 0; //To get index of children
+        for(int row = 0; row < rowLength; row++)
+        {
+            for(int col = 0; col < colLength; col++)
+            {
+                //print("[" + row + "][" + col + "] " + levelData[row, col]);
+                Transform transform = gridPlaneArray[row, col].transform;
+                if (levelData[row, col] == "-1")               //-1 is a hole in the grid
+                {
+                    gridPlaneArray[row, col].SetActive(false);
+                } else if(levelData[row, col] == "1")        //1 is a wall
+                {
+                    Instantiate(wall);
+                    wall.GetComponent<BlockObject>().BlockPositionSetUp(gridPlaneArray[row, col].GetComponent<GridPlane>());
+                } else if(levelData[row, col] == "57")   //57 is a mirror variant (/)
+                {
+                    Instantiate(mirror, new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), Quaternion.Euler(0, 45, 0));
+                } else if(levelData[row, col] == "59")      //59 is another mirror variant (\)
+                {
+                    Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));
+                } else if(levelData[row, col].Contains("00"))     //Multiples of 100 are different targets
+                {
+                    Instantiate(targetMulti);
+                } else if(levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
+                {
+                    Instantiate(source);
+                }
 
+                counter++;
+            }
+        }
+        
     }
 
     public void LoadData()
@@ -36,13 +81,21 @@ public class LevelInstantiator : MonoBehaviour {
             string jsonAsString = File.ReadAllText(getFilePath());
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
-            //myLevel = JsonUtility.FromJson<LevelInstanceData>(dataAsJson);
-            myLevel.data = jsonAsString;
         }
         else
         {
             Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/NAME.json' into script inspector field.");
         }
+    }
+
+    public int getIdx0()
+    {
+        return levelData.GetLength(0);
+    }
+
+    public int getIdx1()
+    {
+        return levelData.GetLength(1);
     }
 
     private void SplitData(string dataAsJson)
@@ -77,7 +130,7 @@ public class LevelInstantiator : MonoBehaviour {
 
             for(int j = 0; j < colLength.Length; j++)
             {
-                data2d[i, j] = split[j];
+                data2d[i, j] = split[j].Trim();
                 //print("["+i+"]["+j+"] " + data2d[i, j]);
             }
         }
