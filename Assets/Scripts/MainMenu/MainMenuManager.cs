@@ -9,6 +9,7 @@ public class MainMenuManager : MonoBehaviour {
     public GameObject modeSelect;
     public GameObject levelSelect;
     public GameObject options;
+    public GameObject tutorial;
 
 	// Use this for initialization
 	void Start () {
@@ -31,6 +32,7 @@ public class MainMenuManager : MonoBehaviour {
         levelSelect.SetActive(false);
         mainMenu.SetActive(false);
         logo.SetActive(false);
+        tutorial.SetActive(false);
     }
 
     public void ShowLevelSelect()
@@ -48,10 +50,16 @@ public class MainMenuManager : MonoBehaviour {
         modeSelect.SetActive(false);
         levelSelect.SetActive(false);
         options.SetActive(false);
+        tutorial.SetActive(false);
     }
 
     public void ShowOptions()
     {
         options.SetActive(true);
+    }
+
+    public void ShowTutorial()
+    {
+        tutorial.SetActive(true);
     }
 }
