@@ -47,11 +47,36 @@ public class SubtractiveCombine2 : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
-        return new Color(
-                        (image1Weight * inputImage1.GetPixel(x, y).r) * (image2Weight * inputImage2.GetPixel(x, y).r) / 1,
-                        (image1Weight * inputImage1.GetPixel(x, y).g) * (image2Weight * inputImage2.GetPixel(x, y).g) / 1,
-                        (image1Weight * inputImage1.GetPixel(x, y).b) * (image2Weight * inputImage2.GetPixel(x, y).b) / 1
+        //how to use image weight and the alpha values in multiply?
+        if(inputImage1.GetPixel(x, y).a > 0 && inputImage2.GetPixel(x, y).a > 0)
+        {
+            return new Color(
+                        (inputImage1.GetPixel(x, y).r) * (inputImage2.GetPixel(x, y).r) / 1,
+                        (inputImage1.GetPixel(x, y).g) * (inputImage2.GetPixel(x, y).g) / 1,
+                        (inputImage1.GetPixel(x, y).b) * (inputImage2.GetPixel(x, y).b) / 1
                         );
+        }
+        else if(inputImage1.GetPixel(x, y).a > 0)
+        {
+            return new Color(
+                        (inputImage1.GetPixel(x, y).r) ,
+                        (inputImage1.GetPixel(x, y).g) ,
+                        (inputImage1.GetPixel(x, y).b)
+                        );
+        }
+        else if(inputImage2.GetPixel(x, y).a > 0)
+        {
+            return new Color(
+                        (inputImage2.GetPixel(x, y).r),
+                        (inputImage2.GetPixel(x, y).g),
+                        (inputImage2.GetPixel(x, y).b)
+                        );
+        }
+        else
+        {
+            return new Color(0f, 0f, 0f, 0f);
+        }
+
 
 
     }
