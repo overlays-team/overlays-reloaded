@@ -15,7 +15,10 @@ public class ImageOutput : BlockObject {
     protected Texture2D imageToCheck; //which image are we currently checking for correctness
 
     [Tooltip("this bool tells the gameManager if we suceeded with this outputImage")]
-    public bool imageCorrect; 
+    public bool imageCorrect;
+
+    public GameObject imageCorrectBurstEffect;
+    public GameObject imageCorrectGlitterEffect;
 
     //in which imageCheckingstate are we - are we currently checking if this image is correct or ...
     protected enum ImageCheckingState
@@ -77,10 +80,13 @@ public class ImageOutput : BlockObject {
                 if (imageCorrect)
                 {
                     frame.SetColors(Color.green, Color.green);
+                    imageCorrectGlitterEffect.SetActive(true);
                 }
                 else
                 {
                     frame.SetColors(Color.red, Color.red);
+                    Debug.Log("Hello World");
+                    imageCorrectGlitterEffect.SetActive(false);
                 }
             }
 
@@ -117,9 +123,17 @@ public class ImageOutput : BlockObject {
             }
             if (y % 10 == 0) yield return null;
         }
-        //Debug.Log(biggestError);
-        if (biggestError > 0.01) imageCorrect = false;
-        else imageCorrect = true;
+
+        if (biggestError > 0.01)
+        {
+            imageCorrect = false;
+            //TODO: check if this is needed, imageCorrect = false is already handled above
+            Debug.Log("Hello World");
+        }
+        else
+        {
+            imageCorrect = true;
+        }
 
         imageCheckingState = ImageCheckingState.Checked;
 
