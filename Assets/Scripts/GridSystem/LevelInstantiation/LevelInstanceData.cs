@@ -1,27 +1,22 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//This class instantiates the given block objects.
 [System.Serializable]
 public class LevelInstanceData {
-    
-    public string data;
-    public string[] rows;
+
+    public int I00;
+    public int I01;
+    public int I10;
+    public int I11;
 
     // Use this for initialization
     void Start () {
-        SplitData();
+		
 	}
-
-    private void SplitData()
-    {
-        rows = data.Split('e');
-    }
-
-    // Update is called once per frame
-    void Update () {
+	
+	// Update is called once per frame
+	void Update () {
 		
 	}
 }

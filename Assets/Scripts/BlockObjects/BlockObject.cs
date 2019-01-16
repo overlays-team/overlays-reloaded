@@ -131,7 +131,14 @@ public class BlockObject : MonoBehaviour
     protected virtual void Start ()
     {
         #region position set up
-        if(currentAssignedGridPlane!=null) BlockPositionSetUp(currentAssignedGridPlane);
+        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
+        heightCorrector = currentAssignedGridPlane.transform.up;
+        heightCorrector *= transform.localScale.y / 2;
+        if (!inInventory)
+        {
+            transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
+            currentAssignedGridPlane.taken = true;
+        }
         #endregion
 
         #region smooth movement set up
@@ -157,19 +164,6 @@ public class BlockObject : MonoBehaviour
 
         if(laserOutput!=null) laserOutput.active = false;
         #endregion
-    }
-
-    public void BlockPositionSetUp(GridPlane assignedGridPlane)
-    {
-        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
-        heightCorrector = assignedGridPlane.transform.up;
-
-        heightCorrector *= transform.localScale.y / 2;
-        if (!inInventory)
-        {
-            transform.position = assignedGridPlane.transform.position + heightCorrector;
-            assignedGridPlane.taken = true;
-        }
     }
 
     protected virtual void Update()
