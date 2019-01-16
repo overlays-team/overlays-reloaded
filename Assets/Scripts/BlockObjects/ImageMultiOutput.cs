@@ -6,6 +6,10 @@ using System.IO;
 
 public class ImageMultiOutput : ImageOutput
 {
+    [SerializeField]
+    private Color framecolor = new Color(0, 0, 0); //if laser output is active
+    [SerializeField]
+    private float intesity = 1;
 
     protected override void ImageOutputUpdate()
     {
@@ -31,11 +35,13 @@ public class ImageMultiOutput : ImageOutput
                 inputImage1 = activeLasers[0].inputLaser.image;
                 inputImage2 = activeLasers[1].inputLaser.image;
                 StartImageProcessing();
+                ChangeMaterial(activegloss);
             }
             else if (activeLasers.Count == 1)
             {
                 debugImage.sprite = Sprite.Create(activeLasers[0].inputLaser.image, new Rect(0, 0, activeLasers[0].inputLaser.image.width, activeLasers[0].inputLaser.image.height), new Vector2(0.5f, 0.5f));
                 CheckIfImageIsCorrect(activeLasers[0].inputLaser.image);
+                ChangeMaterial(innactivegloss);
             }
             else
             {
@@ -45,6 +51,7 @@ public class ImageMultiOutput : ImageOutput
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 frame.SetColors(Color.red, Color.red);
                 imageCorrect = false;
+                ChangeMaterial(innactivegloss);
             }
         }
 
@@ -69,7 +76,7 @@ public class ImageMultiOutput : ImageOutput
                 imageCheckingState = ImageCheckingState.Displaying;
                 if (imageCorrect)
                 {
-                    frame.SetColors(Color.green, Color.green);   
+                    ChangeFrameMaterial();   
                 }
                 else
                 {
@@ -93,6 +100,23 @@ public class ImageMultiOutput : ImageOutput
                         1 - (1 - inputImage1.GetPixel(x, y).g) * (1 - inputImage2.GetPixel(x, y).g) / 1,
                         1 - (1 - inputImage1.GetPixel(x, y).b) * (1 - inputImage2.GetPixel(x, y).b) / 1
                         );
+    }
+
+    void ChangeFrameMaterial(Color emissioncolor, float intesity)
+    {
+        if (this.transform.childCount == 0)
+        {
+            return;
+        }
+        foreach (Transform child in graphics.transform)
+        {
+            GameObject gochild = child.gameObject;
+            LineRenderer renderer = gochild.GetComponent<LineRenderer>();
+            if (renderer != null)
+            {
+                renderer.material.SetColor("_EmissionColor", emissioncolor * intesity);
+
+        }
     }
 
 }

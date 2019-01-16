@@ -188,6 +188,12 @@ public class BlockObject : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    //is used by the sandbox inventory to delete the objects
+    public void OnDestroy()
+    {
+        if(laserOutput!=null && laserOutput.laser!=null) Destroy(laserOutput.laser.gameObject);
+    }
+
     public virtual void OnMouseClick()
     {
         //most of the need to rotate, if they need something else they just override
@@ -211,14 +217,14 @@ public class BlockObject : MonoBehaviour
     protected virtual void TwoFingerTapAction()
     {
         detailedNodeView.SetActive(true);
-        PlayerController.Instance.Disable();
+        IngameManager.Instance.PauseGame();
     }
 
     //when we click the return Button in the detailedNode view
     public void OnReturnClicked()
     {
         detailedNodeView.SetActive(false);
-        PlayerController.Instance.Enable();
+        IngameManager.Instance.ResumeGame();
     }
 
     #endregion
@@ -400,6 +406,7 @@ public class BlockObject : MonoBehaviour
     {
         rotate = true;
         desiredRotation = desiredRotation*Quaternion.Euler(0, degreesToRotate, 0);
+
     }
 
     void PerformRotation()

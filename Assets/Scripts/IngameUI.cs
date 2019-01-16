@@ -33,91 +33,35 @@ public class IngameUI : MonoBehaviour {
     public Text messageDialogText;
     public Text mesageDialogButtonText;
 
-    public Material blurMaterial;
-
-    Material blurMateriaInPauseMenuPanel;
-    Material blurMaterialInLevelCompleteMenu;
-    Material blurMateriaInGameOverMenu;
-
-    public bool blurring = false;
-    float timeBlur = 0f;
-    float newValue = 0f;
+    public float blurAnimDuration;
 
     // Use this for initialization
     void Start()
     {
-        blurMateriaInPauseMenuPanel = Instantiate(pauseMenuPanel.GetComponent<Image>().material);
-        blurMaterialInLevelCompleteMenu = Instantiate(levelCompleteMenu.GetComponent<Image>().material);
-        blurMateriaInGameOverMenu = Instantiate(gameOverMenu.GetComponent<Image>().material);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        blurEffect();
+
     }
 
-    private void blurEffect()
+    public IEnumerator AnimateBlurIn(GameObject panel, float time)
     {
-        //früher (unfixed)
-        /*
-        if (blurring)
+        Material cloneMaterial = Instantiate(panel.GetComponent<Image>().material);
+
+        float elapsedTime = 0;
+        float initBlur = cloneMaterial.GetFloat("_Size");
+        cloneMaterial.SetFloat("_Size", 0);
+
+        while (elapsedTime < time)
         {
-            //duration of blur motion
-            timeBlur += Time.deltaTime;
-            newValue += 0.01f;
-            //Wie stark die Veränderung
-            float ratio = 7f;
-            //Color Motion
-            Color newColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
-            //Blur motion
-            blurMaterial.SetColor("_Color", newColor);
-            blurMaterial.SetFloat("_Size", newValue * 50.0f);
-                       
-            Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
-            if (timeBlur > 0.3f)
-            {
-                blurring = false;
-                timeBlur = 0;
-                newValue = 0;
-            }
-        }
-        */
-
-        //fixed methode
-        if (blurring)
-        {
-            //duration of blur motion
-            timeBlur += Time.deltaTime;
-            newValue += 0.01f;
-            //Wie stark die Veränderung
-            float ratio = 7f;
-            //Color Motion
-            Color pausePanelNewColor = new Color(1 - newValue * ratio, 1 - newValue * ratio, 1 - newValue * ratio, 1);
-            Color levelCompleteMenuNewColor = new Color(1 - newValue * ratio, 1, 1 - newValue * ratio, 1);
-            Color gameOverMenuNewColor = new Color(1, 1 - newValue * ratio, 1 - newValue * ratio, 1);
-
-            //Blur motion
-            blurMateriaInPauseMenuPanel.SetColor("_Color", pausePanelNewColor);
-            blurMateriaInPauseMenuPanel.SetFloat("_Size", newValue * 50.0f);
-
-            blurMaterialInLevelCompleteMenu.SetColor("_Color", levelCompleteMenuNewColor);
-            blurMaterialInLevelCompleteMenu.SetFloat("_Size", newValue * 50.0f);
-
-            blurMateriaInGameOverMenu.SetColor("_Color", gameOverMenuNewColor);
-            blurMateriaInGameOverMenu.SetFloat("_Size", newValue * 50.0f);
-
-            pauseMenuPanel.GetComponent<Image>().material = blurMateriaInPauseMenuPanel;
-            levelCompleteMenu.GetComponent<Image>().material = blurMaterialInLevelCompleteMenu;
-            gameOverMenu.GetComponent<Image>().material = blurMateriaInGameOverMenu;
-
-            //Debug.Log("timeBlur: " + timeBlur + " New Value:  " + newValue);
-            if (timeBlur > 0.3f)
-            {
-                blurring = false;
-                timeBlur = 0;
-                newValue = 0;
-            }
+            float newBlur = Mathf.Lerp(0, initBlur, elapsedTime / time);
+            cloneMaterial.SetFloat("_Size", newBlur);
+            panel.GetComponent<Image>().material = cloneMaterial;
+            elapsedTime += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
         }
     }
 
@@ -154,29 +98,25 @@ public class IngameUI : MonoBehaviour {
         levelCompleteMenu.SetActive(true);
         pausePlayButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
-        blurring = true;
-
+        StartCoroutine(AnimateBlurIn(levelCompleteMenu, blurAnimDuration));
     }
 
     public void TogglePause()
     {
         pauseButton.SetActive(false);
-        //PlayButton.SetActive(true);
         pauseMenuPanel.SetActive(true);
-        blurring = true;
+        StartCoroutine(AnimateBlurIn(pauseMenuPanel, blurAnimDuration));
     }
     public void TogglePlay()
     {
         pauseButton.SetActive(true);
-        //PlayButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
-
     }
     public void ShowGameOverPanel()
     {
         gameOverMenu.SetActive(true);
         pausePlayButton.SetActive(false);
-        blurring = true;
+        StartCoroutine(AnimateBlurIn(gameOverMenu, blurAnimDuration));
     }
 
     public void ShowNameInputPanel()
@@ -187,9 +127,6 @@ public class IngameUI : MonoBehaviour {
     {
         nameInputPanel.SetActive(false);
     }
-
-
-
 
     public void HideLevelCompletePanel()
     {
@@ -224,7 +161,6 @@ public class IngameUI : MonoBehaviour {
     public void ShowMessageDialogPanel(string message, string buttonText)
     {
         messageDialogText.text = message;
-        //messageDialogButton.GetComponentInChildren<Text>().text = "abc";
         mesageDialogButtonText.text = buttonText;
         gameOverMenu.SetActive(false);
         messageDialogPanel.SetActive(true);

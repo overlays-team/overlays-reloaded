@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserOutput : MonoBehaviour {
+public class LaserOutput : MonoBehaviour
+{
 
     /*
      * Jedes BlockObject, welches Laser rausschießt hat einen oder mehrere LaserOutputs
@@ -13,54 +14,48 @@ public class LaserOutput : MonoBehaviour {
     public Laser laser;
     public bool active = false;
     [SerializeField]
-    private Color activecolor = new Color(1, 0, 0); //if laser output is active
+    private float activegloss = .5f; //if laser output is active
     [SerializeField]
-    private Color inactivecolor = new Color(1, 1, 1);//if laser output is inactive
+    private float innactivegloss = 1;//if laser output is inactive
 
-    void Awake () {
+    void Awake()
+    {
         laser = Instantiate(laserPrefab).GetComponent<Laser>();
         laser.active = false;
         laser.startingBlock = transform.parent.GetComponent<BlockObject>();
         laser.laserOutput = transform;  //output point sets direction, can be at 000 transform of parent
-	}
-	
-	void Update () {
+    }
+
+    void Update()
+    {
         if (active)
         {
             laser.active = true;
-            ChangeMaterial(activecolor);
+            ChangeMaterial(activegloss);
         }
         else
         {
             laser.active = false;
-            ChangeMaterial(inactivecolor);
+            ChangeMaterial(innactivegloss);
         }
-	}
-
-    public void SetLaser(Transform startPoint, BlockObject startingBlock)
-    {
-        laser.laserOutput = startPoint;
-        laser.startingBlock = startingBlock;
     }
 
     //chnages emission (glow effect) in each children of graphics
-    void ChangeMaterial(Color emissioncolor)
+    void ChangeMaterial(float glossinessfactor)
     {
-        if(this.transform.childCount == 0)
+        if (this.transform.childCount == 0)
         {
             return;
         }
         Transform graphics = this.gameObject.transform.GetChild(0);
-        foreach(Transform child in graphics)
+        foreach (Transform child in graphics)
         {
             GameObject gochild = child.gameObject;
             Renderer meshrenderer = gochild.GetComponent<Renderer>();
             if (meshrenderer != null)
             {
-                meshrenderer.material.SetColor("_Color", emissioncolor); //_EmissionColor
+                meshrenderer.material.SetFloat("_Glossiness", glossinessfactor);
             }
         }
     }
-
-
 }

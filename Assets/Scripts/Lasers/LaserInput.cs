@@ -8,9 +8,9 @@ public class LaserInput : MonoBehaviour
     public Laser inputLaser;
     public bool active; //are active if a laser id hitting a input
     [SerializeField]
-    private Color activecolor = new Color(1, 0, 0); //if laser output is active
+    private float activegloss = .5f; //if laser output is active
     [SerializeField]
-    private Color inactivecolor = new Color(1, 1, 1);//if laser output is inactive
+    private float innactivegloss = 1;//if laser output is inactive
 
     private void Start()
     {
@@ -21,16 +21,16 @@ public class LaserInput : MonoBehaviour
     {
         if (active)
         {
-            ChangeMaterial(activecolor);
+            ChangeMaterial(activegloss);
         }
         else
         {
-            ChangeMaterial(inactivecolor);
+            ChangeMaterial(innactivegloss);
         }
     }
 
     //chnages emission (glow effect) in each children of graphics
-    void ChangeMaterial(Color emissioncolor)
+    void ChangeMaterial(float glossinessfactor)
     {
         if (this.transform.childCount == 0)
         {
@@ -43,7 +43,7 @@ public class LaserInput : MonoBehaviour
             Renderer meshrenderer = gochild.GetComponent<Renderer>();
             if (meshrenderer != null)
             {
-                meshrenderer.material.SetColor("_Color", emissioncolor); //_EmissionColor
+                meshrenderer.material.SetFloat("_Glossiness", glossinessfactor);
             }
         }
     }

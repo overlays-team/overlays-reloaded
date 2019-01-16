@@ -17,18 +17,17 @@ public class ImageInput : BlockObject
         base.Start();
 
         SetUpImage(inputImage);
-        detailedNodeViewImage.sprite = debugImage.sprite;
     }
 
     //convert the picture into the RGBA32 texture format and set it up
     protected void SetUpImage(Texture2D image)
     {
-        Texture2D outputImage = new Texture2D(image.width, image.height, textureFormat, false);
+        outputImage = new Texture2D(image.width, image.height, textureFormat, false);
         for (int y = 0; y < outputImage.height; y++)
         {
             for (int x = 0; x < outputImage.width; x++)
             {
-                outputImage.SetPixel(x, y, inputImage.GetPixel(x, y));
+                outputImage.SetPixel(x, y, image.GetPixel(x, y));
             }
 
         }
@@ -37,5 +36,6 @@ public class ImageInput : BlockObject
         laserOutput.active = true;
 
         debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+        detailedNodeViewImage.sprite = debugImage.sprite;
     }
 }

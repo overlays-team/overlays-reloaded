@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4935048617910890}
-  - component: {fileID: 114258330935808434}
+  - component: {fileID: 4588718414413574658}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 4202995280289332}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114258330935808434
+--- !u!114 &4588718414413574658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,22 +40,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1101388545926506}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae7b091f45b27c841a2fa71b23c2d29d, type: 3}
+  m_Script: {fileID: 11500000, guid: 8cb660342d3140747b42f9063e8f1050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timeToHoldToInitiateHoldAction: 0.12
   blockRotationSpeed: 5
   blockDragSpeed: 10
   blockSnappingSpeed: 10
-  blockLiftingHeight: 2
+  blockLiftingHeight: 1.5
   inventory: {fileID: 0}
   cameraMovementEnabled: 0
   cameraHolder: {fileID: 0}
   autoMovementBorder: 0.1
-  movementSpeed: 10
-  zoomSpeed: 0.5
-  minHeight: 2
-  maxHeight: 40
+  movementSpeed: 1
+  moveCameraTreshold: 35
+  moveBlockTreshold: 0.01
+  zoomSpeed: 10
+  minHeight: 10
+  maxHeight: 20
+  zoomTreshhold: 0.012
 --- !u!1 &1236628371473548
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,14 +203,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aae8d011bdd7f64998c67beb52f4b17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataFileName: 
-  loadFromFile: 0
+  dataFilePath: /gameData.json
+  defaultDataPath: Data/DefaultGameData
+  loadFromDefault: 0
   data:
     isMuted: 0
-    levels: []
+    bloomSetting: 0
     playerName: 
     highestTotalScore: 0
     highestTotalScorePlayerName: 
+    levels: []
+  postProcessingProfile: {fileID: 0}
 --- !u!1 &1519876787921060
 GameObject:
   m_ObjectHideFlags: 0
