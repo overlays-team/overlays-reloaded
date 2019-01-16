@@ -239,16 +239,16 @@ public class BlockObject : MonoBehaviour
     protected void Grow()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", true);
-        ChangeFrameMaterial(framecolor, 1);
+        ChangeFrameMaterial(framecolor, framecolor);
     }
 
     protected void Shrink()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", false);
-        ChangeFrameMaterial(framecolor, -1);
+        ChangeFrameMaterial(framecolor, new Color(0, 0, 0));
     }
 
-    void ChangeFrameMaterial(Color emissioncolor, float intesity)
+    void ChangeFrameMaterial(Color blendcolor, Color intensity)
     {
         if (this.transform.childCount == 0)
         {
@@ -261,7 +261,8 @@ public class BlockObject : MonoBehaviour
             if (renderer != null)
             {
                 Debug.Log("Emission should be changed");
-                renderer.material.SetColor("_EmissionColor", emissioncolor * intesity);
+                renderer.SetColors(blendcolor, intensity);
+                //renderer.material.SetColor("_EmissionColor", blendcolor);
 
             }
         }
