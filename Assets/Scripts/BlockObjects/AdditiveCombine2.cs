@@ -11,6 +11,11 @@ public class AdditiveCombine2 : BlockObject
     float image1Weight = 1;
     float image2Weight = 1;
 
+    private Color correctcolor = new Color(1, 0, 0);
+    private Color incorrectcolor = new Color(0, 1, 0);
+    private Color checkingcolor = new Color(1, 1, 0);
+    private Color defaultcolor = new Color(0, 0, 0);
+
 
     protected override void Update()
     {
