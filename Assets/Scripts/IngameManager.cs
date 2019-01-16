@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class IngameManager : MonoBehaviour
 {
     public IngameUI ingameUI;
+    public SceneFader fader;
 
     [SerializeField]
     private bool attackMode;
@@ -51,6 +52,7 @@ public class IngameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        fader.FadeToClear();
         win = false;
         lose = false;
         ingameUI.HideLevelCompletePanel();
@@ -290,7 +292,7 @@ public class IngameManager : MonoBehaviour
 
     public void Next()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1f;
     }
 
