@@ -254,6 +254,7 @@ public class BlockObject : MonoBehaviour
     protected void Grow()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", true);
+
     }
 
     protected void Shrink()
