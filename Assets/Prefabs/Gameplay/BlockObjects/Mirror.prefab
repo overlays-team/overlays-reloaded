@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037037895009582}
-  m_LocalRotation: {x: -0, y: -0.38268337, z: -0, w: 0.92387956}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4646714026611906}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114913988979077482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,8 +58,8 @@ GameObject:
   - component: {fileID: 4807297518901128}
   - component: {fileID: 33452916273405998}
   - component: {fileID: 23095551790403886}
-  - component: {fileID: 65753636244715132}
   - component: {fileID: 120570955328261616}
+  - component: {fileID: 1430111421747772374}
   m_Layer: 11
   m_Name: Graphics
   m_TagString: Untagged
@@ -76,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 1093453022281056}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.49, z: 0}
-  m_LocalScale: {x: 0.026075657, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4646714026611906}
   m_RootOrder: 0
@@ -126,19 +126,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &65753636244715132
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1093453022281056}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1.28}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!120 &120570955328261616
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -234,6 +221,19 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
+--- !u!65 &1430111421747772374
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093453022281056}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.05, y: 1, z: 1.25}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1465122873400976
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,13 +303,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573563114450374}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: -0.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4646714026611906}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!114 &114845319287286820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,7 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4646714026611906}
   - component: {fileID: 65431205570070146}
-  - component: {fileID: 114151354797866240}
+  - component: {fileID: 9185414545946336116}
   m_Layer: 10
   m_Name: Mirror
   m_TagString: blockObject
@@ -397,7 +397,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1725225235283142}
   m_LocalRotation: {x: -0, y: 0.38268343, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: -4.108969, y: 1.856, z: -2.7600837}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_Children:
   - {fileID: 4807297518901128}
@@ -421,7 +421,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114151354797866240
+--- !u!114 &9185414545946336116
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1725225235283142}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5d87bd9fff26c4a9270b5ee781c614, type: 3}
+  m_Script: {fileID: 11500000, guid: de1654502db3f284cbf0c992b6667737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stationary: 0
@@ -443,7 +443,7 @@ MonoBehaviour:
   - {fileID: 114462314553865024}
   - {fileID: 114787272659373380}
   laserOutput: {fileID: 0}
-  graphics: {fileID: 0}
+  graphics: {fileID: 1093453022281056}
   imageCanvas: {fileID: 0}
   frame: {fileID: 0}
   debugImage: {fileID: 0}
