@@ -56,6 +56,11 @@ public class LaserManager : MonoBehaviour {
         lasers.Add(laser);
     }
 
+    public void RemoveLaser(Laser laser)
+    {
+        lasers.Remove(laser);
+    }
+
     //this gets called by a block object which wants to know which lasers are hitting it
     public List<Laser> GetInputLasers(BlockObject blockObject)
     {

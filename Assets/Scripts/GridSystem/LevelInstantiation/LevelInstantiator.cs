@@ -8,14 +8,20 @@ using System.Linq;
 
 [System.Serializable]
 public class LevelInstantiator : MonoBehaviour {
-
+    //For loading of data
     public string dataFileName;
-    LevelInstanceData myLevel;
     public string[,] levelData;
+    public GameObject gridObject;
+
+    private int levelIndex;
+    private string jsonAsString;
+    private int mirrorCount;
 
     //Input for managers
     public GameObject grid;
+    public Inventory inventory;
     GridPositioner gridPositioner;
+
     //BlockObjects
     public GameObject wall;
     public GameObject mirror;
@@ -23,13 +29,27 @@ public class LevelInstantiator : MonoBehaviour {
     public GameObject source;
     [Tooltip("ImageOutputMulti")]
     public GameObject targetMulti;
+    public Texture2D _goalImage3;
+    public Texture2D _goalImage9;
+    public Texture2D _sourceImage1;
+    public Texture2D _sourceImage2;
+    public Texture2D _sourceImage4;
+    public Texture2D _sourceImage5;
 
     // Use this for initialization
     void Start () {
         gridPositioner = grid.GetComponent<GridPositioner>();
         LoadData();
+        levelIndex = 0;
+        InstantiateLevel();
         //print("Split data: " + myLevel.rows[0]);
+    }
+
+    public void InstantiateLevel()
+    {
+        SplitData(jsonAsString);
         ApplyLevelData();
+        levelIndex++;
     }
 
     private void ApplyLevelData()
@@ -37,57 +57,106 @@ public class LevelInstantiator : MonoBehaviour {
         int rowLength = levelData.GetLength(0); //first index
         int colLength = levelData.GetLength(1); //second index
         gridPositioner.UpdatePlanes(rowLength, colLength, gridPositioner.getPadding());
+
         //Get 2d array of gridPlanes to use transoforms for intantiation
         GameObject[,] gridPlaneArray = gridPositioner.getGridArray();
+
+        //Deletion of earlier Blockobjects
+        GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        GameObject[] lasers = GameObject.FindGameObjectsWithTag("Laser");
+        for(int i = 0; i < blockObjects.Length; i++)
+        {
+            Destroy(blockObjects[i]);
+        }
+        //foreach(GameObject laser in lasers)
+        //{
+        //    Destroy(laser);
+        //}
+
         //Instantiation
         int counter = 0; //To get index of children
+        mirrorCount = 0; //Counts mirrors in Json top put into inventory
         for(int row = 0; row < rowLength; row++)
         {
             for(int col = 0; col < colLength; col++)
             {
+                //GameObject objectToInstantiate;
                 //print("[" + row + "][" + col + "] " + levelData[row, col]);
+
+                //Sources ´beginning with a 1 and 2 belong to targets with 3, and sources with 4 and 5 belong to 9
+                bool isSource = false;
                 Transform transform = gridPlaneArray[row, col].transform;
                 if (levelData[row, col] == "-1")               //-1 is a hole in the grid
                 {
                     gridPlaneArray[row, col].SetActive(false);
                 } else if(levelData[row, col] == "1")        //1 is a wall
                 {
-                    Instantiate(wall);
+                    Instantiate(wall, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
+                    //objectToInstantiate.transform.parent = gridObject.transform;
                     wall.GetComponent<BlockObject>().BlockPositionSetUp(gridPlaneArray[row, col].GetComponent<GridPlane>());
                 } else if(levelData[row, col] == "57")   //57 is a mirror variant (/)
                 {
-                    Instantiate(mirror, new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), Quaternion.Euler(0, 45, 0));
+                    //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), Quaternion.Euler(0, 45, 0));  //This instantiates a mirror in the level
+                    mirrorCount++;
                 } else if(levelData[row, col] == "59")      //59 is another mirror variant (\)
                 {
-                    Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));
-                } else if(levelData[row, col].Contains("00"))     //Multiples of 100 are different targets
+                    //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));   //This instantiates a mirror in the level
+                    mirrorCount++;
+                } else if(levelData[row, col].Contains("300"))     //Multiples of 100 are different targets
                 {
                     Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    targetMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage3);
+                } else if(levelData[row, col].Contains("900"))     //Multiples of 100 are different targets
+                {
+                    Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    targetMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage9);
                 } else if(levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
                 {
                     Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 90, 0));
-                } else if(levelData[row, col].Contains("04"))   //An ending on 4 means left
+                    isSource = true;
+                } else if(levelData[row, col].Contains("04"))   //Ending on 4 means left
                 {
                     Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 180, 0));
+                    isSource = true;
                 } else if(levelData[row, col].Contains("06"))   //6 means right
                 {
                     Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 0, 0));
+                    isSource = true;
                 } else if(levelData[row, col].Contains("08"))   //8 means up
                 {
                     Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -90, 0));
+                    isSource = true;
                 }
+
+                if(isSource && levelData[row, col].Contains("10"))
+                {
+                    Debug.Log("Sourceimage1");
+                    source.GetComponent<ImageInput>().inputImage = _sourceImage1;                    
+                } else if(isSource && levelData[row, col].Contains("20"))
+                {
+                    Debug.Log("Sourceimage2");
+                    source.GetComponent<ImageInput>().inputImage = _sourceImage2;
+                } else if (isSource && levelData[row, col].Contains("40"))
+                {
+                    source.GetComponent<ImageInput>().inputImage = _sourceImage4;
+                }
+                else if (isSource && levelData[row, col].Contains("50"))
+                {
+                    source.GetComponent<ImageInput>().inputImage = _sourceImage5;
+                }
+
 
                 counter++;
             }
         }
-        
+        //inventory.GetComponent<Inventory>().items[0].blockAmount = mirrorCount;
     }
 
     public void LoadData()
     {
         if (File.Exists(getFilePath()))
         {
-            string jsonAsString = File.ReadAllText(getFilePath());
+            this.jsonAsString = File.ReadAllText(getFilePath());
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
         }
@@ -109,7 +178,8 @@ public class LevelInstantiator : MonoBehaviour {
 
     private void SplitData(string dataAsJson)
     {
-        string[] rows = dataAsJson.Split('"');
+        string[] levels = dataAsJson.Split(']');
+        string[] rows = levels[levelIndex].Split('"');
         //foreach (string s in rows) { print("s in rows(direkt nach Initialisierung): " + s); }
         int count = 0;
 
