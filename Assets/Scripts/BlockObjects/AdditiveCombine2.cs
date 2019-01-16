@@ -49,9 +49,10 @@ public class AdditiveCombine2 : BlockObject
     protected override Color ProcessPixel(int x, int y)
     {
         return new Color(
-                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).r)) * (1 - (image2Weight * inputImage2.GetPixel(x, y).r)) / 1,
-                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).g)) * (1 - (image2Weight *  inputImage2.GetPixel(x, y).g)) / 1,
-                        1 - (1 - (image1Weight * inputImage1.GetPixel(x, y).b)) * (1 - (image2Weight *  inputImage2.GetPixel(x, y).b)) / 1
+                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).r)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight * inputImage2.GetPixel(x, y).r)) / 1,
+                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).g)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight *  inputImage2.GetPixel(x, y).g)) / 1,
+                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).b)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight *  inputImage2.GetPixel(x, y).b)) / 1,
+                        Mathf.Max(inputImage1.GetPixel(x, y).a, inputImage2.GetPixel(x, y).a)
                         );
     }
 

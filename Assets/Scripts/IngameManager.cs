@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class IngameManager : MonoBehaviour
 {
     public IngameUI ingameUI;
+    public SceneFader fader;
 
     [SerializeField]
     private bool attackMode;
@@ -31,20 +32,47 @@ public class IngameManager : MonoBehaviour
     bool paused;
 
 
-    public ImageOutput[] outputImages; //holds a collection of all output Images
+    List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+
+    public static IngameManager Instance;
+
+    //Singletoncode
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            DestroyImmediate(Instance); // es kann passieren wenn wir eine neue Scene laden dass immer noch eine Instanz existiert
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     // Use this for initialization
     void Start()
     {
+        fader.FadeToClear();
         win = false;
         lose = false;
-        Resume();
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
 
         setTestParameters();
 
         LoadLevelState();
+
+        //get out ImageOutputs
+        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
+
+        foreach (GameObject go in imageOutputGO)
+        {
+            if (go.GetComponent<ImageOutput>() != null)
+            {
+                outputImages.Add(go.GetComponent<ImageOutput>());
+            }
+        }
+
     }
 
     private void setTestParameters()
@@ -54,7 +82,7 @@ public class IngameManager : MonoBehaviour
         star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
 
         // needed for test
-        CreateTestLevelState(); //sh, 
+        //CreateTestLevelState(); //sh, 
 
 
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
@@ -119,7 +147,7 @@ public class IngameManager : MonoBehaviour
 
     void Win()
     {
-        StopCoroutine("WinCoroutine");
+        //StopCoroutine("WinCoroutine");
         thisLevelScore = star * scoreFactor;
 
         UpdateTotalScore();
@@ -136,16 +164,12 @@ public class IngameManager : MonoBehaviour
 
     private string GetRandomPlayerName()
     {
-        //string datetimeStr = System.DateTime.Now.ToString();
-        //Debug.Log("time:" + datetimeStr);
-
         string year = System.DateTime.Now.Year.ToString();
         string month = System.DateTime.Now.Month.ToString();
         string day = System.DateTime.Now.Day.ToString();
 
         int random = Random.Range(1000, 9999);
 
-        //return ("player" + year + month + day + "-" + random);
         return ("player" + "-" + random);
     }
 
@@ -153,9 +177,6 @@ public class IngameManager : MonoBehaviour
     public void SubmitScore()
     {
         string playerName = "";
-
-        //random player name
-        //playerName = GetRandomPlayerName();
 
         if (ingameUI.nameInputField.text.Equals(""))
         {
@@ -245,8 +266,6 @@ public class IngameManager : MonoBehaviour
         */
 
         //save score and win/lose state
-
-        GameDataEditor.Instance.data.levels[currentLevel].star = star;
         GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
         GameDataEditor.Instance.data.levels[currentLevel].completed = win;
 
@@ -273,7 +292,7 @@ public class IngameManager : MonoBehaviour
 
     public void Next()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1f;
     }
 
@@ -298,12 +317,29 @@ public class IngameManager : MonoBehaviour
     {
         paused = true;
         ingameUI.TogglePause();
+        PauseGame();
     }
+
+    //pauses the inventory and layerController
+    public void PauseGame()
+    {
+        PlayerController.Instance.enabled = false;
+        PlayerController.Instance.inventory.enabled = false;
+    }
+
     public void Resume()
     {
         paused = false;
         ingameUI.TogglePlay();
         Time.timeScale = 1f;
+        ResumeGame();
+    }
+
+    public void ResumeGame()
+    {
+        PlayerController.Instance.Reset();
+        PlayerController.Instance.enabled = true;
+        PlayerController.Instance.inventory.enabled = true;
     }
 
 
@@ -321,27 +357,24 @@ public class IngameManager : MonoBehaviour
 
     public bool CheckIfWeWon()
     {
-        bool allCorrect = true; //sh: false as default is better and remove else?. 
+        bool allCorrect = true; 
 
         if (timeRunsOut &!lose)
         {
-            //sh, Lose() works here but not in IEnumerator WinCoroutine()
             Lose();
             return false;
         }
 
 
-        if (outputImages.Length > 0)
+        if (outputImages.Count> 0)
         {
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
 
-            if (allCorrect) StartCoroutine("WinCoroutine");
-
+            if (allCorrect) Win();
             //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
-
         }
         else
         {
@@ -367,46 +400,5 @@ public class IngameManager : MonoBehaviour
         */
     }
 
-
-    
-    //sh
-    //needed for testing with InGameUI Scene
-    private void CreateTestLevelState()
-    {
-        Debug.Log("こんにちは、CreateTestLevelState()");
-
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL1", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL2", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL3", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL4", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL5", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL6", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL7", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL8", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL9", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL11", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL12", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL13", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL14", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL15", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL16", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL17", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL18", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL19", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL20", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL21", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL22", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL23", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL24", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL25", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL26", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL27", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL28", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL29", false));
-        GameDataEditor.Instance.data.levels.Add(new LevelData("LEVEL30", false));
-
-        //GameDataEditor.Instance.data.levels[0].score = 2;
-        //GameDataEditor.Instance.data.levels[1].score = 1;
-    }
 
 }

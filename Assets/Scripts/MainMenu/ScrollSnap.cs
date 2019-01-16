@@ -34,9 +34,6 @@ public class ScrollSnap : MonoBehaviour
         distances = new float[items.Count];
 
         itemDistance = items[1].anchoredPosition.x - items[0].anchoredPosition.x;
-        Debug.Log("itemDistance: " + itemDistance);
-        Debug.Log("item 1 x: " + items[1].GetComponent<RectTransform>().anchoredPosition.x);
-        Debug.Log("item 2 x: " + items[0].GetComponent<RectTransform>().anchoredPosition.x);
     }
 
     // Update is called once per frame
@@ -67,6 +64,14 @@ public class ScrollSnap : MonoBehaviour
                 else
                 {
                     LerpToPosition(selectedItem * -itemDistance);
+                }
+            }
+
+            for(int i = 0; i < items.Count; i++)
+            {
+                if (items[i].tag == "TutorialImage" && i == selectedItem)
+                {
+                    items[i].SetSiblingIndex(items.Count - 1);
                 }
             }
         }
@@ -102,7 +107,7 @@ public class ScrollSnap : MonoBehaviour
             focusItem = (selectedItem + 1) * -itemDistance;
         }
     }
-
+    
     private void LerpToPosition(float position)
     {
         float newX = Mathf.Lerp(scrollSlide.anchoredPosition.x, position, Time.deltaTime * snapSpeed);

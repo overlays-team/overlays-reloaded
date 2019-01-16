@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class ImageOutput : BlockObject {
 
@@ -110,6 +111,7 @@ public class ImageOutput : BlockObject {
     IEnumerator ImageCheckingEnumerator()
     {
         float biggestError = 0;
+
         for (int y = 0; y < imageToCheck.height; y++)
         {
             for (int x = 0; x < imageToCheck.width; x++)
@@ -138,7 +140,7 @@ public class ImageOutput : BlockObject {
         if (imageToExport != null)
         {
             byte[] bytes = imageToExport.EncodeToPNG();
-            File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen.png", bytes);
+            File.WriteAllBytes(Application.dataPath + "/../Assets/Images/Exports/SavedScreen_" + SceneManager.GetActiveScene().name + "_" + gameObject.name +".png", bytes);
         }
         else
         {
