@@ -136,17 +136,20 @@ public class BlockObject : MonoBehaviour
     {
         #region stationary and movable set up
         //
-        if (stationary == false)
+        if (frame != null)
         {
-            stationaryframe.gameObject.SetActive(false);
-            movableframe.gameObject.SetActive(true);
-            frame = movableframe;
-        }
-        else if (stationary == true)
-        {
-            stationaryframe.gameObject.SetActive(true);
-            movableframe.gameObject.SetActive(false);
-            frame = stationaryframe;
+            if (stationary == false)
+            {
+                stationaryframe.gameObject.SetActive(false);
+                movableframe.gameObject.SetActive(true);
+                frame = movableframe;
+            }
+            else if (stationary == true)
+            {
+                stationaryframe.gameObject.SetActive(true);
+                movableframe.gameObject.SetActive(false);
+                frame = stationaryframe;
+            }
         }
         #endregion
 
