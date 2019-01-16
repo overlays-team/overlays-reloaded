@@ -68,7 +68,6 @@ public class IngameUI : MonoBehaviour {
     public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
     {
     
-        Debug.Log("totalScore: " + totalScore);
         //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
         //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
 

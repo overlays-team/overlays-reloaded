@@ -34,9 +34,6 @@ public class ScrollSnap : MonoBehaviour
         distances = new float[items.Count];
 
         itemDistance = items[1].anchoredPosition.x - items[0].anchoredPosition.x;
-        Debug.Log("itemDistance: " + itemDistance);
-        Debug.Log("item 1 x: " + items[1].GetComponent<RectTransform>().anchoredPosition.x);
-        Debug.Log("item 2 x: " + items[0].GetComponent<RectTransform>().anchoredPosition.x);
     }
 
     // Update is called once per frame

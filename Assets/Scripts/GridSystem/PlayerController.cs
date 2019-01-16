@@ -432,7 +432,6 @@ public class PlayerController : MonoBehaviour
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
                 {
-                    Debug.Log("clickedDown");
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     timeOfLastMouseDown = Time.time;
@@ -488,7 +487,6 @@ public class PlayerController : MonoBehaviour
                     {
                         if (hittedObject == null)
                         {
-                            Debug.Log("activated camera drag");
                             lastMousePosition = Input.mousePosition;
                             playerMode = PlayerMode.MouseHoldDragCamera;
                         }

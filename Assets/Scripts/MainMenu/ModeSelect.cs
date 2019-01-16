@@ -33,7 +33,6 @@ public class ModeSelect : MonoBehaviour
                 break;
 
             case 1:
-                Debug.Log("TO BE IMPLEMENTED");
                 break;
 
             case 2:
