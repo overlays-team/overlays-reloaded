@@ -40,6 +40,10 @@ public class ModeSelect : MonoBehaviour
                 SceneManager.LoadScene("Sandbox");
                 break;
 
+            case 3:
+                mainMenu.ShowTutorial();
+                break;
+
             default:
                 Debug.Log("Not a valid mode");
                 break;
