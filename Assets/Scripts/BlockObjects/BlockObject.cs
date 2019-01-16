@@ -87,6 +87,7 @@ public class BlockObject : MonoBehaviour
     public GameObject imageCanvas;
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt. Nur bei stationären Blöcke")]
+    //protected GameObject stationaryframe;
     protected LineRenderer stationaryframe;
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt. Nur bei nicht stationäre Blöcke")]
@@ -95,7 +96,7 @@ public class BlockObject : MonoBehaviour
     public Image debugImage;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
     public GameObject blockImage;
-    protected LineRenderer frame;
+    public LineRenderer frame;
 
     #endregion
 
@@ -136,7 +137,8 @@ public class BlockObject : MonoBehaviour
     {
         #region stationary and movable set up
         //
-        if (frame != null)
+        frame = movableframe;
+        if (stationaryframe != null || movableframe != null)
         {
             if (stationary == false)
             {

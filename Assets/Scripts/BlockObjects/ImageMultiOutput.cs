@@ -73,7 +73,7 @@ public class ImageMultiOutput : ImageOutput
                 }
                 else
                 {
-                    stationaryframe.SetColors(Color.red, Color.red);
+                    frame.SetColors(Color.red, Color.red);
                 }
             }
         }
