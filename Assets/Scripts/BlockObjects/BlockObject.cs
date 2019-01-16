@@ -88,6 +88,11 @@ public class BlockObject : MonoBehaviour
     [SerializeField]
     [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
     protected LineRenderer frame;
+    /*[SerializeField]
+    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
+    protected Color framecolor;
+    */
+    private Color framecolor = new Color(1, 1, 1);
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
@@ -234,11 +239,32 @@ public class BlockObject : MonoBehaviour
     protected void Grow()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", true);
+        ChangeFrameMaterial(framecolor, 1);
     }
 
     protected void Shrink()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", false);
+        ChangeFrameMaterial(framecolor, -1);
+    }
+
+    void ChangeFrameMaterial(Color emissioncolor, float intesity)
+    {
+        if (this.transform.childCount == 0)
+        {
+            return;
+        }
+        foreach (Transform child in graphics.transform)
+        {
+            GameObject gochild = child.gameObject;
+            LineRenderer renderer = gochild.GetComponent<LineRenderer>();
+            if (renderer != null)
+            {
+                Debug.Log("Emission should be changed");
+                renderer.material.SetColor("_EmissionColor", emissioncolor * intesity);
+
+            }
+        }
     }
 
     #endregion
