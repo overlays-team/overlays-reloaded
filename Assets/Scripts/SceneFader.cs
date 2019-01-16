@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class SceneFader : MonoBehaviour {
+public class SceneFader : MonoBehaviour
+{
 
     public float animationSpeed = 1; //the lager the value, the slower the fading
     public Image img;
@@ -19,7 +20,17 @@ public class SceneFader : MonoBehaviour {
     {
         StartCoroutine(FadeOut(scene));
     }
- 
+
+    public void FadeToNextScene(int sceneIndex)
+    {
+        StartCoroutine(FadeOutWithIndex(sceneIndex));
+    }
+
+    public void FadeToClear()
+    {
+        StartCoroutine(FadeIn());
+    }
+
     IEnumerator FadeIn()
     {
         float t = 1f;
@@ -46,5 +57,20 @@ public class SceneFader : MonoBehaviour {
         }
 
         SceneManager.LoadScene(scene);
+    }
+
+    IEnumerator FadeOutWithIndex(int sceneIndex)
+    {
+        float t = 0f;
+
+        while (t < 1)
+        {
+            t += Time.deltaTime * animationSpeed; //t increase by every single frame
+            float a = curve.Evaluate(t);
+            img.color = new Color(0f, 0f, 0f, a);
+            yield return 0; //break. wait unti the next frame and continue
+        }
+
+        SceneManager.LoadScene(sceneIndex);
     }
 }
