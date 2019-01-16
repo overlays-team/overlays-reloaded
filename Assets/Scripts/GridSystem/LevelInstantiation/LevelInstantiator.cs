@@ -62,10 +62,19 @@ public class LevelInstantiator : MonoBehaviour {
                     Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));
                 } else if(levelData[row, col].Contains("00"))     //Multiples of 100 are different targets
                 {
-                    Instantiate(targetMulti);
+                    Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                 } else if(levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
                 {
-                    Instantiate(source);
+                    Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 90, 0));
+                } else if(levelData[row, col].Contains("04"))   //An ending on 4 means left
+                {
+                    Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 180, 0));
+                } else if(levelData[row, col].Contains("06"))   //6 means right
+                {
+                    Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, 0, 0));
+                } else if(levelData[row, col].Contains("08"))   //8 means up
+                {
+                    Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -90, 0));
                 }
 
                 counter++;
