@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ContrastAndDesaturation : BlockObject
+public class Saturation : BlockObject
 {
-
-    public enum ContrastOrDesat { CONTRAST, DESATURATION, NONE };
-    [Header("Filter")]
-    public ContrastOrDesat filterMode = ContrastOrDesat.NONE;
-
+    [SerializeField]
+    private float saturationvalue = 2;
 
     protected override void Start()
     {
@@ -42,19 +39,19 @@ public class ContrastAndDesaturation : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
-        switch (filterMode)
-        {
-            case ContrastOrDesat.CONTRAST:
-                return new Color(2*inputImage1.GetPixel(x, y).r, 2 * inputImage1.GetPixel(x, y).g, 2 * inputImage1.GetPixel(x, y).b);
 
-            case ContrastOrDesat.DESATURATION:
-                return new Color(0.5f * inputImage1.GetPixel(x, y).r, 0.5f * inputImage1.GetPixel(x, y).g, 0.5f * inputImage1.GetPixel(x, y).b);
+        Color pixel = inputImage1.GetPixel(x, y);
 
-            case ContrastOrDesat.NONE:
-                return inputImage1.GetPixel(x, y);
+        float h;
+        float s;
+        float v;
 
-            default:
-                return new Color();
-        }
+        Color.RGBToHSV(pixel, out h, out s, out v);
+
+        s = s * saturationvalue;
+
+        Color result = Color.HSVToRGB(h, s, v);
+
+        return result;
     }
 }
