@@ -38,7 +38,9 @@ public class IngameUI : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        TransparentToZero(pauseMenuPanel.transform);
+        TransparentToZero(gameOverMenu.transform);
+        TransparentToZero(levelCompleteMenu.transform);
     }
 
     // Update is called once per frame
@@ -105,11 +107,13 @@ public class IngameUI : MonoBehaviour {
         pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(true);
         StartCoroutine(AnimateBlurIn(pauseMenuPanel, blurAnimDuration));
+
     }
     public void TogglePlay()
     {
         pauseButton.SetActive(true);
         pauseMenuPanel.SetActive(false);
+        TransparentToZero(pauseMenuPanel.transform);
     }
     public void ShowGameOverPanel()
     {
@@ -184,6 +188,34 @@ public class IngameUI : MonoBehaviour {
         if (win)
         {
             countDownText.text = "";
+        }
+    }
+
+    private void TransparentToZero(Transform trans)
+    {
+        Color newColor = new Color(1f, 1f, 1f, 0f);
+        foreach (Transform child in trans)
+        {
+            //child is your child transform
+            if (child.gameObject.GetComponent<Button>() != null)
+            {
+                var colors = child.gameObject.GetComponent<Button>().colors;
+                colors.normalColor = newColor;
+                child.gameObject.GetComponent<Button>().colors = colors;
+            }
+            else if (child.gameObject.GetComponent<Text>() != null)
+            {
+                var colors = child.gameObject.GetComponent<Text>().color;
+                colors = newColor;
+                child.gameObject.GetComponent<Text>().color = colors;
+            }
+            else if (child.gameObject.GetComponent<Image>())
+            {
+                var colors = child.gameObject.GetComponent<Image>().color;
+                colors = newColor;
+                child.gameObject.GetComponent<Image>().color = colors;
+            }
+
         }
     }
 
