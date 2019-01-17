@@ -14,7 +14,7 @@ public class LaserOutput : MonoBehaviour
     public Laser laser;
     public bool active = false;
     [SerializeField]
-    private float activegloss = .5f; //if laser output is active
+    private float activegloss = 0.5f; //if laser output is active
     [SerializeField]
     private float innactivegloss = 1;//if laser output is inactive
 

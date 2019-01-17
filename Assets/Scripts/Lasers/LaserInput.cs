@@ -8,7 +8,7 @@ public class LaserInput : MonoBehaviour
     public Laser inputLaser;
     public bool active; //are active if a laser id hitting a input
     [SerializeField]
-    private float activegloss = .5f; //if laser output is active
+    private float activegloss = 0.5f; //if laser output is active
     [SerializeField]
     private float innactivegloss = 1;//if laser output is inactive
 
