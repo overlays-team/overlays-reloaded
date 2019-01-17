@@ -8,6 +8,8 @@ public class Mask : BlockObject
     [Tooltip("assign the mask here - the mask takes the r value for alpha blending")]
     public Texture2D mask;
 
+    Texture2D loadedImage; // for image import
+
     protected override void Start()
     {
         base.Start();
@@ -19,24 +21,37 @@ public class Mask : BlockObject
     {
         base.Update();
 
-        if (lasersChanged)
+        if (loadedImage != null)
         {
-            imageProcessingState = ImageProcessingState.NoImage;
-            if (laserInputs[0].active)
-            {
-                inputImage1 = laserInputs[0].inputLaser.image;
-                Grow();
-                StartImageProcessing();
-            }
-            else
-            {
-                inputImage1 = null;
-                Shrink();
-                StopImageProcessing();
-            }
-        }
+            Texture2D newImage = duplicateTexture(loadedImage);
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+            laserOutput.laser.image = newImage;
+            debugImage.sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
+            detailedNodeViewImage.sprite = debugImage.sprite;
+
+            loadedImage = null;
+        }
+        else
+        {
+            if (lasersChanged)
+            {
+                imageProcessingState = ImageProcessingState.NoImage;
+                if (laserInputs[0].active)
+                {
+                    inputImage1 = laserInputs[0].inputLaser.image;
+                    Grow();
+                    StartImageProcessing();
+                }
+                else
+                {
+                    inputImage1 = null;
+                    Shrink();
+                    StopImageProcessing();
+                }
+            }
+
+            UpdateOutputImageDisplayAndSendThroughLaser();
+        }
     }
 
     protected override Color ProcessPixel(int x, int y)
@@ -47,4 +62,50 @@ public class Mask : BlockObject
             Mathf.Abs(inputImage1.GetPixel(x, y).b), 
             mask.GetPixel(x, y).r);
     }
+
+
+    // for mask importing:
+
+    public void OnImportButtonClicked()
+    {
+        Debug.Log("import Button clicked");
+
+        PickImageFromGallery();
+    }
+
+    public void PickImageFromGallery(int maxSize = 1024)
+    {
+
+        NativeGallery.GetImageFromGallery((path) =>
+        {
+            if (path != null)
+            {
+                // Create Texture from selected image
+                loadedImage = NativeGallery.LoadImageAtPath(path, maxSize);
+            }
+        }, maxSize: maxSize);
+
+    }
+
+    //we need to use this workaround because importet textures are not readable, copied from stackOverflow
+    Texture2D duplicateTexture(Texture2D source)
+    {
+        RenderTexture renderTex = RenderTexture.GetTemporary(
+                    source.width,
+                    source.height,
+                    0,
+                    RenderTextureFormat.Default,
+                    RenderTextureReadWrite.Linear);
+
+        Graphics.Blit(source, renderTex);
+        RenderTexture previous = RenderTexture.active;
+        RenderTexture.active = renderTex;
+        Texture2D readableText = new Texture2D(source.width, source.height);
+        readableText.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+        readableText.Apply();
+        RenderTexture.active = previous;
+        RenderTexture.ReleaseTemporary(renderTex);
+        return readableText;
+    }
+
 }
