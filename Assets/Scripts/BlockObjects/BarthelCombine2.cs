@@ -8,8 +8,8 @@ public class BarthelCombine2 : BlockObject
 
     //takes 2 lasers as Input and gives one as output
 
-    float image1Weight = 1;
-    float image2Weight = 1;
+    float image1Weight = 0.5f;
+    float image2Weight = -0.5f;
 
 
     protected override void Update()
@@ -49,9 +49,10 @@ public class BarthelCombine2 : BlockObject
     protected override Color ProcessPixel(int x, int y)
     {
         return new Color(
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).r)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight * inputImage2.GetPixel(x, y).r)) / 1,
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).g)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight * inputImage2.GetPixel(x, y).g)) / 1,
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).b)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight * inputImage2.GetPixel(x, y).b)) / 1,
+
+                        Mathf.Max(0,(inputImage1.GetPixel(x, y).r + inputImage2.GetPixel(x, y).r) - 0.5f),
+                        Mathf.Max(0, (inputImage1.GetPixel(x, y).g + inputImage2.GetPixel(x, y).g) - 0.5f),
+                        Mathf.Max(0, (inputImage1.GetPixel(x, y).b + inputImage2.GetPixel(x, y).b) - 0.5f),
                         Mathf.Max(inputImage1.GetPixel(x, y).a, inputImage2.GetPixel(x, y).a)
                         );
     }
