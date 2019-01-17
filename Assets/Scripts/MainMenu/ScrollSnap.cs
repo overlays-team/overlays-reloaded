@@ -74,7 +74,8 @@ public class ScrollSnap : MonoBehaviour
 
     private void ScaleSelected()
     {
-        for(int i = 0; i < items.Count; i++)
+        int itemsLength = items.Count;
+        for(int i = 0; i < itemsLength; i++)
         {
             if (i == selectedItem)
             {
@@ -139,11 +140,8 @@ public class ScrollSnap : MonoBehaviour
         else
         {
             Vector2 newPosition = new Vector2(newX, scrollSlide.anchoredPosition.y);
-
             scrollSlide.anchoredPosition = newPosition;
         }
-
-
     }
 
     public void StartDrag()
