@@ -245,7 +245,7 @@ public class BlockObject : MonoBehaviour
     protected void Shrink()
     {
         graphics.GetComponent<Animator>().SetBool("LaserInput", false);
-        ChangeFrameMaterial(framecolor, new Color(0, 0, 0));
+        ChangeFrameMaterial(new Color(0.5f, 0.5f, 0.5f), new Color(0.5f, 0.5f, 0.5f));
     }
 
     void ChangeFrameMaterial(Color blendcolor, Color intensity)
