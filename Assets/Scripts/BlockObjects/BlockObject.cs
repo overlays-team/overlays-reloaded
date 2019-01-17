@@ -131,14 +131,7 @@ public class BlockObject : MonoBehaviour
     protected virtual void Start ()
     {
         #region position set up
-        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
-        heightCorrector = currentAssignedGridPlane.transform.up;
-        heightCorrector *= transform.localScale.y / 2;
-        if (!inInventory)
-        {
-            transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
-            currentAssignedGridPlane.taken = true;
-        }
+        if (currentAssignedGridPlane != null) BlockPositionSetUp(currentAssignedGridPlane);
         #endregion
 
         #region smooth movement set up
@@ -166,6 +159,19 @@ public class BlockObject : MonoBehaviour
         #endregion
     }
 
+    public void BlockPositionSetUp(GridPlane assignedGridPlane)
+    {
+        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
+        heightCorrector = assignedGridPlane.transform.up;
+
+        heightCorrector *= transform.localScale.y / 2;
+        if (!inInventory)
+        {
+            transform.position = assignedGridPlane.transform.position + heightCorrector;
+            assignedGridPlane.taken = true;
+        }
+    }
+
     protected virtual void Update()
     {
         SmoothMovementUpdate();
@@ -173,7 +179,7 @@ public class BlockObject : MonoBehaviour
         //reposition the image shown above our object
         if (imageCanvas != null)
         {
-            imageCanvas.transform.up = Camera.main.transform.up;
+            imageCanvas.transform.rotation = Camera.main.transform.rotation;
             if (!debugImage.isActiveAndEnabled && blockImage != null) blockImage.SetActive(true);
             else if (blockImage != null) blockImage.SetActive(false);
         }
