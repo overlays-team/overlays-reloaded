@@ -138,7 +138,7 @@ public class BlockObject : MonoBehaviour
         #region stationary and movable set up
         //
         frame = movableframe;
-        if (stationaryframe != null || movableframe != null)
+        if (stationaryframe != null && movableframe != null)
         {
             if (stationary == false)
             {
