@@ -108,12 +108,13 @@ public class IngameUI : MonoBehaviour {
         pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(true);
         StartCoroutine(AnimateBlurIn(pauseMenuPanel, blurAnimDuration));
-        TransparentToZero(pauseMenuPanel.transform);
+
     }
     public void TogglePlay()
     {
         pauseButton.SetActive(true);
         pauseMenuPanel.SetActive(false);
+        TransparentToZero(pauseMenuPanel.transform);
     }
     public void ShowGameOverPanel()
     {
