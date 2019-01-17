@@ -18,17 +18,17 @@ public class IngameManager : MonoBehaviour
     private int previousTotalScore;
     private int newTotalScore;
     public HttpCommunicator httpCommunicator;
+    public LevelInstantiator levelInstantiator;
 
     //private string playerName;
     //private int highestTotalScore;
     //private string highestTotalScorePlayerName;
 
     private bool timeRunsOut;
-
-
     private bool win;
     private bool lose;
-    public float timeLeft = 5.0f;
+    public float initCountdownTime = 30.0f;
+    public float countdownTimer = 30.0f;
     bool paused;
 
 
@@ -58,24 +58,14 @@ public class IngameManager : MonoBehaviour
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
 
-        setTestParameters();
+        SetTestParameters();
 
         LoadLevelState();
 
-        //get out ImageOutputs
-        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
-
-        foreach (GameObject go in imageOutputGO)
-        {
-            if (go.GetComponent<ImageOutput>() != null)
-            {
-                outputImages.Add(go.GetComponent<ImageOutput>());
-            }
-        }
-
+        FindCurrentGoalBlocks();
     }
 
-    private void setTestParameters()
+    private void SetTestParameters()
     {
         SetAttackMode(attackMode); //sh, for testing
 
@@ -83,7 +73,6 @@ public class IngameManager : MonoBehaviour
 
         // needed for test
         //CreateTestLevelState(); //sh, 
-
 
         GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
         GameDataEditor.Instance.data.playerName = "Player"; //sh. for testing
@@ -96,6 +85,8 @@ public class IngameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        FindCurrentGoalBlocks();
+
         if (!win && !lose && !paused)
         {
             if (attackMode)CountTime();
@@ -119,13 +110,19 @@ public class IngameManager : MonoBehaviour
         {
             Lose();
         }
-
-
-
-
     }
 
-
+    private void FindCurrentGoalBlocks()
+    {
+        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach (GameObject go in imageOutputGO)
+        {
+            if (go.GetComponent<ImageOutput>() != null && !outputImages.Contains(go.GetComponent<ImageOutput>()))
+            {
+                outputImages.Add(go.GetComponent<ImageOutput>());
+            }
+        }
+    }
 
     private void LoadLevelState() //now only used for getting total score for testing
     {
@@ -195,14 +192,10 @@ public class IngameManager : MonoBehaviour
         }
     }
 
-
-
-
     private void UpdateTotalScore()
     {
         newTotalScore = thisLevelScore + previousTotalScore;
     }
-
 
     private void CheckHighestTotalScore()
     {
@@ -272,7 +265,10 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.data.levels[nextLevel].completed = true;
     }
 
-
+    public void SetOutputImages(List<ImageOutput> outputs)
+    {
+        outputImages = outputs;
+    }
 
     void Lose()
     {
@@ -292,8 +288,18 @@ public class IngameManager : MonoBehaviour
 
     public void Next()
     {
-        fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Time.timeScale = 1f;
+        if(attackMode)
+        {
+            levelInstantiator.InstantiateRandomLevel();
+            ingameUI.HideLevelCompletePanel();
+            win = false;
+            countdownTimer = initCountdownTime;
+            FindCurrentGoalBlocks();
+        }
+        else
+        {
+            fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
     }
 
     //reload same scene for test
@@ -347,11 +353,11 @@ public class IngameManager : MonoBehaviour
     {
         if (!win && attackMode)
         {
-            timeLeft -= Time.deltaTime;
+            countdownTimer -= Time.deltaTime;
         }
-        timeRunsOut = timeLeft < 0;
+        timeRunsOut = countdownTimer < 0;
 
-        if(attackMode)ingameUI.UpdateCountDown(timeLeft, timeRunsOut);
+        if(attackMode)ingameUI.UpdateCountDown(countdownTimer, timeRunsOut);
     }
 
 
@@ -366,7 +372,7 @@ public class IngameManager : MonoBehaviour
         }
 
 
-        if (outputImages.Count> 0)
+        if (outputImages.Count > 0)
         {
             foreach (ImageOutput imageOutput in outputImages)
             {

@@ -180,7 +180,7 @@ public class IngameUI : MonoBehaviour {
 
     public void UpdateCountDown(float timeRemaining, bool win)
     {
-        countDownText.text = "TIME REMAINING: " + Mathf.Round(timeRemaining) + "s";
+        countDownText.text = "TIME: " + Mathf.Round(timeRemaining).ToString("00");
         if (win)
         {
             countDownText.text = "";

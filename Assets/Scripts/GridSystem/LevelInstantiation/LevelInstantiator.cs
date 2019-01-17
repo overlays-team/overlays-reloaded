@@ -52,6 +52,14 @@ public class LevelInstantiator : MonoBehaviour {
         levelIndex++;
     }
 
+    public void InstantiateRandomLevel()
+    {
+        SplitData(jsonAsString);
+        levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+        ApplyLevelData();
+        
+    }
+
     private void ApplyLevelData()
     {
         int rowLength = levelData.GetLength(0); //first index
