@@ -10,6 +10,9 @@ public class Mask : BlockObject
 
     Texture2D loadedImage; // for image import
 
+    //public Texture2D testLoadedImage;
+
+
     protected override void Start()
     {
         base.Start();
@@ -23,11 +26,17 @@ public class Mask : BlockObject
 
         if (loadedImage != null)
         {
+            Debug.Log("2");
             Texture2D newImage = duplicateTexture(loadedImage);
 
-            laserOutput.laser.image = newImage;
-            debugImage.sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
-            detailedNodeViewImage.sprite = debugImage.sprite;
+            //laserOutput.laser.image = newImage;
+            mask = newImage;
+            blockImage.GetComponent<Image>().sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
+            //detailedNodeViewImage.sprite = debugImage.sprite;
+            if (imageProcessingState != ImageProcessingState.NoImage)
+            {
+                StartImageProcessing();
+            }
 
             loadedImage = null;
         }
@@ -75,7 +84,7 @@ public class Mask : BlockObject
 
     public void PickImageFromGallery(int maxSize = 1024)
     {
-
+        //loadedImage = testLoadedImage;
         NativeGallery.GetImageFromGallery((path) =>
         {
             if (path != null)
