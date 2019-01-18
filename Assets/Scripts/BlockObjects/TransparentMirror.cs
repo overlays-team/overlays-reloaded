@@ -7,19 +7,18 @@ public class TransparentMirror : BlockObject
     [Header("Translucent Mirror")]
 
     [Tooltip("this is the reflected laser")]
-    public LaserOutput outputLaserFront1;
+    public LaserOutput outputLaser1;
     [Tooltip("this is the laser which passes through the mirror")]
-    public LaserOutput outputLaserFront2;
-    [Tooltip("this is the reflected laser")]
+    public LaserOutput outputLaser2;
+    /*[Tooltip("this is the reflected laser")]
     public LaserOutput outputLaserBack1;
     [Tooltip("this is the laser which passes through the mirror")]
-    public LaserOutput outputLaserBack2;
+    public LaserOutput outputLaserBack2;*/
 
 
     //inputLaser[0] is on the forwrd side of the mirror, inputLaser[1] on the backside
 
-    List<Laser> inputLasersFrontThisFrame = new List<Laser>();
-    List<Laser> inputLasersBackThisFrame = new List<Laser>();
+    List<Laser> inputLasersThisFrame = new List<Laser>();
 
     //we only reflect one laser at once, if another laser coulb be reflected by this mirror, we still reflect the old one
 
@@ -34,59 +33,37 @@ public class TransparentMirror : BlockObject
     {
         base.Update();
 
-        //first we fill the collections - how many do hit the front side of the mirror and how many the backside?
-
-        inputLasersFrontThisFrame.Clear();
-        inputLasersBackThisFrame.Clear();
+        inputLasersThisFrame.Clear();
 
         foreach (Laser laser in LaserManager.Instance.GetInputLasers(this))
         {
-            //do we have one or more frontLasers
-            if (Vector3.Angle(laser.laserOutput.forward, transform.forward) < 85)
-            {
-                if (!laser.isMovingFast) inputLasersBackThisFrame.Add(laser);
-            }
-            else if (Vector3.Angle(laser.laserOutput.forward, -transform.forward) < 85)
-            {
-                if (!laser.isMovingFast) inputLasersFrontThisFrame.Add(laser);
-            }
-
+            if (!laser.isMovingFast) inputLasersThisFrame.Add(laser);
         }
 
-        //now we check if one of our collection is bigger than 1, if not, just reflect
-
-        //front
-        if (inputLasersFrontThisFrame.Count == 0)
+        if (inputLasersThisFrame.Count == 0)
         {
-            outputLaserFront1.active = false;
-            outputLaserFront2.active = false;
+            outputLaser1.active = false;
+            outputLaser2.active = false;
         }
-        else if (inputLasersFrontThisFrame.Count == 1)
+        else if (inputLasersThisFrame.Count == 1)
         {
-            outputLaserFront1.laser.image = inputLasersFrontThisFrame[0].image;
-            outputLaserFront1.transform.forward = Vector3.Reflect(inputLasersFrontThisFrame[0].laserOutput.forward, transform.forward);
-            outputLaserFront1.active = true;
+            outputLaser1.laser.image = inputLasersThisFrame[0].image;
+            outputLaser1.transform.forward = Vector3.Reflect(inputLasersThisFrame[0].laserOutput.forward, transform.forward);
+            outputLaser1.active = true;
 
-            outputLaserFront2.laser.image = inputLasersFrontThisFrame[0].image;
-            outputLaserFront2.transform.forward = inputLasersFrontThisFrame[0].laserOutput.forward;
-            outputLaserFront2.active = true;
+            outputLaser2.laser.image = inputLasersThisFrame[0].image;
+            outputLaser2.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser2.active = true;
         }
-
-        //back
-        if (inputLasersBackThisFrame.Count == 0)
+        else //if 2
         {
-            outputLaserBack1.active = false;
-            outputLaserBack2.active = false;
-        }
-        else if (inputLasersBackThisFrame.Count == 1)
-        {
-            outputLaserBack1.laser.image = inputLasersBackThisFrame[0].image;
-            outputLaserBack1.transform.forward = Vector3.Reflect(inputLasersBackThisFrame[0].laserOutput.forward, -transform.forward);
-            outputLaserBack1.active = true;
+            outputLaser1.laser.image = inputLasersThisFrame[0].image;
+            outputLaser1.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser1.active = true;
 
-            outputLaserBack2.laser.image = inputLasersBackThisFrame[0].image;
-            outputLaserBack2.transform.forward = inputLasersBackThisFrame[0].laserOutput.forward;
-            outputLaserBack2.active = true;
+            outputLaser2.laser.image = inputLasersThisFrame[0].image;
+            outputLaser2.transform.forward = inputLasersThisFrame[1].laserOutput.forward;
+            outputLaser2.active = true;
         }
 
 
