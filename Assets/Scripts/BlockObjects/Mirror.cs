@@ -71,6 +71,10 @@ public class Mirror : BlockObject
 
             //inputLaserFrontLastFrame = inputLasersFrontThisFrame[0];
         }
+        else
+        {
+            outputLaserFront.active = false;
+        }
 
         //back
         if (inputLasersBackThisFrame.Count == 0)
@@ -85,8 +89,12 @@ public class Mirror : BlockObject
 
             //inputLaserBackLastFrame = inputLasersBackThisFrame[0];
         }
+        else
+        {
+            outputLaserBack.active = false;
+        }
 
-        
+
     }
 
     /*

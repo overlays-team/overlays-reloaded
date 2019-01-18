@@ -18,6 +18,7 @@ public class LaserOutput : MonoBehaviour {
         laser.active = false;
         laser.startingBlock = transform.parent.GetComponent<BlockObject>();
         laser.laserOutput = transform;  //output point sets direction, can be at 000 transform of parent
+        laser.transform.parent = transform;
 	}
 	
 	void Update () {
