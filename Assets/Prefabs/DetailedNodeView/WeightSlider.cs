@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class WeightSlider : MonoBehaviour
 {
-    public Text percentageText;
+    public Text sliderText;
     private Slider slider;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +16,7 @@ public class WeightSlider : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        percentageText.text = (slider.value / slider.maxValue * 100).ToString("F0");
+        //sliderText.text = (slider.value / slider.maxValue * 100).ToString("F0");
+        sliderText.text = slider.value.ToString();
     }
 }

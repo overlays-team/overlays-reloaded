@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+
 public class GridPlane : MonoBehaviour
 {
     [Tooltip("if empthy, the plane is a hole where we cant position blocks")]
@@ -26,16 +26,10 @@ public class GridPlane : MonoBehaviour
         negativeHalo.SetActive(false);
     }
 
-   
-    private void Update()
+
+    void OnValidate()
     {
-        //gets only executed in editor in edit mode
-        #if UNITY_EDITOR
-        if (!UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode)
-        {
-            SetEmpthy(empty);
-        }
-        #endif
+        SetEmpthy(empty);
     }
 
 
