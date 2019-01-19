@@ -12,7 +12,11 @@ using UnityEngine.UI;
 public class LevelInstantiator : MonoBehaviour
 {
     //For loading of data
+    [Tooltip("Please write: '/Levels/NAME.json' here")]
     public string dataFileName;
+    [Tooltip("Please write '/FOLDERNAME/abc' here")]
+    public string picFolderName;
+    DirectoryInfo directoryInfo;
     public string[,] levelData;
     public GameObject gridObject;
 
@@ -48,7 +52,7 @@ public class LevelInstantiator : MonoBehaviour
         gridPositioner = grid.GetComponent<GridPositioner>();
         LoadData();
         levelIndex = 0;
-        //InstantiateLevel();
+        InstantiateLevel();
         //print("Split data: " + myLevel.rows[0]);
     }
 
@@ -83,10 +87,6 @@ public class LevelInstantiator : MonoBehaviour
         {
             Destroy(blockObjects[i]);
         }
-        //foreach(GameObject laser in lasers)
-        //{
-        //    Destroy(laser);
-        //}
 
         //Instantiation
         GameObject instantiatedSource = null;
@@ -123,7 +123,7 @@ public class LevelInstantiator : MonoBehaviour
                     //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));   //This instantiates a mirror in the level
                     mirrorCount++;
                 }
-                else if (levelData[row, col].Contains("300"))     //Multiples of 100 are different targets
+                else if (levelData[row, col].Contains("300"))     //10x + 20x -> 300 (source + source -> target)
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage3);
@@ -132,6 +132,26 @@ public class LevelInstantiator : MonoBehaviour
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage9);
+                }
+                else if(levelData[row, col] == "100")   //Targets starting with 1, 2, 4 or 5 only have a single source
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage1);
+                }
+                else if (levelData[row, col] == "200")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage2);
+                }
+                else if (levelData[row, col] == "400")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage4);
+                }
+                else if (levelData[row, col] == "500")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage5);
                 }
                 else if (levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
                 {
@@ -188,15 +208,24 @@ public class LevelInstantiator : MonoBehaviour
 
     public void LoadData()
     {
-        if (File.Exists(getFilePath()))
+        if (File.Exists(getLevelFilePath()))
         {
-            this.jsonAsString = File.ReadAllText(getFilePath());
+            this.jsonAsString = File.ReadAllText(getLevelFilePath());
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
         }
         else
         {
-            Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/NAME.json' into script inspector field.");
+            Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/Levels/NAME.json' into script inspector field.");
+        }
+
+        if (File.Exists(getPicsPath()))
+        {
+            //this.jsonAsString = File.ReadAllText(getPicsPath());
+        }
+        else
+        {
+            Debug.Log("Please save the pictures to " + Application.streamingAssetsPath + " and write '/FOLDERNAME' into script inspector field.");
         }
     }
 
@@ -263,9 +292,14 @@ public class LevelInstantiator : MonoBehaviour
      }
      */
 
-    public string getFilePath()
+    public string getLevelFilePath()
     {
         return Application.streamingAssetsPath + dataFileName;
+    }
+
+    public string getPicsPath()
+    {
+        return Application.streamingAssetsPath + picFolderName + "/abc1/a.png";
     }
 
     // Update is called once per frame
