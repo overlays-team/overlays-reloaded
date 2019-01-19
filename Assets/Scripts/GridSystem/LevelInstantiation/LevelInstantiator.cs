@@ -12,7 +12,11 @@ using UnityEngine.UI;
 public class LevelInstantiator : MonoBehaviour
 {
     //For loading of data
+    [Tooltip("Please write: '/Levels/NAME.json' here")]
     public string dataFileName;
+    [Tooltip("Please write 'FOLDERNAME/abc' here")]
+    public string picFolderName;
+    private int randomFolder;
     public string[,] levelData;
     public GameObject gridObject;
 
@@ -32,12 +36,12 @@ public class LevelInstantiator : MonoBehaviour
     public GameObject source;
     [Tooltip("ImageOutputMulti")]
     public GameObject targetMulti;
-    public Texture2D _goalImage3;
-    public Texture2D _goalImage9;
-    public Texture2D _sourceImage1;
-    public Texture2D _sourceImage2;
-    public Texture2D _sourceImage4;
-    public Texture2D _sourceImage5;
+    private Texture2D _goalImage3;
+    private Texture2D _goalImage9;
+    private Texture2D _sourceImage1;
+    private Texture2D _sourceImage2;
+    private Texture2D _sourceImage4;
+    private Texture2D _sourceImage5;
 
     public Image testImage1;
     public Image testImage2;
@@ -46,10 +50,28 @@ public class LevelInstantiator : MonoBehaviour
     void Start()
     {
         gridPositioner = grid.GetComponent<GridPositioner>();
+        assignPics();
         LoadData();
         levelIndex = 0;
-        //InstantiateLevel();
-        //print("Split data: " + myLevel.rows[0]);
+        InstantiateLevel();
+    }
+
+    private void assignPics()
+    {
+        float numOfFolders = 0.3f; //The second float in Range() should be a tenth of the number of folders in Resources/PictureSets/... i. e. 5 folders -> 0.5f
+        randomFolder = (int) (UnityEngine.Random.Range(0.1f, numOfFolders) * 10);
+        int temp = randomFolder;
+        _sourceImage1 = getPicA();
+        _sourceImage2 = getPicB();
+        _goalImage3 = getPicC();
+        while (temp == randomFolder)
+        {
+            randomFolder = (int) (UnityEngine.Random.Range(0.1f, numOfFolders) * 10);
+            print("RandomNum: " + randomFolder + " temp: " + temp);
+        }
+        _sourceImage4 = getPicA();
+        _sourceImage5 = getPicB();
+        _goalImage9 = getPicC();
     }
 
     public void InstantiateLevel()
@@ -83,10 +105,6 @@ public class LevelInstantiator : MonoBehaviour
         {
             Destroy(blockObjects[i]);
         }
-        //foreach(GameObject laser in lasers)
-        //{
-        //    Destroy(laser);
-        //}
 
         //Instantiation
         GameObject instantiatedSource = null;
@@ -123,7 +141,7 @@ public class LevelInstantiator : MonoBehaviour
                     //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));   //This instantiates a mirror in the level
                     mirrorCount++;
                 }
-                else if (levelData[row, col].Contains("300"))     //Multiples of 100 are different targets
+                else if (levelData[row, col].Contains("300"))     //10x + 20x -> 300 (source + source -> target)
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage3);
@@ -132,6 +150,26 @@ public class LevelInstantiator : MonoBehaviour
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage9);
+                }
+                else if(levelData[row, col] == "100")   //Targets starting with 1, 2, 4 or 5 only have a single source
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage1);
+                }
+                else if (levelData[row, col] == "200")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage2);
+                }
+                else if (levelData[row, col] == "400")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage4);
+                }
+                else if (levelData[row, col] == "500")
+                {
+                    instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
+                    instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage5);
                 }
                 else if (levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
                 {
@@ -188,15 +226,15 @@ public class LevelInstantiator : MonoBehaviour
 
     public void LoadData()
     {
-        if (File.Exists(getFilePath()))
+        if (File.Exists(getLevelFilePath()))
         {
-            this.jsonAsString = File.ReadAllText(getFilePath());
+            this.jsonAsString = File.ReadAllText(getLevelFilePath());
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
         }
         else
         {
-            Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/NAME.json' into script inspector field.");
+            Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/Levels/NAME.json' into script inspector field.");
         }
     }
 
@@ -263,9 +301,24 @@ public class LevelInstantiator : MonoBehaviour
      }
      */
 
-    public string getFilePath()
+    public string getLevelFilePath()
     {
         return Application.streamingAssetsPath + dataFileName;
+    }
+
+    public Texture2D getPicA()
+    {
+        return Resources.Load(picFolderName+"/abc" + randomFolder + "/a") as Texture2D;
+    }
+
+    public Texture2D getPicB()
+    {
+        return Resources.Load(picFolderName+ "/abc" + randomFolder + "/b") as Texture2D;
+    }
+
+    public Texture2D getPicC()
+    {
+        return Resources.Load(picFolderName+ "/abc" + randomFolder + "/c") as Texture2D;
     }
 
     // Update is called once per frame
