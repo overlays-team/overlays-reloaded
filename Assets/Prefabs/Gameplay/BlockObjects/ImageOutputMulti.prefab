@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4721243450029028}
   - component: {fileID: 120045030514830510}
   m_Layer: 0
-  m_Name: Lines
+  m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,8 +138,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
-      key1: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+      key0: {r: 1, g: 0, b: 0, a: 1}
+      key1: {r: 1, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -202,6 +202,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4721243450029028}
+  - {fileID: 224450606644722616}
   m_Father: {fileID: 4786635286135298}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -336,15 +337,15 @@ RectTransform:
   m_GameObject: {fileID: 1380321509428402}
   m_LocalRotation: {x: -0, y: 0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
+  m_LocalScale: {x: 0.015000013, y: 0.015000006, z: 0.015000007}
   m_Children:
   - {fileID: 224874221825971726}
-  m_Father: {fileID: 4786635286135298}
-  m_RootOrder: 5
+  m_Father: {fileID: 4068848593781708}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -0.49}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &223765789354151714
@@ -441,7 +442,6 @@ Transform:
   - {fileID: 4722018189929566}
   - {fileID: 4685218586706370}
   - {fileID: 4068848593781708}
-  - {fileID: 224450606644722616}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -473,6 +473,8 @@ MonoBehaviour:
   stationary: 1
   actionBlocked: 1
   doubleClickActionBlocked: 1
+  detailedNodeView: {fileID: 0}
+  detailedNodeViewImage: {fileID: 0}
   currentAssignedGridPlane: {fileID: 0}
   laserInputs:
   - {fileID: 114049614701939972}
@@ -480,13 +482,15 @@ MonoBehaviour:
   - {fileID: 114010870480351602}
   - {fileID: 114696505860546308}
   laserOutput: {fileID: 0}
-  graphics: {fileID: 0}
+  graphics: {fileID: 1205707320377050}
+  imageCanvas: {fileID: 1380321509428402}
   frame: {fileID: 120045030514830510}
   debugImage: {fileID: 114777413869291284}
+  blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 0}
-  goalImage: {fileID: 2800000, guid: decdc0f1422f5844296f0cda7d70da12, type: 3}
+  goalImage: {fileID: 2800000, guid: a324f39ac138d5e4f9860c3d9d918ed6, type: 3}
   imageCorrect: 0
 --- !u!1 &1951768736782248
 GameObject:

@@ -67,13 +67,13 @@ public class Filter : BlockObject
         switch (filterMode)
         {
             case FilterColor.RED:
-                return new Color(inputImage1.GetPixel(x, y).r, 0f, 0f);
+                return new Color(inputImage1.GetPixel(x, y).r, 0f, 0f, inputImage1.GetPixel(x, y).a);
 
             case FilterColor.GREEN:
-                return new Color(0f, inputImage1.GetPixel(x, y).g, 0f);
+                return new Color(0f, inputImage1.GetPixel(x, y).g, 0f, inputImage1.GetPixel(x, y).a);
 
             case FilterColor.BLUE:
-                return new Color(0f, 0f, inputImage1.GetPixel(x, y).b);
+                return new Color(0f, 0f, inputImage1.GetPixel(x, y).b, inputImage1.GetPixel(x, y).a);
 
             case FilterColor.NONE:
                 return inputImage1.GetPixel(x, y);

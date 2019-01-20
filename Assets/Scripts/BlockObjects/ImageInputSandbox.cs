@@ -8,7 +8,7 @@ public class ImageInputSandbox : ImageInput
     we dont use the SetUp image function of imageInput because we do nood need the same
     compressionFormat for all images here*/
 
-    bool imageIsBeingLoaded = true;
+   // bool imageIsBeingLoaded = true;
     Texture2D loadedImage;
 
     public void OnImportButtonClicked()

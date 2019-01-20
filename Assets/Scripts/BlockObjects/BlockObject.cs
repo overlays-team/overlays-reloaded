@@ -20,7 +20,7 @@ public class BlockObject : MonoBehaviour
     [Header("Gameplay")]
     [Tooltip("if this is true - then we cant move the object from its position - good for some puzzle objects like walls etc")]
     public bool stationary = false;
-    [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far")]
+    [Tooltip("if this is true we cant perform the onClickAction - rotate for all cases so far, it sets automaticly with stationary")]
     public bool actionBlocked = false;
     [Tooltip("if this is true we cant perform the onDoubleClickAction - only used in sandbox mode so far")]
     public bool doubleClickActionBlocked = false;
@@ -86,8 +86,11 @@ public class BlockObject : MonoBehaviour
     [Tooltip("das Canvas, welches unser Bild und unser Icon zusammenhält")]
     public GameObject imageCanvas;
     [SerializeField]
-    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
+    [Tooltip("beide frames sollten bei beweglichen Blocks ersignt werden")]
     protected LineRenderer frame;
+    [SerializeField]
+    [Tooltip("beide frames sollten bei beweglichen Blocks ersignt werden")]
+    protected GameObject stationaryFrame;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
     public Image debugImage;
     [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
@@ -131,14 +134,7 @@ public class BlockObject : MonoBehaviour
     protected virtual void Start ()
     {
         #region position set up
-        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
-        heightCorrector = currentAssignedGridPlane.transform.up;
-        heightCorrector *= transform.localScale.y / 2;
-        if (!inInventory)
-        {
-            transform.position = currentAssignedGridPlane.transform.position + heightCorrector;
-            currentAssignedGridPlane.taken = true;
-        }
+        if (currentAssignedGridPlane != null) BlockPositionSetUp(currentAssignedGridPlane);
         #endregion
 
         #region smooth movement set up
@@ -166,6 +162,19 @@ public class BlockObject : MonoBehaviour
         #endregion
     }
 
+    public void BlockPositionSetUp(GridPlane assignedGridPlane)
+    {
+        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
+        heightCorrector = assignedGridPlane.transform.up;
+
+        heightCorrector *= transform.localScale.y / 2;
+        if (!inInventory)
+        {
+            transform.position = assignedGridPlane.transform.position + heightCorrector;
+            assignedGridPlane.taken = true;
+        }
+    }
+
     protected virtual void Update()
     {
         SmoothMovementUpdate();
@@ -173,12 +182,31 @@ public class BlockObject : MonoBehaviour
         //reposition the image shown above our object
         if (imageCanvas != null)
         {
-            imageCanvas.transform.up = Camera.main.transform.up;
+            imageCanvas.transform.rotation = Camera.main.transform.rotation;
             if (!debugImage.isActiveAndEnabled && blockImage != null) blockImage.SetActive(true);
             else if (blockImage != null) blockImage.SetActive(false);
         }
 
         //every child decides here what to do with their lasers
+    }
+
+    protected void OnValidate()
+    {
+        if (stationaryFrame != null && frame != null)
+        {
+            if (stationary)
+            {
+                actionBlocked = true;
+                stationaryFrame.gameObject.SetActive(true);
+                frame.gameObject.SetActive(false);
+            }
+            else
+            {
+                actionBlocked = false;
+                stationaryFrame.gameObject.SetActive(false);
+                frame.gameObject.SetActive(true);
+            }
+        } 
     }
 
     public virtual void ReturnToInventory()

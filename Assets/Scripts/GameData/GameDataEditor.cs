@@ -77,7 +77,6 @@ public class GameDataEditor : MonoBehaviour
     {
         string dataAsJson = File.ReadAllText(getFilePath());
         data = JsonUtility.FromJson<GameData>(dataAsJson);
-        print(getFilePath());
     }
 
     public void LoadDefaultData()

@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
     //for detailed node view- we hold the finger on the block without moving it
     Vector2 mouseDownPosition;
-    public float moveBlockTreshold; //how much does our finger need to move to drag the block?
+    public float moveBlockTreshold; //how much does our finger need to move to drag the block? in percent - how much persent of the screen width we need to move to move blocks?
 
     //pinchZoom - for development puposes it woks with mouse wheel on pc, on touch, its the normal 2 finger zoom
     public float zoomSpeed = 0.5f;
@@ -77,6 +77,8 @@ public class PlayerController : MonoBehaviour
         {
             Instance = this;
         }
+
+       moveBlockTreshold *= Screen.width;
     }
 
 
@@ -165,7 +167,7 @@ public class PlayerController : MonoBehaviour
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
                                 }
                             }
-                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) * Screen.width / 1000 > moveBlockTreshold)
+                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) > moveBlockTreshold)
                             {
                                 if (!hittedObject.stationary)
                                 {
@@ -432,7 +434,6 @@ public class PlayerController : MonoBehaviour
                 //if we press the mouse button, we save the object we hitted with the raycast
                 if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(2)) //wir setzen touch count auf max 1, weil sich unser programm sonst nicht entscheiden kann zwischen 2 Fingern
                 {
-                    Debug.Log("clickedDown");
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     timeOfLastMouseDown = Time.time;
@@ -467,7 +468,7 @@ public class PlayerController : MonoBehaviour
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
                                 }
                             }
-                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) * Screen.width / 1000 > moveBlockTreshold)
+                            else if (Vector2.Distance(mouseDownPosition, thisMousePosition) > moveBlockTreshold)
                             {
                                 if (!hittedObject.stationary)
                                 {
@@ -488,7 +489,6 @@ public class PlayerController : MonoBehaviour
                     {
                         if (hittedObject == null)
                         {
-                            Debug.Log("activated camera drag");
                             lastMousePosition = Input.mousePosition;
                             playerMode = PlayerMode.MouseHoldDragCamera;
                         }

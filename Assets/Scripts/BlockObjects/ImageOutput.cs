@@ -35,9 +35,18 @@ public class ImageOutput : BlockObject {
     protected override void Start()
     {
         base.Start();
+        SetupImageOutput(goalImage);
+    }
+
+    public void SetupImageOutput(Texture2D _goalImage)
+    {
+        goalImage = _goalImage;
         inputImage1 = null;
         debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
-        detailedNodeViewImage.sprite = debugImage.sprite;
+        if (detailedNodeViewImage != null)
+        {
+            detailedNodeViewImage.sprite = debugImage.sprite;
+        }
         frame.SetColors(Color.red, Color.red);
     }
 

@@ -4,98 +4,68 @@ using UnityEngine;
 
 public class TransparentMirror : BlockObject
 {
-    [Header("Mirror")]
-    [Tooltip("needs to have the same forward direction as the mirror")]
-    public LaserOutput[] outputLaserFronts;
+    [Header("Translucent Mirror")]
+
+    [Tooltip("this is the reflected laser")]
+    public LaserOutput outputLaser1;
+    [Tooltip("this is the laser which passes through the mirror")]
+    public LaserOutput outputLaser2;
+    /*[Tooltip("this is the reflected laser")]
+    public LaserOutput outputLaserBack1;
+    [Tooltip("this is the laser which passes through the mirror")]
+    public LaserOutput outputLaserBack2;*/
 
 
     //inputLaser[0] is on the forwrd side of the mirror, inputLaser[1] on the backside
+
+    List<Laser> inputLasersThisFrame = new List<Laser>();
+
+    //we only reflect one laser at once, if another laser coulb be reflected by this mirror, we still reflect the old one
 
     protected override void Start()
     {
         base.Start();
 
-        laserInputMaxIncidenceAngle = 85;
+        //laserInputMaxIncidenceAngle = 85;
     }
 
     protected override void Update()
     {
         base.Update();
-        
-        if (laserInputs[0].active)
-        {
-            outputLaserFronts[0].gameObject.transform.forward = Vector3.Reflect(laserInputs[0].inputLaser.laserOutput.forward, transform.forward);
-            outputLaserFronts[0].laser.image = laserInputs[0].inputLaser.image;
-            outputLaserFronts[0].active = true;
 
-            outputLaserFronts[1].gameObject.transform.forward = Vector3.Reflect(laserInputs[0].inputLaser.laserOutput.right, transform.forward);
-            outputLaserFronts[1].laser.image = laserInputs[0].inputLaser.image;
-            outputLaserFronts[1].active = true;
-        }
-        else
-        {
-            outputLaserFronts[0].laser.image = null;
-            outputLaserFronts[0].active = false;
+        inputLasersThisFrame.Clear();
 
-            outputLaserFronts[1].laser.image = null;
-            outputLaserFronts[1].active = false;
+        foreach (Laser laser in LaserManager.Instance.GetInputLasers(this))
+        {
+            if (!laser.isMovingFast) inputLasersThisFrame.Add(laser);
         }
 
-        if (laserInputs[1].active)
+        if (inputLasersThisFrame.Count == 0)
         {
-            outputLaserFronts[2].gameObject.transform.forward = Vector3.Reflect(laserInputs[1].inputLaser.laserOutput.forward, transform.forward);
-            outputLaserFronts[2].laser.image = laserInputs[1].inputLaser.image;
-            outputLaserFronts[2].active = true;
-
-            outputLaserFronts[3].gameObject.transform.forward = Vector3.Reflect(laserInputs[1].inputLaser.laserOutput.right, transform.right);
-            outputLaserFronts[3].laser.image = laserInputs[1].inputLaser.image;
-            outputLaserFronts[3].active = true;
+            outputLaser1.active = false;
+            outputLaser2.active = false;
         }
-        else
+        else if (inputLasersThisFrame.Count == 1)
         {
-            outputLaserFronts[2].laser.image = null;
-            outputLaserFronts[2].active = false;
+            outputLaser1.laser.image = inputLasersThisFrame[0].image;
+            outputLaser1.transform.forward = Vector3.Reflect(inputLasersThisFrame[0].laserOutput.forward, transform.forward);
+            outputLaser1.active = true;
 
-            outputLaserFronts[3].laser.image = null;
-            outputLaserFronts[3].active = false;
+            outputLaser2.laser.image = inputLasersThisFrame[0].image;
+            outputLaser2.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser2.active = true;
         }
-
-        if (laserInputs[2].active)
+        else //if 2
         {
-            outputLaserFronts[4].gameObject.transform.forward = Vector3.Reflect(laserInputs[2].inputLaser.laserOutput.forward, transform.forward);
-            outputLaserFronts[4].laser.image = laserInputs[2].inputLaser.image;
-            outputLaserFronts[4].active = true;
+            outputLaser1.laser.image = inputLasersThisFrame[0].image;
+            outputLaser1.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser1.active = true;
 
-            outputLaserFronts[5].gameObject.transform.forward = Vector3.Reflect(laserInputs[2].inputLaser.laserOutput.right, transform.forward);
-            outputLaserFronts[5].laser.image = laserInputs[2].inputLaser.image;
-            outputLaserFronts[5].active = true;
-        }
-        else
-        {
-            outputLaserFronts[4].laser.image = null;
-            outputLaserFronts[4].active = false;
-
-            outputLaserFronts[5].laser.image = null;
-            outputLaserFronts[5].active = false;
+            outputLaser2.laser.image = inputLasersThisFrame[0].image;
+            outputLaser2.transform.forward = inputLasersThisFrame[1].laserOutput.forward;
+            outputLaser2.active = true;
         }
 
-        if (laserInputs[3].active)
-        {
-            outputLaserFronts[6].gameObject.transform.forward = Vector3.Reflect(laserInputs[3].inputLaser.laserOutput.forward, transform.forward);
-            outputLaserFronts[6].laser.image = laserInputs[3].inputLaser.image;
-            outputLaserFronts[6].active = true;
 
-            outputLaserFronts[7].gameObject.transform.forward = Vector3.Reflect(laserInputs[3].inputLaser.laserOutput.right, transform.right);
-            outputLaserFronts[7].laser.image = laserInputs[3].inputLaser.image;
-            outputLaserFronts[7].active = true;
-        }
-        else
-        {
-            outputLaserFronts[6].laser.image = null;
-            outputLaserFronts[6].active = false;
-
-            outputLaserFronts[7].laser.image = null;
-            outputLaserFronts[7].active = false;
-        }
     }
 }
