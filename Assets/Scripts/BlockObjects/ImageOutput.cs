@@ -57,7 +57,8 @@ public class ImageOutput : BlockObject {
             imageCorrect = false;
             frame.SetColors(Color.red, Color.red);
             StopCoroutine("ImageCheckingEnumerator");
-             imageCheckingState = ImageCheckingState.NoImage;
+            imageCheckingState = ImageCheckingState.NoImage;
+            imageCorrectGlitterEffect.SetActive(false);
 
             if (laserInputs[0].active)
             {
@@ -81,11 +82,16 @@ public class ImageOutput : BlockObject {
                 {
                     frame.SetColors(Color.green, Color.green);
                     imageCorrectGlitterEffect.SetActive(true);
+                    Instantiate(
+                        imageCorrectBurstEffect, 
+                        new Vector3(transform.position.x, 
+                        imageCorrectBurstEffect.transform.position.y, 
+                        transform.position.z), imageCorrectBurstEffect.transform.rotation
+                    );
                 }
                 else
                 {
                     frame.SetColors(Color.red, Color.red);
-                    Debug.Log("Hello World");
                     imageCorrectGlitterEffect.SetActive(false);
                 }
             }
@@ -128,7 +134,6 @@ public class ImageOutput : BlockObject {
         {
             imageCorrect = false;
             //TODO: check if this is needed, imageCorrect = false is already handled above
-            Debug.Log("Hello World");
         }
         else
         {
