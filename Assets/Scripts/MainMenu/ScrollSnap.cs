@@ -164,6 +164,7 @@ public class ScrollSnap : MonoBehaviour
         dragEndPos = Input.mousePosition;
         
         float dragDistance = dragStartPos.x - dragEndPos.x;
+        print(dragDistance);
 
         if(lastSelectedItem == selectedItem)
         {

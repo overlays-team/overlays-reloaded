@@ -12,93 +12,42 @@ public class MainMenuManager : MonoBehaviour {
     public GameObject options;
     public GameObject tutorial;
 
-    public enum MainMenuState { MainMenu, ModeSelect, LevelSelect, AboutPanel, OptionsPanel, TutorialsPanel };
-    public MainMenuState currentState;
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		
+	}
 
-    // Use this for initialization
-    void Start()
+    public void ExitApp()
     {
-        currentState = MainMenuState.MainMenu;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            GoBack();
-        }
-    }
-
-    public void GoBack()
-    {
-        switch (currentState)
-        {
-            case MainMenuState.MainMenu:
-                break;
-            case MainMenuState.ModeSelect:
-                ShowMainMenu();
-                break;
-            case MainMenuState.LevelSelect:
-                ShowModeSelect();
-                break;
-            case MainMenuState.AboutPanel:
-                ShowMainMenu();
-                break;
-            case MainMenuState.OptionsPanel:
-                ShowMainMenu();
-                break;
-            case MainMenuState.TutorialsPanel:
-                ShowModeSelect();
-                break;
-        }
+        Application.Quit();
     }
 
     public void ShowModeSelect()
     {
-        currentState = MainMenuState.ModeSelect;
-        HideAll();
         modeSelect.SetActive(true);
+        levelSelect.SetActive(false);
+        mainMenu.SetActive(false);
+        logo.SetActive(false);
+        tutorial.SetActive(false);
     }
 
     public void ShowLevelSelect()
     {
-        currentState = MainMenuState.LevelSelect;
-        HideAll();
         levelSelect.SetActive(true);
+        mainMenu.SetActive(false);
+        logo.SetActive(false);
+        modeSelect.SetActive(false);
     }
 
     public void ShowMainMenu()
     {
-        currentState = MainMenuState.MainMenu;
-        HideAll();
         mainMenu.SetActive(true);
         logo.SetActive(true);
-    }
-
-    public void ShowAbout()
-    {
-        currentState = MainMenuState.AboutPanel;
-        HideAll();
-        about.SetActive(true);
-    }
-
-    public void ShowOptions()
-    {
-        currentState = MainMenuState.OptionsPanel;
-        options.SetActive(true);
-    }
-
-    public void ShowTutorial()
-    {
-        currentState = MainMenuState.TutorialsPanel;
-        tutorial.SetActive(true);
-    }
-
-    public void HideAll()
-    {
-        logo.SetActive(false);
-        mainMenu.SetActive(false);
         modeSelect.SetActive(false);
         levelSelect.SetActive(false);
         about.SetActive(false);
@@ -106,8 +55,20 @@ public class MainMenuManager : MonoBehaviour {
         tutorial.SetActive(false);
     }
 
-    public void ExitApp()
+    public void ShowAbout()
     {
-        Application.Quit();
+        about.SetActive(true);
+        mainMenu.SetActive(false);
+        logo.SetActive(false);
+    }
+
+    public void ShowOptions()
+    {
+        options.SetActive(true);
+    }
+
+    public void ShowTutorial()
+    {
+        tutorial.SetActive(true);
     }
 }
