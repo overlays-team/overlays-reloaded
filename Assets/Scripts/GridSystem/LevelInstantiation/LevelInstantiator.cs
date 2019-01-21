@@ -43,9 +43,6 @@ public class LevelInstantiator : MonoBehaviour
     private Texture2D _sourceImage4;
     private Texture2D _sourceImage5;
 
-    public Image testImage1;
-    public Image testImage2;
-
     // Use this for initialization
     void Start()
     {
