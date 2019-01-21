@@ -13,6 +13,7 @@ public class ImageMultiOutput : ImageOutput
         {
             imageCorrect = false;
             frame.SetColors(Color.red, Color.red);
+            imageCorrectGlitterEffect.SetActive(false);
             StopCoroutine("ImageCheckingEnumerator");
             imageCheckingState = ImageCheckingState.NoImage;
             StopImageProcessing();
@@ -44,6 +45,7 @@ public class ImageMultiOutput : ImageOutput
 
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 frame.SetColors(Color.red, Color.red);
+                imageCorrectGlitterEffect.SetActive(false);
                 imageCorrect = false;
             }
         }
@@ -69,11 +71,19 @@ public class ImageMultiOutput : ImageOutput
                 imageCheckingState = ImageCheckingState.Displaying;
                 if (imageCorrect)
                 {
-                    frame.SetColors(Color.green, Color.green);   
+                    frame.SetColors(Color.green, Color.green);
+                    imageCorrectGlitterEffect.SetActive(true);
+                    Instantiate(
+                        imageCorrectBurstEffect,
+                        new Vector3(transform.position.x,
+                        imageCorrectBurstEffect.transform.position.y,
+                        transform.position.z), imageCorrectBurstEffect.transform.rotation
+                    );
                 }
                 else
                 {
                     frame.SetColors(Color.red, Color.red);
+                    imageCorrectGlitterEffect.SetActive(false);
                 }
             }
         }
