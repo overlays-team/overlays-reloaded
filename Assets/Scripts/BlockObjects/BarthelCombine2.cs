@@ -50,9 +50,9 @@ public class BarthelCombine2 : BlockObject
     {
         return new Color(
 
-                        Mathf.Max(0,(inputImage1.GetPixel(x, y).r + inputImage2.GetPixel(x, y).r) - 0.5f),
-                        Mathf.Max(0, (inputImage1.GetPixel(x, y).g + inputImage2.GetPixel(x, y).g) - 0.5f),
-                        Mathf.Max(0, (inputImage1.GetPixel(x, y).b + inputImage2.GetPixel(x, y).b) - 0.5f),
+                        Mathf.Min(Mathf.Max(0,(inputImage1.GetPixel(x, y).r + inputImage2.GetPixel(x, y).r) - 0.5f),1),
+                        Mathf.Min(Mathf.Max(0, (inputImage1.GetPixel(x, y).g + inputImage2.GetPixel(x, y).g) - 0.5f), 1),
+                        Mathf.Min(Mathf.Max(0, (inputImage1.GetPixel(x, y).b + inputImage2.GetPixel(x, y).b) - 0.5f),1),
                         Mathf.Max(inputImage1.GetPixel(x, y).a, inputImage2.GetPixel(x, y).a)
                         );
     }
