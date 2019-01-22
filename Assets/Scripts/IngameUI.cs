@@ -33,6 +33,8 @@ public class IngameUI : MonoBehaviour {
     public Text messageDialogText;
     public Text mesageDialogButtonText;
 
+    public float winWaitTime = 2f;
+
     public float blurAnimDuration;
 
     // Use this for initialization
@@ -67,15 +69,11 @@ public class IngameUI : MonoBehaviour {
         }
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    IEnumerator WaitAndPrint(int star, int totalScore, int highestTotalScore, bool attackMode)
     {
-    
-        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
-        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        yield return new WaitForSeconds(winWaitTime);
 
-        //sh
-        //totalScoreText.text = "YOUR SCORE: " + totalScore;
-        if(attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName +"'s SCORE: " + totalScore;
+        if (attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
 
         if (attackMode) highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
 
@@ -101,6 +99,19 @@ public class IngameUI : MonoBehaviour {
         pausePlayButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
         StartCoroutine(AnimateBlurIn(levelCompleteMenu, blurAnimDuration));
+    }
+
+    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    {
+
+        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
+        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+
+        //sh
+        //totalScoreText.text = "YOUR SCORE: " + totalScore;
+        StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
+
+
     }
 
     public void TogglePause()
