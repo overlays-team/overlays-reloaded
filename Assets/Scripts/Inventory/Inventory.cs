@@ -13,14 +13,14 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     [Tooltip("in sandbox mode we can scroll through the inventory and instantiate the buttons when we take them")]
     public bool sandboxMode;
 
-    [Header("only needed if scrollable")]
+    [Header("only needed if scrollable/sandboxMode on")]
     //whis variables are needed to determine if thw player wants to scroll the inventory(in sandbox mode) or just take an item from it
     public RectTransform rectTransform;
     bool mouseDown = false;
     Vector2 lastMousePosition;
     InventoryButton selectedButton;
 
-    bool isEnabled;
+    //bool isEnabled;
 
 
     void Awake () {
@@ -90,7 +90,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
                     Mathf.Clamp
                     (
                         rectTransform.localPosition.x + mouseChange.x,
-                        rectTransform.rect.xMin + 347,  // this 420 needs to be changed, but i dont know wherwe to get it from
+                        rectTransform.rect.xMin + 347,  // this 347 needs to be changed, but i dont know wherwe to get it from
                         rectTransform.rect.xMax - 347
                     ),
                     rectTransform.localPosition.y
