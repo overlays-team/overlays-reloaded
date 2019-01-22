@@ -314,7 +314,8 @@ public class IngameManager : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        fader.FadeTo("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1f;
     }
     public void Pause()
