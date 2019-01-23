@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class IngameUI : MonoBehaviour {
     public GameObject levelCompleteMenu;
-    public Image myImageComponent;
+    //public Image myImageComponent;
     public GameObject gameOverMenu;
-    public Sprite star1;
-    public Sprite star2;
-    public Sprite star3;
+    public GameObject star1;
+    public GameObject star2;
+    public GameObject star3;
     public GameObject pauseButton;
     public GameObject playButton;
     public GameObject pauseMenuPanel;
@@ -33,6 +33,8 @@ public class IngameUI : MonoBehaviour {
     public Text messageDialogText;
     public Text mesageDialogButtonText;
 
+    public float winWaitTime = 2f;
+
     public float blurAnimDuration;
 
     // Use this for initialization
@@ -46,7 +48,10 @@ public class IngameUI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
+        if (pauseMenuPanel.active && Input.GetKeyDown(KeyCode.Escape))
+        {
+            IngameManager.Instance.Resume();
+        }
     }
 
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
@@ -67,15 +72,11 @@ public class IngameUI : MonoBehaviour {
         }
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    IEnumerator WaitAndPrint(int star, int totalScore, int highestTotalScore, bool attackMode)
     {
-    
-        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
-        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        yield return new WaitForSeconds(winWaitTime);
 
-        //sh
-        //totalScoreText.text = "YOUR SCORE: " + totalScore;
-        if(attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName +"'s SCORE: " + totalScore;
+        if (attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
 
         if (attackMode) highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
 
@@ -83,16 +84,17 @@ public class IngameUI : MonoBehaviour {
         switch (star)
         {
             case 1:
-                levelCompleteText.text = star1Texts[Random.Range(0, 3)]; 
-                myImageComponent.sprite = star1;
+                levelCompleteText.text = star1Texts[Random.Range(0, 3)];
+                star2.SetActive(false);
+                star3.SetActive(false);
+
                 break;
             case 2:
                 levelCompleteText.text = star2Texts[Random.Range(0, 3)];
-                myImageComponent.sprite = star2;
+                star3.SetActive(false);
                 break;
             case 3:
                 levelCompleteText.text = star3Texts[Random.Range(0, 3)];
-                myImageComponent.sprite = star3;
                 break;
         }
 
@@ -100,6 +102,19 @@ public class IngameUI : MonoBehaviour {
         pausePlayButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
         StartCoroutine(AnimateBlurIn(levelCompleteMenu, blurAnimDuration));
+    }
+
+    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    {
+
+        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
+        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+
+        //sh
+        //totalScoreText.text = "YOUR SCORE: " + totalScore;
+        StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
+        IngameManager.Instance.PauseGame();
+
     }
 
     public void TogglePause()

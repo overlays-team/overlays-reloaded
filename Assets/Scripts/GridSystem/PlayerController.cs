@@ -165,6 +165,8 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
+                                    Debug.Log("moves");
+                                    IngameManager.Instance.RaiseMoves();
                                 }
                             }
                             else if (Vector2.Distance(mouseDownPosition, thisMousePosition) > moveBlockTreshold)
@@ -173,6 +175,8 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
+                                    Debug.Log("moves");
+                                    IngameManager.Instance.RaiseMoves();
                                 }
                             }
                             else
@@ -466,6 +470,9 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
+                                    Debug.Log("moves");
+                                    IngameManager.Instance.RaiseMoves();
+
                                 }
                             }
                             else if (Vector2.Distance(mouseDownPosition, thisMousePosition) > moveBlockTreshold)
@@ -474,6 +481,8 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
+                                    Debug.Log("moves");
+                                    IngameManager.Instance.RaiseMoves();
                                 }
                             }
                             else

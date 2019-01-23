@@ -24,6 +24,8 @@ public class IngameManager : MonoBehaviour
     //private string highestTotalScorePlayerName;
 
     private bool timeRunsOut;
+    public int moves = 0;
+    public int maxMoves = 15;
 
 
     private bool win;
@@ -89,7 +91,7 @@ public class IngameManager : MonoBehaviour
     {
         SetAttackMode(attackMode); //sh, for testing
 
-        star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
+        //star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
 
         // needed for test
         //CreateTestLevelState(); //sh, 
@@ -111,7 +113,8 @@ public class IngameManager : MonoBehaviour
             if (attackMode) CountTime();
             CheckIfWeWon();
 
-        
+            //lose if so many moves more than maxMoves
+            lose |= moves > maxMoves;
             if (lose)
             {
                 Lose();
@@ -129,6 +132,7 @@ public class IngameManager : MonoBehaviour
         {
             Lose();
         }
+
 
 
 
@@ -159,7 +163,7 @@ public class IngameManager : MonoBehaviour
     {
         //StopCoroutine("WinCoroutine");
         thisLevelScore = star * scoreFactor;
-
+        star = 3 - (moves*3 / maxMoves);
         UpdateTotalScore();
         CheckHighestTotalScore();
         ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, attackMode);
@@ -320,7 +324,8 @@ public class IngameManager : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        fader.FadeTo("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1f;
     }
     public void Pause()
@@ -396,6 +401,13 @@ public class IngameManager : MonoBehaviour
 
 
         return allCorrect;
+    }
+
+    public void RaiseMoves()
+    {
+        moves++;
+        print("your moves: " +moves);
+
     }
 
 
