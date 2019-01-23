@@ -27,7 +27,10 @@ public class LevelInstantiator : MonoBehaviour
     //Input for managers
     public GameObject grid;
     public Inventory inventory;
+    public GameObject ingameManagerObject;
     GridPositioner gridPositioner;
+    IngameManager ingameManager;
+    List<ImageOutput> imageOutputs = new List<ImageOutput>();
 
     //BlockObjects
     public GameObject wall;
@@ -47,6 +50,7 @@ public class LevelInstantiator : MonoBehaviour
     void Start()
     {
         gridPositioner = grid.GetComponent<GridPositioner>();
+        ingameManager = ingameManagerObject.GetComponent<IngameManager>();
         assignPics();
         LoadData();
         levelIndex = 0;
@@ -64,7 +68,7 @@ public class LevelInstantiator : MonoBehaviour
         while (temp == randomFolder)
         {
             randomFolder = (int) (UnityEngine.Random.Range(0.1f, numOfFolders) * 10);
-            print("RandomNum: " + randomFolder + " temp: " + temp);
+            //print("RandomNum: " + randomFolder + " temp: " + temp);
         }
         _sourceImage4 = getPicA();
         _sourceImage5 = getPicB();
@@ -106,6 +110,7 @@ public class LevelInstantiator : MonoBehaviour
         //Instantiation
         GameObject instantiatedSource = null;
         GameObject instantiatedMulti = null;
+        imageOutputs.Clear();
         int counter = 0; //To get index of children
         mirrorCount = 0; //Counts mirrors in Json top put into inventory
         for (int row = 0; row < rowLength; row++)
@@ -142,31 +147,37 @@ public class LevelInstantiator : MonoBehaviour
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage3);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col].Contains("900"))     //Multiples of 100 are different targets
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage9);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if(levelData[row, col] == "100")   //Targets starting with 1, 2, 4 or 5 only have a single source
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage1);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "200")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage2);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "400")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage4);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "500")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage5);
+                    imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
                 {
@@ -188,6 +199,8 @@ public class LevelInstantiator : MonoBehaviour
                     instantiatedSource = Instantiate(source, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -90, 0));
                     isSource = true;
                 }
+
+                ingameManager.setOutputImages(imageOutputs);
 
                 if (isSource && levelData[row, col].Contains("10"))
                 {
