@@ -45,6 +45,15 @@ public class GameDataEditor : MonoBehaviour
         SetInitBloomSetting();
     }
 
+    private void Update()
+    {
+        if(Input.GetKey("space"))
+        {
+            ScreenCapture.CaptureScreenshot("screenshot.png", 1);
+            Debug.Log("Screen captured");
+        }
+    }
+
     void ForceSingletonPattern()
     {
         if (Instance != null)
