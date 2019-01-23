@@ -32,7 +32,13 @@ public class IngameManager : MonoBehaviour
     bool paused;
 
 
-    List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+    public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+
+    public void setOutputImages(List<ImageOutput> outputImages)
+    {
+
+        this.outputImages = outputImages;
+    }
 
     public static IngameManager Instance;
 
@@ -62,16 +68,20 @@ public class IngameManager : MonoBehaviour
 
         LoadLevelState();
 
-        //get out ImageOutputs
-        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
-
-        foreach (GameObject go in imageOutputGO)
+        if (!attackMode)
         {
-            if (go.GetComponent<ImageOutput>() != null)
+            //get out ImageOutputs
+            GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
+
+            foreach (GameObject go in imageOutputGO)
             {
-                outputImages.Add(go.GetComponent<ImageOutput>());
+                if (go.GetComponent<ImageOutput>() != null)
+                {
+                    outputImages.Add(go.GetComponent<ImageOutput>());
+                }
             }
         }
+       
 
     }
 
@@ -98,7 +108,7 @@ public class IngameManager : MonoBehaviour
     {
         if (!win && !lose && !paused)
         {
-            if (attackMode)CountTime();
+            if (attackMode) CountTime();
             CheckIfWeWon();
 
         
@@ -368,11 +378,14 @@ public class IngameManager : MonoBehaviour
 
         if (outputImages.Count> 0)
         {
+            //Debug.Log("-------------ot this frame ----------------------------");
+            
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
+                //Debug.Log("outputImage: " + imageOutput);
             }
-
+            //Debug.Log("correct?e: " + allCorrect);
             if (allCorrect) Win();
             //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
         }
