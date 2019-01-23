@@ -113,7 +113,7 @@ public class IngameUI : MonoBehaviour {
         //sh
         //totalScoreText.text = "YOUR SCORE: " + totalScore;
         StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
-
+        IngameManager.Instance.PauseGame();
 
     }
 
