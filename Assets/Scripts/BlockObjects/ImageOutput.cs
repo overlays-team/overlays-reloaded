@@ -114,7 +114,7 @@ public class ImageOutput : BlockObject {
         }
     }
 
-    protected void CheckIfImageIsCorrect(Texture2D image)
+    protected virtual void CheckIfImageIsCorrect(Texture2D image)
     {
         imageToCheck = image;
         StartCoroutine("ImageCheckingEnumerator");
