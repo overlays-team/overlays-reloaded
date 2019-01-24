@@ -72,20 +72,17 @@ public class IngameManager : MonoBehaviour
 
         LoadLevelState();
 
-        if (!attackMode)
-        {
-            //get out ImageOutputs
-            GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
+        //get out ImageOutputs
+        GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
 
-            foreach (GameObject go in imageOutputGO)
+        foreach (GameObject go in imageOutputGO)
+        {
+            if (go.GetComponent<ImageOutput>() != null)
             {
-                if (go.GetComponent<ImageOutput>() != null)
-                {
-                    outputImages.Add(go.GetComponent<ImageOutput>());
-                }
+                outputImages.Add(go.GetComponent<ImageOutput>());
             }
         }
-       
+
 
     }
 
