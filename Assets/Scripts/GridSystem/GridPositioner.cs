@@ -21,7 +21,15 @@ public class GridPositioner : MonoBehaviour
     [SerializeField]
     GameObject[,] gridPlaneArray;
 
+    [Tooltip("Only used in Time attack Mode")]
     public LevelInstantiator LevelInstantiator;
+
+    //variables necessary for camera positioning
+    float height;
+    float width;
+    Vector3 middlePoint;
+
+
 
     public void UpdatePlanes()
     {
@@ -39,19 +47,17 @@ public class GridPositioner : MonoBehaviour
             currentZ = transform.position.z;
             for (int column = 0; column < rows; column++)
             {
-                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation);
-                plane.transform.SetParent(transform);
+                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation, transform);
+                //plane.transform.SetParent(transform);
                 currentZ += padding;
             }
 
             currentX += padding;
         }
 
-    }
-
-    internal float getPadding()
-    {
-        return padding;
+        width = colums + (padding-1) * (colums - 1);
+        height = rows + (padding-1) * (rows - 1);
+        middlePoint = transform.position + new Vector3((width / 2) - 0.5f, 0f, (height / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
     }
 
     public void UpdatePlanes(int _rows, int _columns, float _padding)
@@ -83,10 +89,42 @@ public class GridPositioner : MonoBehaviour
             currentX += _padding;
         }
 
+        width = colums + padding * (colums - 1);
+        height = rows + padding * (rows - 1);
+
+        width = colums + (padding - 1) * (colums - 1);
+        height = rows + (padding - 1) * (rows - 1);
+        middlePoint = transform.position + new Vector3((width / 2) - 0.5f, 0f, (height / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
     }
 
-    public GameObject[,] getGridArray()
+    #region Getters
+
+    public GameObject[,] GetGridArray()
     {
         return gridPlaneArray;
     }
+
+    internal float GetPadding()
+    {
+        return padding;
+    }
+
+    //returns the width of the grid in unity units - one gridPlane is 1x1 big
+    public float GetGridWidth()
+    {
+        return width;
+    }
+
+    public float GetGridHeight()
+    {  
+        return height;
+    }
+
+    //returns the middle point of the grid system - used by the responsive camera positioner
+    public Vector3 GetMiddlePoint()
+    {
+        return middlePoint;
+    }
+
+    #endregion
 }
