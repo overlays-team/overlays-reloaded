@@ -33,7 +33,7 @@ public class LevelSelector : MonoBehaviour
             levelToggle.GetComponent<LevelToggle>().level = GameDataEditor.Instance.data.levels[i];
 
             Toggle levelToggleComponent = levelToggle.GetComponent<Toggle>();
-            levelToggleComponent.name = GameDataEditor.Instance.data.levels[i].name;
+            levelToggleComponent.transform.GetChild(0).GetComponent<Text>().text = GameDataEditor.Instance.data.levels[i].name;
             levelToggleComponent.interactable = GameDataEditor.Instance.data.levels[i].completed;
             levelToggleComponent.onValueChanged.AddListener(delegate { SelectedLevelChanged(); });
             if (GameDataEditor.Instance.data.levels[i].completed)
