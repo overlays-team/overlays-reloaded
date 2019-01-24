@@ -37,6 +37,10 @@ public class IngameUI : MonoBehaviour {
 
     public float blurAnimDuration;
 
+    //tutorial variables
+    public GameObject tutorialPanel;
+
+
     // Use this for initialization
     void Start()
     {
@@ -53,6 +57,25 @@ public class IngameUI : MonoBehaviour {
             IngameManager.Instance.Resume();
         }
     }
+
+    #region tutorial code
+    public void ToogleTutorialOn()
+    {
+        if (tutorialPanel.activeInHierarchy)
+        {
+            tutorialPanel.SetActive(false);
+            IngameManager.Instance.ResumeGame();
+        }
+        else
+        {
+            tutorialPanel.SetActive(true);
+            IngameManager.Instance.PauseGame();
+        }
+    }
+
+    #endregion
+
+
 
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
     {
