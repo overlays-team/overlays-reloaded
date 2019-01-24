@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.14068577, g: 0.14068577, b: 0.14068577, a: 1}
+  m_IndirectSpecularColor: {r: 0.14068574, g: 0.14068574, b: 0.14068574, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1615,7 +1615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633e111cc0c51214cb8ca869042c3069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  empty: 0
+  empty: 1
   taken: 0
   positiveHalo: {fileID: 786292365}
   negativeHalo: {fileID: 1079833799}
@@ -1630,7 +1630,7 @@ MeshCollider:
   m_GameObject: {fileID: 490162746}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -1642,7 +1642,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 490162746}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1930,7 +1930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633e111cc0c51214cb8ca869042c3069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  empty: 0
+  empty: 1
   taken: 0
   positiveHalo: {fileID: 1186731798}
   negativeHalo: {fileID: 1597972030}
@@ -1945,7 +1945,7 @@ MeshCollider:
   m_GameObject: {fileID: 663027494}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Convex: 0
   m_CookingOptions: 14
@@ -1957,7 +1957,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663027494}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4092,6 +4092,26 @@ PrefabInstance:
     - target: {fileID: 4646714026611906, guid: 23822826488f9d34ba61109383b29507, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185414545946336116, guid: 23822826488f9d34ba61109383b29507,
+        type: 3}
+      propertyPath: stationary
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9185414545946336116, guid: 23822826488f9d34ba61109383b29507,
+        type: 3}
+      propertyPath: actionBlocked
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3048538048329911012, guid: 23822826488f9d34ba61109383b29507,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 424793489616918584, guid: 23822826488f9d34ba61109383b29507,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23822826488f9d34ba61109383b29507, type: 3}
