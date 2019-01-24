@@ -471,8 +471,10 @@ public class PlayerController : MonoBehaviour
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
                                     Debug.Log("moves");
-                                    IngameManager.Instance.RaiseMoves();
-
+                                    if(IngameManager.Instance)
+                                    {
+                                        IngameManager.Instance.RaiseMoves();
+                                    }
                                 }
                             }
                             else if (Vector2.Distance(mouseDownPosition, thisMousePosition) > moveBlockTreshold)

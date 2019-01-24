@@ -11,6 +11,8 @@ public class IngameManager : MonoBehaviour
     [SerializeField]
     private bool attackMode;
 
+    public LevelInstantiator levelInstantiator;
+
     //sh
     public int star;
     private int scoreFactor = 10;
@@ -66,7 +68,7 @@ public class IngameManager : MonoBehaviour
         ingameUI.HideLevelCompletePanel();
         ingameUI.HideGameOverPanel();
 
-        setTestParameters();
+        SetTestParameters();
 
         LoadLevelState();
 
@@ -87,7 +89,7 @@ public class IngameManager : MonoBehaviour
 
     }
 
-    private void setTestParameters()
+    private void SetTestParameters()
     {
         SetAttackMode(attackMode); //sh, for testing
 
@@ -118,9 +120,7 @@ public class IngameManager : MonoBehaviour
             if (lose)
             {
                 Lose();
-
             }
-
         }
         //sh, for debug, force win
         if (Input.GetKeyDown(KeyCode.Space))
@@ -132,11 +132,6 @@ public class IngameManager : MonoBehaviour
         {
             Lose();
         }
-
-
-
-
-
     }
 
 
@@ -169,7 +164,6 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, attackMode);
 
         win = true;
-
         //sh
         SaveLevelState();
 
@@ -209,14 +203,10 @@ public class IngameManager : MonoBehaviour
         }
     }
 
-
-
-
     private void UpdateTotalScore()
     {
         newTotalScore = thisLevelScore + previousTotalScore;
     }
-
 
     private void CheckHighestTotalScore()
     {
@@ -286,8 +276,6 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.data.levels[nextLevel].completed = true;
     }
 
-
-
     void Lose()
     {
         ingameUI.ShowGameOverPanel();
@@ -308,6 +296,11 @@ public class IngameManager : MonoBehaviour
     {
         fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
         Time.timeScale = 1f;
+    }
+
+    public void NextRandomLevel()
+    {
+        levelInstantiator.InstantiateRandomLevel();
     }
 
     //reload same scene for test

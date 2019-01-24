@@ -29,7 +29,7 @@ public class LevelInstantiator : MonoBehaviour
     public Inventory inventory;
     public GameObject ingameManagerObject;
     GridPositioner gridPositioner;
-    IngameManager ingameManager;
+    TimeAttackManager timeAttackManager;
     List<ImageOutput> imageOutputs = new List<ImageOutput>();
 
     //BlockObjects
@@ -50,7 +50,7 @@ public class LevelInstantiator : MonoBehaviour
     void Start()
     {
         gridPositioner = grid.GetComponent<GridPositioner>();
-        ingameManager = ingameManagerObject.GetComponent<IngameManager>();
+        timeAttackManager = TimeAttackManager.Instance;
         assignPics();
         LoadData();
         levelIndex = 0;
@@ -200,7 +200,7 @@ public class LevelInstantiator : MonoBehaviour
                     isSource = true;
                 }
 
-                ingameManager.setOutputImages(imageOutputs);
+                timeAttackManager.SetOutputImages(imageOutputs);
 
                 if (isSource && levelData[row, col].Contains("10"))
                 {
