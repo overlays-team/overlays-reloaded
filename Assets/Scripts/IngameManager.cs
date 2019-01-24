@@ -116,7 +116,6 @@ public class IngameManager : MonoBehaviour
             CheckIfWeWon();
 
             //lose if so many moves more than maxMoves
-            lose |= moves > maxMoves;
             if (lose)
             {
                 Lose();
@@ -159,6 +158,10 @@ public class IngameManager : MonoBehaviour
         //StopCoroutine("WinCoroutine");
         thisLevelScore = star * scoreFactor;
         star = 3 - (moves*3 / maxMoves);
+        if (moves >= maxMoves)
+        {
+            star = 1;
+        }
         UpdateTotalScore();
         CheckHighestTotalScore();
         ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, attackMode);
