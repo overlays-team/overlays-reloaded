@@ -53,7 +53,7 @@ public class LevelInstantiator : MonoBehaviour
         timeAttackManager = TimeAttackManager.Instance;
         assignPics();
         LoadData();
-        levelIndex = 0;
+        levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
         InstantiateLevel();
     }
 
@@ -86,6 +86,12 @@ public class LevelInstantiator : MonoBehaviour
     {
         SplitData(jsonAsString);
         levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+        int temp = levelIndex;
+        while(temp == levelIndex)
+        {
+            levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+            //print("LvlIndex: " + levelIndex + "Temp: " + temp);
+        }
         ApplyLevelData();
 
     }
