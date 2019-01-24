@@ -59,15 +59,15 @@ public class LevelInstantiator : MonoBehaviour
 
     private void assignPics()
     {
-        float numOfFolders = 0.3f; //The second float in Range() should be a tenth of the number of folders in Resources/PictureSets/... i. e. 5 folders -> 0.5f
-        randomFolder = (int) (UnityEngine.Random.Range(0.1f, numOfFolders) * 10);
+        int numOfFolders = 22; 
+        randomFolder = UnityEngine.Random.Range(1, numOfFolders);
         int temp = randomFolder;
         _sourceImage1 = getPicA();
         _sourceImage2 = getPicB();
         _goalImage3 = getPicC();
         while (temp == randomFolder)
         {
-            randomFolder = (int) (UnityEngine.Random.Range(0.1f, numOfFolders) * 10);
+            randomFolder = UnityEngine.Random.Range(1, numOfFolders);
             //print("RandomNum: " + randomFolder + " temp: " + temp);
         }
         _sourceImage4 = getPicA();
