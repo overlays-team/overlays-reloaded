@@ -11,9 +11,11 @@ using UnityEngine.UI;
 [System.Serializable]
 public class LevelInstantiator : MonoBehaviour
 {
+    [Tooltip("A higher number means a higher difficulty.")]
+    public int initialIntensity;
     //For loading of data
     [Tooltip("Please write: '/Levels/NAME.json' here")]
-    public string dataFileName;
+    private string dataFileName;
     [Tooltip("Please write 'FOLDERNAME/abc' here")]
     public string picFolderName;
     private int randomFolder;
@@ -22,12 +24,10 @@ public class LevelInstantiator : MonoBehaviour
 
     private int levelIndex;
     private string jsonAsString;
-    private int mirrorCount;
 
     //Input for managers
     public GameObject grid;
     public Inventory inventory;
-    public GameObject ingameManagerObject;
     GridPositioner gridPositioner;
     TimeAttackManager timeAttackManager;
     List<ImageOutput> imageOutputs = new List<ImageOutput>();
@@ -51,10 +51,23 @@ public class LevelInstantiator : MonoBehaviour
     {
         gridPositioner = grid.GetComponent<GridPositioner>();
         timeAttackManager = TimeAttackManager.Instance;
+        setIntensity(initialIntensity);
         assignPics();
         LoadData();
-        levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
         InstantiateLevel();
+    }
+
+    private void GenerateRandomLvlIndex()
+    {
+        levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+    }
+
+    public void setIntensity(int i)
+    {
+        string name = "/Levels/Level" + i + ".json";
+        dataFileName = name as string;
+        LoadData();
+        InstantiateRandomLevel();
     }
 
     private void assignPics()
@@ -78,6 +91,7 @@ public class LevelInstantiator : MonoBehaviour
     public void InstantiateLevel()
     {
         SplitData(jsonAsString);
+        assignPics();
         ApplyLevelData();
         levelIndex++;
     }
@@ -85,11 +99,11 @@ public class LevelInstantiator : MonoBehaviour
     public void InstantiateRandomLevel()
     {
         SplitData(jsonAsString);
-        levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+        assignPics();
         int temp = levelIndex;
         while(temp == levelIndex)
         {
-            levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
+            GenerateRandomLvlIndex();
             //print("LvlIndex: " + levelIndex + "Temp: " + temp);
         }
         ApplyLevelData();
@@ -118,7 +132,6 @@ public class LevelInstantiator : MonoBehaviour
         GameObject instantiatedMulti = null;
         imageOutputs.Clear();
         int counter = 0; //To get index of children
-        mirrorCount = 0; //Counts mirrors in Json top put into inventory
         for (int row = 0; row < rowLength; row++)
         {
             for (int col = 0; col < colLength; col++)
@@ -129,6 +142,7 @@ public class LevelInstantiator : MonoBehaviour
                 //Sources ´beginning with a 1 and 2 belong to targets with 3, and sources with 4 and 5 belong to 9
                 bool isSource = false;
                 Transform transform = gridPlaneArray[row, col].transform;
+
                 if (levelData[row, col] == "-1")               //-1 is a hole in the grid
                 {
                     gridPlaneArray[row, col].SetActive(false);
@@ -142,12 +156,10 @@ public class LevelInstantiator : MonoBehaviour
                 else if (levelData[row, col] == "57")   //57 is a mirror variant (/)
                 {
                     //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y+0.5f, transform.position.z), Quaternion.Euler(0, 45, 0));  //This instantiates a mirror in the level
-                    mirrorCount++;
                 }
                 else if (levelData[row, col] == "59")      //59 is another mirror variant (\)
                 {
                     //Instantiate(mirror, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), Quaternion.Euler(0, -45, 0));   //This instantiates a mirror in the level
-                    mirrorCount++;
                 }
                 else if (levelData[row, col].Contains("300"))     //10x + 20x -> 300 (source + source -> target)
                 {
@@ -213,14 +225,12 @@ public class LevelInstantiator : MonoBehaviour
                     //Debug.Log("Sourceimage1");
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
                     instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage1);
-                    //testImage1.sprite = Sprite.Create(_sourceImage1, new Rect(0, 0, _sourceImage1.width, _sourceImage1.height), new Vector2(0.5f, 0.5f));
                 }
                 else if (isSource && levelData[row, col].Contains("20"))
                 {
                     //Debug.Log("Sourceimage2");
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
                     instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage2);
-                    //testImage2.sprite = Sprite.Create(_sourceImage2, new Rect(0, 0, _sourceImage2.width, _sourceImage2.height), new Vector2(0.5f, 0.5f));
                 }
                 else if (isSource && levelData[row, col].Contains("40"))
                 {
@@ -237,7 +247,13 @@ public class LevelInstantiator : MonoBehaviour
                 counter++;
             }
         }
-        //inventory.GetComponent<Inventory>().items[0].blockAmount = mirrorCount;
+        blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach (GameObject blockObject in blockObjects)
+        {
+            //blockObject.transform.Rotate(Vector3.up * 90, Space.Self);
+            blockObject.transform.SetParent(grid.transform);
+        }
+        grid.transform.Rotate(Vector3.up * 90);
     }
 
     public void LoadData()
@@ -245,6 +261,8 @@ public class LevelInstantiator : MonoBehaviour
         if (File.Exists(getLevelFilePath()))
         {
             this.jsonAsString = File.ReadAllText(getLevelFilePath());
+            GenerateRandomLvlIndex();
+            levelIndex = 0;
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
         }
@@ -254,6 +272,7 @@ public class LevelInstantiator : MonoBehaviour
         }
     }
 
+    //These methods get the initial index for rows and columns in the data array
     public int getIdx0()
     {
         return levelData.GetLength(0);
