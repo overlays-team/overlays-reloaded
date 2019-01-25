@@ -24,6 +24,9 @@ public class GridPositioner : MonoBehaviour
     [SerializeField]
     GameObject mainCamera;
 
+    [SerializeField]
+    float gridPadding = 1f;
+
     [Tooltip("Only used in Time attack Mode")]
     public LevelInstantiator LevelInstantiator;
 
@@ -57,7 +60,7 @@ public class GridPositioner : MonoBehaviour
             currentX += padding;
         }
 
-        gridWidth = colums + (padding - 1) * (colums - 1);
+        gridWidth = colums + (padding - 1 ) * (colums - 1);
         gridHeight = rows + (padding - 1) * (rows - 1);
 
         middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
@@ -144,15 +147,16 @@ public class GridPositioner : MonoBehaviour
 
     private float adjustHeight()
     {
+        float degree = 45;
         float height;
-        float alpha = Mathf.Deg2Rad *20;
+        float alpha = Mathf.Deg2Rad * (degree/2);
         if (gridWidth >= gridHeight)
         {
-            height = (gridWidth / 2) / Mathf.Tan(alpha);
+            height = (gridWidth / 2 + gridPadding) / Mathf.Tan(alpha);
         }
         else
         {
-            height = (gridHeight / 2) / Mathf.Tan(alpha);
+            height = (gridHeight / 2 + gridPadding) / Mathf.Tan(alpha);
         }
        
         return height;
