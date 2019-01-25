@@ -36,6 +36,7 @@ public class ImageBarthelOutput : ImageOutput
             else if (activeLasers.Count == 1)
             {
                 debugImage.sprite = Sprite.Create(activeLasers[0].inputLaser.image, new Rect(0, 0, activeLasers[0].inputLaser.image.width, activeLasers[0].inputLaser.image.height), new Vector2(0.5f, 0.5f));
+                detailedNodeViewImage.sprite = debugImage.sprite;
                 CheckIfImageIsCorrect(activeLasers[0].inputLaser.image);
             }
             else
@@ -44,6 +45,7 @@ public class ImageBarthelOutput : ImageOutput
                 inputImage2 = null;
 
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                detailedNodeViewImage.sprite = debugImage.sprite;
                 frame.SetColors(Color.red, Color.red);
                 imageCorrectGlitterEffect.SetActive(false);
                 imageCorrect = false;
@@ -72,6 +74,7 @@ public class ImageBarthelOutput : ImageOutput
                 if (imageCorrect)
                 {
                     debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                    detailedNodeViewImage.sprite = debugImage.sprite;
                     frame.SetColors(Color.green, Color.green);
                     imageCorrectGlitterEffect.SetActive(true);
                     Instantiate(
@@ -83,7 +86,11 @@ public class ImageBarthelOutput : ImageOutput
                 }
                 else
                 {
-                    if(outputImage !=null) debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                    if (outputImage != null)
+                    {
+                        debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+                        detailedNodeViewImage.sprite = debugImage.sprite;
+                    }
                     frame.SetColors(Color.red, Color.red);
                     imageCorrectGlitterEffect.SetActive(false);
                 }
