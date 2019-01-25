@@ -142,6 +142,7 @@ public class LevelInstantiator : MonoBehaviour
                 //Sources ´beginning with a 1 and 2 belong to targets with 3, and sources with 4 and 5 belong to 9
                 bool isSource = false;
                 Transform transform = gridPlaneArray[row, col].transform;
+
                 if (levelData[row, col] == "-1")               //-1 is a hole in the grid
                 {
                     gridPlaneArray[row, col].SetActive(false);
@@ -246,6 +247,13 @@ public class LevelInstantiator : MonoBehaviour
                 counter++;
             }
         }
+        blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach (GameObject blockObject in blockObjects)
+        {
+            //blockObject.transform.Rotate(Vector3.up * 90, Space.Self);
+            blockObject.transform.SetParent(grid.transform);
+        }
+        grid.transform.Rotate(Vector3.up * 90);
     }
 
     public void LoadData()
@@ -254,6 +262,7 @@ public class LevelInstantiator : MonoBehaviour
         {
             this.jsonAsString = File.ReadAllText(getLevelFilePath());
             GenerateRandomLvlIndex();
+            levelIndex = 0;
             //print("DataAsJson: " + jsonAsString);
             SplitData(jsonAsString);
         }
