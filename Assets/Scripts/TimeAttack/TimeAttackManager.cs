@@ -123,11 +123,12 @@ public class TimeAttackManager : MonoBehaviour
     void Win()
     {
         //thisLevelScore = starRating * scoreFactor;
-        starRating = 3 - (moves * 3 / maxMoves);
+        //starRating = 3 - (moves * 3 / maxMoves);
         newTotalScore += (int) Mathf.Round(timer);
 
         CheckHighestTotalScore();
         timeAttackUI.ShowLevelCompletePanel(starRating, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, true);
+        PauseGame();
 
         currentState = TimeAttackState.GameComplete;
     }
@@ -154,9 +155,29 @@ public class TimeAttackManager : MonoBehaviour
     {
         levelInstantiator.InstantiateRandomLevel();
         timeAttackUI.HideLevelCompletePanel();
+        timeAttackUI.HideLevelRevisitPanel();
         currentState = TimeAttackState.Playing;
         timer = maxTime;
         ResumeGame();
+    }
+
+    public void RevisitLevelAfterWin()
+    {
+        //we enabe the playerController so we can magnify our images
+        PlayerController.Instance.Reset();
+        PlayerController.Instance.enabled = true;
+        //but we set all blockObject so stationary and not moveable so we cant move them anymore
+        GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach(GameObject go in blockObjects)
+        {
+            BlockObject bo = go.GetComponent<BlockObject>();
+            bo.stationary = true;
+            bo.actionBlocked = true;
+        }
+
+
+        timeAttackUI.HideLevelCompletePanel();
+        timeAttackUI.ShowLevelRevisitPanel();
     }
 
     public void Retry()
@@ -243,12 +264,12 @@ public class TimeAttackManager : MonoBehaviour
         print("your moves: " + moves);
     }
 
-    IEnumerator WinCoroutine()
+   /* IEnumerator WinCoroutine()
     {
         yield return new WaitForSeconds(1);
         if (CheckWinCondition())
         {
             Win();
         }
-    }
+    }*/
 }

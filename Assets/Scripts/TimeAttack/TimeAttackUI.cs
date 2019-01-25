@@ -8,6 +8,7 @@ public class TimeAttackUI : MonoBehaviour
     private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
     private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public GameObject levelCompletePanel;
+    public GameObject LevelRevisitPanel;
     public GameObject gameOverPanel;
     public GameObject star1;
     public GameObject star2;
@@ -105,7 +106,6 @@ public class TimeAttackUI : MonoBehaviour
         //sh
         //totalScoreText.text = "YOUR SCORE: " + totalScore;
         StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
-        TimeAttackManager.Instance.PauseGame();
     }
 
     public void TogglePause()
@@ -174,6 +174,16 @@ public class TimeAttackUI : MonoBehaviour
         scoreSubmitText.text = "THANK YOU!";
         nameInputField.gameObject.SetActive(false);
         SubmitButton.SetActive(false);
+    }
+
+    public void ShowLevelRevisitPanel()
+    {
+        LevelRevisitPanel.SetActive(true);
+    }
+
+    public void HideLevelRevisitPanel()
+    {
+        LevelRevisitPanel.SetActive(false);
     }
 
     public void UpdateCountDown(float time, float maxTime)
