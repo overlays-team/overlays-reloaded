@@ -39,6 +39,10 @@ public class IngameUI : MonoBehaviour {
 
     //tutorial variables
     public GameObject tutorialPanel;
+    public GameObject tutorialButton;
+    public bool tutorialOn;
+
+    public GameObject inventory;
 
 
     // Use this for initialization
@@ -47,6 +51,8 @@ public class IngameUI : MonoBehaviour {
         TransparentToZero(pauseMenuPanel.transform);
         TransparentToZero(gameOverMenu.transform);
         TransparentToZero(levelCompleteMenu.transform);
+
+        if (tutorialOn) ToogleTutorialOn();
     }
 
     // Update is called once per frame
@@ -62,18 +68,34 @@ public class IngameUI : MonoBehaviour {
     public void ToogleTutorialOn()
     {
         if (tutorialPanel.activeInHierarchy)
-        {
+        { 
             tutorialPanel.SetActive(false);
+            ShowIngameUI();
             IngameManager.Instance.ResumeGame();
         }
         else
-        {
-            tutorialPanel.SetActive(true);
+        {    
+            tutorialPanel.SetActive(true); 
+            HideIngameUI();
             IngameManager.Instance.PauseGame();
         }
     }
 
     #endregion
+
+    public void HideIngameUI()
+    {
+        pauseButton.SetActive(false);
+        tutorialButton.SetActive(false);
+        inventory.SetActive(false);
+    }
+
+    public void ShowIngameUI()
+    {
+        pauseButton.SetActive(true);
+        inventory.SetActive(true);
+        if (tutorialOn)tutorialButton.SetActive(true);
+    }
 
 
 
@@ -142,21 +164,21 @@ public class IngameUI : MonoBehaviour {
 
     public void TogglePause()
     {
-        pauseButton.SetActive(false);
+        HideIngameUI();
         pauseMenuPanel.SetActive(true);
         StartCoroutine(AnimateBlurIn(pauseMenuPanel, blurAnimDuration));
 
     }
     public void TogglePlay()
     {
-        pauseButton.SetActive(true);
+        ShowIngameUI();
         pauseMenuPanel.SetActive(false);
         TransparentToZero(pauseMenuPanel.transform);
     }
     public void ShowGameOverPanel()
     {
+        HideIngameUI();
         gameOverMenu.SetActive(true);
-        pausePlayButton.SetActive(false);
         StartCoroutine(AnimateBlurIn(gameOverMenu, blurAnimDuration));
     }
 
@@ -171,14 +193,13 @@ public class IngameUI : MonoBehaviour {
 
     public void HideLevelCompletePanel()
     {
+        ShowIngameUI();
         levelCompleteMenu.SetActive(false);
-        pausePlayButton.SetActive(true);
-
     }
     public void HideGameOverPanel()
     {
+        ShowIngameUI();
         gameOverMenu.SetActive(false);
-        pausePlayButton.SetActive(true);
     }
 
     public void ShowCountDownText(bool isEnabled)

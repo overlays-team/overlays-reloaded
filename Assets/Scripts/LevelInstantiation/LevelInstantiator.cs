@@ -100,10 +100,10 @@ public class LevelInstantiator : MonoBehaviour
     {
         int rowLength = levelData.GetLength(0); //first index
         int colLength = levelData.GetLength(1); //second index
-        gridPositioner.UpdatePlanes(rowLength, colLength, gridPositioner.getPadding());
+        gridPositioner.UpdatePlanes(rowLength, colLength, gridPositioner.GetPadding());
 
         //Get 2d array of gridPlanes to use transoforms for intantiation
-        GameObject[,] gridPlaneArray = gridPositioner.getGridArray();
+        GameObject[,] gridPlaneArray = gridPositioner.GetGridArray();
 
         //Deletion of earlier Blockobjects
         GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");

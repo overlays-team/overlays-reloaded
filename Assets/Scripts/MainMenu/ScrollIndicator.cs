@@ -26,7 +26,7 @@ public class ScrollIndicator : MonoBehaviour
 
         for (int i = 0; i < imagesContainer.childCount; i++)
         {
-            Instantiate(indicatorPrefab).transform.parent = transform;
+            Instantiate(indicatorPrefab, transform);
         }
     }
 
