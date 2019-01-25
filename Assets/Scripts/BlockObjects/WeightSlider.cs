@@ -17,6 +17,6 @@ public class WeightSlider : MonoBehaviour
     void Update()
     {
         //sliderText.text = (slider.value / slider.maxValue * 100).ToString("F0");
-        sliderText.text = slider.value.ToString();
+        sliderText.text = slider.value.ToString("F2");
     }
 }

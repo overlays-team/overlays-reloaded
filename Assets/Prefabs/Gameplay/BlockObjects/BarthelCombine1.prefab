@@ -64,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationary: 0
   actionBlocked: 0
-  doubleClickActionBlocked: 1
+  doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 8574225993453352543}
   detailedNodeViewImage: {fileID: 511197663899535051}
   currentAssignedGridPlane: {fileID: 0}
@@ -521,17 +521,27 @@ PrefabInstance:
     - target: {fileID: 3582022366796345037, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1809968546119284381, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 679211072472041110, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1809968546119284381, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 6258704544730145873}
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnReturnClicked
       objectReference: {fileID: 0}
     - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
@@ -543,17 +553,15 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnReturnClicked
       objectReference: {fileID: 0}
-    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 5079369541344311197, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
-      propertyPath: m_Text
-      value: 'Back
-
-'
+      propertyPath: m_AnchorMax.x
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 5079369541344311197, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 7
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6093318973961362004, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
@@ -625,15 +633,17 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 7394840892759449216}
-    - target: {fileID: 5079369541344311197, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
+      propertyPath: m_Text
+      value: 'Back
+
+'
       objectReference: {fileID: 0}
-    - target: {fileID: 5079369541344311197, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
+      propertyPath: m_FontData.m_Alignment
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4bb1c46b64b53a49af9e5ed3600c953, type: 3}
@@ -761,6 +771,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2788907773249735428}
     m_Modifications:
+    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
+      propertyPath: m_Name
+      value: LaserInput 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4797018647629542, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -805,10 +819,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
-      propertyPath: m_Name
-      value: LaserInput 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
 --- !u!4 &7006747524085996523 stripped
@@ -836,6 +846,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2788907773249735428}
     m_Modifications:
+    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
+      propertyPath: m_Name
+      value: LaserInput 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4797018647629542, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -880,10 +894,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
-      propertyPath: m_Name
-      value: LaserInput 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
 --- !u!4 &7366218721105300902 stripped
@@ -911,6 +921,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2788907773249735428}
     m_Modifications:
+    - target: {fileID: 1918705707615132, guid: a6d882dd1f4c7964ea6b3ca62c3378c7, type: 3}
+      propertyPath: m_Name
+      value: LaserOutput
+      objectReference: {fileID: 0}
     - target: {fileID: 4028322700344014, guid: a6d882dd1f4c7964ea6b3ca62c3378c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -954,10 +968,6 @@ PrefabInstance:
     - target: {fileID: 4028322700344014, guid: a6d882dd1f4c7964ea6b3ca62c3378c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1918705707615132, guid: a6d882dd1f4c7964ea6b3ca62c3378c7, type: 3}
-      propertyPath: m_Name
-      value: LaserOutput
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d882dd1f4c7964ea6b3ca62c3378c7, type: 3}
