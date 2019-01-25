@@ -329,7 +329,8 @@ public class IngameManager : MonoBehaviour
     public void PauseGame()
     {
         PlayerController.Instance.enabled = false;
-        PlayerController.Instance.inventory.enabled = false;
+        //PlayerController.Instance.inventory.enabled = false;
+        ingameUI.HideIngameUI();
     }
 
     public void Resume()
@@ -344,7 +345,8 @@ public class IngameManager : MonoBehaviour
     {
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
-        PlayerController.Instance.inventory.enabled = true;
+        //PlayerController.Instance.inventory.enabled = true;
+        ingameUI.ShowIngameUI();
     }
 
 
@@ -373,12 +375,10 @@ public class IngameManager : MonoBehaviour
 
         if (outputImages.Count> 0)
         {
-            //Debug.Log("-------------ot this frame ----------------------------");
             
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
-                //Debug.Log("outputImage: " + imageOutput);
             }
             //Debug.Log("correct?e: " + allCorrect);
             if (allCorrect) Win();

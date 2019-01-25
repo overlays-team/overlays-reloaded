@@ -70,13 +70,11 @@ public class IngameUI : MonoBehaviour {
         if (tutorialPanel.activeInHierarchy)
         { 
             tutorialPanel.SetActive(false);
-            ShowIngameUI();
             IngameManager.Instance.ResumeGame();
         }
         else
         {    
             tutorialPanel.SetActive(true); 
-            HideIngameUI();
             IngameManager.Instance.PauseGame();
         }
     }
