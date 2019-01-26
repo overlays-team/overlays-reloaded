@@ -9,6 +9,9 @@ public class GridPositioner : MonoBehaviour
 {
 
     [SerializeField]
+    bool timeAttack = false; // only used by camera positioner
+
+    [SerializeField]
     int colums;
     [SerializeField]
     int rows;
@@ -38,7 +41,8 @@ public class GridPositioner : MonoBehaviour
         gridWidth = colums + (padding - 1) * (colums - 1);
         gridHeight = rows + (padding - 1) * (rows - 1);
 
-        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        if(!timeAttack) middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        else middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
     }
 
 
@@ -98,8 +102,8 @@ public class GridPositioner : MonoBehaviour
 
         gridWidth = this.colums + (padding - 1) * (this.colums - 1);
         gridHeight = rows + (padding - 1) * (rows - 1);
-        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
-
+        // middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
     }
 
     #region Getters

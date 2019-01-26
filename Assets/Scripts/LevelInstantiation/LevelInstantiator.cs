@@ -32,6 +32,8 @@ public class LevelInstantiator : MonoBehaviour
     TimeAttackManager timeAttackManager;
     List<ImageOutput> imageOutputs = new List<ImageOutput>();
 
+    public ResponsiveCameraPositioner cameraPositioner;
+
     //BlockObjects
     public GameObject wall;
     public GameObject mirror;
@@ -94,6 +96,7 @@ public class LevelInstantiator : MonoBehaviour
         assignPics();
         ApplyLevelData();
         levelIndex++;
+        cameraPositioner.AdjustCamera();
     }
 
     public void InstantiateRandomLevel()

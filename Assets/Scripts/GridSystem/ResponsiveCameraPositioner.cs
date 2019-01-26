@@ -25,7 +25,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
     }*/
 
 
-    private void AdjustCamera()
+    public void AdjustCamera()
     {
         Vector3 cameraPosition = gridPositoner.GetMiddlePoint();
         cameraPosition.y += CalculateHeight();
