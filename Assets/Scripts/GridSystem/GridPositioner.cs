@@ -22,9 +22,6 @@ public class GridPositioner : MonoBehaviour
     GameObject[,] gridPlaneArray;
 
     [SerializeField]
-    GameObject mainCamera;
-
-    [SerializeField]
     float gridPadding = 1f;
 
     [Tooltip("Only used in Time attack Mode")]
@@ -35,6 +32,15 @@ public class GridPositioner : MonoBehaviour
     float gridHeight;
     float gridWidth;
     Vector3 middlePoint;
+
+    private void Awake()
+    {
+        gridWidth = colums + (padding - 1) * (colums - 1);
+        gridHeight = rows + (padding - 1) * (rows - 1);
+
+        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+    }
+
 
     public void UpdatePlanes()
     {
@@ -59,20 +65,13 @@ public class GridPositioner : MonoBehaviour
 
             currentX += padding;
         }
-
-        gridWidth = colums + (padding - 1 ) * (colums - 1);
-        gridHeight = rows + (padding - 1) * (rows - 1);
-
-        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
-
-        adjustCamera();
     }
 
     public void UpdatePlanes(int _rows, int _columns, float _padding)
     {
-        int rows = LevelInstantiator.getIdx0();
-        int col = LevelInstantiator.getIdx1();
-        gridPlaneArray = new GameObject[rows, col];
+        rows = LevelInstantiator.getIdx0();
+        colums = LevelInstantiator.getIdx1();
+        gridPlaneArray = new GameObject[rows, colums];
 
         while (transform.childCount > 0)
         {
@@ -97,11 +96,10 @@ public class GridPositioner : MonoBehaviour
             currentX += _padding;
         }
 
-        gridWidth = colums + (padding - 1) * (colums - 1);
+        gridWidth = this.colums + (padding - 1) * (this.colums - 1);
         gridHeight = rows + (padding - 1) * (rows - 1);
         middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
 
-        adjustCamera();
     }
 
     #region Getters
@@ -134,31 +132,5 @@ public class GridPositioner : MonoBehaviour
     }
 
     #endregion
-
-    private void adjustCamera ()
-    {
-        Vector3 cameraPosition = middlePoint;
-        cameraPosition.y = adjustHeight() + this.transform.position.y;
-
-        Debug.Log(cameraPosition);
-
-        mainCamera.transform.position = cameraPosition;
-    }
-
-    private float adjustHeight()
-    {
-        float degree = 45;
-        float height;
-        float alpha = Mathf.Deg2Rad * (degree/2);
-        if (gridWidth >= gridHeight)
-        {
-            height = (gridWidth / 2 + gridPadding) / Mathf.Tan(alpha);
-        }
-        else
-        {
-            height = (gridHeight / 2 + gridPadding) / Mathf.Tan(alpha);
-        }
-       
-        return height;
-    }
+ 
 }
