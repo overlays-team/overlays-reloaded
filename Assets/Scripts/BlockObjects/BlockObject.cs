@@ -199,6 +199,7 @@ public class BlockObject : MonoBehaviour
                 actionBlocked = true;
                 stationaryFrame.gameObject.SetActive(true);
                 frame.gameObject.SetActive(false);
+                graphics.GetComponent<Animator>().enabled = false;
             }
             else
             {
@@ -266,7 +267,7 @@ public class BlockObject : MonoBehaviour
 
     protected void Shrink()
     {
-        graphics.GetComponent<Animator>().SetBool("LaserInput", false);
+            graphics.GetComponent<Animator>().SetBool("LaserInput", false);
     }
 
     #endregion
