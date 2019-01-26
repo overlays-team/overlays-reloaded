@@ -253,7 +253,7 @@ public class LevelInstantiator : MonoBehaviour
             //blockObject.transform.Rotate(Vector3.up * 90, Space.Self);
             blockObject.transform.SetParent(grid.transform);
         }
-        grid.transform.Rotate(Vector3.up * 90);
+        //grid.transform.Rotate(Vector3.up * 90);
     }
 
     public void LoadData()

@@ -88,8 +88,8 @@ public class GridPositioner : MonoBehaviour
             currentZ = transform.position.z;
             for (int column = 0; column < _columns; column++)
             {
-                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation);
-                plane.transform.SetParent(transform);
+                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation, transform);
+                //plane.transform.SetParent(transform);
                 currentZ += _padding;
                 gridPlaneArray[row, column] = plane;
             }
@@ -97,10 +97,10 @@ public class GridPositioner : MonoBehaviour
             currentX += _padding;
         }
 
-        gridWidth = colums + (padding - 1) * (colums - 1);
-        gridHeight = rows + (padding - 1) * (rows - 1);
+        gridWidth = _columns + (_padding - 1) * (_columns - 1);
+        gridHeight = _rows + (_padding - 1) * (_rows - 1);
         middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
-
+        Debug.Log(middlePoint);
         adjustCamera();
     }
 
@@ -136,6 +136,16 @@ public class GridPositioner : MonoBehaviour
     #endregion
 
     private void adjustCamera ()
+    {
+        Vector3 cameraPosition = middlePoint;
+        cameraPosition.y = adjustHeight() + this.transform.position.y;
+
+        Debug.Log(cameraPosition);
+
+        mainCamera.transform.position = cameraPosition;
+    }
+
+    private void adjustCameraTimeAttack()
     {
         Vector3 cameraPosition = middlePoint;
         cameraPosition.y = adjustHeight() + this.transform.position.y;

@@ -3737,6 +3737,8 @@ MonoBehaviour:
   padding: 1.4
   gridPlane: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
     type: 3}
+  mainCamera: {fileID: 2086013674}
+  gridPadding: 1
   LevelInstantiator: {fileID: 1352342059}
 --- !u!4 &828705922 stripped
 Transform:
@@ -7582,6 +7584,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2051265438}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2086013674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1876966334645424, guid: 07d66bccd07bf804a93132404e730892,
+    type: 3}
+  m_PrefabInstance: {fileID: 417927466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2106024005
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11002,11 +11010,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 444439851}
     m_Modifications:
-    - target: {fileID: 2135770308799817964, guid: 1974e48d9b99018459d471091d398a8b,
-        type: 3}
-      propertyPath: m_Name
-      value: Background
-      objectReference: {fileID: 0}
     - target: {fileID: 2135770308799817963, guid: 1974e48d9b99018459d471091d398a8b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11061,6 +11064,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2135770308799817964, guid: 1974e48d9b99018459d471091d398a8b,
+        type: 3}
+      propertyPath: m_Name
+      value: Background
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1974e48d9b99018459d471091d398a8b, type: 3}
