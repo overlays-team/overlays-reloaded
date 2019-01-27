@@ -36,9 +36,8 @@ public class ModeSelect : MonoBehaviour
                 break;
 
             case 2:
-                SceneManager.LoadScene("Sandbox");
+                SceneFader.Instance.FadeTo("Sandbox");
                 break;
-
             case 3:
                 mainMenu.ShowTutorial();
                 break;

@@ -6,10 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class SceneFader : MonoBehaviour
 {
-
     public float animationSpeed = 1; //the lager the value, the slower the fading
     public Image img;
     public AnimationCurve curve;
+
+    public static SceneFader Instance;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            DestroyImmediate(Instance);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     private void Start()
     {
