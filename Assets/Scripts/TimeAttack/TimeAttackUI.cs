@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class TimeAttackUI : MonoBehaviour
 {
-    private string[] badShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
+    private string[] goodShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
     private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] goodShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Close one!" };
     public GameObject levelCompletePanel;
     public GameObject LevelRevisitPanel;
     public GameObject gameOverPanel;
@@ -90,9 +90,9 @@ public class TimeAttackUI : MonoBehaviour
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore)
+    public void ShowLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
     {
-        StartCoroutine(DelayedLevelCompletePanel(star, totalScore, highestTotalScore));
+        StartCoroutine(DelayedLevelCompletePanel(timeLeft, totalScore, highestTotalScore));
     }
 
     public void TogglePause()

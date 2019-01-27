@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class TimeAttackManager : MonoBehaviour
 {
-
     public enum TimeAttackState
     {
         Playing, GameOver, GameComplete, Paused
@@ -18,14 +17,9 @@ public class TimeAttackManager : MonoBehaviour
     public LevelInstantiator levelInstantiator;
     public HttpCommunicator httpCommunicator;
 
-    public int starRating;
-    public int scoreFactor = 10;
     public int thisLevelScore;
     public int previousTotalScore;
     public int newTotalScore;
-
-    public int moves = 0;
-    public int maxMoves = 15;
     
     public float maxTime;
     public float timer;
@@ -127,7 +121,7 @@ public class TimeAttackManager : MonoBehaviour
         newTotalScore += (int) Mathf.Round(timer);
 
         CheckHighestTotalScore();
-        timeAttackUI.ShowLevelCompletePanel(starRating, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
+        timeAttackUI.ShowLevelCompletePanel(timer, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
         PauseGame();
 
         currentState = TimeAttackState.GameComplete;
@@ -259,7 +253,6 @@ public class TimeAttackManager : MonoBehaviour
 
     public void RaiseMoves()
     {
-        moves++;
-        print("your moves: " + moves);
+        //Leave this so the PlayerController doesn't complain
     }
 }
