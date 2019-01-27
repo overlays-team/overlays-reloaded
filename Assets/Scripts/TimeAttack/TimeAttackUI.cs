@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class TimeAttackUI : MonoBehaviour
 {
-    private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
-    private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    private string[] badShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
+    private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
+    private string[] goodShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
     public GameObject levelCompletePanel;
     public GameObject LevelRevisitPanel;
     public GameObject gameOverPanel;
@@ -64,26 +64,24 @@ public class TimeAttackUI : MonoBehaviour
         }
     }
 
-    IEnumerator WaitAndPrint(int star, int totalScore, int highestTotalScore, bool attackMode)
+    IEnumerator DelayedLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
     {
         yield return new WaitForSeconds(winWaitTime);
-
-
 
         totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
         highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
 
-        switch (star)
+        if(timeLeft > 20)
         {
-            case 1:
-                shoutOutText.text = star1Texts[Random.Range(0, 3)];
-                break;
-            case 2:
-                shoutOutText.text = star2Texts[Random.Range(0, 3)];
-                break;
-            case 3:
-                shoutOutText.text = star3Texts[Random.Range(0, 3)];
-                break;
+            shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
+        }
+        else if(timeLeft > 10)
+        {
+            shoutOutText.text = mediumShoutoutTexts[Random.Range(0, 3)];
+        }
+        else
+        {
+            shoutOutText.text = badShoutoutTexts[Random.Range(0, 3)];
         }
 
         levelCompletePanel.SetActive(true);
@@ -92,11 +90,9 @@ public class TimeAttackUI : MonoBehaviour
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore)
     {
-
-
-        StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
+        StartCoroutine(DelayedLevelCompletePanel(star, totalScore, highestTotalScore));
     }
 
     public void TogglePause()

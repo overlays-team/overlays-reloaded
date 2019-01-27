@@ -127,7 +127,7 @@ public class TimeAttackManager : MonoBehaviour
         newTotalScore += (int) Mathf.Round(timer);
 
         CheckHighestTotalScore();
-        timeAttackUI.ShowLevelCompletePanel(starRating, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, true);
+        timeAttackUI.ShowLevelCompletePanel(starRating, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
         PauseGame();
 
         currentState = TimeAttackState.GameComplete;
@@ -174,7 +174,6 @@ public class TimeAttackManager : MonoBehaviour
             bo.stationary = true;
             bo.actionBlocked = true;
         }
-
 
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.ShowLevelRevisitPanel();
@@ -263,13 +262,4 @@ public class TimeAttackManager : MonoBehaviour
         moves++;
         print("your moves: " + moves);
     }
-
-   /* IEnumerator WinCoroutine()
-    {
-        yield return new WaitForSeconds(1);
-        if (CheckWinCondition())
-        {
-            Win();
-        }
-    }*/
 }
