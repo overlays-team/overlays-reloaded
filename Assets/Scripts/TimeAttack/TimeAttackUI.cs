@@ -10,6 +10,7 @@ public class TimeAttackUI : MonoBehaviour
     public GameObject levelCompletePanel;
     public GameObject LevelRevisitPanel;
     public GameObject gameOverPanel;
+    public GameObject inventory;
     public GameObject pauseButton;
     public GameObject pauseMenuPanel;
     public Text shoutOutText;
@@ -24,7 +25,9 @@ public class TimeAttackUI : MonoBehaviour
     public Text scoreSubmitText;
     public Text scoreCountText;
     public InputField nameInputField;
-    public GameObject SubmitButton;
+    public GameObject submitButton;
+    public GameObject countdownDisplay;
+    public GameObject startPanel;
 
     public float winWaitTime = 2f;
     public float blurAnimDuration;
@@ -68,8 +71,8 @@ public class TimeAttackUI : MonoBehaviour
     {
         yield return new WaitForSeconds(winWaitTime);
 
-        totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
-        highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
+        totalScoreText.text = "Your Score: " + totalScore;
+        highestScoreText.text = "Your Best: " + highestTotalScore;
 
         if(timeLeft > 20)
         {
@@ -88,6 +91,63 @@ public class TimeAttackUI : MonoBehaviour
         pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
+    }
+
+    public void ShowCountdownDisplay()
+    {
+        StartCoroutine(AnimateCountdown(3));
+    }
+
+    IEnumerator AnimateCountdown(float animDuration)
+    {
+        countdownDisplay.SetActive(true);
+        yield return new WaitForSeconds(animDuration);
+        countdownDisplay.SetActive(false);
+    }
+
+    public void HideCountdownDisplay()
+    {
+        countdownDisplay.SetActive(false);
+    }
+
+    public void ShowTimerDisplay()
+    {
+        timerPanel.SetActive(true);
+    }
+
+    public void HideTimerDisplay()
+    {
+        timerPanel.SetActive(false);
+    }
+
+    public void ShowPauseButton()
+    {
+        pauseButton.SetActive(true);
+    }
+
+    public void HidePauseButton()
+    {
+        pauseButton.SetActive(false);
+    }
+
+    public void ShowStartPanel()
+    {
+        startPanel.SetActive(true);
+    }
+
+    public void HideStartPanel()
+    {
+        startPanel.SetActive(false);
+    }
+
+    public void ShowInventory()
+    {
+        inventory.SetActive(true);
+    }
+
+    public void HideInventory()
+    {
+        inventory.SetActive(false);
     }
 
     public void ShowLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
@@ -118,12 +178,12 @@ public class TimeAttackUI : MonoBehaviour
     public void ShowNameInputPanel()
     {
         nameInputField.gameObject.SetActive(true);
-        SubmitButton.SetActive(true);
+        submitButton.SetActive(true);
     }
     public void HideNameInputPanel()
     {
         nameInputField.gameObject.SetActive(false);
-        SubmitButton.SetActive(false);
+        submitButton.SetActive(false);
     }
 
     public void HideLevelCompletePanel()
@@ -164,7 +224,7 @@ public class TimeAttackUI : MonoBehaviour
     {
         scoreSubmitText.text = "THANK YOU!";
         nameInputField.gameObject.SetActive(false);
-        SubmitButton.SetActive(false);
+        submitButton.SetActive(false);
     }
 
     public void ShowLevelRevisitPanel()

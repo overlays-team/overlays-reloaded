@@ -7,19 +7,16 @@ public class TimeAttackManager : MonoBehaviour
 {
     public enum TimeAttackState
     {
-        Playing, GameOver, GameComplete, Paused
+        Playing, GameOver, GameComplete, Paused, Countdown, GameBegin
     }
 
     public TimeAttackState currentState;
     public static TimeAttackManager Instance;
     public TimeAttackUI timeAttackUI;
-    public SceneFader fader;
     public LevelInstantiator levelInstantiator;
     public HttpCommunicator httpCommunicator;
 
-    public int thisLevelScore;
-    public int previousTotalScore;
-    public int newTotalScore;
+    public int totalScore;
     
     public float maxTime;
     public float timer;
@@ -42,13 +39,14 @@ public class TimeAttackManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fader.FadeToClear();
+        SceneFader.Instance.FadeToClear();
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.HideGameOverPanel();
-
-        timer = maxTime;
-
-        currentState = TimeAttackState.Playing;
+        timeAttackUI.HidePauseButton();
+        timeAttackUI.HideTimerDisplay();
+        timeAttackUI.HideInventory();
+        ResetTimer();
+        currentState = TimeAttackState.GameBegin;
     }
 
     // Update is called once per frame
@@ -92,7 +90,7 @@ public class TimeAttackManager : MonoBehaviour
         {
             //TODO: doent't work if "c" is being inputed in inputTextField. 
             playerName = timeAttackUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+            httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
             Debug.Log(playerName);
@@ -102,7 +100,7 @@ public class TimeAttackManager : MonoBehaviour
 
     private void CheckHighestTotalScore()
     {
-        if (GameDataEditor.Instance.data.highestTotalScore < newTotalScore)
+        if (GameDataEditor.Instance.data.highestTotalScore < totalScore)
         {
             SaveHighestTotalScore();
         }
@@ -110,18 +108,24 @@ public class TimeAttackManager : MonoBehaviour
 
     private void SaveHighestTotalScore()
     {
-        GameDataEditor.Instance.data.highestTotalScore = newTotalScore;
+        GameDataEditor.Instance.data.highestTotalScore = totalScore;
         GameDataEditor.Instance.data.highestTotalScorePlayerName = GameDataEditor.Instance.data.playerName;
+    }
+
+    public void StartGame()
+    {
+        timeAttackUI.HideStartPanel();
+        StartCountdown();
     }
 
     void Win()
     {
         //thisLevelScore = starRating * scoreFactor;
         //starRating = 3 - (moves * 3 / maxMoves);
-        newTotalScore += (int) Mathf.Round(timer);
+        totalScore += (int) Mathf.Round(timer);
 
         CheckHighestTotalScore();
-        timeAttackUI.ShowLevelCompletePanel(timer, newTotalScore, GameDataEditor.Instance.data.highestTotalScore);
+        timeAttackUI.ShowLevelCompletePanel(timer, totalScore, GameDataEditor.Instance.data.highestTotalScore);
         PauseGame();
 
         currentState = TimeAttackState.GameComplete;
@@ -131,10 +135,10 @@ public class TimeAttackManager : MonoBehaviour
     {
         currentState = TimeAttackState.GameOver;
         timeAttackUI.ShowGameOverPanel();
-        timeAttackUI.scoreCountText.text = newTotalScore.ToString();
+        timeAttackUI.scoreCountText.text = totalScore.ToString();
 
         //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
-        if (newTotalScore > 0)
+        if (totalScore > 0)
         {
             timeAttackUI.ShowNameInputPanel();
         }
@@ -148,11 +152,31 @@ public class TimeAttackManager : MonoBehaviour
     public void NextRandomLevel()
     {
         levelInstantiator.InstantiateRandomLevel();
+        StartCountdown();
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.HideLevelRevisitPanel();
-        currentState = TimeAttackState.Playing;
-        timer = maxTime;
+        ResetTimer();
         ResumeGame();
+    }
+
+    void StartCountdown()
+    {
+        currentState = TimeAttackState.Countdown;
+        StartCoroutine(CountdownCallback(3));
+    }
+
+    IEnumerator CountdownCallback(float animDuration)
+    {
+        timeAttackUI.HideTimerDisplay();
+        timeAttackUI.HidePauseButton();
+        timeAttackUI.HideInventory();
+        timeAttackUI.ShowCountdownDisplay();
+        yield return new WaitForSeconds(animDuration);
+        timeAttackUI.HideCountdownDisplay();
+        timeAttackUI.ShowTimerDisplay();
+        timeAttackUI.ShowPauseButton();
+        timeAttackUI.ShowInventory();
+        currentState = TimeAttackState.Playing;
     }
 
     public void RevisitLevelAfterWin()
@@ -181,8 +205,7 @@ public class TimeAttackManager : MonoBehaviour
 
     public void MainMenu()
     {
-        fader.FadeTo("MainMenu");
-        //SceneManager.LoadScene("MainMenu");
+        SceneFader.Instance.FadeTo("MainMenu");
     }
     public void Pause()
     {
@@ -210,6 +233,11 @@ public class TimeAttackManager : MonoBehaviour
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         PlayerController.Instance.inventory.enabled = true;
+    }
+
+    private void ResetTimer()
+    {
+        timer = maxTime;
     }
    
     private void CountTime()
