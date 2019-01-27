@@ -7,7 +7,7 @@ public class IngameUI : MonoBehaviour {
 
     private string[] goodShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
     private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Close one!" };
     public GameObject star1;
     public GameObject star2;
     public GameObject star3;
@@ -62,7 +62,6 @@ public class IngameUI : MonoBehaviour {
             IngameManager.Instance.PauseGame();
         }
     }
-
     #endregion
 
     public void HideIngameUI()
@@ -178,7 +177,7 @@ public class IngameUI : MonoBehaviour {
                 colors = newColor;
                 child.gameObject.GetComponent<Text>().color = colors;
             }
-            else if (child.gameObject.GetComponent<Image>())
+            else if (child.gameObject.GetComponent<Image>() != null)
             {
                 var colors = child.gameObject.GetComponent<Image>().color;
                 colors = newColor;

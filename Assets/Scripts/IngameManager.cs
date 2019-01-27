@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
-
     public enum NormalModeState
     {
         Playing, GameComplete, Paused
@@ -19,8 +18,6 @@ public class IngameManager : MonoBehaviour
     public int moves = 0;
     public int maxMoves = 15;
 
-    private Scene currentScene;
-
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
 
     public void setOutputImages(List<ImageOutput> outputImages)
@@ -30,6 +27,7 @@ public class IngameManager : MonoBehaviour
     }
 
     public static IngameManager Instance;
+    private Scene currentScene;
 
     //Singletoncode
     private void Awake()
@@ -84,25 +82,13 @@ public class IngameManager : MonoBehaviour
         }
     }
 
-
-    /*
-    private void LoadLevelState() //now only used for getting total score for testing
-    {
-        int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-
-        for (int i = 0; i < numberOfLevelsInGameData; i++)
-        {
-            if (GameDataEditor.Instance.data.levels[i].completed)
-            {
-                previousTotalScore += GameDataEditor.Instance.data.levels[i].score;
-            }
-        }
-    }
-    */
-
     void Win()
     {
-        star = 3 - (moves*3 / maxMoves);
+        star = 3 - (moves * 3 / maxMoves);
+        if(star <= 0)
+        {
+            star = 1;
+        }
         ingameUI.ShowLevelCompletePanel(star);
         SaveLevelState();
         currentState = NormalModeState.GameComplete;
@@ -120,13 +106,6 @@ public class IngameManager : MonoBehaviour
                 GameDataEditor.Instance.data.levels[i].completed = true;
             }
         }
-
-
-        /*
-        GameDataEditor.Instance.data.levels[currentLevel].score = star;
-        GameDataEditor.Instance.data.levels[currentLevel].completed = true;
-        GameDataEditor.Instance.data.levels[nextLevel].completed = true;
-        */
     }
 
     void Lose()
@@ -206,7 +185,6 @@ public class IngameManager : MonoBehaviour
     public void RaiseMoves()
     {
         moves++;
-        print("your moves: " +moves);
     }
 
     IEnumerator WinCoroutine()
