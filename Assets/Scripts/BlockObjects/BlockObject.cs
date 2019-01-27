@@ -199,7 +199,7 @@ public class BlockObject : MonoBehaviour
                 actionBlocked = true;
                 stationaryFrame.gameObject.SetActive(true);
                 frame.gameObject.SetActive(false);
-                graphics.GetComponent<Animator>().enabled = false;
+                if(graphics.GetComponent<Animator>()!=null) graphics.GetComponent<Animator>().enabled = false;
             }
             else
             {
