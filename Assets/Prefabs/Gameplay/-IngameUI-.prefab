@@ -834,15 +834,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12c8464a7aebee940b0923d1522abb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   ingameUI: {fileID: 2566829185236210998}
   fader: {fileID: 3452983002002325831}
-  attackMode: 0
-  levelInstantiator: {fileID: 0}
   star: 0
-  httpCommunicator: {fileID: 0}
   moves: 0
   maxMoves: 15
-  timeLeft: 5
   outputImages: []
 --- !u!1 &1601791540873788954
 GameObject:
@@ -3157,35 +3154,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad8a95612b96a164a96a9c5b0b0a7654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelCompleteMenu: {fileID: 2566829185344297847}
-  gameOverMenu: {fileID: 2566829185875366482}
   star1: {fileID: 3384872582312927125}
   star2: {fileID: 3446039641997843436}
   star3: {fileID: 2430993224418268409}
-  pauseButton: {fileID: 2566829184350276733}
-  playButton: {fileID: 0}
+  levelCompletePanel: {fileID: 2566829185344297847}
+  gameOverPanel: {fileID: 2566829185875366482}
   pauseMenuPanel: {fileID: 2566829184304980414}
-  pausePlayButton: {fileID: 2566829184350276733}
-  levelCompleteText: {fileID: 2566829184610731320}
-  countDownText: {fileID: 2566829183939221755}
-  countDownPanel: {fileID: 2566829185705574282}
-  totalScorePanel: {fileID: 0}
-  highestScorePanel: {fileID: 2566829183863708699}
-  totalScoreText: {fileID: 2566829184046188884}
-  highestScoreText: {fileID: 2566829185146250535}
-  nameInputPanel: {fileID: 0}
-  nameInputPanelText: {fileID: 0}
-  nameInputSubPanel: {fileID: 0}
-  nameInputField: {fileID: 0}
-  messageDialogPanel: {fileID: 0}
-  messageDialogText: {fileID: 0}
-  mesageDialogButtonText: {fileID: 0}
+  inventory: {fileID: 6004832971379447810}
+  pauseButton: {fileID: 2566829184350276733}
+  shoutOutText: {fileID: 2566829184610731320}
   winWaitTime: 2
   blurAnimDuration: 0.5
   tutorialPanel: {fileID: 195303506073786108}
   tutorialButton: {fileID: 7738464835942678284}
   tutorialOn: 0
-  inventory: {fileID: 6004832971379447810}
 --- !u!1 &2566829185344297847
 GameObject:
   m_ObjectHideFlags: 0
