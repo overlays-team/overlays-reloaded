@@ -19,6 +19,7 @@ public class IngameManager : MonoBehaviour
     public int moves = 0;
     public int maxMoves = 15;
 
+    private Scene currentScene;
 
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
 
@@ -107,14 +108,25 @@ public class IngameManager : MonoBehaviour
         currentState = NormalModeState.GameComplete;
     }
 
-    //sh
     private void SaveLevelState()
     {
+        int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
+        for (int i = 0; i < numberOfLevelsInGameData; i++)
+        {
+            if (SceneManager.GetActiveScene().name.Equals(GameDataEditor.Instance.data.levels[i].sceneID))
+            {
+                GameDataEditor.Instance.data.levels[i].score = star;
+                GameDataEditor.Instance.data.levels[i].completed = true;
+                GameDataEditor.Instance.data.levels[i].completed = true;
+            }
+        }
+
+
         /*
         GameDataEditor.Instance.data.levels[currentLevel].score = star;
         GameDataEditor.Instance.data.levels[currentLevel].completed = true;
         GameDataEditor.Instance.data.levels[nextLevel].completed = true;
-        */       
+        */
     }
 
     void Lose()
@@ -179,7 +191,6 @@ public class IngameManager : MonoBehaviour
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
-            //Debug.Log("correct?e: " + allCorrect);
             if (allCorrect) Win();
             //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
         }
@@ -202,14 +213,6 @@ public class IngameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
         if (CheckIfWeWon()) Win();
-
-        /*
-        if (CheckIfWeWon()){
-            Win();
-        } else {
-            Lose();
-        }
-        */
     }
 
 
