@@ -49,7 +49,10 @@ public class GameDataEditor : MonoBehaviour
     {
         if(Input.GetKey("space"))
         {
-            ScreenCapture.CaptureScreenshot("screenshot.png", 1);
+            //ScreenCapture.CaptureScreenshot("screenshot.png", 1);
+            //Debug.Log("Screen captured");
+
+            ScreenCapture.CaptureScreenshot("Assets/Resources/LevelPreviews/screenshot.png", 1);
             Debug.Log("Screen captured");
         }
     }
