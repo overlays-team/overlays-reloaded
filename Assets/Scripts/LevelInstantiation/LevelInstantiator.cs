@@ -56,7 +56,7 @@ public class LevelInstantiator : MonoBehaviour
         setIntensity(initialIntensity);
         assignPics();
         LoadData();
-        InstantiateLevel();
+        InstantiateRandomLevel();
     }
 
     private void GenerateRandomLvlIndex()
@@ -104,7 +104,8 @@ public class LevelInstantiator : MonoBehaviour
         SplitData(jsonAsString);
         assignPics();
         int temp = levelIndex;
-        while(temp == levelIndex)
+        cameraPositioner.AdjustCamera();
+        while (temp == levelIndex)
         {
             GenerateRandomLvlIndex();
             //print("LvlIndex: " + levelIndex + "Temp: " + temp);
