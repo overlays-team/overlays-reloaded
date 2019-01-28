@@ -27,10 +27,13 @@ public class ResponsiveCameraPositioner : MonoBehaviour
 
     public void AdjustCamera()
     {
-        Vector3 cameraPosition = gridPositoner.GetMiddlePoint();
-        cameraPosition.y += CalculateHeight();
+        if(gridPositoner)
+        {
+            Vector3 cameraPosition = gridPositoner.GetMiddlePoint();
+            cameraPosition.y += CalculateHeight();
 
-        transform.position = cameraPosition;
+            transform.position = cameraPosition;
+        }
     }
 
     private float CalculateHeight()
