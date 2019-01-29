@@ -10,8 +10,11 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     public InventoryItem[] items;
     public InventoryButton[] inventoryButtons;
     public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
-    [Tooltip("in sandbox mode we can scroll through the inventory and instantiate the buttons when we take them")]
-    public bool sandboxMode;
+                                         //public bool sandboxMode;
+
+    [SerializeField]
+    [Tooltip("in sandbox mode we can scroll through the inventory and instantiate the buttons when we take them, in time attack we only have mrirrors")]
+    private InventoryMode inventoryMode = InventoryMode.Normal;
 
     [Header("only needed if scrollable/sandboxMode on")]
     //whis variables are needed to determine if thw player wants to scroll the inventory(in sandbox mode) or just take an item from it
@@ -19,6 +22,15 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     bool mouseDown = false;
     Vector2 lastMousePosition;
     InventoryButton selectedButton;
+
+   
+
+    enum InventoryMode
+    {
+        Normal,
+        Sandbox,
+        TimAttack
+    }
 
 
     void Awake () {
@@ -30,7 +42,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
         for (int i = 0; i < items.Length; i++)
         {
-            if (!sandboxMode)
+            if (inventoryMode == InventoryMode.Normal)
             {
                 //instantiate the blockObjects we need for our Inventory if not sandbox
                 for (int n = 0; n < items[i].blockAmount; n++)
@@ -47,7 +59,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
             
 
             inventoryButtons[i].gameObject.SetActive(true);
-            if (!sandboxMode) inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
+            if (inventoryMode == InventoryMode.Normal) inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = items[i].blockAmount.ToString();
             else inventoryButtons[i].gameObject.transform.GetChild(0).GetComponent<Text>().text = "∞";
             inventoryButtons[i].gameObject.GetComponent<Image>().sprite = items[i].blockObjectPrefab.GetComponent<BlockObject>().inventoryIcon;
             inventoryButtons[i].inventory = this;
@@ -109,19 +121,19 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     void OnPointerDown()
     {
-        if (sandboxMode)
+        if (inventoryMode == InventoryMode.Sandbox)
         {
             //Debug.Log("on pointerDown");
             PlayerController.Instance.enabled = false;
             mouseDown = true;
             lastMousePosition = Input.mousePosition;
-        }
+        }   
     }
 
     //this method is called by the button, it messages the inventory that it was clicked
     public void PlayerSelectedThisButton(InventoryButton clickedButton)
     {
-        if (!sandboxMode)
+        if (inventoryMode != InventoryMode.Sandbox)
         {
             TakeItemFromInventory(clickedButton);
 
@@ -140,7 +152,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
         {
             if (inventoryButtons[i] == clickedButton)
             {
-                if (!sandboxMode)
+                if (inventoryMode == InventoryMode.Normal)
                 {
                     if (items[i].blockAmount > 0)
                     {
@@ -162,7 +174,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     public void  ReturnItemToInventory(BlockObject blockObject)
     {
-        if (!sandboxMode)
+        if (inventoryMode == InventoryMode.Normal)
         {
             blockObject.currentAssignedGridPlane = inventoryGridPlane;
             items[blockObject.inventoryIndex].ReturnBlockObject(blockObject);
