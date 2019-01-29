@@ -20,8 +20,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     Vector2 lastMousePosition;
     InventoryButton selectedButton;
 
-    //bool isEnabled;
-
 
     void Awake () {
         
@@ -84,16 +82,15 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
             {
                 selectedButton = null;
 
-                
-                rectTransform.localPosition = new Vector2
+                rectTransform.anchoredPosition = new Vector2
                 (
                     Mathf.Clamp
                     (
-                        rectTransform.localPosition.x + mouseChange.x,
-                        rectTransform.rect.xMin + 347,  // this 347 needs to be changed, but i dont know wherwe to get it from
-                        rectTransform.rect.xMax - 347
+                        rectTransform.anchoredPosition.x + mouseChange.x,
+                        rectTransform.rect.xMin+(Screen.width/transform.parent.transform.localScale.y),
+                        rectTransform.rect.xMax 
                     ),
-                    rectTransform.localPosition.y
+                    rectTransform.anchoredPosition.y
                  );
             }
             else
