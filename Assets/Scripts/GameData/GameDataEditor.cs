@@ -12,6 +12,11 @@ public class GameDataEditor : MonoBehaviour
     public bool loadFromDefault;
     public GameData data;
 
+    public string dirtyWordsPathForCreation = "/dirtyWordsCreation.json";
+    public string dirtyWordsPath = "Data/dirtyWords";
+    public DirtyWords dirtyWords;
+
+
     public PostProcessingProfile postProcessingProfile;
 
     private void Awake()
@@ -38,6 +43,10 @@ public class GameDataEditor : MonoBehaviour
                 LoadDefaultData();
             }
         }
+
+        //now on working, shuya
+        //LoadDirtyWords();
+        CreateDirtyWordsJson();
     }
 
     private void Start()
@@ -85,6 +94,7 @@ public class GameDataEditor : MonoBehaviour
         return Application.persistentDataPath + dataFilePath;
     }
 
+
     public void LoadData()
     {
         string dataAsJson = File.ReadAllText(getFilePath());
@@ -96,6 +106,32 @@ public class GameDataEditor : MonoBehaviour
         TextAsset defaultGameData = Resources.Load(defaultDataPath) as TextAsset;
         data = JsonUtility.FromJson<GameData>(defaultGameData.text);
     }
+
+    //sh
+    public string GetFilePathForDirtyWordCreation()
+    {
+        return Application.persistentDataPath + dirtyWordsPathForCreation;
+    }
+
+    public void LoadDirtyWords()
+    {
+        TextAsset d = Resources.Load(dirtyWordsPath) as TextAsset;
+        dirtyWords = JsonUtility.FromJson<DirtyWords>(d.text);
+    }
+
+    public void CreateDirtyWordsJson()
+    {
+        string savePath = GetFilePathForDirtyWordCreation();
+        dirtyWords = new DirtyWords();
+        dirtyWords.SetDirtyWords();
+        dirtyWords.SetDirtyWordsList();
+
+        string dataString = JsonUtility.ToJson(dirtyWords);
+        File.WriteAllText(savePath, dataString);
+
+        Debug.Log("DirtyWordsJson has been created : " + savePath);
+    }
+
 
     public void SaveData()
     {
