@@ -1151,11 +1151,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 495405721529273976, guid: 07d66bccd07bf804a93132404e730892,
-        type: 3}
-      propertyPath: gridPositoner
-      value: 
-      objectReference: {fileID: 785018311}
     - target: {fileID: 4507357968352174, guid: 07d66bccd07bf804a93132404e730892, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.75
@@ -1187,6 +1182,16 @@ PrefabInstance:
     - target: {fileID: 4507357968352174, guid: 07d66bccd07bf804a93132404e730892, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 495405721529273976, guid: 07d66bccd07bf804a93132404e730892,
+        type: 3}
+      propertyPath: gridPositoner
+      value: 
+      objectReference: {fileID: 785018311}
+    - target: {fileID: 495405721529273976, guid: 07d66bccd07bf804a93132404e730892,
+        type: 3}
+      propertyPath: padding
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d66bccd07bf804a93132404e730892, type: 3}
@@ -1507,11 +1512,6 @@ PrefabInstance:
         type: 3}
       propertyPath: items.Array.data[0].blockAmount
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4875470933332086863, guid: b5787e38247c36d42a1a439ca3882a6e,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2566829185236210994, guid: b5787e38247c36d42a1a439ca3882a6e,
         type: 3}
@@ -2098,22 +2098,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 195303506073786108, guid: b5787e38247c36d42a1a439ca3882a6e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7738464835942678284, guid: b5787e38247c36d42a1a439ca3882a6e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 195303506323391130, guid: b5787e38247c36d42a1a439ca3882a6e,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 0487f9e30f403eb4d8802aac4d2d4cd9,
-        type: 3}
     - target: {fileID: 2566829185236210998, guid: b5787e38247c36d42a1a439ca3882a6e,
         type: 3}
       propertyPath: tutorialOn
@@ -2134,6 +2118,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 195303506073786108, guid: b5787e38247c36d42a1a439ca3882a6e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738464835942678284, guid: b5787e38247c36d42a1a439ca3882a6e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1285585941407850694, guid: b5787e38247c36d42a1a439ca3882a6e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2144,6 +2138,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.00024414062
       objectReference: {fileID: 0}
+    - target: {fileID: 4875470933332086863, guid: b5787e38247c36d42a1a439ca3882a6e,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 195303506323391130, guid: b5787e38247c36d42a1a439ca3882a6e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0487f9e30f403eb4d8802aac4d2d4cd9,
+        type: 3}
     - target: {fileID: 7358794711247641925, guid: b5787e38247c36d42a1a439ca3882a6e,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2338,12 +2343,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c747522d4afe0446bfa1b24d0298043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeAttack: 0
   colums: 3
   rows: 4
   padding: 2
   gridPlane: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
     type: 3}
-  gridPadding: 1
   LevelInstantiator: {fileID: 0}
 --- !u!1 &790611942
 GameObject:
