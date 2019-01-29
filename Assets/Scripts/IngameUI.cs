@@ -42,10 +42,7 @@ public class IngameUI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (pauseMenuPanel.active && Input.GetKeyDown(KeyCode.Escape))
-        {
-            IngameManager.Instance.Resume();
-        }
+
     }
 
     #region tutorial code

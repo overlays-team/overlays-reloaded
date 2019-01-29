@@ -14,13 +14,13 @@ public class IngameManager : MonoBehaviour
     public IngameUI ingameUI;
     public SceneFader fader;
 
-    public int star;
+    public int score;
     public int moves = 0;
     public int maxMoves = 15;
 
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
 
-    public void setOutputImages(List<ImageOutput> outputImages)
+    public void SetOutputImages(List<ImageOutput> outputImages)
     {
 
         this.outputImages = outputImages;
@@ -69,27 +69,23 @@ public class IngameManager : MonoBehaviour
             case NormalModeState.Playing:
                 CheckIfWeWon();
                 break;
-        }
-        //sh, for debug, force win
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Win();
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Lose();
+            case NormalModeState.Paused:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Resume();
+                }
+                break;
         }
     }
 
     void Win()
     {
-        star = 3 - (moves * 3 / maxMoves);
-        if(star <= 0)
+        score = 3 - (moves * 3 / maxMoves);
+        if(score <= 0)
         {
-            star = 1;
+            score = 1;
         }
-        ingameUI.ShowLevelCompletePanel(star);
+        ingameUI.ShowLevelCompletePanel(score);
         SaveLevelState();
         currentState = NormalModeState.GameComplete;
     }
@@ -99,13 +95,15 @@ public class IngameManager : MonoBehaviour
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
+
             if (SceneManager.GetActiveScene().name.Equals(GameDataEditor.Instance.data.levels[i].sceneID))
             {
-                GameDataEditor.Instance.data.levels[i].score = star;
+                GameDataEditor.Instance.data.levels[i].score = score;
                 GameDataEditor.Instance.data.levels[i].completed = true;
-                GameDataEditor.Instance.data.levels[i].completed = true;
+                GameDataEditor.Instance.data.levels[i+1].completed = true;
             }
         }
+        GameDataEditor.Instance.SaveData();
     }
 
     void Lose()
