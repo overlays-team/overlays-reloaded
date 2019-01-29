@@ -15,6 +15,7 @@ public class GameDataEditor : MonoBehaviour
     public string dirtyWordsPathForCreation = "/dirtyWordsCreation.json";
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
+    private DirtyWordsCreator dirtyWordsCreator;
 
 
     public PostProcessingProfile postProcessingProfile;
@@ -115,18 +116,18 @@ public class GameDataEditor : MonoBehaviour
 
     public void LoadDirtyWords()
     {
-        TextAsset d = Resources.Load(dirtyWordsPath) as TextAsset;
-        dirtyWords = JsonUtility.FromJson<DirtyWords>(d.text);
+        TextAsset dirtyWordsJson = Resources.Load(dirtyWordsPath) as TextAsset;
+        dirtyWords = JsonUtility.FromJson<DirtyWords>(dirtyWordsJson.text);
     }
 
     public void CreateDirtyWordsJson()
     {
         string savePath = GetFilePathForDirtyWordCreation();
-        dirtyWords = new DirtyWords();
-        dirtyWords.SetDirtyWords();
-        dirtyWords.SetDirtyWordsList();
+        dirtyWordsCreator = new DirtyWordsCreator();
+        dirtyWordsCreator.SetDirtyWords();
+        dirtyWordsCreator.SetDirtyWordsList();
 
-        string dataString = JsonUtility.ToJson(dirtyWords);
+        string dataString = JsonUtility.ToJson(dirtyWordsCreator);
         File.WriteAllText(savePath, dataString);
 
         Debug.Log("DirtyWordsJson has been created : " + savePath);
