@@ -1673,6 +1673,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 495405721529273976, guid: 07d66bccd07bf804a93132404e730892,
+        type: 3}
+      propertyPath: gridPositoner
+      value: 
+      objectReference: {fileID: 785018311}
+    - target: {fileID: 495405721529273976, guid: 07d66bccd07bf804a93132404e730892,
+        type: 3}
+      propertyPath: padding
+      value: 4.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07d66bccd07bf804a93132404e730892, type: 3}
 --- !u!1 &444439844
@@ -1698,15 +1708,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 444439844}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.65, y: 2.854309, z: -1.83}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.91, y: 2.854309, z: -0.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1757901831}
   - {fileID: 785018305}
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &479361478 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4492007362127488, guid: 60c5f9f9afd0be848ab0bd5cb3f11e99,
@@ -3224,6 +3234,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1044633467700963308, guid: b5787e38247c36d42a1a439ca3882a6e,
+        type: 3}
+      propertyPath: outputImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 1769895663}
     - target: {fileID: 2912702532992646474, guid: b5787e38247c36d42a1a439ca3882a6e,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -3594,11 +3609,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.0009765625
       objectReference: {fileID: 0}
-    - target: {fileID: 1044633467700963308, guid: b5787e38247c36d42a1a439ca3882a6e,
-        type: 3}
-      propertyPath: outputImages.Array.data[0]
-      value: 
-      objectReference: {fileID: 1769895663}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5787e38247c36d42a1a439ca3882a6e, type: 3}
 --- !u!1 &715260870
@@ -3950,12 +3960,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeAttack: 0
-  colums: 0
+  colums: 5
   rows: 5
   padding: 2
   gridPlane: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
     type: 3}
-  gridPadding: 1
   LevelInstantiator: {fileID: 0}
 --- !u!1 &879157876
 GameObject:
@@ -5260,8 +5269,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242422178}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.65, y: 2.854309, z: -1.83}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9100001, y: 2.854309, z: -0.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 543424149}
@@ -5272,7 +5281,7 @@ Transform:
   - {fileID: 211593656}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1247526918
 GameObject:
   m_ObjectHideFlags: 0
@@ -7898,16 +7907,16 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4588718414413574658, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
-        type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 515336697}
     - target: {fileID: 114258330935808434, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
         type: 3}
       propertyPath: inventory
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4588718414413574658, guid: 09b6dc5a23788114e9c2deb67ea34d6c,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 515336697}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09b6dc5a23788114e9c2deb67ea34d6c, type: 3}
 --- !u!1001 &2135770309457976556
