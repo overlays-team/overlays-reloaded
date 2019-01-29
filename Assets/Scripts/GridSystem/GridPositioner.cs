@@ -24,9 +24,6 @@ public class GridPositioner : MonoBehaviour
     [SerializeField]
     GameObject[,] gridPlaneArray;
 
-    [SerializeField]
-    float gridPadding = 1f;
-
     [Tooltip("Only used in Time attack Mode")]
     public LevelInstantiator LevelInstantiator;
 

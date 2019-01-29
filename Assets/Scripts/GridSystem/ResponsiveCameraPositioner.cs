@@ -41,6 +41,9 @@ public class ResponsiveCameraPositioner : MonoBehaviour
         float degree = Camera.main.fieldOfView/2;
         float height;
         float alpha = Mathf.Deg2Rad * degree;
+        Debug.Log("grid width: " + gridPositoner.GetGridWidth());
+        Debug.Log("grid height: " + gridPositoner.GetGridHeight());
+
         if (gridPositoner.GetGridWidth() >= gridPositoner.GetGridHeight())
         {
             height = (gridPositoner.GetGridWidth() + padding) / 2  / Mathf.Tan(alpha);
