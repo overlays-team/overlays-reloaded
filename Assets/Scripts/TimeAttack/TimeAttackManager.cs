@@ -94,9 +94,6 @@ public class TimeAttackManager : MonoBehaviour
         } 
         else
         {
-            //TODO: doent't work if "c" is being inputed in inputTextField. 
-            //playerName = timeAttackUI.nameInputField.text;
-
             httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
