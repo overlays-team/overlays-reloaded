@@ -37,7 +37,7 @@ public class TimeAttackManager : MonoBehaviour
 
         //test
         //string playerName = "TESTafoiuawhbreogboeraubgisbfouadbfiouadTEST";
-        string playerName = "shuya";
+        string playerName = "fuckkkkk";
         timeAttackUI.nameInputField.text = playerName;
         SubmitScore();
 
@@ -88,22 +88,15 @@ public class TimeAttackManager : MonoBehaviour
     public void SubmitScore()
     {
         string playerName = timeAttackUI.nameInputField.text;
-
-        //speed measurement
-        //SpeedTest(playerName);
-
-        //TODO:
-        //isDirtyWord = CheckDirtyWords()
-        bool IsDirty = IsDirtyWord(playerName);
-        Debug.Log(IsDirty);
+        bool hasDirtyWord = CheckDirtyWord(playerName);
+        Debug.Log(hasDirtyWord);
 
         if (string.IsNullOrEmpty(playerName))
         {
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
         } 
-        else if (IsDirtyWord(playerName))
+        else if (hasDirtyWord)
         {
-
             timeAttackUI.scoreSubmitText.text = "Please try different name!";
         } 
         else
@@ -121,12 +114,7 @@ public class TimeAttackManager : MonoBehaviour
     }
 
 
-    //facade, will be refactored later
-    private bool IsDirtyWord(string playerName){
-        return IsDirtyWordInList(playerName);
-    }
-
-    private bool IsDirtyWordInList(string playerName)
+    private bool CheckDirtyWord(string playerName)
     {
         bool isDirty = false;
         foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
