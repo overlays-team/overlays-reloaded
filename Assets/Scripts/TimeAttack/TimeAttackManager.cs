@@ -105,7 +105,7 @@ public class TimeAttackManager : MonoBehaviour
     {
         string playerName = timeAttackUI.nameInputField.text;
 
-        //test
+        //prepare for speed mesurement
         Debug.Log(playerName);
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
@@ -120,6 +120,14 @@ public class TimeAttackManager : MonoBehaviour
         Debug.Log("IsDirtyWordInList(): " + IsDirtyWordInList(playerName));
         sw.Stop();
         Debug.Log("IsDirtyWordInList(): " + sw.ElapsedMilliseconds + "ms");
+
+        //coonvert for testing
+        CovertWordsListToWordsHashSet();
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInHastSet(): " + IsDirtyWordInHastSet(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInHastSet(): " + sw.ElapsedMilliseconds + "ms");
 
 
         if (string.IsNullOrEmpty(playerName))
@@ -176,6 +184,32 @@ public class TimeAttackManager : MonoBehaviour
         //i.e) abcdefuckabcde contains playerName=fuck -->true
         //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
         isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
+        return isDirty;
+    }
+
+
+    private void CovertWordsListToWordsHashSet()
+    {
+        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
+        {
+            dirtyWordsHashSetTest.Add(word);
+        }
+    }
+
+    //this is for testing purpose
+    HashSet<string> dirtyWordsHashSetTest = new HashSet<string>();
+    private bool IsDirtyWordInHastSet(string playerName)
+    {
+        bool isDirty = false;
+        foreach (string dirtyWord in dirtyWordsHashSetTest)
+        {
+            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
+            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+        }
         return isDirty;
     }
 

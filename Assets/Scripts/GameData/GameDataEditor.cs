@@ -12,11 +12,10 @@ public class GameDataEditor : MonoBehaviour
     public bool loadFromDefault;
     public GameData data;
 
-    public string dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
+    private string dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
     private DirtyWordsInitializer dirtyWordsInitializer;
-
 
     public PostProcessingProfile postProcessingProfile;
 
