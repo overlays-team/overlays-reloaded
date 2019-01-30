@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,10 +11,10 @@ public class IngameUI : MonoBehaviour {
     public GameObject star2;
     public GameObject star3;
     public GameObject levelCompletePanel;
-    public GameObject gameOverPanel;
     public GameObject pauseMenuPanel;
     public GameObject inventory;
     public GameObject pauseButton;
+    public GameObject nextButton;
     public Text shoutOutText;
 
     public float winWaitTime = 2f;
@@ -26,14 +25,10 @@ public class IngameUI : MonoBehaviour {
     public GameObject tutorialButton;
     public bool tutorialOn;
 
-
-
-
     // Use this for initialization
     void Start()
     {
         TransparentToZero(pauseMenuPanel.transform);
-        TransparentToZero(gameOverPanel.transform);
         TransparentToZero(levelCompletePanel.transform);
 
         if (tutorialOn) ToogleTutorialOn();
@@ -93,7 +88,7 @@ public class IngameUI : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitAndPrint(int star, bool endOfLevel)
+    IEnumerator DelayedLevelCompletePanel(int star, bool endOfLevel)
     {
         yield return new WaitForSeconds(winWaitTime);
 
@@ -115,14 +110,7 @@ public class IngameUI : MonoBehaviour {
         levelCompletePanel.SetActive(true);
         if (endOfLevel)
         {
-            Transform trans = levelCompletePanel.transform;
-            foreach (Transform child in trans)
-            {
-                if (child.gameObject.name.Equals("NextButton"))
-                {
-                    child.gameObject.SetActive(false);
-                }
-            }
+            nextButton.SetActive(false);
         }
 
         pauseButton.SetActive(false);
@@ -132,7 +120,7 @@ public class IngameUI : MonoBehaviour {
 
     public void ShowLevelCompletePanel(int star, bool endOfLevel)
     {
-        StartCoroutine(WaitAndPrint(star, endOfLevel));
+        StartCoroutine(DelayedLevelCompletePanel(star, endOfLevel));
         IngameManager.Instance.PauseGame();
     }
 
@@ -149,22 +137,11 @@ public class IngameUI : MonoBehaviour {
         pauseMenuPanel.SetActive(false);
         TransparentToZero(pauseMenuPanel.transform);
     }
-    public void ShowGameOverPanel()
-    {
-        HideIngameUI();
-        gameOverPanel.SetActive(true);
-        StartCoroutine(AnimateBlurIn(gameOverPanel, blurAnimDuration));
-    }
 
     public void HideLevelCompletePanel()
     {
         ShowIngameUI();
         levelCompletePanel.SetActive(false);
-    }
-    public void HideGameOverPanel()
-    {
-        ShowIngameUI();
-        gameOverPanel.SetActive(false);
     }
 
     private void TransparentToZero(Transform trans)
@@ -191,9 +168,6 @@ public class IngameUI : MonoBehaviour {
                 colors = newColor;
                 child.gameObject.GetComponent<Image>().color = colors;
             }
-
         }
     }
-
-
 }

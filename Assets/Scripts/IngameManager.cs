@@ -12,7 +12,6 @@ public class IngameManager : MonoBehaviour
     public NormalModeState currentState;
 
     public IngameUI ingameUI;
-    public SceneFader fader;
 
     public int score;
     public int moves = 0;
@@ -21,8 +20,7 @@ public class IngameManager : MonoBehaviour
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
 
     public void SetOutputImages(List<ImageOutput> outputImages)
-    {
-
+    { 
         this.outputImages = outputImages;
     }
     public static IngameManager Instance;
@@ -45,9 +43,8 @@ public class IngameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fader.FadeToClear();
+        SceneFader.Instance.FadeToClear();
         ingameUI.HideLevelCompletePanel();
-        ingameUI.HideGameOverPanel();
 
         //get out ImageOutputs
         GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
@@ -67,7 +64,7 @@ public class IngameManager : MonoBehaviour
         switch (currentState)
         {
             case NormalModeState.Playing:
-                CheckIfWeWon();
+                CheckWinCondition();
                 break;
             case NormalModeState.Paused:
                 if (Input.GetKeyDown(KeyCode.Escape))
@@ -115,27 +112,19 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.SaveData();
     }
 
-    void Lose()
-    {
-        ingameUI.ShowGameOverPanel();
-    }
-
     public void Next()
     {
-        fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Time.timeScale = 1f;
+        SceneFader.Instance.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1f;
     }
 
     public void MainMenu()
     {
-        fader.FadeTo("MainMenu");
-        Time.timeScale = 1f;
+        SceneFader.Instance.FadeTo("MainMenu");
     }
     public void Pause()
     {
@@ -165,13 +154,12 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowIngameUI();
     }
 
-    public bool CheckIfWeWon()
+    public bool CheckWinCondition()
     {
         bool allCorrect = true; 
 
         if (outputImages.Count> 0)
         {
-            
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
@@ -183,8 +171,6 @@ public class IngameManager : MonoBehaviour
         {
             allCorrect = false;
         }
-
-
         return allCorrect;
     }
 
@@ -196,8 +182,6 @@ public class IngameManager : MonoBehaviour
     IEnumerator WinCoroutine()
     {
         yield return new WaitForSeconds(1);
-        if (CheckIfWeWon()) Win();
+        if (CheckWinCondition()) Win();
     }
-
-
 }
