@@ -93,7 +93,7 @@ public class IngameUI : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitAndPrint(int star)
+    IEnumerator WaitAndPrint(int star, bool endOfLevel)
     {
         yield return new WaitForSeconds(winWaitTime);
 
@@ -112,16 +112,27 @@ public class IngameUI : MonoBehaviour {
                 shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
                 break;
         }
-
         levelCompletePanel.SetActive(true);
+        if (endOfLevel)
+        {
+            Transform trans = levelCompletePanel.transform;
+            foreach (Transform child in trans)
+            {
+                if (child.gameObject.name.Equals("NextButton"))
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+
         pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
-    public void ShowLevelCompletePanel(int star)
+    public void ShowLevelCompletePanel(int star, bool endOfLevel)
     {
-        StartCoroutine(WaitAndPrint(star));
+        StartCoroutine(WaitAndPrint(star, endOfLevel));
         IngameManager.Instance.PauseGame();
     }
 

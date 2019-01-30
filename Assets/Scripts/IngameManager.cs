@@ -25,10 +25,10 @@ public class IngameManager : MonoBehaviour
 
         this.outputImages = outputImages;
     }
-
     public static IngameManager Instance;
-    private Scene currentScene;
 
+    private Scene currentScene;
+    private bool endOfLevel = false;
     //Singletoncode
     private void Awake()
     {
@@ -85,8 +85,8 @@ public class IngameManager : MonoBehaviour
         {
             score = 1;
         }
-        ingameUI.ShowLevelCompletePanel(score);
         SaveLevelState();
+        ingameUI.ShowLevelCompletePanel(score, endOfLevel);
         currentState = NormalModeState.GameComplete;
     }
 
@@ -95,12 +95,21 @@ public class IngameManager : MonoBehaviour
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
-
             if (SceneManager.GetActiveScene().name.Equals(GameDataEditor.Instance.data.levels[i].sceneID))
             {
-                GameDataEditor.Instance.data.levels[i].score = score;
+                if (GameDataEditor.Instance.data.levels[i].score<score)
+                {
+                    GameDataEditor.Instance.data.levels[i].score = score;
+                }
                 GameDataEditor.Instance.data.levels[i].completed = true;
-                GameDataEditor.Instance.data.levels[i+1].completed = true;
+                if (i == numberOfLevelsInGameData-1)
+                {
+                    endOfLevel = true;
+                }
+                else
+                {
+                    GameDataEditor.Instance.data.levels[i + 1].completed = true;
+                }
             }
         }
         GameDataEditor.Instance.SaveData();
@@ -126,7 +135,6 @@ public class IngameManager : MonoBehaviour
     public void MainMenu()
     {
         fader.FadeTo("MainMenu");
-        //SceneManager.LoadScene("MainMenu");
         Time.timeScale = 1f;
     }
     public void Pause()
