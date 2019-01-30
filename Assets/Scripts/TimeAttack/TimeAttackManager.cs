@@ -77,6 +77,7 @@ public class TimeAttackManager : MonoBehaviour
         return ("player" + "-" + random);
     }
 
+    /*
     public void SubmitScore()
     {
         string playerName = "";
@@ -86,6 +87,7 @@ public class TimeAttackManager : MonoBehaviour
 
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
         }
+
         else
         {
             //TODO: doent't work if "c" is being inputed in inputTextField. 
@@ -96,7 +98,88 @@ public class TimeAttackManager : MonoBehaviour
             Debug.Log(playerName);
             timeAttackUI.ShowSubmitCompleteMessage();
         }
+    }*/
+
+
+    public void SubmitScore()
+    {
+        string playerName = ingameUI.nameInputField.text;
+
+        //test
+        Debug.Log(playerName);
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Start();
+        Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
+
+        sw.Start();
+        Debug.Log("IsDirtyWordInList(): " + IsDirtyWordInList(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInList(): " + sw.ElapsedMilliseconds + "ms");
+
+
+
+        if (string.IsNullOrEmpty(playerName))
+        {
+            ingameUI.ShowMessageDialogPanel("Please enter your name!", "return");
+        } /*
+        else if (IsDirtyWord(playerName))
+        {
+            ingameUI.ShowMessageDialogPanel("Please try different name!", "return");
+        } */
+        else
+        {
+            //TODO: doesnt't work if "c" is being inputed in inputTextField. 
+            //playerName = ingameUI.nameInputField.text;
+            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+            GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
+
+            Debug.Log(playerName);
+            ingameUI.ShowSubmitCompleteMessage();
+
+        }
     }
+
+
+    private bool IsDirtyWordInList(string playerName)
+    {
+        bool isDirty = false;
+        //Debug.Log(playerName);
+
+        foreach (string dirtyWord in GameDataEditor.Instance.dirtyWordsEglish.dirtyWordsList)
+        {
+            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
+            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+        }
+        //Debug.Log("isDirty: " + isDirty);
+        return isDirty;
+    }
+
+
+    private bool IsDirtyWordInString(string playerName)
+    {
+        bool isDirty = false;
+        //Debug.Log(playerName);
+
+        //this comparison is meaningless. this is always false
+        //i.e) playerName=fuckkkk contains abcedffuckabcedf --> false 
+        //i.e) playerName=fuck contains abcedffuckabcedf --> false
+        //isDirty = playerName.ToUpper().Contains(GameDataEditor.Instance.dirtyWordsEglish.dirtyWords.ToUpper());
+
+        //i.e) abcdefuckabcde contains playerName=fuck -->true
+        //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
+        isDirty = GameDataEditor.Instance.dirtyWordsEglish.dirtyWords.ToUpper().Contains(playerName.ToUpper());
+
+        //Debug.Log("isDirty: " + isDirty);
+        return isDirty;
+    }
+
+
 
     private void CheckHighestTotalScore()
     {
