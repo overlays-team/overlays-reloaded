@@ -6,6 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class DirtyWords
 {
-    public string words;
+    //public string words;
     public List<string> wordsList;
 }
