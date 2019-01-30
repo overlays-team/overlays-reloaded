@@ -36,7 +36,8 @@ public class TimeAttackManager : MonoBehaviour
         }
 
         //test
-        string playerName = "TESTafoiuawhbreogboeraubgisbfouadbfiouadTEST";
+        //string playerName = "TESTafoiuawhbreogboeraubgisbfouadbfiouadTEST";
+        string playerName = "shuya";
         timeAttackUI.nameInputField.text = playerName;
         SubmitScore();
         string dirty = "fuck";
@@ -91,7 +92,12 @@ public class TimeAttackManager : MonoBehaviour
         string playerName = timeAttackUI.nameInputField.text;
 
         //speed measurement
-        SpeedTest(playerName);
+        //SpeedTest(playerName);
+
+        //TODO:
+        //isDirtyWord = CheckDirtyWords()
+        bool IsDirty = IsDirtyWord(playerName);
+        Debug.Log(IsDirty);
 
         if (string.IsNullOrEmpty(playerName))
         {
@@ -99,6 +105,7 @@ public class TimeAttackManager : MonoBehaviour
         } 
         else if (IsDirtyWord(playerName))
         {
+
             timeAttackUI.scoreSubmitText.text = "Please try different name!";
         } 
         else
@@ -115,7 +122,7 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
-
+    /*
     private void SpeedTest(string playerName)
     {
         //prepare for speed mesurement
@@ -123,12 +130,12 @@ public class TimeAttackManager : MonoBehaviour
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
         //speed measurement
-        /*
+
         sw.Start();
         Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
         sw.Stop();
         Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
-        */
+
 
         //speed measurement
         sw.Start();
@@ -165,6 +172,7 @@ public class TimeAttackManager : MonoBehaviour
         Debug.Log("IsDirtyWordInHashCodeList(): " + sw.ElapsedMilliseconds + "ms");
 
     }
+    */
 
 
     //facade, will be refactored later
@@ -175,14 +183,11 @@ public class TimeAttackManager : MonoBehaviour
     private bool IsDirtyWordInList(string playerName)
     {
         bool isDirty = false;
-
-        Debug.Log(playerName.ToUpper());
         foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
         {
             //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
             if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
             {
-                Debug.Log(dirtyWord.ToUpper());
                 isDirty = true;
                 break;
             }
@@ -191,6 +196,7 @@ public class TimeAttackManager : MonoBehaviour
     }
 
 
+    /*
     private bool IsDirtyWordInString(string playerName)
     {
         bool isDirty = false;
@@ -286,6 +292,7 @@ public class TimeAttackManager : MonoBehaviour
         return isDirty;
     }
 
+    */
 
     private void CheckHighestTotalScore()
     {
