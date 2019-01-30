@@ -14,8 +14,8 @@ public class GameDataEditor : MonoBehaviour
 
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
-    private readonly string  dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
-    private DirtyWordsInitializer dirtyWordsInitializer;
+    //private readonly string  dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
+    //private DirtyWordsInitializer dirtyWordsInitializer;
 
     public PostProcessingProfile postProcessingProfile;
 
@@ -109,10 +109,12 @@ public class GameDataEditor : MonoBehaviour
     }
 
     //sh
+    /*
     private string GetFilePathForDirtyWordInitialization()
     {
         return Application.persistentDataPath + dirtyWordsPathForInitialization;
     }
+    */
 
     private void LoadDirtyWords()
     {
@@ -122,7 +124,7 @@ public class GameDataEditor : MonoBehaviour
 
     private void PrintDirtyWords()
     {
-        int scope = 3;
+        int scope = 3; //because there are to much 
         int size = dirtyWords.wordsList.Count;
         //scope = size;
         Debug.Log(size);
@@ -132,6 +134,7 @@ public class GameDataEditor : MonoBehaviour
         }
     }
 
+    /*
     private void InitializeDirtyWordsJson()
     {
         string savePath = GetFilePathForDirtyWordInitialization();
@@ -144,7 +147,9 @@ public class GameDataEditor : MonoBehaviour
 
         Debug.Log("DirtyWordsJson has been initialized : " + savePath);
     }
+    */
 
+    /*
     private void HashCodeTest()
     {
         string testString1 = "test";
@@ -152,6 +157,7 @@ public class GameDataEditor : MonoBehaviour
         string testString2 = "test";
         Debug.Log(testString2.GetHashCode());
     }
+    */
 
 
     public void SaveData()
