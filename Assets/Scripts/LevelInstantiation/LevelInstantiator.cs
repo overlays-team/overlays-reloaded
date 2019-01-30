@@ -15,6 +15,8 @@ public class LevelInstantiator : MonoBehaviour
     [Tooltip("Must be 1 and above but not higher than the numOfIntensities.")]
     public int initialIntensity;
     public int numOfIntensities;
+    public ResponsiveCameraPositioner cameraPositioner;
+
     //For loading of data
     [Tooltip("Please write: '/Levels/NAME.json' here")]
     private string dataFileName;
@@ -33,8 +35,6 @@ public class LevelInstantiator : MonoBehaviour
     GridPositioner gridPositioner;
     TimeAttackManager timeAttackManager;
     List<ImageOutput> imageOutputs = new List<ImageOutput>();
-
-    public ResponsiveCameraPositioner cameraPositioner;
 
     //BlockObjects
     public GameObject wall;
@@ -106,13 +106,13 @@ public class LevelInstantiator : MonoBehaviour
         SplitData(jsonAsString);
         assignPics();
         int temp = levelIndex;
-        cameraPositioner.AdjustCamera();
         while (temp == levelIndex)
         {
             GenerateRandomLvlIndex();
             //print("LvlIndex: " + levelIndex + "Temp: " + temp);
         }
         ApplyLevelData();
+        cameraPositioner.AdjustCamera();
 
     }
 
