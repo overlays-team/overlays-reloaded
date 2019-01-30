@@ -12,11 +12,10 @@ public class GameDataEditor : MonoBehaviour
     public bool loadFromDefault;
     public GameData data;
 
-    public string dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
-    public string dirtyWordsPath = "Data/dirtyWords";
+    public string dirtyWordsPath = "Data/dirtyWords.json";
     public DirtyWords dirtyWords;
+    private readonly string  dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
     private DirtyWordsInitializer dirtyWordsInitializer;
-
 
     public PostProcessingProfile postProcessingProfile;
 
@@ -48,7 +47,7 @@ public class GameDataEditor : MonoBehaviour
         //now on working, shuya
         //InitializeDirtyWordsJson();
         LoadDirtyWords();
-        PrintDirtyWords();
+        //PrintDirtyWords();
     }
 
     private void Start()
@@ -142,6 +141,14 @@ public class GameDataEditor : MonoBehaviour
         File.WriteAllText(savePath, dataString);
 
         Debug.Log("DirtyWordsJson has been initialized : " + savePath);
+    }
+
+    private void HashCodeTest()
+    {
+        string testString1 = "test";
+        Debug.Log(testString1.GetHashCode());
+        string testString2 = "test";
+        Debug.Log(testString2.GetHashCode());
     }
 
 
