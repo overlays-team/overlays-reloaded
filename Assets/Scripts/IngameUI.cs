@@ -1,40 +1,23 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IngameUI : MonoBehaviour {
-    public GameObject levelCompleteMenu;
-    //public Image myImageComponent;
-    public GameObject gameOverMenu;
+
+    private string[] goodShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
+    private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
+    private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Close one!" };
     public GameObject star1;
     public GameObject star2;
     public GameObject star3;
-    public GameObject pauseButton;
-    public GameObject playButton;
+    public GameObject levelCompletePanel;
     public GameObject pauseMenuPanel;
-    public GameObject pausePlayButton;
-    private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
-    private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
-    public Text levelCompleteText;
-
-    public Text countDownText;
-    public GameObject countDownPanel;
-    public GameObject totalScorePanel;
-    public GameObject highestScorePanel;
-    public Text totalScoreText;
-    public Text highestScoreText;
-    public GameObject nameInputPanel;
-    public Text nameInputPanelText;
-    public GameObject nameInputSubPanel;
-    public InputField nameInputField;
-    public GameObject messageDialogPanel;
-    public Text messageDialogText;
-    public Text mesageDialogButtonText;
+    public GameObject inventory;
+    public GameObject pauseButton;
+    public GameObject nextButton;
+    public Text shoutOutText;
 
     public float winWaitTime = 2f;
-
     public float blurAnimDuration;
 
     //tutorial variables
@@ -42,15 +25,11 @@ public class IngameUI : MonoBehaviour {
     public GameObject tutorialButton;
     public bool tutorialOn;
 
-    public GameObject inventory;
-
-
     // Use this for initialization
     void Start()
     {
         TransparentToZero(pauseMenuPanel.transform);
-        TransparentToZero(gameOverMenu.transform);
-        TransparentToZero(levelCompleteMenu.transform);
+        TransparentToZero(levelCompletePanel.transform);
 
         if (tutorialOn) ToogleTutorialOn();
     }
@@ -58,10 +37,7 @@ public class IngameUI : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (pauseMenuPanel.active && Input.GetKeyDown(KeyCode.Escape))
-        {
-            IngameManager.Instance.Resume();
-        }
+
     }
 
     #region tutorial code
@@ -78,7 +54,6 @@ public class IngameUI : MonoBehaviour {
             IngameManager.Instance.PauseGame();
         }
     }
-
     #endregion
 
     public void HideIngameUI()
@@ -94,8 +69,6 @@ public class IngameUI : MonoBehaviour {
         inventory.SetActive(true);
         if (tutorialOn)tutorialButton.SetActive(true);
     }
-
-
 
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
     {
@@ -115,49 +88,40 @@ public class IngameUI : MonoBehaviour {
         }
     }
 
-    IEnumerator WaitAndPrint(int star, int totalScore, int highestTotalScore, bool attackMode)
+    IEnumerator DelayedLevelCompletePanel(int star, bool endOfLevel)
     {
         yield return new WaitForSeconds(winWaitTime);
-
-        if (attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
-
-        if (attackMode) highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
-
 
         switch (star)
         {
             case 1:
-                levelCompleteText.text = star1Texts[Random.Range(0, 3)];
+                shoutOutText.text = badShoutoutTexts[Random.Range(0, 3)];
                 star2.SetActive(false);
                 star3.SetActive(false);
-
                 break;
             case 2:
-                levelCompleteText.text = star2Texts[Random.Range(0, 3)];
+                shoutOutText.text = mediumShoutoutTexts[Random.Range(0, 3)];
                 star3.SetActive(false);
                 break;
             case 3:
-                levelCompleteText.text = star3Texts[Random.Range(0, 3)];
+                shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
                 break;
         }
+        levelCompletePanel.SetActive(true);
+        if (endOfLevel)
+        {
+            nextButton.SetActive(false);
+        }
 
-        levelCompleteMenu.SetActive(true);
-        pausePlayButton.SetActive(false);
+        pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
-        StartCoroutine(AnimateBlurIn(levelCompleteMenu, blurAnimDuration));
+        StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    public void ShowLevelCompletePanel(int star, bool endOfLevel)
     {
-
-        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
-        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
-
-        //sh
-        //totalScoreText.text = "YOUR SCORE: " + totalScore;
-        StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
+        StartCoroutine(DelayedLevelCompletePanel(star, endOfLevel));
         IngameManager.Instance.PauseGame();
-
     }
 
     public void TogglePause()
@@ -173,79 +137,11 @@ public class IngameUI : MonoBehaviour {
         pauseMenuPanel.SetActive(false);
         TransparentToZero(pauseMenuPanel.transform);
     }
-    public void ShowGameOverPanel()
-    {
-        HideIngameUI();
-        gameOverMenu.SetActive(true);
-        StartCoroutine(AnimateBlurIn(gameOverMenu, blurAnimDuration));
-    }
-
-    public void ShowNameInputPanel()
-    {
-        nameInputPanel.SetActive(true);
-    }
-    public void HideNameInputPanel()
-    {
-        nameInputPanel.SetActive(false);
-    }
 
     public void HideLevelCompletePanel()
     {
         ShowIngameUI();
-        levelCompleteMenu.SetActive(false);
-    }
-    public void HideGameOverPanel()
-    {
-        ShowIngameUI();
-        gameOverMenu.SetActive(false);
-    }
-
-    public void ShowCountDownText(bool isEnabled)
-    {
-        countDownPanel.SetActive(isEnabled);
-        countDownText.enabled = isEnabled;
-    }
-
-    public void ShowTotalScorePanel(bool isEnabled)
-    {
-        totalScorePanel.SetActive(isEnabled);
-        totalScoreText.enabled = isEnabled;
-    }
-
-    public void ShowHighestScorePanel(bool isEnabled)
-    {
-        highestScorePanel.SetActive(isEnabled);
-        highestScoreText.enabled = isEnabled;
-    }
-
-    public void ShowMessageDialogPanel(string message, string buttonText)
-    {
-        messageDialogText.text = message;
-        mesageDialogButtonText.text = buttonText;
-        gameOverMenu.SetActive(false);
-        messageDialogPanel.SetActive(true);
-    }
-
-    public void HideMessageDialogPanel()
-    {
-        messageDialogPanel.SetActive(false);
-        gameOverMenu.SetActive(true);
-    }
-
-    public void ShowSubmitCompleteMessage()
-    {
-        nameInputPanelText.text = "THANK YOU!";
-        nameInputSubPanel.SetActive(false);
-    }
-
-
-    public void UpdateCountDown(float timeRemaining, bool win)
-    {
-        countDownText.text = "TIME REMAINING: " + Mathf.Round(timeRemaining) + "s";
-        if (win)
-        {
-            countDownText.text = "";
-        }
+        levelCompletePanel.SetActive(false);
     }
 
     private void TransparentToZero(Transform trans)
@@ -266,15 +162,12 @@ public class IngameUI : MonoBehaviour {
                 colors = newColor;
                 child.gameObject.GetComponent<Text>().color = colors;
             }
-            else if (child.gameObject.GetComponent<Image>())
+            else if (child.gameObject.GetComponent<Image>() != null)
             {
                 var colors = child.gameObject.GetComponent<Image>().color;
                 colors = newColor;
                 child.gameObject.GetComponent<Image>().color = colors;
             }
-
         }
     }
-
-
 }

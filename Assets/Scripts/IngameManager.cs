@@ -5,47 +5,28 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
+    public enum NormalModeState
+    {
+        Playing, GameComplete, Paused
+    }
+    public NormalModeState currentState;
+
     public IngameUI ingameUI;
-    public SceneFader fader;
 
-    [SerializeField]
-    private bool attackMode;
-
-    public LevelInstantiator levelInstantiator;
-
-    //sh
-    public int star;
-    private int scoreFactor = 10;
-    private int thisLevelScore;
-    private int previousTotalScore;
-    private int newTotalScore;
-    public HttpCommunicator httpCommunicator;
-
-    //private string playerName;
-    //private int highestTotalScore;
-    //private string highestTotalScorePlayerName;
-
-    private bool timeRunsOut;
+    public int score;
     public int moves = 0;
     public int maxMoves = 15;
 
-
-    private bool win;
-    private bool lose;
-    public float timeLeft = 5.0f;
-    bool paused;
-
-
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
 
-    public void setOutputImages(List<ImageOutput> outputImages)
-    {
-
+    public void SetOutputImages(List<ImageOutput> outputImages)
+    { 
         this.outputImages = outputImages;
     }
-
     public static IngameManager Instance;
 
+    private Scene currentScene;
+    private bool endOfLevel = false;
     //Singletoncode
     private void Awake()
     {
@@ -62,19 +43,11 @@ public class IngameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fader.FadeToClear();
-        win = false;
-        lose = false;
+        SceneFader.Instance.FadeToClear();
         ingameUI.HideLevelCompletePanel();
-        ingameUI.HideGameOverPanel();
-
-        SetTestParameters();
-
-        LoadLevelState();
 
         //get out ImageOutputs
         GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
-
         foreach (GameObject go in imageOutputGO)
         {
             if (go.GetComponent<ImageOutput>() != null)
@@ -82,245 +55,80 @@ public class IngameManager : MonoBehaviour
                 outputImages.Add(go.GetComponent<ImageOutput>());
             }
         }
-
-
+        currentState = NormalModeState.Playing;
     }
-
-    private void SetTestParameters()
-    {
-        SetAttackMode(attackMode); //sh, for testing
-
-        //star = Random.Range(1, 4); //sh, for testing. generate star randomlly.
-
-        // needed for test
-        //CreateTestLevelState(); //sh, 
-
-
-        GameDataEditor.Instance.data.highestTotalScore = 177;//sh, for testing
-        GameDataEditor.Instance.data.playerName = "Player"; //sh. for testing
-        if(attackMode)ingameUI.ShowCountDownText(attackMode);
-        if (attackMode) ingameUI.ShowTotalScorePanel(attackMode);
-        if (attackMode)ingameUI.ShowHighestScorePanel(attackMode);
-    }
-
 
     // Update is called once per frame
     void Update()
     {
-        if (!win && !lose && !paused)
+        switch (currentState)
         {
-            if (attackMode) CountTime();
-            CheckIfWeWon();
-
-            //lose if so many moves more than maxMoves
-            lose |= moves > maxMoves;
-            if (lose)
-            {
-                Lose();
-            }
-        }
-        //sh, for debug, force win
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Win();
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            Lose();
+            case NormalModeState.Playing:
+                CheckWinCondition();
+                break;
+            case NormalModeState.Paused:
+                if (Input.GetKeyDown(KeyCode.Escape))
+                {
+                    Resume();
+                }
+                break;
         }
     }
-
-
-
-    private void LoadLevelState() //now only used for getting total score for testing
-    {
-        //highestTotalScore = GameDataEditor.Instance.data.highestTotalScore;
-        //highestTotalScorePlayerName = GameDataEditor.Instance.data.highestTotalScorePlayerName;
-
-        int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-        previousTotalScore = 0;
-
-        for (int i = 0; i < numberOfLevelsInGameData; i++)
-        {
-            if (GameDataEditor.Instance.data.levels[i].completed)
-            {
-                previousTotalScore += GameDataEditor.Instance.data.levels[i].score;
-            }
-        }
-    }
-
 
     void Win()
     {
-        //StopCoroutine("WinCoroutine");
-        thisLevelScore = star * scoreFactor;
-        star = 3 - (moves*3 / maxMoves);
-        UpdateTotalScore();
-        CheckHighestTotalScore();
-        ingameUI.ShowLevelCompletePanel(star, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, attackMode);
-
-        win = true;
-        //sh
+        score = 3 - (moves * 3 / maxMoves);
+        if(score <= 0)
+        {
+            score = 1;
+        }
         SaveLevelState();
-
-        LoadLevelState(); //for test we need this here.
+        ingameUI.ShowLevelCompletePanel(score, endOfLevel);
+        currentState = NormalModeState.GameComplete;
     }
 
-    private string GetRandomPlayerName()
-    {
-        string year = System.DateTime.Now.Year.ToString();
-        string month = System.DateTime.Now.Month.ToString();
-        string day = System.DateTime.Now.Day.ToString();
-
-        int random = Random.Range(1000, 9999);
-
-        return ("player" + "-" + random);
-    }
-
-
-    public void SubmitScore()
-    {
-        string playerName = "";
-
-        if (ingameUI.nameInputField.text.Equals(""))
-        {
-
-            ingameUI.ShowMessageDialogPanel("Please enter your name!", "return");
-        }
-        else
-        {
-            //TODO: doent't work if "c" is being inputed in inputTextField. 
-            playerName = ingameUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
-            GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
-
-            Debug.Log(playerName);
-            ingameUI.ShowSubmitCompleteMessage();
-        }
-    }
-
-    private void UpdateTotalScore()
-    {
-        newTotalScore = thisLevelScore + previousTotalScore;
-    }
-
-    private void CheckHighestTotalScore()
-    {
-        //if it's not attack mode, do nothing.
-        if (!attackMode) return;
-
-        if (GameDataEditor.Instance.data.highestTotalScore < newTotalScore)
-        {
-            SaveHighestTotalScore();
-        }
-    }
-
-    private void SaveHighestTotalScore()
-    {
-        GameDataEditor.Instance.data.highestTotalScore = newTotalScore;
-        GameDataEditor.Instance.data.highestTotalScorePlayerName = GameDataEditor.Instance.data.playerName;
-    }
-
-    //sh
-    public void SetAttackMode(bool attackMode)
-    {
-        this.attackMode = attackMode;
-    }
-
-    //sh
     private void SaveLevelState()
     {
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
-        //Debug.Log("numberOfLevelsInGameData: " + numberOfLevelsInGameData);
-
-        int lastCompletedLevel = 0;
-        int currentLevel = 0;
-        int nextLevel = 0;
-
-        //get last completed level 
         for (int i = 0; i < numberOfLevelsInGameData; i++)
         {
-            string sceneName = "Level" + (i + 1);
-            if (GameDataEditor.Instance.data.levels[i].completed)
+            if (SceneManager.GetActiveScene().name.Equals(GameDataEditor.Instance.data.levels[i].sceneID))
             {
-                lastCompletedLevel = i;
+                if (GameDataEditor.Instance.data.levels[i].score<score)
+                {
+                    GameDataEditor.Instance.data.levels[i].score = score;
+                }
+                GameDataEditor.Instance.data.levels[i].completed = true;
+                if (i == numberOfLevelsInGameData-1)
+                {
+                    endOfLevel = true;
+                }
+                else
+                {
+                    GameDataEditor.Instance.data.levels[i + 1].completed = true;
+                }
             }
-            if (SceneManager.GetActiveScene().name.Equals(sceneName))
-            {
-                Debug.Log("scene name is same");
-                nextLevel = i + 1;
-                currentLevel = i;
-            }
         }
-
-        //get currentLevel
-        if ((lastCompletedLevel == 0) && (numberOfLevelsInGameData == 0)) //for THE first time
-        {
-            currentLevel = 0; //not necessarily but for security
-        }
-        /*
-        else
-        {
-            currentLevel = lastCompletedLevel + 1;
-        }
-        */
-
-        //save score and win/lose state
-        GameDataEditor.Instance.data.levels[currentLevel].score = thisLevelScore;
-        GameDataEditor.Instance.data.levels[currentLevel].completed = win;
-
-        GameDataEditor.Instance.data.levels[nextLevel].completed = true;
-    }
-
-    void Lose()
-    {
-        ingameUI.ShowGameOverPanel();
-        lose = true;
-
-        //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
-        if (newTotalScore > 0)
-        {
-            ingameUI.ShowNameInputPanel();
-        }
-        else
-        {
-            ingameUI.HideNameInputPanel();
-        }
+        GameDataEditor.Instance.SaveData();
     }
 
     public void Next()
     {
-        fader.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Time.timeScale = 1f;
-    }
-
-    public void NextRandomLevel()
-    {
-        levelInstantiator.InstantiateRandomLevel();
-    }
-
-    //reload same scene for test
-    public void NextTest()
-    {
-        Retry();
+        SceneFader.Instance.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1f;
     }
 
     public void MainMenu()
     {
-        fader.FadeTo("MainMenu");
-        //SceneManager.LoadScene("MainMenu");
-        Time.timeScale = 1f;
+        SceneFader.Instance.FadeTo("MainMenu");
     }
     public void Pause()
     {
-        paused = true;
+        currentState = NormalModeState.Paused;
         ingameUI.TogglePause();
         PauseGame();
     }
@@ -329,15 +137,13 @@ public class IngameManager : MonoBehaviour
     public void PauseGame()
     {
         PlayerController.Instance.enabled = false;
-        //PlayerController.Instance.inventory.enabled = false;
         ingameUI.HideIngameUI();
     }
 
     public void Resume()
     {
-        paused = false;
+        currentState = NormalModeState.Playing;
         ingameUI.TogglePlay();
-        Time.timeScale = 1f;
         ResumeGame();
     }
 
@@ -345,42 +151,19 @@ public class IngameManager : MonoBehaviour
     {
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
-        //PlayerController.Instance.inventory.enabled = true;
         ingameUI.ShowIngameUI();
     }
 
-
-    private void CountTime()
-    {
-        if (!win && attackMode)
-        {
-            timeLeft -= Time.deltaTime;
-        }
-        timeRunsOut = timeLeft < 0;
-
-        if(attackMode)ingameUI.UpdateCountDown(timeLeft, timeRunsOut);
-    }
-
-
-    public bool CheckIfWeWon()
+    public bool CheckWinCondition()
     {
         bool allCorrect = true; 
 
-        if (timeRunsOut &!lose)
-        {
-            Lose();
-            return false;
-        }
-
-
         if (outputImages.Count> 0)
         {
-            
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
-            //Debug.Log("correct?e: " + allCorrect);
             if (allCorrect) Win();
             //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
         }
@@ -388,32 +171,17 @@ public class IngameManager : MonoBehaviour
         {
             allCorrect = false;
         }
-
-
         return allCorrect;
     }
 
     public void RaiseMoves()
     {
         moves++;
-        print("your moves: " +moves);
-
     }
-
 
     IEnumerator WinCoroutine()
     {
         yield return new WaitForSeconds(1);
-        if (CheckIfWeWon()) Win();
-
-        /*
-        if (CheckIfWeWon()){
-            Win();
-        } else {
-            Lose();
-        }
-        */
+        if (CheckWinCondition()) Win();
     }
-
-
 }
