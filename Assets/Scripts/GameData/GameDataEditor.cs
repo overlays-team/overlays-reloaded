@@ -14,8 +14,6 @@ public class GameDataEditor : MonoBehaviour
 
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
-    //private readonly string  dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
-    //private DirtyWordsInitializer dirtyWordsInitializer;
 
     public PostProcessingProfile postProcessingProfile;
 
@@ -43,10 +41,7 @@ public class GameDataEditor : MonoBehaviour
                 LoadDefaultData();
             }
         }
-
-        //now on working, shuya
         LoadDirtyWords();
-        //PrintDirtyWords();
     }
 
     private void Start()
