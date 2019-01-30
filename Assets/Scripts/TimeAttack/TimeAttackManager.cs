@@ -40,8 +40,6 @@ public class TimeAttackManager : MonoBehaviour
         string playerName = "shuya";
         timeAttackUI.nameInputField.text = playerName;
         SubmitScore();
-        string dirty = "fuck";
-        //Debug.Log(playerName.ToUpper().Contains(dirty.ToUpper()));
 
     }
 
@@ -122,58 +120,6 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
-    /*
-    private void SpeedTest(string playerName)
-    {
-        //prepare for speed mesurement
-        Debug.Log(playerName);
-        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-
-        //speed measurement
-
-        sw.Start();
-        Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
-        sw.Stop();
-        Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
-
-
-        //speed measurement
-        sw.Start();
-        Debug.Log("IsDirtyWordInList(): " + IsDirtyWordInList(playerName));
-        sw.Stop();
-        Debug.Log("IsDirtyWordInList(): " + sw.ElapsedMilliseconds + "ms");
-
-        //coonvert for testing
-        CovertWordsListToWordsHashSet();
-        //speed measurement
-        sw.Reset();
-        sw.Start();
-        Debug.Log("IsDirtyWordInHastSet(): " + IsDirtyWordInHastSet(playerName));
-        sw.Stop();
-        Debug.Log("IsDirtyWordInHastSet(): " + sw.ElapsedMilliseconds + "ms");
-
-
-        //coonvert for testing
-        CovertWordsListToWordsArrayList();
-        //speed measurement
-        sw.Reset();
-        sw.Start();
-        Debug.Log("IsDirtyWordInArrayList(): " + IsDirtyWordInArrayList(playerName));
-        sw.Stop();
-        Debug.Log("IsDirtyWordInArrayList(): " + sw.ElapsedMilliseconds + "ms");
-
-        //coonvert for testing
-        CovertWordsListToWordsHashCodeList();
-        //speed measurement
-        sw.Reset();
-        sw.Start();
-        Debug.Log("IsDirtyWordInHashCodeList(): " + IsDirtyWordInHashCodeList(playerName));
-        sw.Stop();
-        Debug.Log("IsDirtyWordInHashCodeList(): " + sw.ElapsedMilliseconds + "ms");
-
-    }
-    */
-
 
     //facade, will be refactored later
     private bool IsDirtyWord(string playerName){
@@ -195,104 +141,6 @@ public class TimeAttackManager : MonoBehaviour
         return isDirty;
     }
 
-
-    /*
-    private bool IsDirtyWordInString(string playerName)
-    {
-        bool isDirty = false;
- 
-        //this comparison is meaningless. this is always false
-        //i.e) playerName=fuckkkk contains abcedffuckabcedf --> false 
-        //i.e) playerName=fuck contains abcedffuckabcedf --> false
-        //isDirty = playerName.ToUpper().Contains(GameDataEditor.Instance.dirtyWordsEglish.dirtyWords.ToUpper());
-
-        //i.e) abcdefuckabcde contains playerName=fuck -->true
-        //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
-
-        //isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
-        return isDirty;
-    }
-
-
-    private void CovertWordsListToWordsHashSet()
-    {
-        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
-        {
-            dirtyWordsHashSetTest.Add(word);
-        }
-    }
-
-
-    //this is for testing purpose
-    HashSet<string> dirtyWordsHashSetTest = new HashSet<string>();
-    private bool IsDirtyWordInHastSet(string playerName)
-    {
-        bool isDirty = false;
-        foreach (string dirtyWord in dirtyWordsHashSetTest)
-        {
-            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
-            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
-            {
-                isDirty = true;
-                break;
-            }
-        }
-        return isDirty;
-    }
-
-
-    private void CovertWordsListToWordsArrayList()
-    {
-        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
-        {
-            dirtyWordsArrayList.Add(word);
-        }
-    }
-
-
-    //this is for testing purpose
-    ArrayList dirtyWordsArrayList = new ArrayList();
-    private bool IsDirtyWordInArrayList(string playerName)
-    {
-        bool isDirty = false;
-        foreach (string dirtyWord in dirtyWordsArrayList)
-        {
-            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
-            {
-                isDirty = true;
-                break;
-            }
-        }
-        return isDirty;
-    }
-
-    //this is for testing purpose
-    List<int> dirtyWordsHashCodeList = new List<int>();
-    private void CovertWordsListToWordsHashCodeList()
-    {
-        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
-        {
-            dirtyWordsHashCodeList.Add(word.GetHashCode());
-        }
-    }
-
-
-    //capital and small letters can not be distinguished!!!
-    private bool IsDirtyWordInHashCodeList(string playerName)
-    {
-        bool isDirty = false;
-        foreach (int dirtyWord in dirtyWordsHashCodeList)
-        {
-            if (playerName.GetHashCode() == dirtyWord)
-            {
-                isDirty = true;
-                break;
-            }
-        }
-        return isDirty;
-    }
-
-    */
 
     private void CheckHighestTotalScore()
     {

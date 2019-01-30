@@ -45,7 +45,6 @@ public class GameDataEditor : MonoBehaviour
         }
 
         //now on working, shuya
-        //InitializeDirtyWordsJson();
         LoadDirtyWords();
         //PrintDirtyWords();
     }
@@ -108,19 +107,13 @@ public class GameDataEditor : MonoBehaviour
         data = JsonUtility.FromJson<GameData>(defaultGameData.text);
     }
 
-    //sh
-    /*
-    private string GetFilePathForDirtyWordInitialization()
-    {
-        return Application.persistentDataPath + dirtyWordsPathForInitialization;
-    }
-    */
 
     private void LoadDirtyWords()
     {
         TextAsset dirtyWordsJson = Resources.Load(dirtyWordsPath) as TextAsset;
         dirtyWords = JsonUtility.FromJson<DirtyWords>(dirtyWordsJson.text);
     }
+
 
     private void PrintDirtyWords()
     {
@@ -133,31 +126,6 @@ public class GameDataEditor : MonoBehaviour
             Debug.Log(dirtyWords.wordsList[i]);
         }
     }
-
-    /*
-    private void InitializeDirtyWordsJson()
-    {
-        string savePath = GetFilePathForDirtyWordInitialization();
-        dirtyWordsInitializer = new DirtyWordsInitializer();
-        //dirtyWordsInitializer.SetDirtyWords();
-        dirtyWordsInitializer.SetDirtyWordsList();
-
-        string dataString = JsonUtility.ToJson(dirtyWordsInitializer);
-        File.WriteAllText(savePath, dataString);
-
-        Debug.Log("DirtyWordsJson has been initialized : " + savePath);
-    }
-    */
-
-    /*
-    private void HashCodeTest()
-    {
-        string testString1 = "test";
-        Debug.Log(testString1.GetHashCode());
-        string testString2 = "test";
-        Debug.Log(testString2.GetHashCode());
-    }
-    */
 
 
     public void SaveData()
