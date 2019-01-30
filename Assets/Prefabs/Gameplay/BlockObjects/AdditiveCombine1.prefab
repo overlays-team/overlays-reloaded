@@ -64,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationary: 0
   actionBlocked: 0
-  doubleClickActionBlocked: 1
+  doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 3690122736357613992}
   detailedNodeViewImage: {fileID: 4814371770599002428}
   currentAssignedGridPlane: {fileID: 0}
@@ -518,20 +518,20 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3582022366796345037, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1809968546119284381, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 679211072472041110, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3582022366796345037, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8313523481504230263, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
@@ -553,15 +553,25 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnReturnClicked
       objectReference: {fileID: 0}
-    - target: {fileID: 507191784002381754, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 3
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2823107924995240122}
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnReturnClicked
       objectReference: {fileID: 0}
     - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_Text
       value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 507191784002381754, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6093318973961362004, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}

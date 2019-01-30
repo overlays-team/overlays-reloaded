@@ -9,6 +9,9 @@ public class GridPositioner : MonoBehaviour
 {
 
     [SerializeField]
+    bool timeAttack = false; // only used by camera positioner
+
+    [SerializeField]
     int colums;
     [SerializeField]
     int rows;
@@ -21,7 +24,24 @@ public class GridPositioner : MonoBehaviour
     [SerializeField]
     GameObject[,] gridPlaneArray;
 
+    [Tooltip("Only used in Time attack Mode")]
     public LevelInstantiator LevelInstantiator;
+
+    //variables necessary for camera positioning
+   
+    float gridHeight;
+    float gridWidth;
+    Vector3 middlePoint;
+
+    private void Awake()
+    {
+        gridWidth = colums + (padding - 1) * (colums - 1);
+        gridHeight = rows + (padding - 1) * (rows - 1);
+
+        if(!timeAttack) middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        else middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
+    }
+
 
     public void UpdatePlanes()
     {
@@ -39,26 +59,20 @@ public class GridPositioner : MonoBehaviour
             currentZ = transform.position.z;
             for (int column = 0; column < rows; column++)
             {
-                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation);
-                plane.transform.SetParent(transform);
+                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation, transform);
+                //plane.transform.SetParent(transform);
                 currentZ += padding;
             }
 
             currentX += padding;
         }
-
-    }
-
-    internal float getPadding()
-    {
-        return padding;
     }
 
     public void UpdatePlanes(int _rows, int _columns, float _padding)
     {
-        int rows = LevelInstantiator.getIdx0();
-        int col = LevelInstantiator.getIdx1();
-        gridPlaneArray = new GameObject[rows, col];
+        rows = LevelInstantiator.getIdx0();
+        colums = LevelInstantiator.getIdx1();
+        gridPlaneArray = new GameObject[rows, colums];
 
         while (transform.childCount > 0)
         {
@@ -83,10 +97,41 @@ public class GridPositioner : MonoBehaviour
             currentX += _padding;
         }
 
+        gridWidth = this.colums + (padding - 1) * (this.colums - 1);
+        gridHeight = rows + (padding - 1) * (rows - 1);
+        // middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
     }
 
-    public GameObject[,] getGridArray()
+    #region Getters
+
+    public GameObject[,] GetGridArray()
     {
         return gridPlaneArray;
     }
+
+    internal float GetPadding()
+    {
+        return padding;
+    }
+
+    //returns the width of the grid in unity units - one gridPlane is 1x1 big
+    public float GetGridWidth()
+    {
+        return gridWidth;
+    }
+
+    public float GetGridHeight()
+    {  
+        return gridHeight;
+    }
+
+    //returns the middle point of the grid system - used by the responsive camera positioner
+    public Vector3 GetMiddlePoint()
+    {
+        return middlePoint;
+    }
+
+    #endregion
+ 
 }

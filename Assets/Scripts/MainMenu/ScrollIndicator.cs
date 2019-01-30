@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ScrollIndicator : MonoBehaviour
 {
     public GameObject tutorialModeScrollSnap;
-    public int indicatorCount;
     public GameObject indicatorPrefab;
     public Sprite emptyGraphic;
     public Sprite filledGraphic;
@@ -26,7 +25,7 @@ public class ScrollIndicator : MonoBehaviour
 
         for (int i = 0; i < imagesContainer.childCount; i++)
         {
-            Instantiate(indicatorPrefab).transform.parent = transform;
+            Instantiate(indicatorPrefab, transform);
         }
     }
 
@@ -47,17 +46,4 @@ public class ScrollIndicator : MonoBehaviour
             }
         }
     }
-
-    //private void OnValidate()
-    //{
-    //    foreach (Transform child in transform)
-    //    {
-    //        DestroyImmediate(child.gameObject);
-    //    }
-
-    //    for(int i = 0; i < indicatorCount; i++)
-    //    {
-    //        Instantiate(indicatorPrefab).transform.parent = transform;
-    //    } 
-    //}
 }

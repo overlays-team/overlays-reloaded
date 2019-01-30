@@ -4,14 +4,13 @@ using UnityEngine.UI;
 
 public class TimeAttackUI : MonoBehaviour
 {
-    private string[] star3Texts = new string[] { "You did it!", "You rock!", "Awesome!" };
-    private string[] star2Texts = new string[] { "Not bad!", "Good!", "Good job!" };
-    private string[] star1Texts = new string[] { "Could be better!", "Don't give up!", "Lucky!" };
+    private string[] goodShoutoutTexts = new string[] { "You did it!", "You rock!", "Awesome!" };
+    private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
+    private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Close one!" };
     public GameObject levelCompletePanel;
+    public GameObject LevelRevisitPanel;
     public GameObject gameOverPanel;
-    public GameObject star1;
-    public GameObject star2;
-    public GameObject star3;
+    public GameObject inventory;
     public GameObject pauseButton;
     public GameObject pauseMenuPanel;
     public Text shoutOutText;
@@ -26,7 +25,9 @@ public class TimeAttackUI : MonoBehaviour
     public Text scoreSubmitText;
     public Text scoreCountText;
     public InputField nameInputField;
-    public GameObject SubmitButton;
+    public GameObject submitButton;
+    public GameObject countdownDisplay;
+    public GameObject startPanel;
 
     public float winWaitTime = 2f;
     public float blurAnimDuration;
@@ -34,9 +35,9 @@ public class TimeAttackUI : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        TransparentToZero(pauseMenuPanel.transform);
-        TransparentToZero(gameOverPanel.transform);
-        TransparentToZero(levelCompletePanel.transform);
+        TransparencyToZero(pauseMenuPanel.transform);
+        TransparencyToZero(gameOverPanel.transform);
+        TransparencyToZero(levelCompletePanel.transform);
     }
 
     // Update is called once per frame
@@ -66,29 +67,24 @@ public class TimeAttackUI : MonoBehaviour
         }
     }
 
-    IEnumerator WaitAndPrint(int star, int totalScore, int highestTotalScore, bool attackMode)
+    IEnumerator DelayedLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
     {
         yield return new WaitForSeconds(winWaitTime);
 
-        if (attackMode) totalScoreText.text = GameDataEditor.Instance.data.playerName + "'s SCORE: " + totalScore;
+        totalScoreText.text = "Your Score: " + totalScore;
+        highestScoreText.text = "Your Best: " + highestTotalScore;
 
-        if (attackMode) highestScoreText.text = "HIGHEST SCORE: " + highestTotalScore;
-
-        switch (star)
+        if(timeLeft > 20)
         {
-            case 1:
-                shoutOutText.text = star1Texts[Random.Range(0, 3)];
-                star2.SetActive(false);
-                star3.SetActive(false);
-
-                break;
-            case 2:
-                shoutOutText.text = star2Texts[Random.Range(0, 3)];
-                star3.SetActive(false);
-                break;
-            case 3:
-                shoutOutText.text = star3Texts[Random.Range(0, 3)];
-                break;
+            shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
+        }
+        else if(timeLeft > 10)
+        {
+            shoutOutText.text = mediumShoutoutTexts[Random.Range(0, 3)];
+        }
+        else
+        {
+            shoutOutText.text = badShoutoutTexts[Random.Range(0, 3)];
         }
 
         levelCompletePanel.SetActive(true);
@@ -97,15 +93,66 @@ public class TimeAttackUI : MonoBehaviour
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
-    public void ShowLevelCompletePanel(int star, int totalScore, int highestTotalScore, bool attackMode)
+    public void ShowCountdownDisplay()
     {
-        //levelCompleteText = levelCompleteMenu.transform.Find("LevelCompletedText").gameObject.GetComponent<Text>();
-        //myImageComponent = levelCompleteMenu.transform.Find("StarReceivementImage").gameObject.GetComponent<Image>();
+        StartCoroutine(AnimateCountdown(3));
+    }
 
-        //sh
-        //totalScoreText.text = "YOUR SCORE: " + totalScore;
-        StartCoroutine(WaitAndPrint(star, totalScore, highestTotalScore, attackMode));
-        TimeAttackManager.Instance.PauseGame();
+    IEnumerator AnimateCountdown(float animDuration)
+    {
+        countdownDisplay.SetActive(true);
+        yield return new WaitForSeconds(animDuration);
+        countdownDisplay.SetActive(false);
+    }
+
+    public void HideCountdownDisplay()
+    {
+        countdownDisplay.SetActive(false);
+    }
+
+    public void ShowTimerDisplay()
+    {
+        timerPanel.SetActive(true);
+    }
+
+    public void HideTimerDisplay()
+    {
+        timerPanel.SetActive(false);
+    }
+
+    public void ShowPauseButton()
+    {
+        pauseButton.SetActive(true);
+    }
+
+    public void HidePauseButton()
+    {
+        pauseButton.SetActive(false);
+    }
+
+    public void ShowStartPanel()
+    {
+        startPanel.SetActive(true);
+    }
+
+    public void HideStartPanel()
+    {
+        startPanel.SetActive(false);
+    }
+
+    public void ShowInventory()
+    {
+        inventory.SetActive(true);
+    }
+
+    public void HideInventory()
+    {
+        inventory.SetActive(false);
+    }
+
+    public void ShowLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
+    {
+        StartCoroutine(DelayedLevelCompletePanel(timeLeft, totalScore, highestTotalScore));
     }
 
     public void TogglePause()
@@ -119,7 +166,7 @@ public class TimeAttackUI : MonoBehaviour
     {
         pauseButton.SetActive(true);
         pauseMenuPanel.SetActive(false);
-        TransparentToZero(pauseMenuPanel.transform);
+        TransparencyToZero(pauseMenuPanel.transform);
     }
     public void ShowGameOverPanel()
     {
@@ -131,19 +178,23 @@ public class TimeAttackUI : MonoBehaviour
     public void ShowNameInputPanel()
     {
         nameInputField.gameObject.SetActive(true);
-        SubmitButton.SetActive(true);
+        submitButton.SetActive(true);
     }
     public void HideNameInputPanel()
     {
         nameInputField.gameObject.SetActive(false);
-        SubmitButton.SetActive(false);
+        submitButton.SetActive(false);
     }
 
     public void HideLevelCompletePanel()
     {
+        //Reset the transparency for the fade-in animation
+        foreach (Text text in levelCompletePanel.transform.GetComponentsInChildren<Text>())
+        {
+            text.color = new Color(1, 1, 1, 0);
+        }
         levelCompletePanel.SetActive(false);
         pauseButton.SetActive(true);
-
     }
     public void HideGameOverPanel()
     {
@@ -173,7 +224,17 @@ public class TimeAttackUI : MonoBehaviour
     {
         scoreSubmitText.text = "THANK YOU!";
         nameInputField.gameObject.SetActive(false);
-        SubmitButton.SetActive(false);
+        submitButton.SetActive(false);
+    }
+
+    public void ShowLevelRevisitPanel()
+    {
+        LevelRevisitPanel.SetActive(true);
+    }
+
+    public void HideLevelRevisitPanel()
+    {
+        LevelRevisitPanel.SetActive(false);
     }
 
     public void UpdateCountDown(float time, float maxTime)
@@ -183,28 +244,22 @@ public class TimeAttackUI : MonoBehaviour
         timerGraphic.fillAmount = time / maxTime;
     }
 
-    private void TransparentToZero(Transform trans)
+    private void TransparencyToZero(Transform trans)
     {
-        Color newColor = new Color(1f, 1f, 1f, 0f);
+        Color transparentColor = new Color(1f, 1f, 1f, 0f);
         foreach (Transform child in trans)
         {
             //child is your child transform
-            if (child.gameObject.GetComponent<Button>() != null)
-            {
-                var colors = child.gameObject.GetComponent<Button>().colors;
-                colors.normalColor = newColor;
-                child.gameObject.GetComponent<Button>().colors = colors;
-            }
-            else if (child.gameObject.GetComponent<Text>() != null)
+            if (child.gameObject.GetComponent<Text>() != null)
             {
                 var colors = child.gameObject.GetComponent<Text>().color;
-                colors = newColor;
+                colors = transparentColor;
                 child.gameObject.GetComponent<Text>().color = colors;
             }
             else if (child.gameObject.GetComponent<Image>())
             {
                 var colors = child.gameObject.GetComponent<Image>().color;
-                colors = newColor;
+                colors = transparentColor;
                 child.gameObject.GetComponent<Image>().color = colors;
             }
         }

@@ -199,6 +199,7 @@ public class BlockObject : MonoBehaviour
                 actionBlocked = true;
                 stationaryFrame.gameObject.SetActive(true);
                 frame.gameObject.SetActive(false);
+                if(graphics.GetComponent<Animator>()!=null)graphics.GetComponent<Animator>().enabled = false;
             }
             else
             {
@@ -245,14 +246,14 @@ public class BlockObject : MonoBehaviour
     protected virtual void TwoFingerTapAction()
     {
         detailedNodeView.SetActive(true);
-        IngameManager.Instance.PauseGame();
+        if(IngameManager.Instance!=null)IngameManager.Instance.PauseGame();
     }
 
     //when we click the return Button in the detailedNode view
     public void OnReturnClicked()
     {
         detailedNodeView.SetActive(false);
-        IngameManager.Instance.ResumeGame();
+        if (IngameManager.Instance != null) IngameManager.Instance.ResumeGame();
     }
 
     #endregion
@@ -266,7 +267,7 @@ public class BlockObject : MonoBehaviour
 
     protected void Shrink()
     {
-        graphics.GetComponent<Animator>().SetBool("LaserInput", false);
+            graphics.GetComponent<Animator>().SetBool("LaserInput", false);
     }
 
     #endregion

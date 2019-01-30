@@ -1,13 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Filter : BlockObject
 {
 
-    public enum FilterColor { RED, GREEN, BLUE, NONE };
+    public enum FilterColor { RED, GREEN, BLUE, SANDBOX, NONE };
     [Header("Filter")]
     public FilterColor filterMode = FilterColor.NONE;
+
+    //only for sandbox mode
+    float red = 0.5f;
+    float green = 0.5f;
+    float blue = 0.5f;
 
 
     protected override void Start()
@@ -78,8 +84,33 @@ public class Filter : BlockObject
             case FilterColor.NONE:
                 return inputImage1.GetPixel(x, y);
 
+            case FilterColor.SANDBOX:
+                return new Color(inputImage1.GetPixel(x, y).r * red, inputImage1.GetPixel(x, y).g * green, inputImage1.GetPixel(x, y).b * blue);
+
             default:
                 return new Color();
         }
     }
+
+
+
+    #region only for sandbox mode
+    public void SetRed(Slider slider)
+    {
+        red = slider.value;
+        StartImageProcessing();
+    }
+    public void SetGreen(Slider slider)
+    {
+        green = slider.value;
+        StartImageProcessing();
+    }
+    public void SetBlue(Slider slider)
+    {
+       blue = slider.value;
+       StartImageProcessing();
+    }
+
+
+    #endregion
 }

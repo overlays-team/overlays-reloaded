@@ -5,27 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class TimeAttackManager : MonoBehaviour
 {
-
     public enum TimeAttackState
     {
-        Playing, GameOver, GameComplete, Paused
+        Playing, GameOver, GameComplete, Paused, Countdown, GameBegin
     }
 
     public TimeAttackState currentState;
     public static TimeAttackManager Instance;
     public TimeAttackUI timeAttackUI;
-    public SceneFader fader;
     public LevelInstantiator levelInstantiator;
     public HttpCommunicator httpCommunicator;
 
-    public int starRating;
-    public int scoreFactor = 10;
-    public int thisLevelScore;
-    public int previousTotalScore;
-    public int newTotalScore;
-
-    public int moves = 0;
-    public int maxMoves = 15;
+    public int totalScore;
     
     public float maxTime;
     public float timer;
@@ -48,13 +39,14 @@ public class TimeAttackManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        fader.FadeToClear();
+        SceneFader.Instance.FadeToClear();
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.HideGameOverPanel();
-
-        timer = maxTime;
-
-        currentState = TimeAttackState.Playing;
+        timeAttackUI.HidePauseButton();
+        timeAttackUI.HideTimerDisplay();
+        timeAttackUI.HideInventory();
+        ResetTimer();
+        currentState = TimeAttackState.GameBegin;
     }
 
     // Update is called once per frame
@@ -85,20 +77,27 @@ public class TimeAttackManager : MonoBehaviour
         return ("player" + "-" + random);
     }
 
+
     public void SubmitScore()
     {
-        string playerName = "";
+        string playerName = timeAttackUI.nameInputField.text;
 
-        if (timeAttackUI.nameInputField.text.Equals(""))
+        //speed measurement
+        SpeedTest(playerName);
+
+        if (string.IsNullOrEmpty(playerName))
         {
-
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
-        }
+        } 
+        else if (IsDirtyWord(playerName))
+        {
+            timeAttackUI.scoreSubmitText.text = "Please try different name!";
+        } 
         else
         {
             //TODO: doent't work if "c" is being inputed in inputTextField. 
             playerName = timeAttackUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+            httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
             Debug.Log(playerName);
@@ -106,9 +105,173 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
+
+    private void SpeedTest(string playerName)
+    {
+        //prepare for speed mesurement
+        Debug.Log(playerName);
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
+
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInList(): " + IsDirtyWordInList(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInList(): " + sw.ElapsedMilliseconds + "ms");
+
+        //coonvert for testing
+        CovertWordsListToWordsHashSet();
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInHastSet(): " + IsDirtyWordInHastSet(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInHastSet(): " + sw.ElapsedMilliseconds + "ms");
+
+
+        //coonvert for testing
+        CovertWordsListToWordsArrayList();
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInArrayList(): " + IsDirtyWordInArrayList(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInArrayList(): " + sw.ElapsedMilliseconds + "ms");
+
+        //coonvert for testing
+        CovertWordsListToWordsHashCodeList();
+        //speed measurement
+        sw.Start();
+        Debug.Log("IsDirtyWordInHashCodeList(): " + IsDirtyWordInHashCodeList(playerName));
+        sw.Stop();
+        Debug.Log("IsDirtyWordInHashCodeList(): " + sw.ElapsedMilliseconds + "ms");
+
+    }
+
+
+    //facade, will be refactored later
+    private bool IsDirtyWord(string playerName){
+        return IsDirtyWordInList(playerName);
+    }
+
+    private bool IsDirtyWordInList(string playerName)
+    {
+        bool isDirty = false;
+ 
+        foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
+        {
+            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
+            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+        }
+        return isDirty;
+    }
+
+
+    private bool IsDirtyWordInString(string playerName)
+    {
+        bool isDirty = false;
+ 
+        //this comparison is meaningless. this is always false
+        //i.e) playerName=fuckkkk contains abcedffuckabcedf --> false 
+        //i.e) playerName=fuck contains abcedffuckabcedf --> false
+        //isDirty = playerName.ToUpper().Contains(GameDataEditor.Instance.dirtyWordsEglish.dirtyWords.ToUpper());
+
+        //i.e) abcdefuckabcde contains playerName=fuck -->true
+        //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
+        isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
+        return isDirty;
+    }
+
+
+    private void CovertWordsListToWordsHashSet()
+    {
+        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
+        {
+            dirtyWordsHashSetTest.Add(word);
+        }
+    }
+
+
+    //this is for testing purpose
+    HashSet<string> dirtyWordsHashSetTest = new HashSet<string>();
+    private bool IsDirtyWordInHastSet(string playerName)
+    {
+        bool isDirty = false;
+        foreach (string dirtyWord in dirtyWordsHashSetTest)
+        {
+            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
+            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+        }
+        return isDirty;
+    }
+
+
+    private void CovertWordsListToWordsArrayList()
+    {
+        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
+        {
+            dirtyWordsArrayList.Add(word);
+        }
+    }
+
+
+    //this is for testing purpose
+    ArrayList dirtyWordsArrayList = new ArrayList();
+    private bool IsDirtyWordInArrayList(string playerName)
+    {
+        bool isDirty = false;
+        foreach (string dirtyWord in dirtyWordsArrayList)
+        {
+            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+        }
+        return isDirty;
+    }
+
+    //this is for testing purpose
+    List<int> dirtyWordsHashCodeList = new List<int>();
+    private void CovertWordsListToWordsHashCodeList()
+    {
+        foreach (string word in GameDataEditor.Instance.dirtyWords.wordsList)
+        {
+            dirtyWordsHashCodeList.Add(word.GetHashCode());
+        }
+    }
+
+
+    //capital and small letters can not be distinguished!!!
+    private bool IsDirtyWordInHashCodeList(string playerName)
+    {
+        bool isDirty = false;
+        foreach (int dirtyWord in dirtyWordsHashCodeList)
+        {
+            if (playerName.GetHashCode() == dirtyWord)
+            {
+                isDirty = true;
+                break;
+            }
+        }
+        return isDirty;
+    }
+
+
     private void CheckHighestTotalScore()
     {
-        if (GameDataEditor.Instance.data.highestTotalScore < newTotalScore)
+        if (GameDataEditor.Instance.data.highestTotalScore < totalScore)
         {
             SaveHighestTotalScore();
         }
@@ -116,18 +279,25 @@ public class TimeAttackManager : MonoBehaviour
 
     private void SaveHighestTotalScore()
     {
-        GameDataEditor.Instance.data.highestTotalScore = newTotalScore;
+        GameDataEditor.Instance.data.highestTotalScore = totalScore;
         GameDataEditor.Instance.data.highestTotalScorePlayerName = GameDataEditor.Instance.data.playerName;
+    }
+
+    public void StartGame()
+    {
+        timeAttackUI.HideStartPanel();
+        StartCountdown();
     }
 
     void Win()
     {
         //thisLevelScore = starRating * scoreFactor;
-        starRating = 3 - (moves * 3 / maxMoves);
-        newTotalScore += (int) Mathf.Round(timer);
+        //starRating = 3 - (moves * 3 / maxMoves);
+        totalScore += (int) Mathf.Round(timer);
 
         CheckHighestTotalScore();
-        timeAttackUI.ShowLevelCompletePanel(starRating, newTotalScore, GameDataEditor.Instance.data.highestTotalScore, true);
+        timeAttackUI.ShowLevelCompletePanel(timer, totalScore, GameDataEditor.Instance.data.highestTotalScore);
+        PauseGame();
 
         currentState = TimeAttackState.GameComplete;
     }
@@ -136,10 +306,10 @@ public class TimeAttackManager : MonoBehaviour
     {
         currentState = TimeAttackState.GameOver;
         timeAttackUI.ShowGameOverPanel();
-        timeAttackUI.scoreCountText.text = newTotalScore.ToString();
+        timeAttackUI.scoreCountText.text = totalScore.ToString();
 
         //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
-        if (newTotalScore > 0)
+        if (totalScore > 0)
         {
             timeAttackUI.ShowNameInputPanel();
         }
@@ -153,10 +323,49 @@ public class TimeAttackManager : MonoBehaviour
     public void NextRandomLevel()
     {
         levelInstantiator.InstantiateRandomLevel();
+        StartCountdown();
         timeAttackUI.HideLevelCompletePanel();
-        currentState = TimeAttackState.Playing;
-        timer = maxTime;
+        timeAttackUI.HideLevelRevisitPanel();
+        ResetTimer();
         ResumeGame();
+    }
+
+    void StartCountdown()
+    {
+        currentState = TimeAttackState.Countdown;
+        StartCoroutine(CountdownCallback(3));
+    }
+
+    IEnumerator CountdownCallback(float animDuration)
+    {
+        timeAttackUI.HideTimerDisplay();
+        timeAttackUI.HidePauseButton();
+        timeAttackUI.HideInventory();
+        timeAttackUI.ShowCountdownDisplay();
+        yield return new WaitForSeconds(animDuration);
+        timeAttackUI.HideCountdownDisplay();
+        timeAttackUI.ShowTimerDisplay();
+        timeAttackUI.ShowPauseButton();
+        timeAttackUI.ShowInventory();
+        currentState = TimeAttackState.Playing;
+    }
+
+    public void RevisitLevelAfterWin()
+    {
+        //we enabe the playerController so we can magnify our images
+        PlayerController.Instance.Reset();
+        PlayerController.Instance.enabled = true;
+        //but we set all blockObject so stationary and not moveable so we cant move them anymore
+        GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach(GameObject go in blockObjects)
+        {
+            BlockObject bo = go.GetComponent<BlockObject>();
+            bo.stationary = true;
+            bo.actionBlocked = true;
+        }
+
+        timeAttackUI.HideLevelCompletePanel();
+        timeAttackUI.ShowLevelRevisitPanel();
     }
 
     public void Retry()
@@ -167,8 +376,7 @@ public class TimeAttackManager : MonoBehaviour
 
     public void MainMenu()
     {
-        fader.FadeTo("MainMenu");
-        //SceneManager.LoadScene("MainMenu");
+        SceneFader.Instance.FadeTo("MainMenu");
     }
     public void Pause()
     {
@@ -196,6 +404,11 @@ public class TimeAttackManager : MonoBehaviour
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         PlayerController.Instance.inventory.enabled = true;
+    }
+
+    private void ResetTimer()
+    {
+        timer = maxTime;
     }
    
     private void CountTime()
@@ -239,16 +452,6 @@ public class TimeAttackManager : MonoBehaviour
 
     public void RaiseMoves()
     {
-        moves++;
-        print("your moves: " + moves);
-    }
-
-    IEnumerator WinCoroutine()
-    {
-        yield return new WaitForSeconds(1);
-        if (CheckWinCondition())
-        {
-            Win();
-        }
+        //Leave this so the PlayerController doesn't complain
     }
 }

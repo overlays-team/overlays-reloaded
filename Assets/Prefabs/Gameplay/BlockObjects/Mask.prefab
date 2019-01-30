@@ -230,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stationary: 0
   actionBlocked: 0
-  doubleClickActionBlocked: 1
+  doubleClickActionBlocked: 0
   detailedNodeView: {fileID: 796208535261952877}
   detailedNodeViewImage: {fileID: 8856704684134812665}
   currentAssignedGridPlane: {fileID: 0}
@@ -246,7 +246,7 @@ MonoBehaviour:
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 7eccc1a83e389bd41957a52fd1ac8d69, type: 3}
-  mask: {fileID: 2800000, guid: 2d6d17e3ff7cdc846953867ffa1a73c8, type: 3}
+  mask: {fileID: 2800000, guid: 9a10701be7888de4e970623354e0d794, type: 3}
 --- !u!1 &1744166395979116
 GameObject:
   m_ObjectHideFlags: 0
@@ -764,12 +764,12 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1809968546119284381, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 679211072472041110, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 679211072472041110, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+    - target: {fileID: 1809968546119284381, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -777,7 +777,7 @@ PrefabInstance:
     - target: {fileID: 8313523481504230263, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 147454968040587633, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
@@ -788,6 +788,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnImportButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7220955082892674485}
+    - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnReturnClicked
       objectReference: {fileID: 0}
     - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}

@@ -31,18 +31,15 @@ public class ModeSelect : MonoBehaviour
             case 0:
                 mainMenu.ShowLevelSelect();
                 break;
-
             case 1:
+                SceneFader.Instance.FadeTo("TimeAttack");
                 break;
-
             case 2:
-                SceneManager.LoadScene("Sandbox");
+                SceneFader.Instance.FadeTo("Sandbox");
                 break;
-
             case 3:
                 mainMenu.ShowTutorial();
                 break;
-
             default:
                 Debug.Log("Not a valid mode");
                 break;

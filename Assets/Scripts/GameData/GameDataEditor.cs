@@ -12,6 +12,11 @@ public class GameDataEditor : MonoBehaviour
     public bool loadFromDefault;
     public GameData data;
 
+    public string dirtyWordsPath = "Data/dirtyWords.json";
+    public DirtyWords dirtyWords;
+    private readonly string  dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
+    private DirtyWordsInitializer dirtyWordsInitializer;
+
     public PostProcessingProfile postProcessingProfile;
 
     private void Awake()
@@ -38,6 +43,11 @@ public class GameDataEditor : MonoBehaviour
                 LoadDefaultData();
             }
         }
+
+        //now on working, shuya
+        //InitializeDirtyWordsJson();
+        LoadDirtyWords();
+        //PrintDirtyWords();
     }
 
     private void Start()
@@ -49,7 +59,10 @@ public class GameDataEditor : MonoBehaviour
     {
         if(Input.GetKey("space"))
         {
-            ScreenCapture.CaptureScreenshot("screenshot.png", 1);
+            //ScreenCapture.CaptureScreenshot("screenshot.png", 1);
+            //Debug.Log("Screen captured");
+
+            ScreenCapture.CaptureScreenshot("Assets/Resources/LevelPreviews/screenshot.png", 1);
             Debug.Log("Screen captured");
         }
     }
@@ -82,6 +95,7 @@ public class GameDataEditor : MonoBehaviour
         return Application.persistentDataPath + dataFilePath;
     }
 
+
     public void LoadData()
     {
         string dataAsJson = File.ReadAllText(getFilePath());
@@ -93,6 +107,50 @@ public class GameDataEditor : MonoBehaviour
         TextAsset defaultGameData = Resources.Load(defaultDataPath) as TextAsset;
         data = JsonUtility.FromJson<GameData>(defaultGameData.text);
     }
+
+    //sh
+    private string GetFilePathForDirtyWordInitialization()
+    {
+        return Application.persistentDataPath + dirtyWordsPathForInitialization;
+    }
+
+    private void LoadDirtyWords()
+    {
+        TextAsset dirtyWordsJson = Resources.Load(dirtyWordsPath) as TextAsset;
+        dirtyWords = JsonUtility.FromJson<DirtyWords>(dirtyWordsJson.text);
+    }
+
+    private void PrintDirtyWords()
+    {
+        int scope = 3;
+        //int scope = dirtyWords.wordsList.Count;
+        for (int i = 0; i < scope; i++)
+        {
+            Debug.Log(dirtyWords.wordsList[i]);
+        }
+    }
+
+    private void InitializeDirtyWordsJson()
+    {
+        string savePath = GetFilePathForDirtyWordInitialization();
+        dirtyWordsInitializer = new DirtyWordsInitializer();
+        dirtyWordsInitializer.SetDirtyWords();
+        dirtyWordsInitializer.SetDirtyWordsList();
+
+        string dataString = JsonUtility.ToJson(dirtyWordsInitializer);
+        File.WriteAllText(savePath, dataString);
+
+        Debug.Log("DirtyWordsJson has been initialized : " + savePath);
+    }
+
+    private void HashCodeTest()
+    {
+        string testString1 = "test";
+        Debug.Log(testString1.GetHashCode());
+        string testString2 = "test";
+        Debug.Log(testString2.GetHashCode());
+    }
+
 
     public void SaveData()
     {

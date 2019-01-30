@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 public class LevelSelector : MonoBehaviour
 {
-    public SceneFader fader;
     public GameObject levelTogglePrefab;
     public GameObject content;
     public RawImage scenePreview;
@@ -102,7 +101,7 @@ public class LevelSelector : MonoBehaviour
     {
         if (GetSelectedLevel() != null)
         {
-            fader.FadeTo(selectedLevel.sceneID);
+            SceneFader.Instance.FadeTo(selectedLevel.sceneID);
         }
     }
 

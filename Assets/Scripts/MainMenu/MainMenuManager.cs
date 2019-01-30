@@ -19,6 +19,7 @@ public class MainMenuManager : MonoBehaviour {
     void Start()
     {
         currentState = MainMenuState.MainMenu;
+        SceneFader.Instance.FadeToClear();
     }
 
     // Update is called once per frame
