@@ -185,7 +185,8 @@ public class TimeAttackManager : MonoBehaviour
 
         //i.e) abcdefuckabcde contains playerName=fuck -->true
         //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
-        isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
+
+        //isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
         return isDirty;
     }
 
