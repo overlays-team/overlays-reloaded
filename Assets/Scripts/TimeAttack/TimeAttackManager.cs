@@ -81,6 +81,7 @@ public class TimeAttackManager : MonoBehaviour
     public void SubmitScore()
     {
         string playerName = timeAttackUI.nameInputField.text;
+        Debug.Log(playerName);
         bool hasDirtyWord = CheckDirtyWord(playerName);
         Debug.Log(hasDirtyWord);
 
@@ -96,8 +97,6 @@ public class TimeAttackManager : MonoBehaviour
         {
             httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
-
-            Debug.Log(playerName);
             timeAttackUI.ShowSubmitCompleteMessage();
         }
     }
