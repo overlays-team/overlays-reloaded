@@ -34,13 +34,6 @@ public class TimeAttackManager : MonoBehaviour
         {
             Instance = this;
         }
-
-        //test
-        //string playerName = "TESTafoiuawhbreogboeraubgisbfouadbfiouadTEST";
-        string playerName = "fuckkkkk";
-        timeAttackUI.nameInputField.text = playerName;
-        SubmitScore();
-
     }
 
     // Use this for initialization
@@ -104,8 +97,7 @@ public class TimeAttackManager : MonoBehaviour
             //TODO: doent't work if "c" is being inputed in inputTextField. 
             playerName = timeAttackUI.nameInputField.text;
 
-            //temporary commented out by shuya
-            //httpCommunicator.SendScoreToServer(playerName, totalScore);
+            httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
             Debug.Log(playerName);
