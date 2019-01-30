@@ -46,7 +46,7 @@ public class GameDataEditor : MonoBehaviour
 
         //now on working, shuya
         //InitializeDirtyWordsJson();
-        //LoadDirtyWords();
+        LoadDirtyWords();
         //PrintDirtyWords();
     }
 
@@ -123,7 +123,9 @@ public class GameDataEditor : MonoBehaviour
     private void PrintDirtyWords()
     {
         int scope = 3;
-        //int scope = dirtyWords.wordsList.Count;
+        int size = dirtyWords.wordsList.Count;
+        //scope = size;
+        Debug.Log(size);
         for (int i = 0; i < scope; i++)
         {
             Debug.Log(dirtyWords.wordsList[i]);

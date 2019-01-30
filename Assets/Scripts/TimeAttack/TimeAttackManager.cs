@@ -34,6 +34,14 @@ public class TimeAttackManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        //test
+        string playerName = "TESTafoiuawhbreogboeraubgisbfouadbfiouadTEST";
+        timeAttackUI.nameInputField.text = playerName;
+        SubmitScore();
+        string dirty = "fuck";
+        //Debug.Log(playerName.ToUpper().Contains(dirty.ToUpper()));
+
     }
 
     // Use this for initialization
@@ -97,7 +105,9 @@ public class TimeAttackManager : MonoBehaviour
         {
             //TODO: doent't work if "c" is being inputed in inputTextField. 
             playerName = timeAttackUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, totalScore);
+
+            //temporary commented out by shuya
+            //httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
             Debug.Log(playerName);
@@ -113,10 +123,12 @@ public class TimeAttackManager : MonoBehaviour
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
 
         //speed measurement
+        /*
         sw.Start();
         Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
         sw.Stop();
         Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
+        */
 
         //speed measurement
         sw.Start();
@@ -127,6 +139,7 @@ public class TimeAttackManager : MonoBehaviour
         //coonvert for testing
         CovertWordsListToWordsHashSet();
         //speed measurement
+        sw.Reset();
         sw.Start();
         Debug.Log("IsDirtyWordInHastSet(): " + IsDirtyWordInHastSet(playerName));
         sw.Stop();
@@ -136,6 +149,7 @@ public class TimeAttackManager : MonoBehaviour
         //coonvert for testing
         CovertWordsListToWordsArrayList();
         //speed measurement
+        sw.Reset();
         sw.Start();
         Debug.Log("IsDirtyWordInArrayList(): " + IsDirtyWordInArrayList(playerName));
         sw.Stop();
@@ -144,6 +158,7 @@ public class TimeAttackManager : MonoBehaviour
         //coonvert for testing
         CovertWordsListToWordsHashCodeList();
         //speed measurement
+        sw.Reset();
         sw.Start();
         Debug.Log("IsDirtyWordInHashCodeList(): " + IsDirtyWordInHashCodeList(playerName));
         sw.Stop();
@@ -160,12 +175,14 @@ public class TimeAttackManager : MonoBehaviour
     private bool IsDirtyWordInList(string playerName)
     {
         bool isDirty = false;
- 
+
+        Debug.Log(playerName.ToUpper());
         foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
         {
             //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
             if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
             {
+                Debug.Log(dirtyWord.ToUpper());
                 isDirty = true;
                 break;
             }
