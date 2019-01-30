@@ -15,6 +15,7 @@ public class GameDataEditor : MonoBehaviour
     public string dirtyWordsPathForCreation = "/dirtyWordsCreation.json";
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
+    private DirtyWordsCreator dirtyWordsCreator;
 
 
     public PostProcessingProfile postProcessingProfile;
@@ -45,8 +46,11 @@ public class GameDataEditor : MonoBehaviour
         }
 
         //now on working, shuya
-        //LoadDirtyWords();
-        CreateDirtyWordsJson();
+
+        //CreateDirtyWordsJson();
+
+        LoadDirtyWords();
+        PrintDirtyWords();
     }
 
     private void Start()
@@ -108,25 +112,35 @@ public class GameDataEditor : MonoBehaviour
     }
 
     //sh
-    public string GetFilePathForDirtyWordCreation()
+    private string GetFilePathForDirtyWordCreation()
     {
         return Application.persistentDataPath + dirtyWordsPathForCreation;
     }
 
-    public void LoadDirtyWords()
+    private void LoadDirtyWords()
     {
-        TextAsset d = Resources.Load(dirtyWordsPath) as TextAsset;
-        dirtyWords = JsonUtility.FromJson<DirtyWords>(d.text);
+        TextAsset dirtyWordsJson = Resources.Load(dirtyWordsPath) as TextAsset;
+        dirtyWords = JsonUtility.FromJson<DirtyWords>(dirtyWordsJson.text);
     }
 
-    public void CreateDirtyWordsJson()
+    private void PrintDirtyWords()
+    {
+        int scope = 3;
+        //int scope = dirtyWords.wordsList.Count;
+        for (int i = 0; i < scope; i++)
+        {
+            Debug.Log(dirtyWords.wordsList[i]);
+        }
+    }
+
+    private void CreateDirtyWordsJson()
     {
         string savePath = GetFilePathForDirtyWordCreation();
-        dirtyWords = new DirtyWords();
-        dirtyWords.SetDirtyWords();
-        dirtyWords.SetDirtyWordsList();
+        dirtyWordsCreator = new DirtyWordsCreator();
+        dirtyWordsCreator.SetDirtyWords();
+        dirtyWordsCreator.SetDirtyWordsList();
 
-        string dataString = JsonUtility.ToJson(dirtyWords);
+        string dataString = JsonUtility.ToJson(dirtyWordsCreator);
         File.WriteAllText(savePath, dataString);
 
         Debug.Log("DirtyWordsJson has been created : " + savePath);
