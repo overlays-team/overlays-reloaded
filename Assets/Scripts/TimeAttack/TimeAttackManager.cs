@@ -77,29 +77,6 @@ public class TimeAttackManager : MonoBehaviour
         return ("player" + "-" + random);
     }
 
-    /*
-    public void SubmitScore()
-    {
-        string playerName = "";
-
-        if (timeAttackUI.nameInputField.text.Equals(""))
-        {
-
-            timeAttackUI.scoreSubmitText.text = "Please enter your name!";
-        }
-
-        else
-        {
-            //TODO: doent't work if "c" is being inputed in inputTextField. 
-            playerName = timeAttackUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, totalScore);
-            GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
-
-            Debug.Log(playerName);
-            timeAttackUI.ShowSubmitCompleteMessage();
-        }
-    }*/
-
 
     public void SubmitScore()
     {
