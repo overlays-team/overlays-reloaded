@@ -4126,7 +4126,6 @@ MonoBehaviour:
   padding: 1.4
   gridPlane: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
     type: 3}
-  gridPadding: 1
   LevelInstantiator: {fileID: 1352342059}
 --- !u!4 &828705922 stripped
 Transform:
@@ -5277,13 +5276,18 @@ PrefabInstance:
     - target: {fileID: 3205831378585239887, guid: 6870bc110d993b646954733a9792384c,
         type: 3}
       propertyPath: initialIntensity
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3205831378585239887, guid: 6870bc110d993b646954733a9792384c,
         type: 3}
       propertyPath: cameraPositioner
       value: 
       objectReference: {fileID: 1087648960}
+    - target: {fileID: 3205831378585239887, guid: 6870bc110d993b646954733a9792384c,
+        type: 3}
+      propertyPath: numOfIntensities
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6870bc110d993b646954733a9792384c, type: 3}
 --- !u!1 &1041364860
@@ -11735,7 +11739,7 @@ MonoBehaviour:
   levelInstantiator: {fileID: 1352342059}
   httpCommunicator: {fileID: 2684942571460172834}
   totalScore: 0
-  maxTime: 30
+  maxTime: 50
   timer: 0
   outputImages: []
 --- !u!4 &2686726768127065855

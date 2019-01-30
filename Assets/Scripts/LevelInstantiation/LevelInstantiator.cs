@@ -11,8 +11,10 @@ using UnityEngine.UI;
 [System.Serializable]
 public class LevelInstantiator : MonoBehaviour
 {
-    [Tooltip("A higher number means a higher difficulty.")]
+    [Header("Press N to switch to the next difficulty.")]
+    [Tooltip("Must be 1 and above but not higher than the numOfIntensities.")]
     public int initialIntensity;
+    public int numOfIntensities;
     //For loading of data
     [Tooltip("Please write: '/Levels/NAME.json' here")]
     private string dataFileName;
@@ -66,7 +68,7 @@ public class LevelInstantiator : MonoBehaviour
 
     public void setIntensity(int i)
     {
-        string name = "/Levels/Level" + i + ".json";
+        string name = "Levels/Level" + i;
         dataFileName = name as string;
         LoadData();
         InstantiateRandomLevel();
@@ -74,7 +76,7 @@ public class LevelInstantiator : MonoBehaviour
 
     private void assignPics()
     {
-        int numOfFolders = 22; 
+        int numOfFolders = 22; //Needs to be the number of folders in PictureSets + 1
         randomFolder = UnityEngine.Random.Range(1, numOfFolders);
         int temp = randomFolder;
         _sourceImage1 = getPicA();
@@ -262,18 +264,10 @@ public class LevelInstantiator : MonoBehaviour
 
     public void LoadData()
     {
-        if (File.Exists(getLevelFilePath()))
-        {
-            this.jsonAsString = File.ReadAllText(getLevelFilePath());
-            GenerateRandomLvlIndex();
-            levelIndex = 0;
-            //print("DataAsJson: " + jsonAsString);
-            SplitData(jsonAsString);
-        }
-        else
-        {
-            Debug.Log("Please save the .json to " + Application.streamingAssetsPath + " and write '/Levels/NAME.json' into script inspector field.");
-        }
+        this.jsonAsString = getLevelFile();
+        GenerateRandomLvlIndex();
+        //levelIndex = 0;   //Decomment this to always load the first level in the json file first
+        SplitData(jsonAsString);
     }
 
     //These methods get the initial index for rows and columns in the data array
@@ -340,9 +334,9 @@ public class LevelInstantiator : MonoBehaviour
      }
      */
 
-    public string getLevelFilePath()
+    public string getLevelFile()
     {
-        return Application.streamingAssetsPath + dataFileName;
+        return Resources.Load(dataFileName).ToString(); //Loads the file and converts it to string
     }
 
     public Texture2D getPicA()
@@ -363,6 +357,14 @@ public class LevelInstantiator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            initialIntensity++;
+            if(initialIntensity > numOfIntensities)
+            {
+                initialIntensity = 1;
+            }
+            setIntensity(initialIntensity);
+        }
     }
 }
