@@ -43,19 +43,17 @@ public class DirtyWordsInitializer
 
     public void SetDirtyWordsList()
     {
-
         HashSet<string> wordsHashSet = CreateDirtyWordsHashSet();
         foreach (string word in wordsHashSet)
         {
             wordsList.Add(word);
         }
-
     }
 
 
     private HashSet<string> CreateDirtyWordsHashSet()
     {
-        Debug.Log("hallo SetDirtyWordsHashSet()");
+        Debug.Log("hallo CreateDirtyWordsHashSet()");
         HashSet<string> wordsHashSet = new HashSet<string>();
 
         wordsHashSet.Add("2g1c");

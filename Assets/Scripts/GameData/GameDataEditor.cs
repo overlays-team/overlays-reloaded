@@ -46,8 +46,7 @@ public class GameDataEditor : MonoBehaviour
         }
 
         //now on working, shuya
-
-        InitializeDirtyWordsJson();
+        //InitializeDirtyWordsJson();
         LoadDirtyWords();
         PrintDirtyWords();
     }

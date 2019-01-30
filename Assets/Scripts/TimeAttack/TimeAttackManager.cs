@@ -103,51 +103,55 @@ public class TimeAttackManager : MonoBehaviour
 
     public void SubmitScore()
     {
-        string playerName = ingameUI.nameInputField.text;
+        string playerName = timeAttackUI.nameInputField.text;
 
         //test
         Debug.Log(playerName);
         System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+
+        //speed measurement
         sw.Start();
         Debug.Log("IsDirtyWordInString(): " + IsDirtyWordInString(playerName));
         sw.Stop();
         Debug.Log("IsDirtyWordInString(): " + sw.ElapsedMilliseconds + "ms");
 
+        //speed measurement
         sw.Start();
         Debug.Log("IsDirtyWordInList(): " + IsDirtyWordInList(playerName));
         sw.Stop();
         Debug.Log("IsDirtyWordInList(): " + sw.ElapsedMilliseconds + "ms");
 
 
-
         if (string.IsNullOrEmpty(playerName))
         {
-            ingameUI.ShowMessageDialogPanel("Please enter your name!", "return");
-        } /*
+            timeAttackUI.scoreSubmitText.text = "Please enter your name!";
+        } 
         else if (IsDirtyWord(playerName))
         {
-            ingameUI.ShowMessageDialogPanel("Please try different name!", "return");
-        } */
+            timeAttackUI.scoreSubmitText.text = "Please try different name!";
+        } 
         else
         {
-            //TODO: doesnt't work if "c" is being inputed in inputTextField. 
-            //playerName = ingameUI.nameInputField.text;
-            httpCommunicator.SendScoreToServer(playerName, newTotalScore);
+            //TODO: doent't work if "c" is being inputed in inputTextField. 
+            playerName = timeAttackUI.nameInputField.text;
+            httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
 
             Debug.Log(playerName);
-            ingameUI.ShowSubmitCompleteMessage();
-
+            timeAttackUI.ShowSubmitCompleteMessage();
         }
     }
 
+    //facade, will be refactored later
+    private bool IsDirtyWord(string playerName){
+        return IsDirtyWordInList(playerName);
+    }
 
     private bool IsDirtyWordInList(string playerName)
     {
         bool isDirty = false;
-        //Debug.Log(playerName);
-
-        foreach (string dirtyWord in GameDataEditor.Instance.dirtyWordsEglish.dirtyWordsList)
+ 
+        foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
         {
             //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
             if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
@@ -156,7 +160,6 @@ public class TimeAttackManager : MonoBehaviour
                 break;
             }
         }
-        //Debug.Log("isDirty: " + isDirty);
         return isDirty;
     }
 
@@ -164,8 +167,7 @@ public class TimeAttackManager : MonoBehaviour
     private bool IsDirtyWordInString(string playerName)
     {
         bool isDirty = false;
-        //Debug.Log(playerName);
-
+ 
         //this comparison is meaningless. this is always false
         //i.e) playerName=fuckkkk contains abcedffuckabcedf --> false 
         //i.e) playerName=fuck contains abcedffuckabcedf --> false
@@ -173,12 +175,9 @@ public class TimeAttackManager : MonoBehaviour
 
         //i.e) abcdefuckabcde contains playerName=fuck -->true
         //i.e) abcdefuckabcde contains playerName=fuckkkk --> false  --> not good!
-        isDirty = GameDataEditor.Instance.dirtyWordsEglish.dirtyWords.ToUpper().Contains(playerName.ToUpper());
-
-        //Debug.Log("isDirty: " + isDirty);
+        isDirty = GameDataEditor.Instance.dirtyWords.words.ToUpper().Contains(playerName.ToUpper());
         return isDirty;
     }
-
 
 
     private void CheckHighestTotalScore()
