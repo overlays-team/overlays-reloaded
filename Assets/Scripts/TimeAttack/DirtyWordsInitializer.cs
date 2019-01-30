@@ -4,12 +4,12 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class DirtyWordsCreator
+public class DirtyWordsInitializer
 {
     public string words;
     public List<string> wordsList;
 
-    public DirtyWordsCreator()
+    public DirtyWordsInitializer()
     {
         wordsList = new List<string>(); //TODO: try also with ArrayList
     }
