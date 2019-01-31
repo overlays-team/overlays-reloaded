@@ -154,6 +154,24 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowIngameUI();
     }
 
+    public void RevisitLevelAfterWin()
+    {
+        //we enabe the playerController so we can magnify our images
+        PlayerController.Instance.Reset();
+        PlayerController.Instance.enabled = true;
+        //but we set all blockObject so stationary and not moveable so we cant move them anymore
+        GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
+        foreach (GameObject go in blockObjects)
+        {
+            BlockObject bo = go.GetComponent<BlockObject>();
+            bo.stationary = true;
+            bo.actionBlocked = true;
+        }
+
+        ingameUI.HideLevelCompletePanelForRevisit();
+        ingameUI.ShowLevelRevisitPanel();
+    }
+
     public bool CheckWinCondition()
     {
         bool allCorrect = true; 

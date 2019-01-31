@@ -11,6 +11,7 @@ public class IngameUI : MonoBehaviour {
     public GameObject star2;
     public GameObject star3;
     public GameObject levelCompletePanel;
+    public GameObject levelRevisitPanel;
     public GameObject pauseMenuPanel;
     public GameObject inventory;
     public GameObject pauseButton;
@@ -68,6 +69,22 @@ public class IngameUI : MonoBehaviour {
         pauseButton.SetActive(true);
         inventory.SetActive(true);
         if (tutorialOn)tutorialButton.SetActive(true);
+    }
+
+    public void ShowLevelRevisitPanel()
+    {
+        levelRevisitPanel.SetActive(true);
+    }
+
+    public void HideLevelCompletePanelForRevisit()
+    {
+        //Reset the transparency for the fade-in animation
+        foreach (Text text in levelCompletePanel.transform.GetComponentsInChildren<Text>())
+        {
+            text.color = new Color(1, 1, 1, 0);
+        }
+        levelCompletePanel.SetActive(false);
+        pauseButton.SetActive(true);
     }
 
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
