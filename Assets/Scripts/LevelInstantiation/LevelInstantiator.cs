@@ -13,8 +13,9 @@ public class LevelInstantiator : MonoBehaviour
 {
     [Header("Press N to switch to the next difficulty.")]
     [Tooltip("Must be 1 and above but not higher than the numOfIntensities.")]
-    public int initialIntensity;
-    public int numOfIntensities;
+    public int currentDifficulty;
+    public int difficultyCount;
+    public int maxScore;
     public ResponsiveCameraPositioner cameraPositioner;
 
     //For loading of data
@@ -55,7 +56,7 @@ public class LevelInstantiator : MonoBehaviour
     {
         gridPositioner = grid.GetComponent<GridPositioner>();
         timeAttackManager = TimeAttackManager.Instance;
-        setIntensity(initialIntensity);
+        GenerateLevelByDifficulty(currentDifficulty);
         assignPics();
         LoadData();
         InstantiateRandomLevel();
@@ -66,9 +67,10 @@ public class LevelInstantiator : MonoBehaviour
         levelIndex = UnityEngine.Random.Range(0, jsonAsString.Split(']').Length - 1);
     }
 
-    public void setIntensity(int i)
+    public void GenerateLevelByDifficulty(int currentScore)
     {
-        string name = "Levels/Level" + i;
+        currentDifficulty = (int)Mathf.Ceil(((float)currentScore / (float)maxScore) / (1 / (float)difficultyCount));
+        string name = "Levels/Level" + currentDifficulty;
         dataFileName = name as string;
         LoadData();
         InstantiateRandomLevel();
@@ -76,7 +78,7 @@ public class LevelInstantiator : MonoBehaviour
 
     private void assignPics()
     {
-        int numOfFolders = 22; //Needs to be the number of folders in PictureSets + 1
+        int numOfFolders = 16; //Needs to be the number of folders in PictureSets + 1
         randomFolder = UnityEngine.Random.Range(1, numOfFolders);
         int temp = randomFolder;
         _sourceImage1 = getPicA();
@@ -359,12 +361,12 @@ public class LevelInstantiator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.N))
         {
-            initialIntensity++;
-            if(initialIntensity > numOfIntensities)
+            currentDifficulty++;
+            if(currentDifficulty > difficultyCount)
             {
-                initialIntensity = 1;
+                currentDifficulty = 1;
             }
-            setIntensity(initialIntensity);
+            GenerateLevelByDifficulty(currentDifficulty);
         }
     }
 }
