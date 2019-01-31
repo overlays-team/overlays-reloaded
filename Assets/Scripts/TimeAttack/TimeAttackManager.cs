@@ -168,10 +168,12 @@ public class TimeAttackManager : MonoBehaviour
             timeAttackUI.HideNameInputPanel();
         }
     }
-
+     
     public void NextRandomLevel()
     {
-        levelInstantiator.InstantiateRandomLevel();
+
+        levelInstantiator.GenerateLevelByDifficulty(totalScore);
+
         StartCountdown();
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.HideLevelRevisitPanel();
