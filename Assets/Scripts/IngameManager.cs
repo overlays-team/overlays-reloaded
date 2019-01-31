@@ -126,6 +126,13 @@ public class IngameManager : MonoBehaviour
     {
         SceneFader.Instance.FadeTo("MainMenu");
     }
+
+    public void LevelSelect()
+    {
+        SceneFader.Instance.FadeTo("MainMenuLevelSelect");
+    }
+
+
     public void Pause()
     {
         currentState = NormalModeState.Paused;

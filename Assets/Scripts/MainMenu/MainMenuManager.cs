@@ -18,7 +18,7 @@ public class MainMenuManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        currentState = MainMenuState.MainMenu;
+       // currentState = MainMenuState.MainMenu;
         SceneFader.Instance.FadeToClear();
     }
 
