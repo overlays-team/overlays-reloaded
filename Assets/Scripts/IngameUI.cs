@@ -47,11 +47,13 @@ public class IngameUI : MonoBehaviour {
         if (tutorialPanel.activeInHierarchy)
         { 
             tutorialPanel.SetActive(false);
+            ShowIngameUI();
             IngameManager.Instance.ResumeGame();
         }
         else
         {    
-            tutorialPanel.SetActive(true); 
+            tutorialPanel.SetActive(true);
+            HideIngameUI();
             IngameManager.Instance.PauseGame();
         }
     }
@@ -59,6 +61,7 @@ public class IngameUI : MonoBehaviour {
 
     public void HideIngameUI()
     {
+        Debug.Log("Hide");
         pauseButton.SetActive(false);
         tutorialButton.SetActive(false);
         inventory.SetActive(false);
