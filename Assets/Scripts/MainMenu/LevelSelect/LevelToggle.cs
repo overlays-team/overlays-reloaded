@@ -18,9 +18,14 @@ public class LevelToggle : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Update ()
+    {
+        //TODO: Find a better solution to make multiple toggles not selectable
+        if(!toggle.isOn && anim.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Normal")
+        {
+            anim.SetTrigger("Normal");
+        }
+    }
 
     // Workaround: Have to manually reset the toggle values so it isn't preselected on enable/disabling the level select screen
     public void ResetToggle()

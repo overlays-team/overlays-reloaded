@@ -12,11 +12,8 @@ public class GameDataEditor : MonoBehaviour
     public bool loadFromDefault;
     public GameData data;
 
-    public string dirtyWordsPathForInitialization = "/dirtyWordsCreation.json";
     public string dirtyWordsPath = "Data/dirtyWords";
     public DirtyWords dirtyWords;
-    private DirtyWordsInitializer dirtyWordsInitializer;
-
 
     public PostProcessingProfile postProcessingProfile;
 
@@ -44,11 +41,7 @@ public class GameDataEditor : MonoBehaviour
                 LoadDefaultData();
             }
         }
-
-        //now on working, shuya
-        //InitializeDirtyWordsJson();
-        //LoadDirtyWords();
-        //PrintDirtyWords();
+        LoadDirtyWords();
     }
 
     private void Start()
@@ -109,11 +102,6 @@ public class GameDataEditor : MonoBehaviour
         data = JsonUtility.FromJson<GameData>(defaultGameData.text);
     }
 
-    //sh
-    private string GetFilePathForDirtyWordInitialization()
-    {
-        return Application.persistentDataPath + dirtyWordsPathForInitialization;
-    }
 
     private void LoadDirtyWords()
     {
@@ -121,27 +109,17 @@ public class GameDataEditor : MonoBehaviour
         dirtyWords = JsonUtility.FromJson<DirtyWords>(dirtyWordsJson.text);
     }
 
+
     private void PrintDirtyWords()
     {
-        int scope = 3;
-        //int scope = dirtyWords.wordsList.Count;
+        int scope = 3; //because there are to much 
+        int size = dirtyWords.wordsList.Count;
+        //scope = size;
+        Debug.Log(size);
         for (int i = 0; i < scope; i++)
         {
             Debug.Log(dirtyWords.wordsList[i]);
         }
-    }
-
-    private void InitializeDirtyWordsJson()
-    {
-        string savePath = GetFilePathForDirtyWordInitialization();
-        dirtyWordsInitializer = new DirtyWordsInitializer();
-        dirtyWordsInitializer.SetDirtyWords();
-        dirtyWordsInitializer.SetDirtyWordsList();
-
-        string dataString = JsonUtility.ToJson(dirtyWordsInitializer);
-        File.WriteAllText(savePath, dataString);
-
-        Debug.Log("DirtyWordsJson has been initialized : " + savePath);
     }
 
 
