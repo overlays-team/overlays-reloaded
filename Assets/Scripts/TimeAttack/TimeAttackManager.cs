@@ -81,9 +81,9 @@ public class TimeAttackManager : MonoBehaviour
     public void SubmitScore()
     {
         string playerName = timeAttackUI.nameInputField.text;
-        Debug.Log(playerName);
+        Debug.Log("playerName: " + playerName);
         bool hasDirtyWord = CheckDirtyWord(playerName);
-        Debug.Log(hasDirtyWord);
+        Debug.Log("hasDirtyWord: " + hasDirtyWord);
 
         if (string.IsNullOrEmpty(playerName))
         {
