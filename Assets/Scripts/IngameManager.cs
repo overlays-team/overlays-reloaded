@@ -44,7 +44,6 @@ public class IngameManager : MonoBehaviour
     void Start()
     {
         SceneFader.Instance.FadeToClear();
-        ingameUI.HideLevelCompletePanel();
 
         //get out ImageOutputs
         GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
