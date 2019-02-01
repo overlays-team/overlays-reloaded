@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
-    public enum NormalModeState
+    public enum IngameManagerState
     {
-        Playing, GameComplete, Paused
+        Playing, GameComplete, Paused, Review
     }
-    public NormalModeState currentState;
+    public IngameManagerState currentState;
 
     public IngameUI ingameUI;
 
@@ -54,7 +54,7 @@ public class IngameManager : MonoBehaviour
                 outputImages.Add(go.GetComponent<ImageOutput>());
             }
         }
-        currentState = NormalModeState.Playing;
+        currentState = IngameManagerState.Playing;
     }
 
     // Update is called once per frame
@@ -62,10 +62,10 @@ public class IngameManager : MonoBehaviour
     {
         switch (currentState)
         {
-            case NormalModeState.Playing:
+            case IngameManagerState.Playing:
                 CheckWinCondition();
                 break;
-            case NormalModeState.Paused:
+            case IngameManagerState.Paused:
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     Resume();
@@ -83,7 +83,7 @@ public class IngameManager : MonoBehaviour
         }
         SaveLevelState();
         ingameUI.ShowLevelCompletePanel(score, endOfLevel);
-        currentState = NormalModeState.GameComplete;
+        currentState = IngameManagerState.GameComplete;
     }
 
     private void SaveLevelState()
@@ -134,7 +134,7 @@ public class IngameManager : MonoBehaviour
 
     public void Pause()
     {
-        currentState = NormalModeState.Paused;
+        currentState = IngameManagerState.Paused;
         ingameUI.TogglePause();
         PauseGame();
     }
@@ -148,7 +148,7 @@ public class IngameManager : MonoBehaviour
 
     public void Resume()
     {
-        currentState = NormalModeState.Playing;
+        currentState = IngameManagerState.Playing;
         ingameUI.TogglePlay();
         ResumeGame();
     }
@@ -160,8 +160,10 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowIngameUI();
     }
 
+
     public void RevisitLevelAfterWin()
     {
+        currentState = IngameManagerState.Review;
         //we enabe the playerController so we can magnify our images
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
@@ -176,6 +178,14 @@ public class IngameManager : MonoBehaviour
 
         ingameUI.HideLevelCompletePanelForRevisit();
         ingameUI.ShowLevelRevisitPanel();
+    }
+
+    public void BackToEndScreen()
+    {
+        currentState = IngameManagerState.GameComplete;
+        PlayerController.Instance.enabled = false;
+        ingameUI.ShowLevelCompletePanel();
+        ingameUI.HideLevelRevisitPanel();
     }
 
     public bool CheckWinCondition()

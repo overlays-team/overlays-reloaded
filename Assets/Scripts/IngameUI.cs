@@ -35,12 +35,6 @@ public class IngameUI : MonoBehaviour {
         if (tutorialOn) ToogleTutorialOn();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     #region tutorial code
     public void ToogleTutorialOn()
     {
@@ -79,6 +73,11 @@ public class IngameUI : MonoBehaviour {
         levelRevisitPanel.SetActive(true);
     }
 
+    public void HideLevelRevisitPanel()
+    {
+        levelRevisitPanel.SetActive(false);
+    }
+
     public void HideLevelCompletePanelForRevisit()
     {
         //Reset the transparency for the fade-in animation
@@ -87,7 +86,6 @@ public class IngameUI : MonoBehaviour {
             text.color = new Color(1, 1, 1, 0);
         }
         levelCompletePanel.SetActive(false);
-        pauseButton.SetActive(true);
     }
 
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
@@ -133,15 +131,25 @@ public class IngameUI : MonoBehaviour {
             nextButton.SetActive(false);
         }
 
-        pauseButton.SetActive(false);
-        pauseMenuPanel.SetActive(false);
+        //pauseButton.SetActive(false);
+        //pauseMenuPanel.SetActive(false);
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
+    //delayed level complete
     public void ShowLevelCompletePanel(int star, bool endOfLevel)
     {
         StartCoroutine(DelayedLevelCompletePanel(star, endOfLevel));
         IngameManager.Instance.PauseGame();
+    }
+
+    //shows the level complete panel at once
+    public void ShowLevelCompletePanel()
+    {
+        levelCompletePanel.SetActive(true);
+        pauseButton.SetActive(false);
+        pauseMenuPanel.SetActive(false);
+        inventory.SetActive(false);
     }
 
     public void TogglePause()

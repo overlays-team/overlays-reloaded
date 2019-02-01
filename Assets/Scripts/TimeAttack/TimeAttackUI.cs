@@ -8,7 +8,7 @@ public class TimeAttackUI : MonoBehaviour
     private string[] mediumShoutoutTexts = new string[] { "Not bad!", "Good!", "Good job!" };
     private string[] badShoutoutTexts = new string[] { "Could be better!", "Don't give up!", "Close one!" };
     public GameObject levelCompletePanel;
-    public GameObject LevelRevisitPanel;
+    public GameObject levelRevisitPanel;
     public GameObject gameOverPanel;
     public GameObject inventory;
     public GameObject pauseButton;
@@ -206,7 +206,6 @@ public class TimeAttackUI : MonoBehaviour
             text.color = new Color(1, 1, 1, 0);
         }
         levelCompletePanel.SetActive(false);
-        //pauseButton.SetActive(true);
     }
     public void HideGameOverPanel()
     {
@@ -241,12 +240,12 @@ public class TimeAttackUI : MonoBehaviour
 
     public void ShowLevelRevisitPanel()
     {
-        LevelRevisitPanel.SetActive(true);
+        levelRevisitPanel.SetActive(true);
     }
 
     public void HideLevelRevisitPanel()
     {
-        LevelRevisitPanel.SetActive(false);
+        levelRevisitPanel.SetActive(false);
     }
 
     public void UpdateCountDown(float time, float maxTime)

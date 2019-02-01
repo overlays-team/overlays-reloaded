@@ -246,14 +246,20 @@ public class BlockObject : MonoBehaviour
     protected virtual void TwoFingerTapAction()
     {
         detailedNodeView.SetActive(true);
-        if(IngameManager.Instance!=null)IngameManager.Instance.PauseGame();
+        if (IngameManager.Instance != null)
+        {
+            if (IngameManager.Instance.currentState != IngameManager.IngameManagerState.Review) IngameManager.Instance.PauseGame();
+        }
     }
 
     //when we click the return Button in the detailedNode view
     public void OnReturnClicked()
     {
         detailedNodeView.SetActive(false);
-        if (IngameManager.Instance != null) IngameManager.Instance.ResumeGame();
+        if (IngameManager.Instance != null)
+        {
+            if (IngameManager.Instance.currentState != IngameManager.IngameManagerState.Review) IngameManager.Instance.ResumeGame();
+        }
     }
 
     #endregion
