@@ -149,10 +149,22 @@ public class TimeAttackUI : MonoBehaviour
     {
         inventory.SetActive(false);
     }
-
+    
+    //shows the level complete panel delayed
     public void ShowLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
     {
         StartCoroutine(DelayedLevelCompletePanel(timeLeft, totalScore, highestTotalScore));
+        HideInventory();
+        HidePauseButton();
+    }
+
+    //shows the level complete panel at once
+    public void ShowLevelCompletePanel()
+    {
+        levelCompletePanel.SetActive(true);
+        pauseButton.SetActive(false);
+        pauseMenuPanel.SetActive(false);
+        inventory.SetActive(false);
     }
 
     public void TogglePause()
@@ -194,7 +206,7 @@ public class TimeAttackUI : MonoBehaviour
             text.color = new Color(1, 1, 1, 0);
         }
         levelCompletePanel.SetActive(false);
-        pauseButton.SetActive(true);
+        //pauseButton.SetActive(true);
     }
     public void HideGameOverPanel()
     {

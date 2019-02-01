@@ -7,7 +7,7 @@ public class TimeAttackManager : MonoBehaviour
 {
     public enum TimeAttackState
     {
-        Playing, GameOver, GameComplete, Paused, Countdown, GameBegin
+        Playing, GameOver, GameComplete, Paused, Countdown, GameBegin, Review
     }
 
     public TimeAttackState currentState;
@@ -203,12 +203,13 @@ public class TimeAttackManager : MonoBehaviour
 
     public void RevisitLevelAfterWin()
     {
+        currentState = TimeAttackState.Review;
         //we enabe the playerController so we can magnify our images
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         //but we set all blockObject so stationary and not moveable so we cant move them anymore
         GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
-        foreach(GameObject go in blockObjects)
+        foreach (GameObject go in blockObjects)
         {
             BlockObject bo = go.GetComponent<BlockObject>();
             bo.stationary = true;
@@ -217,6 +218,14 @@ public class TimeAttackManager : MonoBehaviour
 
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.ShowLevelRevisitPanel();
+    }
+
+    public void BackToEndScreen()
+    {
+        currentState = TimeAttackState.GameComplete;
+        PlayerController.Instance.enabled = false;
+        timeAttackUI.ShowLevelCompletePanel();
+        timeAttackUI.HideLevelRevisitPanel();
     }
 
     public void Retry()
