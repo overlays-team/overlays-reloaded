@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 /*positioniert die GridPlanes im EditMode*/
 [ExecuteInEditMode]
@@ -59,7 +60,9 @@ public class GridPositioner : MonoBehaviour
             currentZ = transform.position.z;
             for (int column = 0; column < rows; column++)
             {
-                GameObject plane = Instantiate(gridPlane, new Vector3(currentX, transform.position.y, currentZ), transform.rotation, transform);
+                GameObject plane = PrefabUtility.InstantiatePrefab(gridPlane) as GameObject;
+                plane.transform.position = new Vector3(currentX, transform.position.y, currentZ);
+                plane.transform.SetParent(transform);
                 //plane.transform.SetParent(transform);
                 currentZ += padding;
             }

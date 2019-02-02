@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 public class GridPlane : MonoBehaviour
@@ -15,6 +16,8 @@ public class GridPlane : MonoBehaviour
 
     public MeshCollider meshCollider;
     public MeshRenderer meshRenderer;
+
+    public Transform frame;
 
 
     private void Start()
@@ -61,12 +64,23 @@ public class GridPlane : MonoBehaviour
             empty = true;
             meshCollider.enabled = false;
             meshRenderer.enabled = false;
+            foreach(Transform child in frame)
+            {
+
+                  child.GetComponent<MeshRenderer>().enabled = false;
+
+            }
+
         }
         else
         {
             empty = false;
             meshCollider.enabled = true;
             meshRenderer.enabled = true;
+            foreach (Transform child in frame)
+            {
+                child.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 
