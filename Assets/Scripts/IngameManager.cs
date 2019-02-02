@@ -15,6 +15,7 @@ public class IngameManager : MonoBehaviour
 
     public int score;
     public int moves = 0;
+    [Tooltip("if this is set to 15 we get 1 star after 15 moves, 2 stars with 5-10 moves and on with 0-5 moves")]
     public int maxMoves = 15;
 
     public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
