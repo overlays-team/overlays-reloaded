@@ -157,6 +157,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
                     if (items[i].blockAmount > 0)
                     {
                         PlayerController.Instance.GetObjectFromInventory(items[i].RemoveBlockObject());
+                        IngameManager.Instance.RaiseMoves();
                         UpdateItems();
                     }
                 }
@@ -166,6 +167,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
                     block.currentAssignedGridPlane = inventoryGridPlane;
                     block.inInventory = true;
                     PlayerController.Instance.GetObjectFromInventory(block);
+                    IngameManager.Instance.RaiseMoves();
                 }
 
             }
