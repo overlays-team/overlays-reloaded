@@ -80,11 +80,7 @@ public class IngameUI : MonoBehaviour {
 
     public void HideLevelCompletePanelForRevisit()
     {
-        //Reset the transparency for the fade-in animation
-        foreach (Text text in levelCompletePanel.transform.GetComponentsInChildren<Text>())
-        {
-            text.color = new Color(1, 1, 1, 0);
-        }
+        TransparentToZero(levelCompletePanel.transform);
         levelCompletePanel.SetActive(false);
     }
 
