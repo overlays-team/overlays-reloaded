@@ -470,7 +470,6 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
-                                    Debug.Log("moves");
                                     if(IngameManager.Instance)
                                     {
                                         IngameManager.Instance.RaiseMoves();
@@ -483,7 +482,6 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedBlockObject = hittedObject;
                                     playerMode = PlayerMode.MouseHoldMoveBlock;
-                                    Debug.Log("moves");
                                     IngameManager.Instance.RaiseMoves();
                                 }
                             }

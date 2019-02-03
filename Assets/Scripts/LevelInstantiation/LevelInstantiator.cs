@@ -70,6 +70,7 @@ public class LevelInstantiator : MonoBehaviour
     public void GenerateLevelByDifficulty(int currentScore)
     {
         currentDifficulty = (int)Mathf.Ceil(((float)currentScore / (float)maxScore) / (1 / (float)difficultyCount));
+        if (currentDifficulty > difficultyCount) currentDifficulty = difficultyCount;
         string name = "Levels/Level" + currentDifficulty;
         dataFileName = name as string;
         LoadData();

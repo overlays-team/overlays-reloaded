@@ -33,12 +33,12 @@ public class ImageBarthelOutput : ImageOutput
                 inputImage2 = activeLasers[1].inputLaser.image;
                 StartImageProcessing();
             }
-            else if (activeLasers.Count == 1)
+            /*else if (activeLasers.Count == 1)
             {
                 debugImage.sprite = Sprite.Create(activeLasers[0].inputLaser.image, new Rect(0, 0, activeLasers[0].inputLaser.image.width, activeLasers[0].inputLaser.image.height), new Vector2(0.5f, 0.5f));
                 detailedNodeViewImage.sprite = debugImage.sprite;
                 CheckIfImageIsCorrect(activeLasers[0].inputLaser.image);
-            }
+            }*/
             else
             {
                 inputImage1 = null;

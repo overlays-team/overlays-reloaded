@@ -167,7 +167,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
                     block.currentAssignedGridPlane = inventoryGridPlane;
                     block.inInventory = true;
                     PlayerController.Instance.GetObjectFromInventory(block);
-                    IngameManager.Instance.RaiseMoves();
+                   if(IngameManager.Instance!=null) IngameManager.Instance.RaiseMoves();
                 }
 
             }
