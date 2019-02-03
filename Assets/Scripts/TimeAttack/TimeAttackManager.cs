@@ -191,11 +191,13 @@ public class TimeAttackManager : MonoBehaviour
     {
         timeAttackUI.HideTimerDisplay();
         timeAttackUI.HidePauseButton();
+        timeAttackUI.HideTutorialButton();
         timeAttackUI.HideInventory();
         timeAttackUI.ShowCountdownDisplay();
         yield return new WaitForSeconds(animDuration);
         timeAttackUI.HideCountdownDisplay();
         timeAttackUI.ShowTimerDisplay();
+        timeAttackUI.ShowTutorialButton();
         timeAttackUI.ShowPauseButton();
         timeAttackUI.ShowInventory();
         currentState = TimeAttackState.Playing;
@@ -239,8 +241,7 @@ public class TimeAttackManager : MonoBehaviour
         SceneFader.Instance.FadeTo("MainMenu");
     }
     public void Pause()
-    {
-        currentState = TimeAttackState.Paused;
+    { 
         timeAttackUI.TogglePause();
         PauseGame();
     }
@@ -248,19 +249,20 @@ public class TimeAttackManager : MonoBehaviour
     //pauses the inventory and layerController
     public void PauseGame()
     {
+        currentState = TimeAttackState.Paused;
         PlayerController.Instance.enabled = false;
         PlayerController.Instance.inventory.enabled = false;
     }
 
     public void Resume()
     {
-        currentState = TimeAttackState.Playing;
         timeAttackUI.TogglePlay();
         ResumeGame();
     }
 
     public void ResumeGame()
     {
+        currentState = TimeAttackState.Playing;
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         PlayerController.Instance.inventory.enabled = true;

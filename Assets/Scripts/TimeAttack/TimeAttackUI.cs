@@ -28,6 +28,8 @@ public class TimeAttackUI : MonoBehaviour
     public GameObject submitButton;
     public GameObject countdownDisplay;
     public GameObject startPanel;
+    public GameObject tutorialButton;
+    public GameObject tutorialPanel;
 
     public float winWaitTime = 2f;
     public float blurAnimDuration;
@@ -90,8 +92,36 @@ public class TimeAttackUI : MonoBehaviour
         levelCompletePanel.SetActive(true);
         pauseButton.SetActive(false);
         pauseMenuPanel.SetActive(false);
+        HideTutorialButton();
         StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
+
+    #region tutorial code
+    public void ToogleTutorialOn()
+    {
+        if (tutorialPanel.activeInHierarchy)
+        {
+            tutorialPanel.SetActive(false);
+            ShowTimerDisplay();
+            ShowPauseButton();
+            ShowTutorialButton();
+            ShowInventory();
+            TimeAttackManager.Instance.ResumeGame();
+            //IngameManager.Instance.ResumeGame();
+        }
+        else
+        {
+            tutorialPanel.SetActive(true);
+            HideTimerDisplay();
+            HidePauseButton();
+            HideTutorialButton();
+            HideInventory();
+            TimeAttackManager.Instance.PauseGame();
+            //IngameManager.Instance.PauseGame();
+        }
+    }
+    #endregion
+
 
     public void ShowCountdownDisplay()
     {
@@ -103,6 +133,16 @@ public class TimeAttackUI : MonoBehaviour
         countdownDisplay.SetActive(true);
         yield return new WaitForSeconds(animDuration);
         countdownDisplay.SetActive(false);
+    }
+
+    public void ShowTutorialButton()
+    {
+        tutorialButton.SetActive(true);
+    }
+
+    public void HideTutorialButton()
+    {
+        tutorialButton.SetActive(false);
     }
 
     public void HideCountdownDisplay()
