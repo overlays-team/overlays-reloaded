@@ -43,7 +43,7 @@ public class GridPositioner : MonoBehaviour
         else middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
     }
 
-
+    #if UNITY_EDITOR
     public void UpdatePlanes()
     {
         while (transform.childCount > 0)
@@ -70,7 +70,7 @@ public class GridPositioner : MonoBehaviour
             currentX += padding;
         }
     }
-
+    #endif
     public void UpdatePlanes(int _rows, int _columns, float _padding)
     {
         rows = LevelInstantiator.getIdx0();
