@@ -128,7 +128,6 @@ public class BlockObject : MonoBehaviour
     //some blocks can have more than one but they will change this on their own
     protected Texture2D outputImage;
 
-
     #endregion
 
     protected virtual void Start ()
@@ -283,7 +282,21 @@ public class BlockObject : MonoBehaviour
     protected virtual void StartImageProcessing()
     {
         //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
-        outputImage = Instantiate(inputImage1);
+
+        //als output Image setzen wir das größere Bilde, das andere Bild wird upgescaled
+        if (inputImage2 == null)
+        {
+            outputImage = Instantiate(inputImage1);
+        }
+        else if(inputImage2.width> inputImage1.width)
+        {
+            outputImage = Instantiate(inputImage2);
+        }
+        else
+        {
+            outputImage = Instantiate(inputImage1);
+        }
+
         imageProcessingState = ImageProcessingState.Processing;
 
         StartCoroutine("ImageProcessingEnumerator");

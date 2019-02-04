@@ -47,29 +47,49 @@ public class SubtractiveCombine2 : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
+        float resolutionDifference;
+        Color pixel1;
+        Color pixel2;
+
+        if (inputImage2.width > inputImage1.width)
+        {
+            resolutionDifference = inputImage2.width / inputImage1.width;
+
+            pixel1 = inputImage1.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+            pixel2 = inputImage2.GetPixel(x, y);
+        }
+        else
+        {
+            resolutionDifference = inputImage1.width / inputImage2.width;
+
+            pixel1 = inputImage1.GetPixel(x, y);
+            pixel2 = inputImage2.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+        }
+
+
         //how to use image weight and the alpha values in multiply?
-        if(inputImage1.GetPixel(x, y).a > 0 && inputImage2.GetPixel(x, y).a > 0)
+        if (inputImage1.GetPixel(x, y).a > 0 && inputImage2.GetPixel(x, y).a > 0)
         {
             return new Color(
-                        (inputImage1.GetPixel(x, y).r) * (inputImage2.GetPixel(x, y).r) / 1,
-                        (inputImage1.GetPixel(x, y).g) * (inputImage2.GetPixel(x, y).g) / 1,
-                        (inputImage1.GetPixel(x, y).b) * (inputImage2.GetPixel(x, y).b) / 1
+                        (pixel1.r) * (pixel2.r) / 1,
+                        (pixel1.g) * (pixel2.g) / 1,
+                        (pixel1.b) * (pixel2.b) / 1
                         );
         }
         else if(inputImage1.GetPixel(x, y).a > 0)
         {
             return new Color(
-                        (inputImage1.GetPixel(x, y).r) ,
-                        (inputImage1.GetPixel(x, y).g) ,
-                        (inputImage1.GetPixel(x, y).b)
+                        (pixel1.r) ,
+                        (pixel1.g) ,
+                        (pixel1.b)
                         );
         }
         else if(inputImage2.GetPixel(x, y).a > 0)
         {
             return new Color(
-                        (inputImage2.GetPixel(x, y).r),
-                        (inputImage2.GetPixel(x, y).g),
-                        (inputImage2.GetPixel(x, y).b)
+                        (pixel2.r),
+                        (pixel2.g),
+                        (pixel2.b)
                         );
         }
         else
