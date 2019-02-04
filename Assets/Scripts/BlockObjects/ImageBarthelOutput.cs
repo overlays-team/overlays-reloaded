@@ -162,12 +162,15 @@ public class ImageBarthelOutput : ImageOutput
 
     protected override Color ProcessPixel(int x, int y)
     {
+        Color pixel1 = inputImage1.GetPixel(x, y);
+        Color pixel2 = inputImage2.GetPixel(x, y);
+
         return new Color(
 
-                        Mathf.Min(Mathf.Max(0, (inputImage1.GetPixel(x, y).r + inputImage2.GetPixel(x, y).r) - 0.5f), 1),
-                        Mathf.Min(Mathf.Max(0, (inputImage1.GetPixel(x, y).g + inputImage2.GetPixel(x, y).g) - 0.5f), 1),
-                        Mathf.Min(Mathf.Max(0, (inputImage1.GetPixel(x, y).b + inputImage2.GetPixel(x, y).b) - 0.5f), 1),
-                        Mathf.Max(inputImage1.GetPixel(x, y).a, inputImage2.GetPixel(x, y).a)
+                        Mathf.Min(Mathf.Max(0, (pixel1.r + pixel2.r) - 0.5f), 1),
+                        Mathf.Min(Mathf.Max(0, (pixel1.g + pixel2.g) - 0.5f), 1),
+                        Mathf.Min(Mathf.Max(0, (pixel1.b + pixel2.b) - 0.5f), 1),
+                        Mathf.Max(pixel1.a, pixel2.a)
                         );
     }
 

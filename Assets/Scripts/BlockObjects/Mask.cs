@@ -66,10 +66,12 @@ public class Mask : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
+        Color pixel = inputImage1.GetPixel(x, y);
+
         return new Color(
-            Mathf.Abs(inputImage1.GetPixel(x, y).r),
-            Mathf.Abs(inputImage1.GetPixel(x, y).g),
-            Mathf.Abs(inputImage1.GetPixel(x, y).b), 
+            Mathf.Abs(pixel.r),
+            Mathf.Abs(pixel.g),
+            Mathf.Abs(pixel.b), 
             mask.GetPixel(x, y).r);
     }
 

@@ -101,10 +101,13 @@ public class ImageMultiOutput : ImageOutput
 
     protected override Color ProcessPixel(int x, int y)
     {
+        Color pixel1 = inputImage1.GetPixel(x, y);
+        Color pixel2 = inputImage2.GetPixel(x, y);
+
         return new Color(
-                        1 - (1 - inputImage1.GetPixel(x, y).r) * (1 - inputImage2.GetPixel(x, y).r) / 1,
-                        1 - (1 - inputImage1.GetPixel(x, y).g) * (1 - inputImage2.GetPixel(x, y).g) / 1,
-                        1 - (1 - inputImage1.GetPixel(x, y).b) * (1 - inputImage2.GetPixel(x, y).b) / 1
+                        1 - (1 - pixel1.r) * (1 - pixel2.r) / 1,
+                        1 - (1 - pixel1.g) * (1 - pixel2.g) / 1,
+                        1 - (1 - pixel1.b) * (1 - pixel2.b) / 1
                         );
     }
 

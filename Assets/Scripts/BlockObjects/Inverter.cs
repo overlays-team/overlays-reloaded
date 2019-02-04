@@ -31,6 +31,8 @@ public class Inverter : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
-        return new Color(Mathf.Abs(1-inputImage1.GetPixel(x, y).r), Mathf.Abs(1 - inputImage1.GetPixel(x, y).g), Mathf.Abs(1 - inputImage1.GetPixel(x, y).b), inputImage1.GetPixel(x, y).a);
+        Color pixel = inputImage1.GetPixel(x, y);
+
+        return new Color(Mathf.Abs(1- pixel.r), Mathf.Abs(1 - pixel.g), Mathf.Abs(1 - pixel.b), pixel.a);
     }
 }
