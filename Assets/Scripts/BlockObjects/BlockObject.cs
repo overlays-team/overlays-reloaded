@@ -127,6 +127,8 @@ public class BlockObject : MonoBehaviour
 
     //some blocks can have more than one but they will change this on their own
     protected Texture2D outputImage;
+    [Tooltip("the bigger, the faster the images process - 10 is default")]
+    public int imageProcessingTime = 10;
 
     #endregion
 
@@ -317,7 +319,7 @@ public class BlockObject : MonoBehaviour
             {
                 outputImage.SetPixel(x, y, ProcessPixel(x,y));
             }
-            if (y % 10 == 0) yield return null;
+            if (y % imageProcessingTime == 0) yield return null;
         }
         outputImage.Apply();
 

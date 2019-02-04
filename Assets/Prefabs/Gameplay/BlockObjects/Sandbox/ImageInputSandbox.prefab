@@ -570,13 +570,16 @@ MonoBehaviour:
   graphics: {fileID: 0}
   imageCanvas: {fileID: 2388762298044316146}
   frame: {fileID: 0}
+  stationaryFrame: {fileID: 0}
   debugImage: {fileID: 2356629705671993902}
   blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 06d05d68f6670f144aa732e7951a8ea0, type: 3}
+  imageProcessingTime: 200
   inputImage: {fileID: 2800000, guid: 4357df5f8c90dba49b8b3f5ae901dac2, type: 3}
   textureFormat: 4
+  instantiatedInGame: 0
 --- !u!1 &2389142690365067564
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,16 +932,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 147454968040587633, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2388868974223208121}
-    - target: {fileID: 147454968040587633, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnImportButtonClicked
-      objectReference: {fileID: 0}
     - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -958,6 +951,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FontData.m_Alignment
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 147454968040587633, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2388868974223208121}
+    - target: {fileID: 147454968040587633, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnImportButtonClicked
       objectReference: {fileID: 0}
     - target: {fileID: 9023603795228833461, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
