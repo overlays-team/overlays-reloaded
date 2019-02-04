@@ -127,7 +127,8 @@ public class BlockObject : MonoBehaviour
 
     //some blocks can have more than one but they will change this on their own
     protected Texture2D outputImage;
-
+    [Tooltip("the bigger, the faster the images process - 10 is default")]
+    public int imageProcessingTime = 10;
 
     #endregion
 
@@ -237,7 +238,7 @@ public class BlockObject : MonoBehaviour
     public void OnTwoFingerTap()
     {
         //most of the need to rotate, if they need something else they just override
-        if (!doubleClickActionBlocked)
+        if (!doubleClickActionBlocked && imageProcessingState == ImageProcessingState.Displaying)
         {
             TwoFingerTapAction();
         }
@@ -283,7 +284,21 @@ public class BlockObject : MonoBehaviour
     protected virtual void StartImageProcessing()
     {
         //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
-        outputImage = Instantiate(inputImage1);
+
+        //als output Image setzen wir das größere Bilde, das andere Bild wird upgescaled
+        if (inputImage2 == null)
+        {
+            outputImage = Instantiate(inputImage1);
+        }
+        else if(inputImage2.width> inputImage1.width)
+        {
+            outputImage = Instantiate(inputImage2);
+        }
+        else
+        {
+            outputImage = Instantiate(inputImage1);
+        }
+
         imageProcessingState = ImageProcessingState.Processing;
 
         StartCoroutine("ImageProcessingEnumerator");
@@ -304,7 +319,7 @@ public class BlockObject : MonoBehaviour
             {
                 outputImage.SetPixel(x, y, ProcessPixel(x,y));
             }
-            if (y % 10 == 0) yield return null;
+            if (y % imageProcessingTime == 0) yield return null;
         }
         outputImage.Apply();
 

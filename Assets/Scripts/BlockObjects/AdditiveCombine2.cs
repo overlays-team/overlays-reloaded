@@ -48,12 +48,33 @@ public class AdditiveCombine2 : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
+        float resolutionDifference;
+        Color pixel1;
+        Color pixel2;
+
+        if (inputImage2.width > inputImage1.width)
+        {
+            resolutionDifference = inputImage2.width / inputImage1.width;
+
+            pixel1 = inputImage1.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+            pixel2 = inputImage2.GetPixel(x, y);  
+        }
+        else
+        {
+            resolutionDifference = inputImage1.width / inputImage2.width;
+
+            pixel1 = inputImage1.GetPixel(x, y);
+            pixel2 = inputImage2.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+        }
+
         return new Color(
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).r)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight * inputImage2.GetPixel(x, y).r)) / 1,
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).g)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight *  inputImage2.GetPixel(x, y).g)) / 1,
-                        1 - (1 - (inputImage1.GetPixel(x, y).a * image1Weight * inputImage1.GetPixel(x, y).b)) * (1 - (inputImage2.GetPixel(x, y).a * image2Weight *  inputImage2.GetPixel(x, y).b)) / 1,
-                        Mathf.Max(inputImage1.GetPixel(x, y).a, inputImage2.GetPixel(x, y).a)
+                        1 - (1 - (pixel1.a * image1Weight * pixel1.r)) * (1 - (pixel2.a * image2Weight * pixel2.r)) / 1,
+                        1 - (1 - (pixel1.a * image1Weight * pixel1.g)) * (1 - (pixel2.a * image2Weight * pixel2.g)) / 1,
+                        1 - (1 - (pixel1.a * image1Weight * pixel1.b)) * (1 - (pixel2.a * image2Weight * pixel2.b)) / 1,
+                        Mathf.Max(pixel1.a, inputImage2.GetPixel(x, y).a)
                         );
+
+
     }
 
     //gets called by the slider in the detsiled node view, updates the weight of the two images

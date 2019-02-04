@@ -72,11 +72,13 @@ MonoBehaviour:
   graphics: {fileID: 0}
   imageCanvas: {fileID: 206141327283037191}
   frame: {fileID: 0}
+  stationaryFrame: {fileID: 0}
   debugImage: {fileID: 237234201099382833}
   blockImage: {fileID: 0}
   inInventory: 0
   inventoryIndex: 0
   inventoryIcon: {fileID: 21300000, guid: 58d5c1ee47813554abbfb867b391dc72, type: 3}
+  imageProcessingTime: 200
   noImage: {fileID: 2800000, guid: 7736779cb88825a4794637057acf4465, type: 3}
 --- !u!1 &205652305402777223
 GameObject:
@@ -432,10 +434,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 202695759665025481}
     m_Modifications:
-    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
-      propertyPath: m_Name
-      value: LaserInput
-      objectReference: {fileID: 0}
     - target: {fileID: 4797018647629542, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
@@ -479,6 +477,10 @@ PrefabInstance:
     - target: {fileID: 4797018647629542, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1064513393434506, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
+      propertyPath: m_Name
+      value: LaserInput
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef13156e72cf82142bad16d192f3e516, type: 3}
@@ -647,6 +649,28 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 205268634046305504}
+    - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnReturnClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_Text
+      value: 'Back
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8127769576548057609, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -696,28 +720,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnExportButtonClicked
-      objectReference: {fileID: 0}
-    - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 205268634046305504}
-    - target: {fileID: 8663033230455598224, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnReturnClicked
-      objectReference: {fileID: 0}
-    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_Text
-      value: 'Back
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 506897433354296148, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 9023603795228833461, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}

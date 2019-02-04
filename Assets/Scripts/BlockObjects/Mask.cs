@@ -27,7 +27,8 @@ public class Mask : BlockObject
         if (loadedImage != null)
         {
             Debug.Log("2");
-            Texture2D newImage = duplicateTexture(loadedImage);
+            Texture2D newImageNotCroppedYet = duplicateTexture(loadedImage);
+            Texture2D newImage = CropToSquare(newImageNotCroppedYet);
 
             //laserOutput.laser.image = newImage;
             mask = newImage;
@@ -65,10 +66,12 @@ public class Mask : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
+        Color pixel = inputImage1.GetPixel(x, y);
+
         return new Color(
-            Mathf.Abs(inputImage1.GetPixel(x, y).r),
-            Mathf.Abs(inputImage1.GetPixel(x, y).g),
-            Mathf.Abs(inputImage1.GetPixel(x, y).b), 
+            Mathf.Abs(pixel.r),
+            Mathf.Abs(pixel.g),
+            Mathf.Abs(pixel.b), 
             mask.GetPixel(x, y).r);
     }
 
@@ -115,6 +118,44 @@ public class Mask : BlockObject
         RenderTexture.active = previous;
         RenderTexture.ReleaseTemporary(renderTex);
         return readableText;
+    }
+
+    Texture2D CropToSquare(Texture2D imageToBeCropped)
+    {
+        int sideLength = Mathf.Min(imageToBeCropped.width, imageToBeCropped.height);
+        Texture2D croppedTexture = new Texture2D(sideLength, sideLength);
+
+        if (imageToBeCropped.width > imageToBeCropped.height)
+        {
+            int differenceInAspect = imageToBeCropped.width - imageToBeCropped.height;
+            int pixelOffset = differenceInAspect / 2;
+
+            for (int y = 0; y < croppedTexture.height; y++)
+            {
+                for (int x = 0; x < croppedTexture.width; x++)
+                {
+                    croppedTexture.SetPixel(x, y, imageToBeCropped.GetPixel(x + pixelOffset, y));
+                }
+
+            }
+            croppedTexture.Apply();
+        }
+        else if (imageToBeCropped.height > imageToBeCropped.width)
+        {
+            int differenceInAspect = imageToBeCropped.height - imageToBeCropped.width;
+            int pixelOffset = differenceInAspect / 2;
+
+            for (int y = 0; y < croppedTexture.height; y++)
+            {
+                for (int x = 0; x < croppedTexture.width; x++)
+                {
+                    croppedTexture.SetPixel(x, y, imageToBeCropped.GetPixel(x, y + pixelOffset));
+                }
+
+            }
+            croppedTexture.Apply();
+        }
+        return croppedTexture;
     }
 
 }

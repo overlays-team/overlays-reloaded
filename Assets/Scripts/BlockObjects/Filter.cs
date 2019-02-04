@@ -70,22 +70,24 @@ public class Filter : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
+        Color pixel = inputImage1.GetPixel(x, y);
+
         switch (filterMode)
         {
             case FilterColor.RED:
-                return new Color(inputImage1.GetPixel(x, y).r, 0f, 0f, inputImage1.GetPixel(x, y).a);
+                return new Color(pixel.r, 0f, 0f, pixel.a);
 
             case FilterColor.GREEN:
-                return new Color(0f, inputImage1.GetPixel(x, y).g, 0f, inputImage1.GetPixel(x, y).a);
+                return new Color(0f, pixel.g, 0f, pixel.a);
 
             case FilterColor.BLUE:
-                return new Color(0f, 0f, inputImage1.GetPixel(x, y).b, inputImage1.GetPixel(x, y).a);
+                return new Color(0f, 0f, pixel.b, pixel.a);
 
             case FilterColor.NONE:
-                return inputImage1.GetPixel(x, y);
+                return pixel;
 
             case FilterColor.SANDBOX:
-                return new Color(inputImage1.GetPixel(x, y).r * red, inputImage1.GetPixel(x, y).g * green, inputImage1.GetPixel(x, y).b * blue);
+                return new Color(pixel.r * red, pixel.g * green, pixel.b * blue);
 
             default:
                 return new Color();
