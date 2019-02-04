@@ -11,7 +11,8 @@ public class ImageOutputSandbox : BlockObject
     protected override void Start()
     {
         base.Start();
-        debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));     
+        debugImage.sprite = Sprite.Create(noImage, new Rect(0, 0, noImage.width, noImage.height), new Vector2(0.5f, 0.5f));
+        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
     }
 
     // Update is called once per frame

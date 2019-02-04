@@ -16,7 +16,7 @@ public class ImageInput : BlockObject
 
     protected void Awake()
     {
-        
+        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
     }
 
 

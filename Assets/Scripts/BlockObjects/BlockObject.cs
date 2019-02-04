@@ -251,6 +251,10 @@ public class BlockObject : MonoBehaviour
         {
             if (IngameManager.Instance.currentState != IngameManager.IngameManagerState.Review) IngameManager.Instance.PauseGame();
         }
+        else if(TimeAttackManager.Instance != null)
+        {
+            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.PauseGame();
+        }
     }
 
     //when we click the return Button in the detailedNode view
@@ -260,6 +264,10 @@ public class BlockObject : MonoBehaviour
         if (IngameManager.Instance != null)
         {
             if (IngameManager.Instance.currentState != IngameManager.IngameManagerState.Review) IngameManager.Instance.ResumeGame();
+        }
+        else if (TimeAttackManager.Instance != null)
+        {
+            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.ResumeGame();
         }
     }
 
