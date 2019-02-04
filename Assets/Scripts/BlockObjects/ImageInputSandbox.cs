@@ -24,7 +24,8 @@ public class ImageInputSandbox : ImageInput
 
         if (loadedImage != null)
         {
-            Texture2D newImage = duplicateTexture(loadedImage);
+            Texture2D newImageNotCroppedYet = duplicateTexture(loadedImage);
+            Texture2D newImage = CropToSquare(newImageNotCroppedYet);
 
             laserOutput.laser.image = newImage;
             debugImage.sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
@@ -68,6 +69,44 @@ public class ImageInputSandbox : ImageInput
         RenderTexture.active = previous;
         RenderTexture.ReleaseTemporary(renderTex);
         return readableText;
+    }
+
+    Texture2D CropToSquare(Texture2D imageToBeCropped)
+    {
+        int sideLength = Mathf.Min(imageToBeCropped.width, imageToBeCropped.height);
+        Texture2D croppedTexture = new Texture2D(sideLength, sideLength, textureFormat, false);
+       
+         if (imageToBeCropped.width > imageToBeCropped.height)
+         {
+             int differenceInAspect = imageToBeCropped.width - imageToBeCropped.height;
+             int pixelOffset = differenceInAspect / 2;
+
+             for (int y = 0; y < croppedTexture.height; y++)
+             {
+                 for (int x = 0; x < croppedTexture.width; x++)
+                 {
+                     croppedTexture.SetPixel(x, y, imageToBeCropped.GetPixel(x + pixelOffset, y));
+                 }
+
+             }
+            croppedTexture.Apply();
+         }
+         else if (imageToBeCropped.height > imageToBeCropped.width)
+         {
+             int differenceInAspect = imageToBeCropped.height - imageToBeCropped.width;
+             int pixelOffset = differenceInAspect / 2;
+
+             for (int y = 0; y < croppedTexture.height; y++)
+             {
+                 for (int x = 0; x < croppedTexture.width; x++)
+                 {
+                     croppedTexture.SetPixel(x, y, imageToBeCropped.GetPixel(x, y + pixelOffset));
+                 }
+
+             }
+             croppedTexture.Apply();
+         }
+        return croppedTexture;
     }
 
 
