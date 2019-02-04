@@ -238,7 +238,7 @@ public class BlockObject : MonoBehaviour
     public void OnTwoFingerTap()
     {
         //most of the need to rotate, if they need something else they just override
-        if (!doubleClickActionBlocked)
+        if (!doubleClickActionBlocked && imageProcessingState == ImageProcessingState.Displaying)
         {
             TwoFingerTapAction();
         }
