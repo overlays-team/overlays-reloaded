@@ -1891,7 +1891,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 6356458112673737910}
+  - {fileID: 847246110815321021}
   - {fileID: 4306744686322852151}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1945,7 +1945,7 @@ MonoBehaviour:
   - {fileID: 4055214398963814105}
   - {fileID: 7659298043353777635}
   - {fileID: 7358430775085405527}
-  inventoryGridPlane: {fileID: 0}
+  inventoryGridPlane: {fileID: 847246110815321018}
   inventoryMode: 0
   rectTransform: {fileID: 8345178555751558864}
 --- !u!114 &4647625635671050776
@@ -2661,6 +2661,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8345178555751558864}
     m_Modifications:
+    - target: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
+        type: 3}
+      propertyPath: m_Name
+      value: GridPlane (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 6049646158327519154, guid: 44d111279e94a5a4095c1bf5dcd111fa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2731,16 +2736,23 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.099999964
       objectReference: {fileID: 0}
-    - target: {fileID: 6049646158327519155, guid: 44d111279e94a5a4095c1bf5dcd111fa,
-        type: 3}
-      propertyPath: m_Name
-      value: GridPlane (1)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44d111279e94a5a4095c1bf5dcd111fa, type: 3}
---- !u!4 &6356458112673737910 stripped
+--- !u!114 &847246110815321018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6049646158327519157, guid: 44d111279e94a5a4095c1bf5dcd111fa,
+    type: 3}
+  m_PrefabInstance: {fileID: 6356458112673737743}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 633e111cc0c51214cb8ca869042c3069, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &847246110815321021 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 185, guid: 44d111279e94a5a4095c1bf5dcd111fa,
+  m_CorrespondingSourceObject: {fileID: 6049646158327519154, guid: 44d111279e94a5a4095c1bf5dcd111fa,
     type: 3}
   m_PrefabInstance: {fileID: 6356458112673737743}
   m_PrefabAsset: {fileID: 0}
