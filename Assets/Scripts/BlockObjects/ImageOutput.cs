@@ -36,6 +36,7 @@ public class ImageOutput : BlockObject {
     {
         base.Start();
         SetupImageOutput(goalImage);
+        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
     }
 
     public void SetupImageOutput(Texture2D _goalImage)

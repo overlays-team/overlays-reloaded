@@ -11,6 +11,28 @@ public class ImageInputSandbox : ImageInput
    // bool imageIsBeingLoaded = true;
     Texture2D loadedImage;
 
+    protected override void Start()
+    {
+        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
+
+        base.Start();
+        outputImage = new Texture2D(inputImage.width, inputImage.height, textureFormat, false);
+        for (int y = 0; y < outputImage.height; y++)
+        {
+            for (int x = 0; x < outputImage.width; x++)
+            {
+                outputImage.SetPixel(x, y, inputImage.GetPixel(x, y));
+            }
+
+        }
+        outputImage.Apply();
+        laserOutput.laser.image = outputImage;
+        laserOutput.active = true;
+
+        debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
+        detailedNodeViewImage.sprite = debugImage.sprite;
+    }
+
     public void OnImportButtonClicked()
     {
         Debug.Log("import Button clicked");
@@ -27,8 +49,9 @@ public class ImageInputSandbox : ImageInput
             Texture2D newImageNotCroppedYet = duplicateTexture(loadedImage);
             Texture2D newImage = CropToSquare(newImageNotCroppedYet);
 
-            laserOutput.laser.image = newImage;
-            debugImage.sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
+            outputImage = newImage;
+            laserOutput.laser.image = outputImage;
+            debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
             detailedNodeViewImage.sprite = debugImage.sprite;
 
             loadedImage = null;
