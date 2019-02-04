@@ -71,6 +71,7 @@ public class GridPositioner : MonoBehaviour
         }
     }
     #endif
+
     public void UpdatePlanes(int _rows, int _columns, float _padding)
     {
         rows = LevelInstantiator.getIdx0();
