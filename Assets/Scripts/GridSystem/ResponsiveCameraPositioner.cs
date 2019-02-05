@@ -10,7 +10,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
     [SerializeField]
     float padding;
 
-    float zOffset; //raise the camera by thuis if we are using tablet -> better spacing
+    public float zOffset = 0.45f; //raise the camera by thuis if we are using tablet -> better spacing
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
         if (Screen.height * 1f / Screen.width  < 1.6)
         {
             padding = padding * 0.85f;
-            zOffset = -0.45f*(Screen.height/2000);
+            zOffset = - zOffset*(Screen.height/2000);
         }
         else
         {
