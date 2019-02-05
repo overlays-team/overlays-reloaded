@@ -16,9 +16,12 @@ public class InventoryButton : MonoBehaviour, IPointerDownHandler
     {
         if (Screen.height *1f/ Screen.width < 1.5)
         {
-            layoutElement.minHeight = 120;
-            layoutElement.minWidth = 120;
-            transform.parent.GetComponent<HorizontalLayoutGroup>().spacing = 70;
+            if (layoutElement != null)
+            {
+                layoutElement.minHeight = 120;
+                layoutElement.minWidth = 120;
+                transform.parent.GetComponent<HorizontalLayoutGroup>().spacing = 70;
+            }
         }
 
     }
