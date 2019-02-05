@@ -56,14 +56,14 @@ public class HttpCommunicator : MonoBehaviour
     {
         string url = host + ":" + port + path;
 
-        //sorry, ignoreance of json in unity
         //string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
         string scoreDataJson = GenerateJson();
-        //Debug.Log(testJson);
-
+  
+        //preparing for sending
         byte[] payload = new byte[scoreDataJson.Length];
         payload = System.Text.Encoding.UTF8.GetBytes(scoreDataJson);
 
+        //set request type and haeader
         UnityWebRequest request = new UnityWebRequest(url);
         request.timeout = 60;
         request.method = UnityWebRequest.kHttpVerbPOST;
