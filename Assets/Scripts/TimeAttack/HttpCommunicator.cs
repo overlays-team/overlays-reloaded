@@ -21,7 +21,7 @@ public class HttpCommunicator : MonoBehaviour
     //
 
 
-    private const string host = "https://overlays-webapp.herokuapp.com"; //remove const after implementing setter
+    private const string host = "https://overlays-webapp.herokuapp.com"; 
     private const int port = 443; 
     private const string path = "/scores";
     private const string header = "Content-Type";
@@ -56,13 +56,14 @@ public class HttpCommunicator : MonoBehaviour
     {
         string url = host + ":" + port + path;
 
-        //sorry, ignoreance of json in unity
-        string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
-        //Debug.Log(testJson);
-
+        //string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
+        string scoreDataJson = GenerateJson();
+  
+        //preparing for sending
         byte[] payload = new byte[scoreDataJson.Length];
         payload = System.Text.Encoding.UTF8.GetBytes(scoreDataJson);
 
+        //set request type and haeader
         UnityWebRequest request = new UnityWebRequest(url);
         request.timeout = 60;
         request.method = UnityWebRequest.kHttpVerbPOST;
@@ -80,6 +81,11 @@ public class HttpCommunicator : MonoBehaviour
         {
             Debug.Log("Response Code: " + request.responseCode);
         }
+    }
+
+    private string GenerateJson()
+    {
+        return " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
     }
 
 }
