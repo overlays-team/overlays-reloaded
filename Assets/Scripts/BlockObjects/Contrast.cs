@@ -50,7 +50,7 @@ public class Contrast : BlockObject
         g = (int)(contrastValue * (g - 127.5) + 127.5);
         b = (int)(contrastValue * (b - 127.5) + 127.5);
 
-        return new Color(r / 255.0f, g / 255.0f, b / 255.0f);
+        return new Color(r / 255.0f, g / 255.0f, b / 255.0f, pixel.a);
     }
 
     public void SetContrastValue(Slider slider)

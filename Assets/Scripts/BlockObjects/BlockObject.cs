@@ -130,6 +130,8 @@ public class BlockObject : MonoBehaviour
     [Tooltip("the bigger, the faster the images process - 10 is default")]
     public int imageProcessingTime = 10;
 
+    protected float resolutionDifference; //if we are using 2 images to calculate the output we use this to scale the smaller up
+
     #endregion
 
     protected virtual void Start ()
@@ -301,10 +303,12 @@ public class BlockObject : MonoBehaviour
         else if(inputImage2.width> inputImage1.width)
         {
             outputImage = Instantiate(inputImage2);
+            resolutionDifference = inputImage2.width / inputImage1.width;
         }
         else
         {
             outputImage = Instantiate(inputImage1);
+            resolutionDifference = inputImage1.width / inputImage2.width;
         }
 
         imageProcessingState = ImageProcessingState.Processing;

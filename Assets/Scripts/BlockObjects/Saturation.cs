@@ -52,6 +52,7 @@ public class Saturation : BlockObject
         s = s * saturationValue;
 
         Color result = Color.HSVToRGB(h, s, v);
+        result.a = pixel.a;
 
         return result;
     }

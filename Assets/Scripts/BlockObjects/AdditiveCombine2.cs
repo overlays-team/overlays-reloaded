@@ -11,6 +11,10 @@ public class AdditiveCombine2 : BlockObject
     float image1Weight = 1;
     float image2Weight = 1;
 
+    //for image processing
+    Color pixel1;
+    Color pixel2;
+
 
     protected override void Update()
     {
@@ -48,21 +52,14 @@ public class AdditiveCombine2 : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
-        float resolutionDifference;
-        Color pixel1;
-        Color pixel2;
 
         if (inputImage2.width > inputImage1.width)
         {
-            resolutionDifference = inputImage2.width / inputImage1.width;
-
             pixel1 = inputImage1.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
             pixel2 = inputImage2.GetPixel(x, y);  
         }
         else
         {
-            resolutionDifference = inputImage1.width / inputImage2.width;
-
             pixel1 = inputImage1.GetPixel(x, y);
             pixel2 = inputImage2.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
         }

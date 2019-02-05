@@ -10,7 +10,9 @@ public class Mask : BlockObject
 
     Texture2D loadedImage; // for image import
 
-    //public Texture2D testLoadedImage;
+    //for image processing
+    Color pixel;
+    Color maskValue;
 
 
     protected override void Start()
@@ -85,9 +87,6 @@ public class Mask : BlockObject
 
     protected override Color ProcessPixel(int x, int y)
     {
-        float resolutionDifference;
-        Color pixel;
-        Color maskValue;
 
         if (inputImage1.width > mask.width)
         {

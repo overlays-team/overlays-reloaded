@@ -87,7 +87,7 @@ public class Filter : BlockObject
                 return pixel;
 
             case FilterColor.SANDBOX:
-                return new Color(pixel.r * red, pixel.g * green, pixel.b * blue);
+                return new Color(pixel.r * red, pixel.g * green, pixel.b * blue, pixel.a);
 
             default:
                 return new Color();
