@@ -17,6 +17,9 @@ public class BlockObject : MonoBehaviour
      * das blockObjekt hatt defaultmäßig nur einen Laser Output- kinder die mehr wollen, überschreiben
      */
 
+    #region Variables
+
+
     [Header("Gameplay")]
     [Tooltip("if this is true - then we cant move the object from its position - good for some puzzle objects like walls etc")]
     public bool stationary = false;
@@ -30,6 +33,7 @@ public class BlockObject : MonoBehaviour
     protected GameObject detailedNodeView;
     [SerializeField]
     protected Image detailedNodeViewImage;
+
 
     #region positioning variables
     [HideInInspector]
@@ -107,7 +111,7 @@ public class BlockObject : MonoBehaviour
     public Sprite inventoryIcon;
     #endregion
 
-    #region  image processing
+    #region  image variables processing
 
     protected enum ImageProcessingState
     {
@@ -133,6 +137,11 @@ public class BlockObject : MonoBehaviour
     protected float resolutionDifference; //if we are using 2 images to calculate the output we use this to scale the smaller up
 
     #endregion
+
+    #endregion
+
+    #region SetUp
+
 
     protected virtual void Start ()
     {
@@ -178,6 +187,8 @@ public class BlockObject : MonoBehaviour
         }
     }
 
+    #endregion
+
     protected virtual void Update()
     {
         SmoothMovementUpdate();
@@ -193,6 +204,7 @@ public class BlockObject : MonoBehaviour
         //every child decides here what to do with their lasers
     }
 
+    //editor only code - enables or disables the stationary frame
     protected void OnValidate()
     {
         if (stationaryFrame != null && frame != null)
@@ -213,6 +225,8 @@ public class BlockObject : MonoBehaviour
         } 
     }
 
+    #region inventory
+
     public virtual void ReturnToInventory()
     {
         //before returning to inventory some objects needs to deassign some variables or disable lasers
@@ -226,14 +240,7 @@ public class BlockObject : MonoBehaviour
         if(laserOutput!=null && laserOutput.laser!=null) Destroy(laserOutput.laser.gameObject);
     }
 
-    public virtual void OnMouseClick()
-    {
-        //most of the need to rotate, if they need something else they just override
-        if (!actionBlocked)
-        {
-            Rotate();
-        } 
-    }
+    #endregion
 
     #region detailed Node View
 
@@ -450,6 +457,15 @@ public class BlockObject : MonoBehaviour
 
     #region smooth movement code
 
+    public virtual void OnMouseClick()
+    {
+        //most of the need to rotate, if they need something else they just override
+        if (!actionBlocked)
+        {
+            Rotate();
+        }
+    }
+
     void SmoothMovementUpdate()
     {
         if (rotate) PerformRotation();
@@ -468,13 +484,11 @@ public class BlockObject : MonoBehaviour
     {
         rotate = true;
         desiredRotation = desiredRotation*Quaternion.Euler(0, degreesToRotate, 0);
-
     }
 
     void PerformRotation()
     {
-
-        if (desiredRotation != transform.rotation)
+        if (desiredRotation.eulerAngles != transform.rotation.eulerAngles)
         {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, desiredRotation, PlayerController.Instance.blockRotationSpeed * Time.deltaTime);
 
