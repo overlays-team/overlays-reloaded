@@ -64,15 +64,51 @@ public class Mask : BlockObject
         }
     }
 
+    protected override void StartImageProcessing()
+    {
+        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
+
+        //als output Image setzen wir das größere Bilde, das andere Bild wird upgescaled
+        if (mask.width > inputImage1.width)
+        {
+            outputImage = Instantiate(mask);
+        }
+        else
+        {
+            outputImage = Instantiate(inputImage1);
+        }
+
+        imageProcessingState = ImageProcessingState.Processing;
+
+        StartCoroutine("ImageProcessingEnumerator");
+    }
+
     protected override Color ProcessPixel(int x, int y)
     {
-        Color pixel = inputImage1.GetPixel(x, y);
+        float resolutionDifference;
+        Color pixel;
+        Color maskValue;
 
-        return new Color(
-            Mathf.Abs(pixel.r),
-            Mathf.Abs(pixel.g),
-            Mathf.Abs(pixel.b), 
-            mask.GetPixel(x, y).r);
+        if (inputImage1.width > mask.width)
+        {
+            resolutionDifference = inputImage1.width / mask.width;
+            pixel = inputImage1.GetPixel(x, y);
+            maskValue = mask.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+        }
+        else
+        {
+            resolutionDifference = mask.width / inputImage1.width;
+
+            pixel = inputImage1.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
+            maskValue = mask.GetPixel(x, y);
+        }
+
+
+            return new Color(
+            pixel.r,
+            pixel.g,
+            pixel.b, 
+            maskValue.r);
     }
 
 
