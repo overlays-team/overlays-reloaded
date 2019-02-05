@@ -18,6 +18,7 @@ public class InventoryButton : MonoBehaviour, IPointerDownHandler
         {
             layoutElement.minHeight = 120;
             layoutElement.minWidth = 120;
+            transform.parent.GetComponent<HorizontalLayoutGroup>().spacing = 70;
         }
 
     }
