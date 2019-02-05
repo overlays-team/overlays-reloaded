@@ -57,7 +57,8 @@ public class HttpCommunicator : MonoBehaviour
         string url = host + ":" + port + path;
 
         //sorry, ignoreance of json in unity
-        string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
+        //string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
+        string scoreDataJson = GenerateJson();
         //Debug.Log(testJson);
 
         byte[] payload = new byte[scoreDataJson.Length];
@@ -80,6 +81,11 @@ public class HttpCommunicator : MonoBehaviour
         {
             Debug.Log("Response Code: " + request.responseCode);
         }
+    }
+
+    private string GenerateJson()
+    {
+        return " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
     }
 
 }
