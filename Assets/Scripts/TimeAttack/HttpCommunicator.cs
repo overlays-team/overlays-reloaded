@@ -21,7 +21,7 @@ public class HttpCommunicator : MonoBehaviour
     //
 
 
-    private const string host = "https://overlays-webapp.herokuapp.com"; //remove const after implementing setter
+    private const string host = "https://overlays-webapp.herokuapp.com"; 
     private const int port = 443; 
     private const string path = "/scores";
     private const string header = "Content-Type";
