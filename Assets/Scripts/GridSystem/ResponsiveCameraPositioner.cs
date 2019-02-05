@@ -15,7 +15,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
         //adjust the padding, if we are using a tablet we make it smaller
         if (Screen.height * 1f / Screen.width  < 1.6)
         {
-            padding = padding * 0.75f;
+            padding = padding * 0.85f;
         }
  
         AdjustCamera();
