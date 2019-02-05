@@ -48,21 +48,21 @@ public class TransparentMirror : BlockObject
         else if (inputLasersThisFrame.Count == 1)
         {
             outputLaser1.laser.image = inputLasersThisFrame[0].image;
-            outputLaser1.transform.forward = Vector3.Reflect(inputLasersThisFrame[0].laserOutput.forward, transform.forward);
+            outputLaser1.transform.forward = Vector3.Reflect(inputLasersThisFrame[0].transform.forward, transform.forward);
             outputLaser1.active = true;
 
             outputLaser2.laser.image = inputLasersThisFrame[0].image;
-            outputLaser2.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser2.transform.forward = inputLasersThisFrame[0].transform.forward;
             outputLaser2.active = true;
         }
         else //if 2
         {
             outputLaser1.laser.image = inputLasersThisFrame[0].image;
-            outputLaser1.transform.forward = inputLasersThisFrame[0].laserOutput.forward;
+            outputLaser1.transform.forward = inputLasersThisFrame[0].transform.forward;
             outputLaser1.active = true;
 
             outputLaser2.laser.image = inputLasersThisFrame[0].image;
-            outputLaser2.transform.forward = inputLasersThisFrame[1].laserOutput.forward;
+            outputLaser2.transform.forward = inputLasersThisFrame[1].transform.forward;
             outputLaser2.active = true;
         }
 

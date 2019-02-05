@@ -392,7 +392,7 @@ public class BlockObject : MonoBehaviour
             //nun schauen wir ob irgend ein Laser einen unserer LaserInputs trifft
             foreach (Laser laser in inputLasers)
             {
-                if (Vector3.Angle(laser.laserOutput.forward, laserInput.transform.forward) < laserInputMaxIncidenceAngle)
+                if (Vector3.Angle(laser.transform.forward, laserInput.transform.forward) < laserInputMaxIncidenceAngle)
                 {
                     laserInput.active = true;
                     laserInput.inputLaser = laser;

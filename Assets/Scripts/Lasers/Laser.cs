@@ -5,7 +5,6 @@ using UnityEngine;
 public class Laser : MonoBehaviour {
 
     [Header("Raycasting")]
-    public Transform laserOutput;
     private Vector3 endPoint;
     public LineRenderer lineRenderer;
     public bool active = true; //do we see the laser?
@@ -42,7 +41,7 @@ public class Laser : MonoBehaviour {
         if (active)
         {
             //check if isMovingFast should Be true
-            if(Quaternion.Angle(lastRotation, laserOutput.rotation) > fastMovementTreshhold)
+            if(Quaternion.Angle(lastRotation, transform.rotation) > fastMovementTreshhold)
             {
                 isMovingFast = true;
             }
@@ -61,14 +60,14 @@ public class Laser : MonoBehaviour {
             int layerMask = 1 << 11;
 
             //calculate the endPoint
-            if (Physics.Raycast(laserOutput.position, laserOutput.forward, out hit, 100, layerMask))
+            if (Physics.Raycast(transform.position, transform.forward, out hit, 100, layerMask))
             {
                 GameObject hittedObject = hit.collider.gameObject;
                 endPoint = hit.point;
 
                 //set impact particle position and activation
                 impactParticle.transform.position = hit.point;
-                Vector3 forwardOfImpactParticle = (laserOutput.position - hit.point);
+                Vector3 forwardOfImpactParticle = (transform.position - hit.point);
                 if (forwardOfImpactParticle != Vector3.zero) impactParticle.transform.forward = forwardOfImpactParticle;
                 impactParticle.SetActive(true);
 
@@ -76,9 +75,9 @@ public class Laser : MonoBehaviour {
                 //particleLight.transform.position = laserOutput.position + (hit.point - laserOutput.position)/2;
 
                 //set flow particle position and length
-                directionFlowParticle.transform.position = laserOutput.position;
-                directionFlowParticle.transform.forward = laserOutput.forward;
-                float currentLaserLength = (hit.point - laserOutput.position).magnitude;
+                directionFlowParticle.transform.position = transform.position;
+                directionFlowParticle.transform.forward = transform.forward;
+                float currentLaserLength = (hit.point - transform.position).magnitude;
                 if(currentLaserLength != lastLaserLength) directionFlowParticle.GetComponent<ParticleSystem>().Clear();
                 directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = currentLaserLength; //lifetime = laser Length
                 lastLaserLength = currentLaserLength;
@@ -100,7 +99,7 @@ public class Laser : MonoBehaviour {
                     destinationBlock = null;
                 }
 
-                lineRenderer.SetPosition(0, laserOutput.position);
+                lineRenderer.SetPosition(0, transform.position);
                 lineRenderer.SetPosition(1, endPoint);
             }
             else
@@ -111,20 +110,20 @@ public class Laser : MonoBehaviour {
                     directionFlowParticle.GetComponent<ParticleSystem>().Clear();
                 }
                 impactParticle.SetActive(false);
-                lineRenderer.SetPosition(0, laserOutput.position);
-                lineRenderer.SetPosition(1, laserOutput.position + laserOutput.forward*100);
+                lineRenderer.SetPosition(0, transform.position);
+                lineRenderer.SetPosition(1, transform.position + transform.forward*100);
 
                 //set light position if we dont hit anything just 2 in front of laser
                 //particleLight.transform.position = laserOutput.position + laserOutput.forward*2;
 
                 //set flow particle position
-                directionFlowParticle.transform.position = laserOutput.position;
-                directionFlowParticle.transform.forward = laserOutput.forward;
+                directionFlowParticle.transform.position = transform.position;
+                directionFlowParticle.transform.forward = transform.forward;
 
                 directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = 100; //lifetime = laser Length
             }
 
-            lastRotation = laserOutput.rotation;
+            lastRotation = transform.rotation;
 
         }
         else

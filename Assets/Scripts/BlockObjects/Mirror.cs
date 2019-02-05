@@ -38,11 +38,11 @@ public class Mirror : BlockObject
         foreach (Laser laser in LaserManager.Instance.GetInputLasers(this))
         {
             //do we have one or more frontLasers
-            if (Vector3.Angle(laser.laserOutput.forward, transform.forward)<85)
+            if (Vector3.Angle(laser.transform.forward, transform.forward)<85)
             {
                 if(!laser.isMovingFast) inputLasersBackThisFrame.Add(laser);
             }
-            else if (Vector3.Angle(laser.laserOutput.forward, -transform.forward) < 85)
+            else if (Vector3.Angle(laser.transform.forward, -transform.forward) < 85)
             {
                 if (!laser.isMovingFast) inputLasersFrontThisFrame.Add(laser);
             }
@@ -66,7 +66,7 @@ public class Mirror : BlockObject
             outputLaserFront.transform.position = new Vector3(intersection.x, outputLaserBack.transform.position.y, outputLaserFront.transform.position.z);
             */
             outputLaserFront.laser.image = inputLasersFrontThisFrame[0].image;
-            outputLaserFront.transform.forward = Vector3.Reflect(inputLasersFrontThisFrame[0].laserOutput.forward, transform.forward);
+            outputLaserFront.transform.forward = Vector3.Reflect(inputLasersFrontThisFrame[0].transform.forward, transform.forward);
             outputLaserFront.active = true;
 
             //inputLaserFrontLastFrame = inputLasersFrontThisFrame[0];
@@ -84,7 +84,7 @@ public class Mirror : BlockObject
         else if (inputLasersBackThisFrame.Count == 1)
         {
             outputLaserBack.laser.image = inputLasersBackThisFrame[0].image;
-            outputLaserBack.transform.forward = Vector3.Reflect(inputLasersBackThisFrame[0].laserOutput.forward, -transform.forward);
+            outputLaserBack.transform.forward = Vector3.Reflect(inputLasersBackThisFrame[0].transform.forward, -transform.forward);
             outputLaserBack.active = true;
 
             //inputLaserBackLastFrame = inputLasersBackThisFrame[0];
