@@ -12,6 +12,7 @@ public class LevelSelector : MonoBehaviour
     public Text previewLevelDescription;
     public Transform previewRating;
     public Button playButton;
+    public GameObject levelSelectWarning;
 
     private ToggleGroup toggleGrp;
     private LevelData selectedLevel;
@@ -38,7 +39,7 @@ public class LevelSelector : MonoBehaviour
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
                 levelToggleComponent.group = toggleGrp;
-            }   
+            }
         }
     }
 
@@ -61,6 +62,7 @@ public class LevelSelector : MonoBehaviour
             previewLevelDescription.text = "\"" + selectedLevel.description + "\"";
             SetImagePreview();
             SetPreviewRating();
+            levelSelectWarning.SetActive(false);
         }
         else
         {
@@ -70,6 +72,7 @@ public class LevelSelector : MonoBehaviour
             scenePreview.texture = null;
             scenePreview.color = new Color(1, 1, 1, 0.05f);
             ResetPreviewRating();
+            levelSelectWarning.SetActive(true);
         }
     }
 
