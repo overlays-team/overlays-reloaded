@@ -8,13 +8,14 @@ using UnityEngine.UI;
 public class InventoryButton : MonoBehaviour, IPointerDownHandler
 {
     public Inventory inventory;
+    public bool sandbox = false;
 
     [Tooltip("this automaticly changes the inventory icon size on tablet")]
     public LayoutElement layoutElement;
 
     private void Start()
     {
-        if (Screen.height *1f/ Screen.width < 1.5)
+        if (Screen.height *1f/ Screen.width < 1.5 && !sandbox)
         {
             if (layoutElement != null)
             {
