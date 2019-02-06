@@ -59,7 +59,6 @@ public class IngameUI : MonoBehaviour {
     //Hide all UI
     public void HideIngameUI()
     {
-        Debug.Log("Hide");
         pauseButton.SetActive(false);
         tutorialButton.SetActive(false);
         inventory.SetActive(false);
@@ -188,7 +187,7 @@ public class IngameUI : MonoBehaviour {
         Color newColor = new Color(1f, 1f, 1f, 0f);
         foreach (Transform child in trans)
         {
-            //child is your child transform
+            //Child is your child transform
             if (child.gameObject.GetComponent<Button>() != null)
             {
                 var colors = child.gameObject.GetComponent<Button>().colors;

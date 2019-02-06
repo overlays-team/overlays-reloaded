@@ -19,7 +19,7 @@ public class IngameManager : MonoBehaviour
     [Tooltip("if this is set to 15 we get 1 star after 15 moves, 2 stars with 5-10 moves and on with 0-5 moves")]
     public int maxMoves = 15;
 
-    public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+    public  List<ImageOutput> outputImages = new List<ImageOutput>(); //Holds a collection of all output Images
 
     public void SetOutputImages(List<ImageOutput> outputImages)
     { 
@@ -214,7 +214,7 @@ public class IngameManager : MonoBehaviour
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
             if (allCorrect) Win();
-            //because sometimes a laser is only right targeted for a second, we wait a second
+            //Because sometimes a laser is only right targeted for a second, we wait a second
         }
         else
         {
