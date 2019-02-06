@@ -14,7 +14,7 @@ public class GridPlane : MonoBehaviour
     public GameObject positiveHalo;
     public GameObject negativeHalo;
 
-    public MeshCollider meshCollider;
+    public Collider boxCollider;
     public MeshRenderer meshRenderer;
 
     public Transform frame;
@@ -62,7 +62,7 @@ public class GridPlane : MonoBehaviour
         if (_empthy)
         {
             empty = true;
-            meshCollider.enabled = false;
+            boxCollider.enabled = false;
             meshRenderer.enabled = false;
             foreach(Transform child in frame)
             {
@@ -75,7 +75,7 @@ public class GridPlane : MonoBehaviour
         else
         {
             empty = false;
-            meshCollider.enabled = true;
+            boxCollider.enabled = true;
             meshRenderer.enabled = true;
             foreach (Transform child in frame)
             {
