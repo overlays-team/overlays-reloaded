@@ -29,8 +29,6 @@ public class InventoryButton : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //inventory.TakeItemFromInventory(this); old way
-
         inventory.PlayerSelectedThisButton(this);
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ImageInputSandbox : ImageInput
 {
-    /*here we can import an image from our gallery to use it for our image processing, 
-    we dont use the SetUp image function of imageInput because we do nood need the same
-    compressionFormat for all images here*/
+    /*
+     * here we can import an image from our gallery to use it for our image processing, 
+    we dont use the SetUp image function of imageInput because we do noot need the same
+    compressionFormat for all images here
+    */
 
-   // bool imageIsBeingLoaded = true;
     Texture2D loadedImage;
 
     protected override void Start()
@@ -59,6 +60,7 @@ public class ImageInputSandbox : ImageInput
 
     }
 
+    //here we use a plugin from the asset store
     public void PickImageFromGallery(int maxSize = 1024)
     {
 

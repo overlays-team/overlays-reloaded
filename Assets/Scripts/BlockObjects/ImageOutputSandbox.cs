@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ImageOutputSandbox : BlockObject
 {
+    /*
+     * allows us to export an image to our gallery, which this block gets as an input
+     */
+
+
     [Header("Image Output Sandbox")]
     [Tooltip("assign the checker Texture here, what do we see if theres no image here")]
     public Texture2D noImage;
@@ -15,7 +20,6 @@ public class ImageOutputSandbox : BlockObject
         imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         base.Update();

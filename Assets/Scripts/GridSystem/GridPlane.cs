@@ -22,9 +22,6 @@ public class GridPlane : MonoBehaviour
 
     private void Start()
     {
-        //SetEmpthy(empty);
-    
-
         positiveHalo.SetActive(false);
         negativeHalo.SetActive(false);
     }

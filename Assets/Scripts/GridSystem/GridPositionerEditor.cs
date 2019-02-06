@@ -5,6 +5,10 @@ using UnityEditor;
 
 #if (UNITY_EDITOR) 
 
+/*
+ * custom inspector 
+ */
+
 [CustomEditor(typeof(GridPositioner))]
 public class GridPositionerEditor : Editor
 {

@@ -10,13 +10,6 @@ public class TransparentMirror : BlockObject
     public LaserOutput outputLaser1;
     [Tooltip("this is the laser which passes through the mirror")]
     public LaserOutput outputLaser2;
-    /*[Tooltip("this is the reflected laser")]
-    public LaserOutput outputLaserBack1;
-    [Tooltip("this is the laser which passes through the mirror")]
-    public LaserOutput outputLaserBack2;*/
-
-
-    //inputLaser[0] is on the forwrd side of the mirror, inputLaser[1] on the backside
 
     List<Laser> inputLasersThisFrame = new List<Laser>();
 
@@ -55,7 +48,7 @@ public class TransparentMirror : BlockObject
             outputLaser2.transform.forward = inputLasersThisFrame[0].transform.forward;
             outputLaser2.active = true;
         }
-        else //if 2
+        else 
         {
             outputLaser1.laser.image = inputLasersThisFrame[0].image;
             outputLaser1.transform.forward = inputLasersThisFrame[0].transform.forward;

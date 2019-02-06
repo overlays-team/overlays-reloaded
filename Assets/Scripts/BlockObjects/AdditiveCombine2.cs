@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class AdditiveCombine2 : BlockObject
 {
-
-    //takes 2 lasers as Input and gives one as output
+    /*
+    * takes 2 lasers as input and gives one as output, which was belended using "Photoshop Screen",
+    * take a closer look at BlockObject to understand everything
+    */
 
     float image1Weight = 1;
     float image2Weight = 1;
@@ -14,7 +18,6 @@ public class AdditiveCombine2 : BlockObject
     //for image processing
     Color pixel1;
     Color pixel2;
-
 
     protected override void Update()
     {
@@ -41,13 +44,7 @@ public class AdditiveCombine2 : BlockObject
 
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
-    }
-
-    protected override void StartImageProcessing()
-    {
-        base.StartImageProcessing();
-        if (inputImage1.width != inputImage2.width) Debug.Log("different resolutions of the images we want to screen/overlay!");
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override Color ProcessPixel(int x, int y)
@@ -64,6 +61,7 @@ public class AdditiveCombine2 : BlockObject
             pixel2 = inputImage2.GetPixel((int)(x / resolutionDifference), (int)(y / resolutionDifference));
         }
 
+        //screen blending / additive color blending
         return new Color(
                         1 - (1 - (pixel1.a * image1Weight * pixel1.r)) * (1 - (pixel2.a * image2Weight * pixel2.r)) / 1,
                         1 - (1 - (pixel1.a * image1Weight * pixel1.g)) * (1 - (pixel2.a * image2Weight * pixel2.g)) / 1,
@@ -74,14 +72,11 @@ public class AdditiveCombine2 : BlockObject
 
     }
 
-    //gets called by the slider in the detsiled node view, updates the weight of the two images
+    //gets called by the slider in the detailed node view, updates the weight of the two images
     public void UpdateImageWeight(Slider slider)
     {
-        Debug.Log(slider.value);
-        //image1Weight = slider.value * 2;
         image1Weight = 1 + slider.value;
         image2Weight = 1 + (1 - slider.value);
-        //image2Weight = (1 - slider.value) * 2;
         if (inputImage1 != null && inputImage2 != null) StartImageProcessing();
     }
 

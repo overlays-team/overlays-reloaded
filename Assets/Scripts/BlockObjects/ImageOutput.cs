@@ -6,6 +6,11 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 public class ImageOutput : BlockObject {
+    
+    /*
+     * this is our standard goalBLock, if all goalBlocks get a laser with an image, which is the same as their goalImage , we win the level
+     */
+
 
     [Header("Image Output")]
     [SerializeField]
@@ -26,7 +31,7 @@ public class ImageOutput : BlockObject {
         NoImage,
         Checking,
         Checked,
-        Displaying //we already set the correct color after the imageChekc
+        Displaying
     }
 
     protected ImageCheckingState imageCheckingState = ImageCheckingState.NoImage;
@@ -143,7 +148,6 @@ public class ImageOutput : BlockObject {
         if (biggestError > 0.01)
         {
             imageCorrect = false;
-            //TODO: check if this is needed, imageCorrect = false is already handled above
         }
         else
         {

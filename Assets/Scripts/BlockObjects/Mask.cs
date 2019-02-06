@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class Mask : BlockObject
 {
+    /*
+     * this block uses the mask's r value to change the alpha channel of the inputImage
+     */
+
     [Tooltip("assign the mask here - the mask takes the r value for alpha blending")]
     public Texture2D mask;
 
@@ -32,10 +36,8 @@ public class Mask : BlockObject
             Texture2D newImageNotCroppedYet = duplicateTexture(loadedImage);
             Texture2D newImage = CropToSquare(newImageNotCroppedYet);
 
-            //laserOutput.laser.image = newImage;
             mask = newImage;
             blockImage.GetComponent<Image>().sprite = Sprite.Create(newImage, new Rect(0, 0, newImage.width, newImage.height), new Vector2(0.5f, 0.5f));
-            //detailedNodeViewImage.sprite = debugImage.sprite;
             if (imageProcessingState != ImageProcessingState.NoImage)
             {
                 StartImageProcessing();
@@ -62,15 +64,15 @@ public class Mask : BlockObject
                 }
             }
 
-            UpdateOutputImageDisplayAndSendThroughLaser();
+            UpdateOutputImageDisplayAndSendImageThroughLaser();
         }
     }
 
     protected override void StartImageProcessing()
     {
-        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
+        //starts the imageProcessing which gets over many frames via an enumerator
 
-        //als output Image setzen wir das größere Bilde, das andere Bild wird upgescaled
+        //the smaller image gets upscaled
         if (mask.width > inputImage1.width)
         {
             outputImage = Instantiate(mask);
@@ -111,7 +113,7 @@ public class Mask : BlockObject
     }
 
 
-    // for mask importing:
+    //for mask importing:
 
     public void OnImportButtonClicked()
     {

@@ -6,6 +6,9 @@ using System.IO;
 
 public class ImageMultiOutput : ImageOutput
 {
+    /*
+     * finally not used in the game, is the equivalent to the goal block in the TimeAttack mode but with another blending algorythm
+     */
 
     protected override void ImageOutputUpdate()
     {

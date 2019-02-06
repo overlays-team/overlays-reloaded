@@ -5,11 +5,12 @@ using UnityEngine;
 public class GridSystem : MonoBehaviour
 {
     [SerializeField]
-    bool developerMode = true; //if this is true - the grid system automaticly searches far all active planes and grid blocks and assigns them 
-    //this is convenient for the level designer but not optimal for the builded game, if a level is ready we should disable developer mode and assign all gridBlocks and gridBlanes in the inspector
+    bool developerMode = true; // if this is true - the grid system automaticly searches far all active planes and grid blocks and assigns them 
+                               // this is convenient for the level designer but not optimal for the builded game, if a level is ready we should disable developer mode and assign all gridBlocks and gridBlanes in the inspector,
+                               // although we can leave it, because its not much of a performance impact
 
-    public GridPlane[] gridPlanes; // collection of all gridPlanes
-    public BlockObject[] blockObjects; 
+    public GridPlane[] gridPlanes; // collection of all gridPlanes in the scene
+    public BlockObject[] blockObjects; //collection of al the objects in the scene
 
 	void Awake ()
     {
@@ -34,7 +35,7 @@ public class GridSystem : MonoBehaviour
         }
         
         
-        //suche für jedes BlockObjectk die näheste GridPlane, snappe
+        //search the nearets gridPlane for every blockObject, snap them
         foreach(BlockObject blockObject in blockObjects)
         {
             float nearestDistance = float.PositiveInfinity;
@@ -53,7 +54,6 @@ public class GridSystem : MonoBehaviour
                 }
             }
 
-            //blockObject.transform.position = nearestPlane.transform.position + new Vector3(0,0.5f,0);
             blockObject.currentAssignedGridPlane = nearestPlane;
         }
 	}
