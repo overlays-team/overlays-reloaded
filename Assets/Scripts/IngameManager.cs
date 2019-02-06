@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class IngameManager : MonoBehaviour
 {
+    //Game states
     public enum IngameManagerState
     {
         Playing, GameComplete, Paused, Review
@@ -18,7 +19,7 @@ public class IngameManager : MonoBehaviour
     [Tooltip("if this is set to 15 we get 1 star after 15 moves, 2 stars with 5-10 moves and on with 0-5 moves")]
     public int maxMoves = 15;
 
-    public  List<ImageOutput> outputImages = new List<ImageOutput>(); //holds a collection of all output Images
+    public  List<ImageOutput> outputImages = new List<ImageOutput>(); //Holds a collection of all output Images
 
     public void SetOutputImages(List<ImageOutput> outputImages)
     { 
@@ -28,12 +29,13 @@ public class IngameManager : MonoBehaviour
 
     private Scene currentScene;
     private bool endOfLevel = false;
+
     //Singletoncode
     private void Awake()
     {
         if (Instance != null)
         {
-            DestroyImmediate(Instance); // es kann passieren wenn wir eine neue Scene laden dass immer noch eine Instanz existiert
+            DestroyImmediate(Instance); // It could happen when we load a new scene that still has an instance
         }
         else
         {
@@ -46,7 +48,7 @@ public class IngameManager : MonoBehaviour
     {
         SceneFader.Instance.FadeToClear();
 
-        //get out ImageOutputs
+        //Get out ImageOutputs
         GameObject[] imageOutputGO = GameObject.FindGameObjectsWithTag("blockObject");
         foreach (GameObject go in imageOutputGO)
         {
@@ -75,6 +77,7 @@ public class IngameManager : MonoBehaviour
         }
     }
 
+    //Win the game and calculate score
     void Win()
     {
         score = 3 - (moves * 3 / maxMoves);
@@ -87,6 +90,7 @@ public class IngameManager : MonoBehaviour
         currentState = IngameManagerState.GameComplete;
     }
 
+    //Save score of completed level 
     private void SaveLevelState()
     {
         int numberOfLevelsInGameData = GameDataEditor.Instance.data.levels.Count;
@@ -94,6 +98,7 @@ public class IngameManager : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name.Equals(GameDataEditor.Instance.data.levels[i].sceneID))
             {
+                //Just the greater score will be saved
                 if (GameDataEditor.Instance.data.levels[i].score<score)
                 {
                     GameDataEditor.Instance.data.levels[i].score = score;
@@ -103,6 +108,7 @@ public class IngameManager : MonoBehaviour
                 {
                     endOfLevel = true;
                 }
+                //unlock next level
                 else
                 {
                     GameDataEditor.Instance.data.levels[i + 1].completed = true;
@@ -112,27 +118,31 @@ public class IngameManager : MonoBehaviour
         GameDataEditor.Instance.SaveData();
     }
 
+    //Next game (when button clicked)
     public void Next()
     {
         SceneFader.Instance.FadeToNextScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    //Retry game (when button clicked)
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    //Go to main menu (when button clicked)
     public void MainMenu()
     {
         SceneFader.Instance.FadeTo("MainMenu");
     }
 
+    //Go to level select scene (when button clicked)
     public void LevelSelect()
     {
         SceneFader.Instance.FadeTo("MainMenuLevelSelect");
     }
 
-
+    //Pause game (when button clicked)
     public void Pause()
     {
         currentState = IngameManagerState.Paused;
@@ -140,13 +150,14 @@ public class IngameManager : MonoBehaviour
         PauseGame();
     }
 
-    //pauses the inventory and layerController
+    //Pause the inventory and layerController
     public void PauseGame()
     {
         PlayerController.Instance.enabled = false;
         ingameUI.HideIngameUI();
     }
 
+    //Resume game (when button clicked)
     public void Resume()
     {
         currentState = IngameManagerState.Playing;
@@ -154,6 +165,7 @@ public class IngameManager : MonoBehaviour
         ResumeGame();
     }
 
+    //Resume the inventory and layerController
     public void ResumeGame()
     {
         PlayerController.Instance.Reset();
@@ -161,14 +173,14 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowIngameUI();
     }
 
-
+    //Review state after win (when button clicked)
     public void RevisitLevelAfterWin()
     {
         currentState = IngameManagerState.Review;
-        //we enabe the playerController so we can magnify our images
+        //We enabe the playerController so we can magnify our images
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
-        //but we set all blockObject so stationary and not moveable so we cant move them anymore
+        //But we set all blockObject so stationary and not moveable so we cant move them anymore
         GameObject[] blockObjects = GameObject.FindGameObjectsWithTag("blockObject");
         foreach (GameObject go in blockObjects)
         {
@@ -181,6 +193,7 @@ public class IngameManager : MonoBehaviour
         ingameUI.ShowLevelRevisitPanel();
     }
 
+    //End review state, back to level complete screen (when button clicked)
     public void BackToEndScreen()
     {
         currentState = IngameManagerState.GameComplete;
@@ -189,6 +202,7 @@ public class IngameManager : MonoBehaviour
         ingameUI.HideLevelRevisitPanel();
     }
 
+    //Check if all picuters correctly targeted
     public bool CheckWinCondition()
     {
         bool allCorrect = true; 
@@ -200,7 +214,7 @@ public class IngameManager : MonoBehaviour
                 if (!imageOutput.imageCorrect) allCorrect = false;
             }
             if (allCorrect) Win();
-            //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
+            //Because sometimes a laser is only right targeted for a second, we wait a second
         }
         else
         {
@@ -209,6 +223,7 @@ public class IngameManager : MonoBehaviour
         return allCorrect;
     }
 
+    //Moves counter
     public void RaiseMoves()
     {
         moves++;
