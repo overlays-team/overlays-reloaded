@@ -16,8 +16,8 @@ public class TimeAttackManager : MonoBehaviour
     public LevelInstantiator levelInstantiator;
     public HttpCommunicator httpCommunicator;
 
+    public int scoreMultiplier;
     public int totalScore;
-    
     public float maxTime;
     public float timer;
 
@@ -145,7 +145,7 @@ public class TimeAttackManager : MonoBehaviour
     {
         //thisLevelScore = starRating * scoreFactor;
         //starRating = 3 - (moves * 3 / maxMoves);
-        totalScore += (int) Mathf.Round(timer);
+        totalScore += (int) Mathf.Round(timer * scoreMultiplier);
 
         CheckHighestTotalScore();
         timeAttackUI.ShowLevelCompletePanel(timer, totalScore, GameDataEditor.Instance.data.highestTotalScore);
