@@ -21,7 +21,7 @@ public class Filter : BlockObject
         base.Start();
         laserOutput.active = false;
 
-        /* falls wir den laser färben wollen
+        /* if we want to tint the laser
         switch (filterMode)
         {
             case FilterColor.RED:
@@ -65,7 +65,7 @@ public class Filter : BlockObject
             }
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override Color ProcessPixel(int x, int y)
@@ -94,9 +94,7 @@ public class Filter : BlockObject
         }
     }
 
-
-
-    #region only for sandbox mode
+    #region only for sandbox mode, set the slider values
     public void SetRed(Slider slider)
     {
         red = slider.value;

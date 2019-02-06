@@ -6,6 +6,10 @@ using System.IO;
 
 public class ImageBarthelOutput : ImageOutput
 {
+    /*
+     * this imageOutput can be hit with a laser from any side, if it has 2 lasers, it blends the 2 images together with the image blending technique used in the previous game,
+     * sadly this does not work with pixel values of 0-255, so we dont do it correctly here
+     */
 
     protected override void ImageOutputUpdate()
     {
@@ -33,12 +37,6 @@ public class ImageBarthelOutput : ImageOutput
                 inputImage2 = activeLasers[1].inputLaser.image;
                 StartImageProcessing();
             }
-            /*else if (activeLasers.Count == 1)
-            {
-                debugImage.sprite = Sprite.Create(activeLasers[0].inputLaser.image, new Rect(0, 0, activeLasers[0].inputLaser.image.width, activeLasers[0].inputLaser.image.height), new Vector2(0.5f, 0.5f));
-                detailedNodeViewImage.sprite = debugImage.sprite;
-                CheckIfImageIsCorrect(activeLasers[0].inputLaser.image);
-            }*/
             else
             {
                 inputImage1 = null;
@@ -56,8 +54,6 @@ public class ImageBarthelOutput : ImageOutput
         {
             if (imageProcessingState == ImageProcessingState.Ready)
             {
-                
-
                 //start checking if our image is processed
                 imageCheckingState = ImageCheckingState.Checking;
                 frame.SetColors(Color.yellow, Color.yellow);

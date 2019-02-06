@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser : MonoBehaviour {
+    /*
+     * the lasers work with a line renderer and raycasting, they only hit objects on the blockObjectsGraphics layer
+     */
+
 
     [Header("Raycasting")]
     private Vector3 endPoint;
@@ -53,7 +57,7 @@ public class Laser : MonoBehaviour {
             //activate visuals
             lineRenderer.enabled = true;
             directionFlowParticle.SetActive(true);
-            //particleLight.SetActive(true);
+            //particleLight.SetActive(true); // we disabled laser lighting for the sake of performance, but could be reenabled
 
             RaycastHit hit;
             // Bit shift the index of the layer (0) to get a bit mask
@@ -91,7 +95,7 @@ public class Laser : MonoBehaviour {
                     }
                     if (destinationBlock.HittedInput(this) || destinationBlock is Mirror)
                     {
-                        impactParticle.SetActive(false); //wenn wir in einen Input treffen oder einen Reflektor/Spiegel, gibt es kein Impact paricle
+                        impactParticle.SetActive(false); //if we hit a laserInput or a mirror, there is no impact particle, because these should be there
                     }
                 }
                 else

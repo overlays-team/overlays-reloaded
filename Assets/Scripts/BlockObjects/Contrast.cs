@@ -8,12 +8,6 @@ public class Contrast : BlockObject
     [SerializeField]
     private float contrastValue = 2;
 
-    protected override void Start()
-    {
-        base.Start();
-        laserOutput.active = false;
-    }
-
     protected override void Update()
     {
         base.Update();
@@ -35,7 +29,7 @@ public class Contrast : BlockObject
             }
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override Color ProcessPixel(int x, int y)

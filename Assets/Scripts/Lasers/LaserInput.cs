@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class LaserInput : MonoBehaviour
 {
-    //diese werden als Children einem BlockObjekt angehängt und er überprüft jeweils ob deren (Typ?) und Rotation mit den einfallenden Lasern stimmen
+    //these are assigned a children of blockObjects, the blockObjects check if they are hitted by lasers
     public Laser inputLaser;
-    public bool active; //are active if a laser id hitting a input
+    public bool active; //are active if a laser is hitting a input
 
     private void Start()
     {

@@ -5,8 +5,8 @@ using UnityEngine;
 public class LaserOutput : MonoBehaviour {
 
     /*
-     * Jedes BlockObject, welches Laser rausschießt hat einen oder mehrere LaserOutputs
-     * Abhängig davon wie die Rotation eines Laser  outputs ist, so werden auch die Laser rausgeschossen
+     * Every blockObjects which shoots a laser has one or several laserOutputs
+     * the lasers rotation is the same as the outputs
      */
 
     public GameObject laserPrefab;
@@ -17,7 +17,6 @@ public class LaserOutput : MonoBehaviour {
         laser = Instantiate(laserPrefab).GetComponent<Laser>();
         laser.active = false;
         laser.startingBlock = transform.parent.GetComponent<BlockObject>();
-        //laser.laserOutput = transform;  //output point sets direction, can be at 000 transform of parent
         laser.transform.position = transform.position;
         laser.transform.forward = transform.forward;
         laser.transform.parent = transform;
@@ -36,7 +35,6 @@ public class LaserOutput : MonoBehaviour {
 
     public void SetLaser(Transform startPoint, BlockObject startingBlock)
     {
-        //laser.laserOutput = startPoint;
         laser.startingBlock = startingBlock;
     }
 

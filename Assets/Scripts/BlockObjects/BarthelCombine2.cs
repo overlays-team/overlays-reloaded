@@ -37,7 +37,7 @@ public class BarthelCombine2 : BlockObject
 
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override void StartImageProcessing()

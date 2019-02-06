@@ -5,8 +5,8 @@ using UnityEngine;
 public class LaserManager : MonoBehaviour {
 
     /* 
-     * Diese Klasse hat alle Laser als eine Collection gespeichert und updatet sie - jetzt jeden frame - 
-     * kann aber auch nur einige male pro Sekunde passieren um die performance zu verbessern
+     * This Class has a collection of all the lsers in a scene and updates them every frame
+     * this happens every frame, but can happen only x times a second , by chnaging the update interval
      */
     HashSet<Laser> lasers;
 
@@ -16,7 +16,7 @@ public class LaserManager : MonoBehaviour {
 
     public static LaserManager Instance;
 
-    //Singletoncode
+    //Singleton
     private void Awake()
     {
         if (Instance != null)
@@ -32,7 +32,6 @@ public class LaserManager : MonoBehaviour {
         nextLaserUpdateTime = Time.time + updateInterval;
     }
 	
-	// Update is called once per frame
 	void Update ()
     {
         if(Time.time> nextLaserUpdateTime)
