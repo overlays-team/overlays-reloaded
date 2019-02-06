@@ -13,6 +13,7 @@ public class ScrollSnap : MonoBehaviour
     public int lastSelectedItem;
     public List<RectTransform> items;
     public Transform itemContainer;
+    public ModeSelect modeSelect;
 
     private RectTransform rect;
     private float focusItem;
@@ -149,6 +150,18 @@ public class ScrollSnap : MonoBehaviour
         {
             Vector2 newPosition = new Vector2(newX, scrollSlide.anchoredPosition.y);
             scrollSlide.anchoredPosition = newPosition;
+        }
+    }
+
+    public void ItemOnPress(int index)
+    {
+        if(selectedItem != index)
+        {
+            focusItem = (index) * -itemDistance;
+        }
+        else
+        {
+            modeSelect.SelectMode();
         }
     }
 
