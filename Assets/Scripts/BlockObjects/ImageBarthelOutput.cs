@@ -138,7 +138,7 @@ public class ImageBarthelOutput : ImageOutput
                 }
 
             }
-            if (y % 10 == 0) yield return null;
+            if (y % imageProcessingTime == 0) yield return null;
         }
         Debug.Log("biggestError: " + biggestError);
         Debug.Log("errorPixelCount: " + errorPixelCount + " of " + 256 * 256);

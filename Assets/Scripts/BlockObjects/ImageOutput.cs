@@ -142,7 +142,7 @@ public class ImageOutput : BlockObject {
                 if (Mathf.Abs(color2.b - color1.b) > biggestError) biggestError = Mathf.Abs(color2.b - color1.b);
 
             }
-            if (y % 10 == 0) yield return null;
+            if (y % imageProcessingTime == 0) yield return null;
         }
 
         if (biggestError > 0.01)
