@@ -58,6 +58,9 @@ public class TimeAttackManager : MonoBehaviour
                 CountTime();
                 CheckWinCondition();
                 break;
+            case TimeAttackState.Paused:
+                CountTime();
+                break;
         }
     }
 

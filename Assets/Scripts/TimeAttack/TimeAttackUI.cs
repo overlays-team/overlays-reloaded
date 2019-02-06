@@ -102,26 +102,13 @@ public class TimeAttackUI : MonoBehaviour
         if (tutorialPanel.activeInHierarchy)
         {
             tutorialPanel.SetActive(false);
-            ShowTimerDisplay();
-            ShowPauseButton();
-            ShowTutorialButton();
-            ShowInventory();
-            TimeAttackManager.Instance.ResumeGame();
-            //IngameManager.Instance.ResumeGame();
         }
         else
         {
             tutorialPanel.SetActive(true);
-            HideTimerDisplay();
-            HidePauseButton();
-            HideTutorialButton();
-            HideInventory();
-            TimeAttackManager.Instance.PauseGame();
-            //IngameManager.Instance.PauseGame();
         }
     }
     #endregion
-
 
     public void ShowCountdownDisplay()
     {
