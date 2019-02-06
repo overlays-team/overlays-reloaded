@@ -351,7 +351,7 @@ public class BlockObject : MonoBehaviour
         return new Color();
     }
 
-    protected void UpdateOutputImageDisplayAndSendThroughLaser()
+    protected void UpdateOutputImageDisplayAndSendImageThroughLaser()
     {
         if (imageProcessingState != ImageProcessingState.Displaying)
         {
