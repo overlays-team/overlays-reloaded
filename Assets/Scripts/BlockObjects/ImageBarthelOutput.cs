@@ -47,6 +47,8 @@ public class ImageBarthelOutput : ImageOutput
                 frame.SetColors(Color.red, Color.red);
                 imageCorrectGlitterEffect.SetActive(false);
                 imageCorrect = false;
+
+                imageProcessingState = ImageProcessingState.Displaying; // so we can always zoom in
             }
         }
 
@@ -140,12 +142,11 @@ public class ImageBarthelOutput : ImageOutput
             }
             if (y % imageProcessingTime == 0) yield return null;
         }
-        Debug.Log("biggestError: " + biggestError);
-        Debug.Log("errorPixelCount: " + errorPixelCount + " of " + 256 * 256);
+       // Debug.Log("biggestError: " + biggestError);
+        //Debug.Log("errorPixelCount: " + errorPixelCount + " of " + 256 * 256);
         if (errorPixelCount > 61500)
         {
             imageCorrect = false;
-            //TODO: check if this is needed, imageCorrect = false is already handled above
         }
         else
         {
