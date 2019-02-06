@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inverter : BlockObject
 {
-    // Update is called once per frame
+
     protected override void Update()
     {
         base.Update();
@@ -26,7 +26,7 @@ public class Inverter : BlockObject
             }
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override Color ProcessPixel(int x, int y)

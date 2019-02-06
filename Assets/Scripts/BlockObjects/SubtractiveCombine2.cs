@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class SubtractiveCombine2 : BlockObject
 {
+    /*
+    * takes 2 lasers as input and gives one as output, which was belended using "Photoshop Multiply",
+    * take a closer look at BlockObject to understand everything
+    */
+
     //takes 2 lasers as Input and gives one as output
 
     float image1Weight = 1;
@@ -39,7 +44,7 @@ public class SubtractiveCombine2 : BlockObject
 
         }
 
-        UpdateOutputImageDisplayAndSendThroughLaser();
+        UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
     protected override void StartImageProcessing()

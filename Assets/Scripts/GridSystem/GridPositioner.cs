@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-/*positioniert die GridPlanes im EditMode*/
+/*positions the gridPlanes in EditMode*/
 [ExecuteInEditMode]
 public class GridPositioner : MonoBehaviour
 {
@@ -29,7 +29,6 @@ public class GridPositioner : MonoBehaviour
     public LevelInstantiator LevelInstantiator;
 
     //variables necessary for camera positioning
-   
     float gridHeight;
     float gridWidth;
     Vector3 middlePoint;
@@ -71,6 +70,7 @@ public class GridPositioner : MonoBehaviour
         }
     }
     #endif
+
     public void UpdatePlanes(int _rows, int _columns, float _padding)
     {
         rows = LevelInstantiator.getIdx0();
@@ -102,7 +102,7 @@ public class GridPositioner : MonoBehaviour
 
         gridWidth = this.colums + (padding - 1) * (this.colums - 1);
         gridHeight = rows + (padding - 1) * (rows - 1);
-        // middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, (gridHeight / 2) - 0.5f); //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
+        //0.5f because thats half of the plane and the gridPositioner starts in the middle of the bottom left plane
         middlePoint = transform.position + new Vector3((gridWidth / 2) - 0.5f, 0f, -(gridHeight / 2) + 0.5f);
     }
 

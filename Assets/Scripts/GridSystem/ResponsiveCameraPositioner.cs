@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ResponsiveCameraPositioner : MonoBehaviour
 {
+    /*
+     * This scripts adapts the camera position, so we can see the whole level 
+     */
+
     [SerializeField]
     GridPositioner gridPositoner;
 

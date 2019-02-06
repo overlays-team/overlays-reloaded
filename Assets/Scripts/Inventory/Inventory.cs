@@ -9,8 +9,7 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
 
     public InventoryItem[] items;
     public InventoryButton[] inventoryButtons;
-    public GridPlane inventoryGridPlane; //eine einfache wenn auch nicht so elegante Lösung - spart aber um die 70 Zeilen code
-                                         //public bool sandboxMode;
+    public GridPlane inventoryGridPlane; 
 
     [SerializeField]
     [Tooltip("in sandbox mode we can scroll through the inventory and instantiate the buttons when we take them, in time attack we only have mrirrors")]
@@ -70,15 +69,15 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     {
         if (mouseDown)
         {    
-            //abbruchbedingung
+            //terminating condition
             if(Input.mousePosition.y > rectTransform.rect.height*2 || Input.GetMouseButtonUp(0))
             {
                 mouseDown = false;
                 PlayerController.Instance.enabled = true;
             }
 
-            //nun schauen wir ob wir den Finger/Maus zur Seite bewegen -> inventory scroll
-            //oder ob wir den Finger/Maus nach oben bewegen -> get Item from Inventory
+            //do we move our finger to the side -> inventory scroll
+            // do we move our finger up? -> get Item from Inventory
 
             Vector2 mouseChange = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - lastMousePosition;
 
@@ -123,7 +122,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
     {
         if (inventoryMode == InventoryMode.Sandbox)
         {
-            //Debug.Log("on pointerDown");
             PlayerController.Instance.enabled = false;
             mouseDown = true;
             lastMousePosition = Input.mousePosition;
@@ -142,7 +140,6 @@ public class Inventory : MonoBehaviour, IPointerDownHandler
         {
             selectedButton = clickedButton;
             OnPointerDown();
-            //Debug.Log("to be implemented");
         }
     }
 

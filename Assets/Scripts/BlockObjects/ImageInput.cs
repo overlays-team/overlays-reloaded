@@ -5,6 +5,10 @@ using UnityEngine.UI;
 
 public class ImageInput : BlockObject
 {
+    /*
+     *  this block shoots a laser into the game, you can assign the image on them
+     */
+
     [Header("Image Input")]
     [SerializeField]
     protected Texture2D inputImage;
@@ -16,7 +20,7 @@ public class ImageInput : BlockObject
 
     protected void Awake()
     {
-        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view
+        imageProcessingState = ImageProcessingState.Displaying; // we set this here so we can always zoom in the cetailed node view - kind of a workaround
     }
 
 
@@ -27,7 +31,7 @@ public class ImageInput : BlockObject
         laserOutput.active = true;
     }
 
-    //convert the picture into the RGBA32 texture format and set it up
+    //convert the picture into the used texture format and set it up
     public void SetUpImage(Texture2D image)
     {
         outputImage = new Texture2D(image.width, image.height, textureFormat, false);
