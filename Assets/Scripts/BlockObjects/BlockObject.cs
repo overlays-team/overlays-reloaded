@@ -8,13 +8,9 @@ public class BlockObject : MonoBehaviour
 {
 
     /*
-     * Der Grundbaustein, alle anderen Blocks erben von diesem
-     * Er hat eine Collection von Lasern, welche ihn hitten, 
-     * die Kinder entscheiden dann was sie mit diesen Lasern tun und 
-     * wieviele sie überhaupt wahrnehmen
-     * 
-     * Jedes Kind übernimmt die LaserInputs und inputImage 1 bis 4 und outputImage 1 bis 4 von der Vaterklasse, 
-     * das blockObjekt hatt defaultmäßig nur einen Laser Output- kinder die mehr wollen, überschreiben
+     * The basic block, every blockObject like morrors or filters derive from this.
+     * It has a collection of lasers which hit it.
+     * The children decide what to do with them and how many they use
      */
 
     #region Variables
@@ -38,7 +34,7 @@ public class BlockObject : MonoBehaviour
     #region positioning variables
     [HideInInspector]
     public GridPlane currentAssignedGridPlane;
-    protected Vector3 heightCorrector; //Vector der jeweils die Hälfte der Höhe des Objektes beträgt, um ihn auf Planes auf korrekter Höhe aufstellen zu können
+    protected Vector3 heightCorrector; //vector which helps with the positioning, is half the length of the blockObjects height
     #endregion
 
     #region smooth movement variables
@@ -69,7 +65,7 @@ public class BlockObject : MonoBehaviour
     [Tooltip("assign the laserInputs here")]
     protected LaserInput[] laserInputs;
 
-    [Tooltip("default nur ein output, falls ein kind mehr braucht, kann es sich selber welche setzen")]
+    [Tooltip("only one per default, children can create more if needed")]
     [SerializeField]
     protected LaserOutput laserOutput;
 
@@ -77,7 +73,7 @@ public class BlockObject : MonoBehaviour
     bool[] activeLasersLastFrame;
     Texture2D[] imagesLastFrame;
 
-    protected int laserInputMaxIncidenceAngle = 5; //was ist der größte Winkel unter dem ein Laser in einen LaserInputEinfallen kann und trotzdem akzeptiert wird
+    protected int laserInputMaxIncidenceAngle = 5; //which is the biggest angle under which a laser goes into an input and still gets accepted by it
 
     protected bool lasersChanged; //did the laserInputs change last frame?
     #endregion
@@ -85,19 +81,19 @@ public class BlockObject : MonoBehaviour
     #region graphics 
     [Header("Graphics")]
     [SerializeField]
-    [Tooltip("muss nich bei jedem BlockObjekt assignt sein, wird nicht von jedem genutzt")]
+    [Tooltip("does not need to be assignes in every block, only used by some of them")]
     protected GameObject graphics;
-    [Tooltip("das Canvas, welches unser Bild und unser Icon zusammenhält")]
+    [Tooltip("the canvas which holds the image and the icon of the block, only on of them is visible once at a time")]
     public GameObject imageCanvas;
     [SerializeField]
-    [Tooltip("beide frames sollten bei beweglichen Blocks ersignt werden")]
+    [Tooltip("both frames should be assigned for moveable blocks")]
     protected LineRenderer frame;
     [SerializeField]
-    [Tooltip("beide frames sollten bei beweglichen Blocks ersignt werden")]
+    [Tooltip("both frames should be assigned for moveable blocks")]
     protected GameObject stationaryFrame;
-    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist")]
+    [Tooltip("the processed image which is visible on the block, if we have one")]
     public Image debugImage;
-    [Tooltip("das Bild, welches auf dem BlockObjekt zu sehen ist, falls kein BIld bearbeitet wird - ein plus beim AdditivBlock zum beispiel")]
+    [Tooltip("the image which is diplayed on the block ,when we do not have a processed image, an icon mostly")]
     public GameObject blockImage;
 
     #endregion
@@ -176,7 +172,7 @@ public class BlockObject : MonoBehaviour
 
     public void BlockPositionSetUp(GridPlane assignedGridPlane)
     {
-        //setze den hieght Correktor - dieser sorgt dafür, dass alle Blocks jeweils mit ihrer Unterseite auf einem Feld aufliegen und nicht mittendrinn sind
+        //set the height corrector - corrects the height of objects on gridPlanes
         heightCorrector = assignedGridPlane.transform.up;
 
         heightCorrector *= transform.localScale.y / 2;
@@ -300,9 +296,9 @@ public class BlockObject : MonoBehaviour
 
     protected virtual void StartImageProcessing()
     {
-        //startet das Image Processing welches über mehrere Frames in dem Enumerator läuft
+        //starts the image processing, which calculates over several frames via an Enumerator
 
-        //als output Image setzen wir das größere Bilde, das andere Bild wird upgescaled
+        //the outputImage is a copy of the bigger image at first, the smaller image gets scaled up
         if (inputImage2 == null)
         {
             outputImage = Instantiate(inputImage1);
@@ -325,7 +321,7 @@ public class BlockObject : MonoBehaviour
 
     protected virtual void StopImageProcessing()
     {
-        //is called when the lasr leaves the node - > active image processing is stopped and the image is deleted
+        //is called when the laser leaves the node - > active image processing is stopped and the image is deleted
         imageProcessingState = ImageProcessingState.NoImage;
         StopCoroutine("ImageProcessingEnumerator");
     }
@@ -499,12 +495,11 @@ public class BlockObject : MonoBehaviour
         }
     }
 
-    //diese Funktion sorgt dafür dass unser Block nach der bewegung schön weich landet
+    //this function allows our blocks to land softly on gridPlanes
     public void SetPositionToSnapTo(GridPlane gridPlane)
     {
         movementState = BlockMovementState.Dropping;
         if (currentAssignedGridPlane != null) currentAssignedGridPlane.taken = false;
-        //transform.position = gridPlane.transform.position + new Vector3(0, 0.5f, 0);
         currentAssignedGridPlane = gridPlane;
         currentAssignedGridPlane.taken = true;
 
@@ -517,8 +512,6 @@ public class BlockObject : MonoBehaviour
         if(currentAssignedGridPlane.transform.position + heightCorrector  != transform.position)
         {
             transform.position = Vector3.Lerp(transform.position, (currentAssignedGridPlane.transform.position + heightCorrector), PlayerController.Instance.blockSnappingSpeed * Time.deltaTime);
-            //if we change planes 
-           // transform.up = Vector3.Lerp(transform.up, currentAssignedGridPlane.transform.up, PlayerController.Instance.blockSnappingSpeed * Time.deltaTime);
         }
         else
         {
@@ -527,7 +520,7 @@ public class BlockObject : MonoBehaviour
 
     }
 
-    //Diese funktion sorgt dafür, dass unser Object sich schön smooth von seimem GridPlane zu unserem Finger bewegt, wenn wir ihn bewegen wollen und dass es in der luft ebenfalls schön smooth fliegt
+    //this function allows our blockObject to move smoothly to our finger while dragging
     public void SetMovePosition(Vector3 position)
     {
          targetDragPosition = position;
