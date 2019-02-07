@@ -32,7 +32,6 @@ public class AdditiveCombine2 : BlockObject
                 inputImage2 = laserInputs[1].inputLaser.image;
                 Grow();
                 StartImageProcessing();
-
             }
             else
             {

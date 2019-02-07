@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class BarthelCombine2 : BlockObject
 {
+    /*
+     * not used in the final game - block equivalent of the timeAttackGoalBLock
+     */
 
     //takes 2 lasers as Input and gives one as output
 
@@ -38,12 +41,6 @@ public class BarthelCombine2 : BlockObject
         }
 
         UpdateOutputImageDisplayAndSendImageThroughLaser();
-    }
-
-    protected override void StartImageProcessing()
-    {
-        base.StartImageProcessing();
-        if (inputImage1.width != inputImage2.width) Debug.Log("different resolutions of the images we want to screen/overlay!");
     }
 
     protected override Color ProcessPixel(int x, int y)
