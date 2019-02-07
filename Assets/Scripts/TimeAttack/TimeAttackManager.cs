@@ -81,6 +81,11 @@ public class TimeAttackManager : MonoBehaviour
         return ("player" + "-" + random);
     }
 
+    public void GoToLeaderboard()
+    {
+        Application.OpenURL("https://overlays-webapp.herokuapp.com/scores/index.html");
+    }
+
 
     public void SubmitScore()
     {
@@ -176,6 +181,8 @@ public class TimeAttackManager : MonoBehaviour
     void Lose()
     {
         currentState = TimeAttackState.GameOver;
+        timeAttackUI.HideInventory();
+        timeAttackUI.HideTimerDisplay();
         timeAttackUI.ShowGameOverPanel();
         timeAttackUI.scoreCountText.text = totalScore.ToString();
 
