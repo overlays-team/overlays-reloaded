@@ -39,6 +39,9 @@ public class LevelSelector : MonoBehaviour
             if (GameDataEditor.Instance.data.levels[i].completed)
             {
                 levelToggleComponent.group = toggleGrp;
+            }else
+            {
+                levelToggleComponent.transform.GetChild(0).GetComponent<Text>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
             }
         }
     }
