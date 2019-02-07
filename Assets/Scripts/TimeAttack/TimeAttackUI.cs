@@ -260,7 +260,7 @@ public class TimeAttackUI : MonoBehaviour
 
     public void ShowSubmitCompleteMessage()
     {
-        scoreSubmitText.text = "THANK YOU!";
+        scoreSubmitText.text = "Thank You!";
         nameInputField.gameObject.SetActive(false);
         submitButton.SetActive(false);
     }
