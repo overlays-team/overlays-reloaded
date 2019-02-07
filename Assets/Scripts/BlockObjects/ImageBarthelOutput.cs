@@ -35,11 +35,40 @@ public class ImageBarthelOutput : ImageOutput
                 }
             }
 
-            if (activeLasers.Count == 2)
+            if(activeLasers.Count == 1)
+            {
+                inputImage1 = activeLasers[0].inputLaser.image;
+
+                if (activeLasers[0].inputLaser.imageID == goalImageID)
+                {
+                    imageCorrect = true;
+                    imageCorrectGlitterEffect.SetActive(true);
+                    frame.SetColors(Color.green, Color.green);
+                    imageCorrectGlitterEffect.SetActive(true);
+                    Instantiate(
+                        imageCorrectBurstEffect,
+                        new Vector3(transform.position.x,
+                        imageCorrectBurstEffect.transform.position.y,
+                        transform.position.z), imageCorrectBurstEffect.transform.rotation
+                    );
+                    debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
+                    detailedNodeViewImage.sprite = debugImage.sprite;
+                    imageProcessingState = ImageProcessingState.Displaying;
+                }
+                else
+                {
+                    imageCorrect = false;
+
+                    frame.SetColors(Color.red, Color.red);
+                    imageCorrectGlitterEffect.SetActive(false);
+                    imageProcessingState = ImageProcessingState.Displaying;
+                }
+            }
+            else if (activeLasers.Count == 2)
             {
                 inputImage1 = activeLasers[0].inputLaser.image;
                 inputImage2 = activeLasers[1].inputLaser.image;
-                Debug.Log(activeLasers[0].inputLaser.imageID + activeLasers[1].inputLaser.imageID);
+               
                 if(activeLasers[0].inputLaser.imageID + activeLasers[1].inputLaser.imageID == goalImageID)
                 {
                     imageCorrect = true;

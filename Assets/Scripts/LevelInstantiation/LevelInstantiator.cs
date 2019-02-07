@@ -145,8 +145,6 @@ public class LevelInstantiator : MonoBehaviour
         {
             for (int col = 0; col < colLength; col++)
             {
-                //GameObject objectToInstantiate;
-                //print("[" + row + "][" + col + "] " + levelData[row, col]);
 
                 //Sources ´beginning with a 1 and 2 belong to targets with 3, and sources with 4 and 5 belong to 9
                 bool isSource = false;
