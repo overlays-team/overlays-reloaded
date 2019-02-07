@@ -180,6 +180,7 @@ public class TimeAttackManager : MonoBehaviour
 
     void Lose()
     {
+        PauseGame();
         currentState = TimeAttackState.GameOver;
         timeAttackUI.HideInventory();
         timeAttackUI.HideTimerDisplay();
