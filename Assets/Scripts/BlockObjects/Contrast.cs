@@ -5,9 +5,15 @@ using UnityEngine.UI;
 
 public class Contrast : BlockObject
 {
+    /*
+     * This class implements block that changes contrast
+     */
+
     [SerializeField]
+    //by value 1, contast of the image doesn't change; by value 2 contrast image is double in contrast
     private float contrastValue = 2;
 
+    //laser logic
     protected override void Update()
     {
         base.Update();
@@ -32,6 +38,7 @@ public class Contrast : BlockObject
         UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
+    //adding contrast to image depending on contrast value
     protected override Color ProcessPixel(int x, int y)
     {
 
@@ -47,9 +54,11 @@ public class Contrast : BlockObject
         return new Color(r / 255.0f, g / 255.0f, b / 255.0f, pixel.a);
     }
 
+    #region only for sandbox mode, set the slider values
     public void SetContrastValue(Slider slider)
     {
         contrastValue = slider.value;
         StartImageProcessing();
     }
+    #endregion
 }

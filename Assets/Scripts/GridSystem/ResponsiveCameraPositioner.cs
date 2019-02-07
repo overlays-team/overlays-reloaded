@@ -5,16 +5,17 @@ using UnityEngine;
 public class ResponsiveCameraPositioner : MonoBehaviour
 {
     /*
-     * This scripts adapts the camera position, so we can see the whole level 
+     * This script adapts the camera position, so we can see the whole level and the grid
      */
 
     [SerializeField]
     GridPositioner gridPositoner;
 
+    //padding to the edges of the screen
     [SerializeField]
     float padding;
 
-    public float zOffset = 0.45f; //raise the camera by thuis if we are using tablet -> better spacing
+    public float zOffset = 0.45f; //raise the camera by this offset if we are using tablet -> better spacing
 
     private void Start()
     {
@@ -32,16 +33,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
         AdjustCamera();
     }
 
-    //dor debug purposes
-    /*private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AdjustCamera();
-        }
-    }*/
-
-
+    //positions camera on the correct height and offset
     public void AdjustCamera()
     {
         if(gridPositoner)
@@ -54,6 +46,7 @@ public class ResponsiveCameraPositioner : MonoBehaviour
         }
     }
 
+    //calculating camera height depending on angle of the camera
     private float CalculateHeight()
     {
         float degree = Camera.main.fieldOfView/2;

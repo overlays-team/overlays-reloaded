@@ -110,7 +110,5 @@ public class Filter : BlockObject
        blue = slider.value;
        StartImageProcessing();
     }
-
-
     #endregion
 }

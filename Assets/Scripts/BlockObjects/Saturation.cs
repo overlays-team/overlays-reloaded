@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 public class Saturation : BlockObject
 {
+    /*
+     * This class implements block that changes saturation
+     */
     [SerializeField]
+    //by value 1, saturation of the image doesn't change; by value 2 saturation of the image is doubled
     private float saturationValue = 2;
 
+    //laser logic
     protected override void Update()
     {
         base.Update();
@@ -32,9 +37,9 @@ public class Saturation : BlockObject
         UpdateOutputImageDisplayAndSendImageThroughLaser();
     }
 
+    //implementation of staturation
     protected override Color ProcessPixel(int x, int y)
     {
-
         Color pixel = inputImage1.GetPixel(x, y);
 
         float h;
@@ -51,9 +56,11 @@ public class Saturation : BlockObject
         return result;
     }
 
+    #region only for sandbox mode, set the slider values
     public void SetSaturationValue(Slider slider)
     {
         saturationValue = slider.value;
         StartImageProcessing();
     }
+    #endregion
 }
