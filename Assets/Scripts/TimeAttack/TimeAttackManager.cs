@@ -29,7 +29,7 @@ public class TimeAttackManager : MonoBehaviour
     {
         if (Instance != null)
         {
-            DestroyImmediate(Instance); // es kann passieren wenn wir eine neue Scene laden dass immer noch eine Instanz existiert
+            DestroyImmediate(Instance);
         }
         else
         {
@@ -48,6 +48,7 @@ public class TimeAttackManager : MonoBehaviour
         timeAttackUI.HideInventory();
         ResetTimer();
         currentState = TimeAttackState.GameBegin;
+        LockPlayerController(); // So the user can't zoom into blocks during the tutorial
     }
 
     // Update is called once per frame
@@ -177,21 +178,21 @@ public class TimeAttackManager : MonoBehaviour
 
         CheckHighestTotalScore();
         timeAttackUI.ShowLevelCompletePanel(timer, totalScore, GameDataEditor.Instance.data.highestTotalScore);
-        PauseGame();
+        LockPlayerController();
 
         currentState = TimeAttackState.GameComplete;
     }
 
     void Lose()
     {
-        PauseGame();
+        LockPlayerController();
         currentState = TimeAttackState.GameOver;
         timeAttackUI.HideInventory();
         timeAttackUI.HideTimerDisplay();
         timeAttackUI.ShowGameOverPanel();
         timeAttackUI.scoreCountText.text = totalScore.ToString();
 
-        //sh, Name Input Panel wiil be shown only when (newTotalScore > 0)
+        // Player can only submit sufficient scores (totalScore > 0)
         if (totalScore > 0)
         {
             timeAttackUI.ShowNameInputPanel();
@@ -205,14 +206,12 @@ public class TimeAttackManager : MonoBehaviour
      
     public void NextRandomLevel()
     {
-
         levelInstantiator.GenerateLevelByDifficulty(totalScore);
-
         StartCountdown();
         timeAttackUI.HideLevelCompletePanel();
         timeAttackUI.HideLevelRevisitPanel();
         ResetTimer();
-        ResumeGame();
+        UnlockPlayerController();
     }
 
     void StartCountdown()
@@ -221,6 +220,7 @@ public class TimeAttackManager : MonoBehaviour
         StartCoroutine(CountdownCallback(3));
     }
 
+    // Hide all elements except the game start countdown and then show them again when the countdown has ended
     IEnumerator CountdownCallback(float animDuration)
     {
         timeAttackUI.HideTimerDisplay();
@@ -234,13 +234,14 @@ public class TimeAttackManager : MonoBehaviour
         timeAttackUI.ShowTutorialButton();
         timeAttackUI.ShowPauseButton();
         timeAttackUI.ShowInventory();
+        UnlockPlayerController();
         currentState = TimeAttackState.Playing;
     }
 
     public void RevisitLevelAfterWin()
     {
         currentState = TimeAttackState.Review;
-        //we enabe the playerController so we can magnify our images
+        // Enable the playerController so we can magnify our images
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         //but we set all blockObject so stationary and not moveable so we cant move them anymore
@@ -267,7 +268,6 @@ public class TimeAttackManager : MonoBehaviour
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        Time.timeScale = 1f;
     }
 
     public void MainMenu()
@@ -277,13 +277,13 @@ public class TimeAttackManager : MonoBehaviour
     public void Pause()
     { 
         timeAttackUI.TogglePause();
-        PauseGame();
+        LockPlayerController();
+        currentState = TimeAttackState.Paused;
     }
 
-    //pauses the inventory and layerController
-    public void PauseGame()
+    // Pauses the inventory and layerController
+    public void LockPlayerController()
     {
-        currentState = TimeAttackState.Paused;
         PlayerController.Instance.enabled = false;
         PlayerController.Instance.inventory.enabled = false;
     }
@@ -291,12 +291,12 @@ public class TimeAttackManager : MonoBehaviour
     public void Resume()
     {
         timeAttackUI.TogglePlay();
-        ResumeGame();
+        UnlockPlayerController();
+        currentState = TimeAttackState.Playing;
     }
 
-    public void ResumeGame()
+    public void UnlockPlayerController()
     {
-        currentState = TimeAttackState.Playing;
         PlayerController.Instance.Reset();
         PlayerController.Instance.enabled = true;
         PlayerController.Instance.inventory.enabled = true;
@@ -324,25 +324,19 @@ public class TimeAttackManager : MonoBehaviour
         bool allCorrect = true;
         if (outputImages.Count > 0)
         {
-            //Debug.Log("-------------ot this frame ----------------------------");
-
             foreach (ImageOutput imageOutput in outputImages)
             {
                 if (!imageOutput.imageCorrect) allCorrect = false;
-                //Debug.Log("outputImage: " + imageOutput);
             }
-            //Debug.Log("correct?e: " + allCorrect);
             if (allCorrect)
             {
                 Win();
             } 
-            //weil manchmal ein laser nur für eine Sekunde richtig ist, warten wir eine Sekunde
         }
         else
         {
             allCorrect = false;
         }
-
         return allCorrect;
     }
 
