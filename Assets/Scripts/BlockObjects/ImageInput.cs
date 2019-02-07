@@ -15,6 +15,8 @@ public class ImageInput : BlockObject
     [SerializeField]
     [Tooltip("Which texture format will we be working with in the game - every image needs to be importet in this format to prevent pixel errors")]
     protected TextureFormat textureFormat = TextureFormat.RGBA32;
+    [Tooltip("Only needed in timeAttack")]
+    public int imageID = 0;
 
     public bool instantiatedInGame = false; //used by levelInstantiator
 
@@ -45,10 +47,10 @@ public class ImageInput : BlockObject
         }
         outputImage.Apply();
         laserOutput.laser.image = outputImage;
+        if (imageID > 0) laserOutput.laser.imageID = imageID;
         laserOutput.active = true;
 
         debugImage.sprite = Sprite.Create(outputImage, new Rect(0, 0, outputImage.width, outputImage.height), new Vector2(0.5f, 0.5f));
         detailedNodeViewImage.sprite = debugImage.sprite;
     }
-
 }

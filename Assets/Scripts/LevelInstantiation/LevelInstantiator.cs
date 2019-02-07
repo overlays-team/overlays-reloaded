@@ -174,36 +174,42 @@ public class LevelInstantiator : MonoBehaviour
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage3);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 300;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col].Contains("900"))     //Multiples of 100 are different targets
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_goalImage9);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 900;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if(levelData[row, col] == "100")   //Targets starting with 1, 2, 4 or 5 only have a single source
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage1);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 100;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "200")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage2);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 200;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "400")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage4);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 400;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col] == "500")
                 {
                     instantiatedMulti = Instantiate(targetMulti, new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z), transform.rotation);
                     instantiatedMulti.GetComponent<ImageOutput>().SetupImageOutput(_sourceImage5);
+                    instantiatedMulti.GetComponent<ImageBarthelOutput>().goalImageID = 500;
                     imageOutputs.Add(instantiatedMulti.GetComponent<ImageOutput>());
                 }
                 else if (levelData[row, col].Contains("02"))   //Multiples of 100 ending on 2 means a source with a down output 
@@ -233,23 +239,27 @@ public class LevelInstantiator : MonoBehaviour
                 {
                     //Debug.Log("Sourceimage1");
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
+                    instantiatedSource.GetComponent<ImageInput>().imageID = 100;
                     instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage1);
                 }
                 else if (isSource && levelData[row, col].Contains("20"))
                 {
                     //Debug.Log("Sourceimage2");
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
+                    instantiatedSource.GetComponent<ImageInput>().imageID = 200;
                     instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage2);
                 }
                 else if (isSource && levelData[row, col].Contains("40"))
                 {
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
+                    instantiatedSource.GetComponent<ImageInput>().imageID = 400;
                     instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage4);
                 }
                 else if (isSource && levelData[row, col].Contains("50"))
                 {
                     instantiatedSource.GetComponent<ImageInput>().instantiatedInGame = true;
-                    instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage5);
+                    instantiatedSource.GetComponent<ImageInput>().imageID = 500;
+                    instantiatedSource.GetComponent<ImageInput>().SetUpImage(_sourceImage5);         
                 }
 
 

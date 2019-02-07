@@ -12,6 +12,7 @@ public class ImageOutputSandbox : BlockObject
     [Header("Image Output Sandbox")]
     [Tooltip("assign the checker Texture here, what do we see if theres no image here")]
     public Texture2D noImage;
+   
 
     protected override void Start()
     {

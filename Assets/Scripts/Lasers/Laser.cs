@@ -25,6 +25,8 @@ public class Laser : MonoBehaviour {
 
     [Header("Image Processing")]
     public Texture2D image;
+    [Tooltip("Only needed for timeAttack")]
+    public int imageID = 0;
 
     [Header("removing the \"glitch in the matrix\"")]
     public bool isMovingFast = false; //if this is true inputs and mirrors ignore tis laser - to prevent too fast laser movements

@@ -55,6 +55,7 @@ public class Mirror : BlockObject
         else if (inputLasersFrontThisFrame.Count == 1)
         {
             outputLaserFront.laser.image = inputLasersFrontThisFrame[0].image;
+            if(inputLasersFrontThisFrame[0].imageID>0) outputLaserFront.laser.imageID = inputLasersFrontThisFrame[0].imageID;
             outputLaserFront.transform.forward = Vector3.Reflect(inputLasersFrontThisFrame[0].transform.forward, transform.forward);
             outputLaserFront.active = true;
         }
@@ -71,6 +72,7 @@ public class Mirror : BlockObject
         else if (inputLasersBackThisFrame.Count == 1)
         {
             outputLaserBack.laser.image = inputLasersBackThisFrame[0].image;
+            if (inputLasersBackThisFrame[0].imageID > 0) outputLaserBack.laser.imageID = inputLasersBackThisFrame[0].imageID;
             outputLaserBack.transform.forward = Vector3.Reflect(inputLasersBackThisFrame[0].transform.forward, -transform.forward);
             outputLaserBack.active = true;
         }
