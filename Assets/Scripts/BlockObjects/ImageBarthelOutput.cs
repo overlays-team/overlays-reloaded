@@ -34,14 +34,13 @@ public class ImageBarthelOutput : ImageOutput
                 }
             }
 
-            if (activeLasers.Count >= 2)
+            if (activeLasers.Count == 2)
             {
                 inputImage1 = activeLasers[0].inputLaser.image;
                 inputImage2 = activeLasers[1].inputLaser.image;
                 Debug.Log(activeLasers[0].inputLaser.imageID + activeLasers[1].inputLaser.imageID);
                 if(activeLasers[0].inputLaser.imageID + activeLasers[1].inputLaser.imageID == goalImageID)
                 {
-                    Debug.Log("yep");
                     imageCorrect = true;
                     imageCorrectGlitterEffect.SetActive(true);
                     frame.SetColors(Color.green, Color.green);
