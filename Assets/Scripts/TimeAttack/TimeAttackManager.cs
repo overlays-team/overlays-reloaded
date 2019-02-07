@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public class TimeAttackManager : MonoBehaviour
 {
@@ -85,23 +86,41 @@ public class TimeAttackManager : MonoBehaviour
     {
         string playerName = timeAttackUI.nameInputField.text;
         Debug.Log("playerName: " + playerName);
-        bool hasDirtyWord = CheckDirtyWord(playerName);
+        bool hasDirtyWord = CheckDirtyWord(RemoveSpecialCharacters(playerName)) | CheckDirtyWord(RemoveSpecialCharactersAndNumbers(playerName));
         Debug.Log("hasDirtyWord: " + hasDirtyWord);
 
         if (string.IsNullOrEmpty(playerName))
         {
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
-        } 
+        }
         else if (hasDirtyWord)
         {
             timeAttackUI.scoreSubmitText.text = "Please try different name!";
-        } 
+        }
         else
         {
             httpCommunicator.SendScoreToServer(playerName, totalScore);
             GameDataEditor.Instance.data.highestTotalScorePlayerName = playerName;
             timeAttackUI.ShowSubmitCompleteMessage();
         }
+    }
+
+    private string RemoveSpecialCharacters(string s)
+    {
+        Regex rx = new Regex(@"[^0-9A-Za-zÖÄÜßöäü]");
+        string replacedString = rx.Replace(s, "");
+
+        Debug.Log(replacedString);
+        return replacedString;
+    }
+
+    private string RemoveSpecialCharactersAndNumbers(string s)
+    {
+        Regex rx = new Regex(@"[^A-Za-zÖÄÜßöäü]");
+        string replacedString = rx.Replace(s, "");
+
+        Debug.Log(replacedString);
+        return replacedString;
     }
 
 
