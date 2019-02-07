@@ -79,7 +79,7 @@ public class LevelInstantiator : MonoBehaviour
 
     private void assignPics()
     {
-        int numOfFolders = 30; //Needs to be the number of folders in PictureSets + 1
+        int numOfFolders = 41; //Needs to be the number of folders in PictureSets + 1
         randomFolder = UnityEngine.Random.Range(1, numOfFolders);
         int temp = randomFolder;
         _sourceImage1 = getPicA();
