@@ -55,8 +55,6 @@ public class HttpCommunicator : MonoBehaviour
     private IEnumerator ConnectionJSON()
     {
         string url = host + ":" + port + path;
-
-        //string scoreDataJson = " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";
         string scoreDataJson = GenerateJson();
   
         //preparing for sending
@@ -70,7 +68,7 @@ public class HttpCommunicator : MonoBehaviour
         request.SetRequestHeader(header, contentType);
         request.uploadHandler = new UploadHandlerRaw(payload); ;
 
-        // send request
+        // send request to the high score server
         yield return request.SendWebRequest();
 
         if (request.isNetworkError || request.isHttpError)
@@ -83,6 +81,7 @@ public class HttpCommunicator : MonoBehaviour
         }
     }
 
+    //generate json string which is to be sent to the high sccore server
     private string GenerateJson()
     {
         return " {\"score\" : {\"score\": \"" + score + "\", \"player\": \"" + player + "\"}} ";

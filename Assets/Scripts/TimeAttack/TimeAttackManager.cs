@@ -87,6 +87,7 @@ public class TimeAttackManager : MonoBehaviour
     }
 
 
+    //submit score to server
     public void SubmitScore()
     {
         string playerName = timeAttackUI.nameInputField.text;
@@ -110,6 +111,7 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
+    //remove special characters for dirty words check
     private string RemoveSpecialCharacters(string s)
     {
         Regex rx = new Regex(@"[^0-9A-Za-zÖÄÜßöäü]");
@@ -119,6 +121,7 @@ public class TimeAttackManager : MonoBehaviour
         return replacedString;
     }
 
+    //remove special characters and numbers for dirty words check
     private string RemoveSpecialCharactersAndNumbers(string s)
     {
         Regex rx = new Regex(@"[^A-Za-zÖÄÜßöäü]");
@@ -128,7 +131,7 @@ public class TimeAttackManager : MonoBehaviour
         return replacedString;
     }
 
-
+    //check if it is dirty word
     private bool CheckDirtyWord(string playerName)
     {
         bool isDirty = false;
@@ -144,7 +147,7 @@ public class TimeAttackManager : MonoBehaviour
         return isDirty;
     }
 
-
+    //if player achieved the hithest score, it is saved.
     private void CheckHighestTotalScore()
     {
         if (GameDataEditor.Instance.data.highestTotalScore < totalScore)
@@ -153,6 +156,7 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
+    //sace total score to GameDataEditor singleton
     private void SaveHighestTotalScore()
     {
         GameDataEditor.Instance.data.highestTotalScore = totalScore;

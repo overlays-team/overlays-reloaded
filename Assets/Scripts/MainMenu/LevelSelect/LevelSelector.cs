@@ -24,6 +24,7 @@ public class LevelSelector : MonoBehaviour
         LoadLevelStateFromGameDataEditor();   
     }
 
+    //load leve state from GameDataEditor singleton and generate buttons for levels dynamically.
     private void LoadLevelStateFromGameDataEditor()
     {
         for (int i = 0; i < GameDataEditor.Instance.data.levels.Count; i++)
@@ -46,6 +47,7 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+
     LevelData GetSelectedLevel()
     {
         foreach (Toggle toggle in toggleGrp.ActiveToggles())
@@ -55,6 +57,7 @@ public class LevelSelector : MonoBehaviour
         return null;
     }
 
+    //for button selected (click, tap)
     public void SelectedLevelChanged()
     {
         selectedLevel = GetSelectedLevel();
@@ -79,6 +82,7 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+    //set stars
     public void SetPreviewRating()
     {
         ResetPreviewRating();
@@ -88,6 +92,7 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+    //reset stars
     public void ResetPreviewRating()
     {
         foreach (Transform child in previewRating)
@@ -96,6 +101,7 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
+    //change(set) preview image
     public void SetImagePreview()
     {    
         image = Resources.Load("LevelPreviews/" + selectedLevel.previewImage) as Texture2D;
@@ -103,6 +109,7 @@ public class LevelSelector : MonoBehaviour
         scenePreview.GetComponent<RawImage>().texture = image;
     }
 
+    //go to selected level
     public void ChangeScene()
     {
         if (GetSelectedLevel() != null)
