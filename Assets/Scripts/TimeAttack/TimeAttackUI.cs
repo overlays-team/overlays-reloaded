@@ -18,12 +18,10 @@ public class TimeAttackUI : MonoBehaviour
     public Text timerFloatText;
     public Image timerGraphic;
     public GameObject timerPanel;
-    public GameObject totalScorePanel;
-    public GameObject highestScorePanel;
     public Text totalScoreText;
-    public Text highestScoreText;
     public Text scoreSubmitText;
     public Text scoreCountText;
+    public Text timeLeftCounterText;
     public InputField nameInputField;
     public GameObject submitButton;
     public GameObject countdownDisplay;
@@ -37,6 +35,7 @@ public class TimeAttackUI : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Reset text transparencies to animate them back in with a fade in animation
         TransparencyToZero(pauseMenuPanel.transform);
         TransparencyToZero(gameOverPanel.transform);
         TransparencyToZero(levelCompletePanel.transform);
@@ -51,6 +50,7 @@ public class TimeAttackUI : MonoBehaviour
         }
     }
 
+    // Animates UI blur components asynchronously
     public IEnumerator AnimateBlurIn(GameObject panel, float time)
     {
         Material cloneMaterial = Instantiate(panel.GetComponent<Image>().material);
@@ -69,31 +69,24 @@ public class TimeAttackUI : MonoBehaviour
         }
     }
 
-    IEnumerator DelayedLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
+    public IEnumerator AnimateScoreRefill(float timeLeft, int totalScore, int oldScore)
     {
-        yield return new WaitForSeconds(winWaitTime);
-
-        totalScoreText.text = "Your Score: " + totalScore;
-        highestScoreText.text = "Your Best: " + highestTotalScore;
-
-        if(timeLeft > 20)
+        totalScoreText.text = oldScore.ToString();
+        timeLeftCounterText.text = Mathf.Round(timeLeft).ToString();
+        // Delay the animation so the blur in animation finishes first
+        float delay = 1;
+        while(delay > 0)
         {
-            shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
+            delay -= Time.deltaTime;
+            yield return new WaitForEndOfFrame();
         }
-        else if(timeLeft > 10)
+        // Refill 1 second from the time left times the score multiplier to the total score (i.e. 28 sec = 280 score)
+        while(int.Parse(timeLeftCounterText.text) > 0)
         {
-            shoutOutText.text = mediumShoutoutTexts[Random.Range(0, 3)];
+            totalScoreText.text = (int.Parse(totalScoreText.text) + TimeAttackManager.Instance.scoreMultiplier).ToString();
+            timeLeftCounterText.text = (int.Parse(timeLeftCounterText.text) - 1).ToString();
+            yield return new WaitForSeconds(0.05f);
         }
-        else
-        {
-            shoutOutText.text = badShoutoutTexts[Random.Range(0, 3)];
-        }
-
-        levelCompletePanel.SetActive(true);
-        pauseButton.SetActive(false);
-        pauseMenuPanel.SetActive(false);
-        HideTutorialButton();
-        StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
     #region tutorial code
@@ -178,11 +171,38 @@ public class TimeAttackUI : MonoBehaviour
     }
     
     //shows the level complete panel delayed
-    public void ShowLevelCompletePanel(float timeLeft, int totalScore, int highestTotalScore)
+    public void ShowLevelCompletePanel(float timeLeft, int totalScore, int oldScore)
     {
-        StartCoroutine(DelayedLevelCompletePanel(timeLeft, totalScore, highestTotalScore));
+        StartCoroutine(DelayedLevelCompletePanel(timeLeft, totalScore, oldScore));
         HideInventory();
         HidePauseButton();
+    }
+
+    // Delay the appearance of the LevelCompletePanel so the user can look at the game result
+    IEnumerator DelayedLevelCompletePanel(float timeLeft, int totalScore, int oldScore)
+    {
+        yield return new WaitForSeconds(winWaitTime);
+
+        StartCoroutine(AnimateScoreRefill(timeLeft, totalScore, oldScore));
+
+        if (timeLeft > 20)
+        {
+            shoutOutText.text = goodShoutoutTexts[Random.Range(0, 3)];
+        }
+        else if (timeLeft > 10)
+        {
+            shoutOutText.text = mediumShoutoutTexts[Random.Range(0, 3)];
+        }
+        else
+        {
+            shoutOutText.text = badShoutoutTexts[Random.Range(0, 3)];
+        }
+
+        levelCompletePanel.SetActive(true);
+        pauseButton.SetActive(false);
+        pauseMenuPanel.SetActive(false);
+        HideTutorialButton();
+        StartCoroutine(AnimateBlurIn(levelCompletePanel, blurAnimDuration));
     }
 
     //shows the level complete panel at once
@@ -246,18 +266,6 @@ public class TimeAttackUI : MonoBehaviour
         timerDecimalText.enabled = isEnabled;
     }
 
-    public void ShowTotalScorePanel(bool isEnabled)
-    {
-        totalScorePanel.SetActive(isEnabled);
-        totalScoreText.enabled = isEnabled;
-    }
-
-    public void ShowHighestScorePanel(bool isEnabled)
-    {
-        highestScorePanel.SetActive(isEnabled);
-        highestScoreText.enabled = isEnabled;
-    }
-
     public void ShowSubmitCompleteMessage()
     {
         scoreSubmitText.text = "Thank You!";
@@ -277,11 +285,12 @@ public class TimeAttackUI : MonoBehaviour
 
     public void UpdateCountDown(float time, float maxTime)
     {
-        timerDecimalText.text = time.ToString("00");
+        timerDecimalText.text = Mathf.Floor(time).ToString("00");
         timerFloatText.text = (time % 1 * 100).ToString("00");
         timerGraphic.fillAmount = time / maxTime;
     }
 
+    // Reset text transparencies to 0 so they can be animated again
     private void TransparencyToZero(Transform trans)
     {
         Color transparentColor = new Color(1f, 1f, 1f, 0f);

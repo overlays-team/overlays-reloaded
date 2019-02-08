@@ -148,7 +148,7 @@ public class TimeAttackManager : MonoBehaviour
         return isDirty;
     }
 
-    //if player achieved the hithest score, it is saved.
+    //if player achieved the highest score, it is saved.
     private void CheckHighestTotalScore()
     {
         if (GameDataEditor.Instance.data.highestTotalScore < totalScore)
@@ -172,12 +172,12 @@ public class TimeAttackManager : MonoBehaviour
 
     void Win()
     {
-        //thisLevelScore = starRating * scoreFactor;
-        //starRating = 3 - (moves * 3 / maxMoves);
-        totalScore += (int) Mathf.Round(timer * scoreMultiplier);
+        // Remember the old score value to animate the score refill from the time left
+        int oldScore = totalScore;
+        totalScore += (int) Mathf.Round(timer) * scoreMultiplier;
 
         CheckHighestTotalScore();
-        timeAttackUI.ShowLevelCompletePanel(timer, totalScore, GameDataEditor.Instance.data.highestTotalScore);
+        timeAttackUI.ShowLevelCompletePanel(timer, totalScore, oldScore);
         LockPlayerController();
 
         currentState = TimeAttackState.GameComplete;
