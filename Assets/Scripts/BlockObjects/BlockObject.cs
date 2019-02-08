@@ -258,7 +258,7 @@ public class BlockObject : MonoBehaviour
         }
         else if(TimeAttackManager.Instance != null)
         {
-            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.PauseGame();
+            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.LockPlayerController();
         }
     }
 
@@ -272,7 +272,7 @@ public class BlockObject : MonoBehaviour
         }
         else if (TimeAttackManager.Instance != null)
         {
-            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.ResumeGame();
+            if (TimeAttackManager.Instance.currentState != TimeAttackManager.TimeAttackState.Review) TimeAttackManager.Instance.UnlockPlayerController();
         }
     }
 
