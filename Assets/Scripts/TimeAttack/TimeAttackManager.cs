@@ -93,6 +93,10 @@ public class TimeAttackManager : MonoBehaviour
     {
         string playerName = timeAttackUI.nameInputField.text;
         Debug.Log("playerName: " + playerName);
+
+        //playerName = RemoveSpecialCharacters(playerName);
+        //Debug.Log("playerName: " + playerName);
+
         bool hasDirtyWord = CheckDirtyWord(RemoveSpecialCharacters(playerName)) | CheckDirtyWord(RemoveSpecialCharactersAndNumbers(playerName));
         Debug.Log("hasDirtyWord: " + hasDirtyWord);
 
@@ -100,7 +104,7 @@ public class TimeAttackManager : MonoBehaviour
         {
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
         }
-        else if (hasDirtyWord)
+        else if (hasDirtyWord | HasSpecialCharacters(playerName))
         {
             timeAttackUI.scoreSubmitText.text = "Please try different name!";
         }
@@ -115,7 +119,7 @@ public class TimeAttackManager : MonoBehaviour
     //remove special characters for dirty words check
     private string RemoveSpecialCharacters(string s)
     {
-        Regex rx = new Regex(@"[^0-9A-Za-zÖÄÜßöäü]");
+        Regex rx = new Regex(@"[^0-9A-Za-zöäüÖÄÜß]");
         string replacedString = rx.Replace(s, "");
 
         Debug.Log(replacedString);
@@ -125,21 +129,33 @@ public class TimeAttackManager : MonoBehaviour
     //remove special characters and numbers for dirty words check
     private string RemoveSpecialCharactersAndNumbers(string s)
     {
-        Regex rx = new Regex(@"[^A-Za-zÖÄÜßöäü]");
+        Regex rx = new Regex(@"[^A-Za-zöäüÖÄÜß]");
         string replacedString = rx.Replace(s, "");
 
         Debug.Log(replacedString);
         return replacedString;
     }
 
+    //check it it has SpecialCharacters
+    private bool HasSpecialCharacters(string s)
+    {
+        Regex rx = new Regex(@"[^0-9A-Za-zöäüÖÄÜß]");
+        bool result = rx.IsMatch(s);
+        return result;
+    }
+
     //check if it is dirty word
-    private bool CheckDirtyWord(string playerName)
+    private bool CheckDirtyWord(string s)
     {
         bool isDirty = false;
         foreach (string dirtyWord in GameDataEditor.Instance.dirtyWords.wordsList)
         {
-            //if (dirtyWord.ToUpper().Contains(playerName.ToUpper())) //  this is meaningless. ie. fuck contains fuckkk -> false
-            if (playerName.ToUpper().Contains(dirtyWord.ToUpper()))
+            if (s.ToUpper().Contains(dirtyWord.ToUpper()))
+            {
+                isDirty = true;
+                break;
+            }
+            if (dirtyWord.ToUpper().Contains(s.ToUpper()))
             {
                 isDirty = true;
                 break;
