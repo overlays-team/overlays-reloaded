@@ -499,6 +499,94 @@ MonoBehaviour:
   imageCorrectBurstEffect: {fileID: 1884016819733470, guid: a6d33fb1d9eb659438406d26fbbd1ada,
     type: 3}
   imageCorrectGlitterEffect: {fileID: 5186399834433461991}
+  imageCorrectGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 1, b: 0, a: 1}
+    key1: {r: 0, g: 1, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  imageProcessingGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0.92, b: 0.016, a: 1}
+    key1: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  imageWrongGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  goalImageID: 0
 --- !u!1 &1951768736782248
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,6 +713,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4786635286135298}
     m_Modifications:
+    - target: {fileID: 3988651938508746979, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_Name
+      value: DatailedNodeView
+      objectReference: {fileID: 0}
+    - target: {fileID: 3988651938508746979, guid: e4bb1c46b64b53a49af9e5ed3600c953,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2460507691436632750, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -730,16 +828,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3988651938508746979, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_Name
-      value: DatailedNodeView
-      objectReference: {fileID: 0}
-    - target: {fileID: 3988651938508746979, guid: e4bb1c46b64b53a49af9e5ed3600c953,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7514819760145652891, guid: e4bb1c46b64b53a49af9e5ed3600c953,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -783,14 +871,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4068848593781708}
     m_Modifications:
-    - target: {fileID: 1342032079270970, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
-      propertyPath: m_Name
-      value: GlitterEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 1342032079270970, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4082887012092210, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -833,6 +913,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4082887012092210, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1342032079270970, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
+      propertyPath: m_Name
+      value: GlitterEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1342032079270970, guid: b60038e6bf1e8d14f82e8687856ca54a, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

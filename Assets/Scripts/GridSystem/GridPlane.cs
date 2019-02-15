@@ -29,7 +29,7 @@ public class GridPlane : MonoBehaviour
 
     void OnValidate()
     {
-        SetEmpthy(empty);
+        SetEmpty(empty);
     }
 
 
@@ -54,20 +54,17 @@ public class GridPlane : MonoBehaviour
     }
 
     //function which toggles between empthy and normal
-    void SetEmpthy(bool _empthy)
+    void SetEmpty(bool isEmpty)
     {
-        if (_empthy)
+        if (isEmpty)
         {
             empty = true;
             boxCollider.enabled = false;
             meshRenderer.enabled = false;
             foreach(Transform child in frame)
             {
-
                   child.GetComponent<MeshRenderer>().enabled = false;
-
             }
-
         }
         else
         {
@@ -80,5 +77,4 @@ public class GridPlane : MonoBehaviour
             }
         }
     }
-
 }

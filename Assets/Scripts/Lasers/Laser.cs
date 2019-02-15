@@ -7,7 +7,6 @@ public class Laser : MonoBehaviour {
      * the lasers work with a line renderer and raycasting, they only hit objects on the blockObjectsGraphics layer
      */
 
-
     [Header("Raycasting")]
     private Vector3 endPoint;
     public LineRenderer lineRenderer;
@@ -15,8 +14,10 @@ public class Laser : MonoBehaviour {
 
     [Header("Particle Effect")]
     public GameObject impactParticle;
-    public GameObject directionFlowParticle;
+    public GameObject flowParticle;
     public GameObject particleLight;
+    ParticleSystem flowParticlePS;
+    ParticleSystem.MainModule flowParticleMain;
     float lastLaserLength; 
 
     [Header("Game Logic")]
@@ -37,6 +38,8 @@ public class Laser : MonoBehaviour {
     private void Start()
     {
         LaserManager.Instance.AddLaser(this);
+        flowParticleMain = flowParticle.GetComponent<ParticleSystem>().main;
+        flowParticlePS = flowParticle.GetComponent<ParticleSystem>();
         SetLaserColor(new Color(1f, 0.5f, 0.5f,0.7f));
         fastMovementTreshhold *= PlayerController.Instance.blockRotationSpeed;
     }
@@ -58,7 +61,7 @@ public class Laser : MonoBehaviour {
 
             //activate visuals
             lineRenderer.enabled = true;
-            directionFlowParticle.SetActive(true);
+            flowParticle.SetActive(true);
             //particleLight.SetActive(true); // we disabled laser lighting for the sake of performance, but could be reenabled
 
             RaycastHit hit;
@@ -81,11 +84,11 @@ public class Laser : MonoBehaviour {
                 //particleLight.transform.position = laserOutput.position + (hit.point - laserOutput.position)/2;
 
                 //set flow particle position and length
-                directionFlowParticle.transform.position = transform.position;
-                directionFlowParticle.transform.forward = transform.forward;
+                flowParticle.transform.position = transform.position;
+                flowParticle.transform.forward = transform.forward;
                 float currentLaserLength = (hit.point - transform.position).magnitude;
-                if(currentLaserLength != lastLaserLength) directionFlowParticle.GetComponent<ParticleSystem>().Clear();
-                directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = currentLaserLength; //lifetime = laser Length
+                if(currentLaserLength != lastLaserLength) flowParticlePS.Clear();
+                flowParticleMain.startLifetime = currentLaserLength; //lifetime = laser Length
                 lastLaserLength = currentLaserLength;
 
                 if (hittedObject.transform.parent.GetComponent<BlockObject>() != null)
@@ -93,7 +96,7 @@ public class Laser : MonoBehaviour {
                     if (destinationBlock != hittedObject.transform.parent.GetComponent<BlockObject>())
                     {
                         destinationBlock = hittedObject.transform.parent.GetComponent<BlockObject>();
-                        directionFlowParticle.GetComponent<ParticleSystem>().Clear();
+                        flowParticlePS.Clear();
                     }
                     if (destinationBlock.HittedInput(this) || destinationBlock is Mirror)
                     {
@@ -113,7 +116,7 @@ public class Laser : MonoBehaviour {
                 if (destinationBlock != null)
                 {
                     destinationBlock = null;
-                    directionFlowParticle.GetComponent<ParticleSystem>().Clear();
+                    flowParticle.GetComponent<ParticleSystem>().Clear();
                 }
                 impactParticle.SetActive(false);
                 lineRenderer.SetPosition(0, transform.position);
@@ -123,26 +126,21 @@ public class Laser : MonoBehaviour {
                 //particleLight.transform.position = laserOutput.position + laserOutput.forward*2;
 
                 //set flow particle position
-                directionFlowParticle.transform.position = transform.position;
-                directionFlowParticle.transform.forward = transform.forward;
-
-                directionFlowParticle.GetComponent<ParticleSystem>().startLifetime = 100; //lifetime = laser Length
+                flowParticle.transform.position = transform.position;
+                flowParticle.transform.forward = transform.forward;
+                flowParticleMain.startLifetime = 100; //lifetime = laser Length
             }
-
             lastRotation = transform.rotation;
-
         }
         else
         {
             destinationBlock = null;
-
             //deactivate visuals
             lineRenderer.enabled = false;
             impactParticle.SetActive(false);
-            directionFlowParticle.SetActive(false);
+            flowParticle.SetActive(false);
             //particleLight.SetActive(false);
         }
-
     }
 
     void SetLaserColor(Color color)

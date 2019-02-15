@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
      * this controller controlls all the player commands, like tap and blocks, drag blocks etc...
      */
 
-
-    bool isEnabled = true; //in the pause and when in detailed node view we disable the playerController
     float timeOfLastMouseDown;
     float clickTime;
 

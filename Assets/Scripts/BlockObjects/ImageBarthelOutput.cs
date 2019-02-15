@@ -19,7 +19,7 @@ public class ImageBarthelOutput : ImageOutput
         if (lasersChanged)
         {
             imageCorrect = false;
-            frame.SetColors(Color.red, Color.red);
+            frame.colorGradient = imageWrongGradient;
             imageCorrectGlitterEffect.SetActive(false);
             StopCoroutine("ImageCheckingEnumerator");
             imageCheckingState = ImageCheckingState.NoImage;
@@ -43,7 +43,7 @@ public class ImageBarthelOutput : ImageOutput
                 {
                     imageCorrect = true;
                     imageCorrectGlitterEffect.SetActive(true);
-                    frame.SetColors(Color.green, Color.green);
+                    frame.colorGradient = imageCorrectGradient;
                     imageCorrectGlitterEffect.SetActive(true);
                     Instantiate(
                         imageCorrectBurstEffect,
@@ -59,7 +59,7 @@ public class ImageBarthelOutput : ImageOutput
                 {
                     imageCorrect = false;
 
-                    frame.SetColors(Color.red, Color.red);
+                    frame.colorGradient = imageWrongGradient;
                     imageCorrectGlitterEffect.SetActive(false);
                     imageProcessingState = ImageProcessingState.Displaying;
                 }
@@ -73,7 +73,7 @@ public class ImageBarthelOutput : ImageOutput
                 {
                     imageCorrect = true;
                     imageCorrectGlitterEffect.SetActive(true);
-                    frame.SetColors(Color.green, Color.green);
+                    frame.colorGradient = imageCorrectGradient;
                     imageCorrectGlitterEffect.SetActive(true);
                     Instantiate(
                         imageCorrectBurstEffect,
@@ -90,7 +90,7 @@ public class ImageBarthelOutput : ImageOutput
                     imageCorrect = false;
                     StartImageProcessing();
 
-                    frame.SetColors(Color.red, Color.red);
+                    frame.colorGradient = imageWrongGradient;
                     imageCorrectGlitterEffect.SetActive(false);
 
                 }
@@ -103,7 +103,7 @@ public class ImageBarthelOutput : ImageOutput
 
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 detailedNodeViewImage.sprite = debugImage.sprite;
-                frame.SetColors(Color.red, Color.red);
+                frame.colorGradient = imageWrongGradient;
                 imageCorrectGlitterEffect.SetActive(false);
                 imageCorrect = false;
 
@@ -137,12 +137,11 @@ public class ImageBarthelOutput : ImageOutput
         Color pixel2 = inputImage2.GetPixel(x, y);
 
         return new Color(
-
-                        Mathf.Min(Mathf.Max(0, (pixel1.r + pixel2.r) - 0.5f), 1),
-                        Mathf.Min(Mathf.Max(0, (pixel1.g + pixel2.g) - 0.5f), 1),
-                        Mathf.Min(Mathf.Max(0, (pixel1.b + pixel2.b) - 0.5f), 1),
-                        Mathf.Max(pixel1.a, pixel2.a)
-                        );
+            Mathf.Min(Mathf.Max(0, (pixel1.r + pixel2.r) - 0.5f), 1),
+            Mathf.Min(Mathf.Max(0, (pixel1.g + pixel2.g) - 0.5f), 1),
+            Mathf.Min(Mathf.Max(0, (pixel1.b + pixel2.b) - 0.5f), 1),
+            Mathf.Max(pixel1.a, pixel2.a)
+        );
     }
 
 }

@@ -15,7 +15,7 @@ public class ImageMultiOutput : ImageOutput
         if (lasersChanged)
         {
             imageCorrect = false;
-            frame.SetColors(Color.red, Color.red);
+            frame.colorGradient = imageWrongGradient;
             imageCorrectGlitterEffect.SetActive(false);
             StopCoroutine("ImageCheckingEnumerator");
             imageCheckingState = ImageCheckingState.NoImage;
@@ -49,7 +49,7 @@ public class ImageMultiOutput : ImageOutput
 
                 debugImage.sprite = Sprite.Create(goalImage, new Rect(0, 0, goalImage.width, goalImage.height), new Vector2(0.5f, 0.5f));
                 detailedNodeViewImage.sprite = debugImage.sprite;
-                frame.SetColors(Color.red, Color.red);
+                frame.colorGradient = imageWrongGradient;
                 imageCorrectGlitterEffect.SetActive(false);
                 imageCorrect = false;
             }
@@ -64,7 +64,7 @@ public class ImageMultiOutput : ImageOutput
 
                 //start checking if our image is processed
                 imageCheckingState = ImageCheckingState.Checking;
-                frame.SetColors(Color.yellow, Color.yellow);
+                frame.colorGradient = imageProcessingGradient;
                 CheckIfImageIsCorrect(outputImage);
                 imageProcessingState = ImageProcessingState.Displaying;
             }
@@ -77,7 +77,7 @@ public class ImageMultiOutput : ImageOutput
                 imageCheckingState = ImageCheckingState.Displaying;
                 if (imageCorrect)
                 {
-                    frame.SetColors(Color.green, Color.green);
+                    frame.colorGradient = imageCorrectGradient;
                     imageCorrectGlitterEffect.SetActive(true);
                     Instantiate(
                         imageCorrectBurstEffect,
@@ -88,12 +88,11 @@ public class ImageMultiOutput : ImageOutput
                 }
                 else
                 {
-                    frame.SetColors(Color.red, Color.red);
+                    frame.colorGradient = imageWrongGradient;
                     imageCorrectGlitterEffect.SetActive(false);
                 }
             }
         }
-
 
         //export function to get a goal image
         if (Input.GetKeyDown(KeyCode.E) && Input.GetKey(KeyCode.LeftControl))
@@ -108,10 +107,10 @@ public class ImageMultiOutput : ImageOutput
         Color pixel2 = inputImage2.GetPixel(x, y);
 
         return new Color(
-                        1 - (1 - pixel1.r) * (1 - pixel2.r) / 1,
-                        1 - (1 - pixel1.g) * (1 - pixel2.g) / 1,
-                        1 - (1 - pixel1.b) * (1 - pixel2.b) / 1
-                        );
+            1 - (1 - pixel1.r) * (1 - pixel2.r) / 1,
+            1 - (1 - pixel1.g) * (1 - pixel2.g) / 1,
+            1 - (1 - pixel1.b) * (1 - pixel2.b) / 1
+        );
     }
 
 }

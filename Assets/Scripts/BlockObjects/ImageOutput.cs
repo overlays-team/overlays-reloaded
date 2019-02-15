@@ -6,12 +6,9 @@ using System.IO;
 using UnityEngine.SceneManagement;
 
 public class ImageOutput : BlockObject {
-    
     /*
      * this is our standard goalBLock, if all goalBlocks get a laser with an image, which is the same as their goalImage , we win the level
      */
-
-
     [Header("Image Output")]
     [SerializeField]
     [Tooltip("which image needs to be passed to this object to win?")]
@@ -24,6 +21,10 @@ public class ImageOutput : BlockObject {
 
     public GameObject imageCorrectBurstEffect;
     public GameObject imageCorrectGlitterEffect;
+
+    public Gradient imageCorrectGradient;
+    public Gradient imageProcessingGradient;
+    public Gradient imageWrongGradient;
 
     //in which imageCheckingstate are we - are we currently checking if this image is correct or ...
     protected enum ImageCheckingState
@@ -53,15 +54,13 @@ public class ImageOutput : BlockObject {
         {
             detailedNodeViewImage.sprite = debugImage.sprite;
         }
-        frame.SetColors(Color.red, Color.red);
+        frame.colorGradient = imageWrongGradient;
     }
-
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
-
         ImageOutputUpdate();
     }
 
@@ -70,7 +69,7 @@ public class ImageOutput : BlockObject {
         if (lasersChanged)
         {
             imageCorrect = false;
-            frame.SetColors(Color.red, Color.red);
+            frame.colorGradient = imageWrongGradient;
             StopCoroutine("ImageCheckingEnumerator");
             imageCheckingState = ImageCheckingState.NoImage;
             imageCorrectGlitterEffect.SetActive(false);
@@ -79,7 +78,7 @@ public class ImageOutput : BlockObject {
             {
                 inputImage1 = laserInputs[0].inputLaser.image;
                 imageCheckingState = ImageCheckingState.Checking;
-                frame.SetColors(Color.yellow, Color.yellow);
+                frame.colorGradient = imageProcessingGradient;
                 CheckIfImageIsCorrect(inputImage1);
             }
             else
@@ -95,7 +94,7 @@ public class ImageOutput : BlockObject {
                 imageCheckingState = ImageCheckingState.Displaying;
                 if (imageCorrect)
                 {
-                    frame.SetColors(Color.green, Color.green);
+                    frame.colorGradient = imageCorrectGradient;
                     imageCorrectGlitterEffect.SetActive(true);
                     Instantiate(
                         imageCorrectBurstEffect, 
@@ -106,7 +105,8 @@ public class ImageOutput : BlockObject {
                 }
                 else
                 {
-                    frame.SetColors(Color.red, Color.red);
+                    frame.colorGradient = new Gradient();
+                    frame.colorGradient = imageWrongGradient;
                     imageCorrectGlitterEffect.SetActive(false);
                 }
             }
@@ -153,9 +153,7 @@ public class ImageOutput : BlockObject {
         {
             imageCorrect = true;
         }
-
         imageCheckingState = ImageCheckingState.Checked;
-
     }
 
     protected virtual void ExportImage(Texture2D imageToExport)

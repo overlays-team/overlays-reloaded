@@ -10,14 +10,17 @@ public class ButtonControl : MonoBehaviour {
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
     public void Retry()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
     public void Quit()
     {
         Application.Quit();
     }
+
     public void Home(){
         SceneManager.LoadScene("Home");
     }
@@ -26,5 +29,4 @@ public class ButtonControl : MonoBehaviour {
     {
         SceneManager.LoadScene(Level);
     }
-
 }

@@ -71,17 +71,6 @@ public class TimeAttackManager : MonoBehaviour
         this.outputImages = outputImages;
     }
 
-    private string GetRandomPlayerName()
-    {
-        string year = System.DateTime.Now.Year.ToString();
-        string month = System.DateTime.Now.Month.ToString();
-        string day = System.DateTime.Now.Day.ToString();
-
-        int random = Random.Range(1000, 9999);
-
-        return ("player" + "-" + random);
-    }
-
     public void GoToLeaderboard()
     {
         Application.OpenURL("https://overlays-webapp.herokuapp.com/scores/index.html");
