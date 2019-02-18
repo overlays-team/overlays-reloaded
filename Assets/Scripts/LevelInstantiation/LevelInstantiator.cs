@@ -296,7 +296,6 @@ public class LevelInstantiator : MonoBehaviour
     {
         string[] levels = dataAsJson.Split(']');
         string[] rows = levels[levelIndex].Split('"');
-        //foreach (string s in rows) { print("s in rows(direkt nach Initialisierung): " + s); }
         int count = 0;
 
         //Split the jsonData into an array containing strings with a row each.
@@ -307,15 +306,9 @@ public class LevelInstantiator : MonoBehaviour
             {
                 rows[count] = row;
                 count++;
-                //print("[" + count + "] " + temp[s]);
             }
         }
-        //foreach (string s in rows) { print("s in rows(nach erster Sortierung): " + s); }
-        //print("count nach Sortierung: " + count);
         Array.Resize(ref rows, count);
-        //foreach (string s in rows){print("s in rows(nach resizing): " + s);}
-
-        //print("rowsLength: " + rows.Length);
 
         string[] colLength = rows[0].Split(',');
         string[,] data2d = new string[rows.Length, colLength.Length];
@@ -327,7 +320,6 @@ public class LevelInstantiator : MonoBehaviour
             for (int j = 0; j < colLength.Length; j++)
             {
                 data2d[i, j] = split[j].Trim();
-                //print("["+i+"]["+j+"] " + data2d[i, j]);
             }
         }
 
