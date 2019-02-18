@@ -686,7 +686,7 @@ public class PlayerController : MonoBehaviour
 
     public void PutObjectBackToInventory()
     {
-        selectedBlockObject.ReturnToInventory();
+        selectedBlockObject.OnReturnToInventory();
         inventory.ReturnItemToInventory(selectedBlockObject);
         selectedBlockObject = null;
         playerMode = PlayerMode.Default;

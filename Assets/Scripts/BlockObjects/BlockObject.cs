@@ -223,7 +223,7 @@ public class BlockObject : MonoBehaviour
 
     #region inventory
 
-    public virtual void ReturnToInventory()
+    public virtual void OnReturnToInventory()
     {
         //before returning to inventory some objects needs to deassign some variables or disable lasers
         currentAssignedGridPlane.taken = false;
@@ -347,6 +347,7 @@ public class BlockObject : MonoBehaviour
         return new Color();
     }
 
+    //if image processing is finieshed, but we dont see the image yet
     protected void UpdateOutputImageDisplayAndSendImageThroughLaser()
     {
         if (imageProcessingState != ImageProcessingState.Displaying)
