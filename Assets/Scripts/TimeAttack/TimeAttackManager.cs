@@ -83,17 +83,20 @@ public class TimeAttackManager : MonoBehaviour
         string playerName = timeAttackUI.nameInputField.text;
         Debug.Log("playerName: " + playerName);
 
-        //playerName = RemoveSpecialCharacters(playerName);
-        //Debug.Log("playerName: " + playerName);
-
-        bool hasDirtyWord = CheckDirtyWord(RemoveSpecialCharacters(playerName)) | CheckDirtyWord(RemoveSpecialCharactersAndNumbers(playerName));
-        Debug.Log("hasDirtyWord: " + hasDirtyWord);
 
         if (string.IsNullOrEmpty(playerName))
         {
             timeAttackUI.scoreSubmitText.text = "Please enter your name!";
         }
-        else if (hasDirtyWord | HasSpecialCharacters(playerName))
+        else if (!IsNameRuleConformed(playerName))
+        {
+            timeAttackUI.scoreSubmitText.text = "Either only alphabet or alphabet followed by numbers";
+        }
+        else if (CheckDirtyWord(playerName)) // normal search
+        {
+            timeAttackUI.scoreSubmitText.text = "Please try different name!";
+        }
+        else if (CheckDirtyWord(GetRegExPattern(RemoveSpecialCharactersAndNumbers(playerName)))) //strict search
         {
             timeAttackUI.scoreSubmitText.text = "Please try different name!";
         }
@@ -105,15 +108,6 @@ public class TimeAttackManager : MonoBehaviour
         }
     }
 
-    //remove special characters for dirty words check
-    private string RemoveSpecialCharacters(string s)
-    {
-        Regex rx = new Regex(@"[^0-9A-Za-zöäüÖÄÜß]");
-        string replacedString = rx.Replace(s, "");
-
-        Debug.Log(replacedString);
-        return replacedString;
-    }
 
     //remove special characters and numbers for dirty words check
     private string RemoveSpecialCharactersAndNumbers(string s)
@@ -125,15 +119,45 @@ public class TimeAttackManager : MonoBehaviour
         return replacedString;
     }
 
-    //check it it has SpecialCharacters
-    private bool HasSpecialCharacters(string s)
+
+    //check if player name conforms the rule. e.g. shuya777
+    private bool IsNameRuleConformed(string s)
     {
-        Regex rx = new Regex(@"[^0-9A-Za-zöäüÖÄÜß]");
+        //^ and $ are needed to check beginning and ending of word
+        Regex rx = new Regex(@"^[a-zA-Zöäüß]+[\d]*$", RegexOptions.IgnoreCase);
         bool result = rx.IsMatch(s);
         return result;
     }
 
-    //check if it is dirty word
+
+    //create regular exression pattern. please also refer to project documentation
+    private Regex GetRegExPattern(string s)
+    {
+        //replace repeated character to one plus +
+        Regex rx1 = new Regex(@"(\w)\1+", RegexOptions.IgnoreCase);
+        string pattern = rx1.Replace(s, "$1+");
+        Debug.Log(pattern);
+
+        //replace c, k, ck with (k|ck?)+
+        Regex rx2 = new Regex(@"(c\+|c|k\+|k)", RegexOptions.IgnoreCase);
+        pattern = rx2.Replace(pattern, "(k|ck?)+");
+        Debug.Log(pattern);
+
+        //replace sch,sh with sc?h
+        Regex rx3 = new Regex(@"sc?h", RegexOptions.IgnoreCase); // equal as "sh|sch"
+        pattern = rx3.Replace(pattern, "sc?h");
+        Debug.Log(pattern);
+
+        //replace f|s|t|n|l|m|p, which not followed by "+" with $1+(one of them plus +).
+        Regex rx4 = new Regex(@"(f|s|t|n|l|m|p)(?!\+)", RegexOptions.IgnoreCase);
+        pattern = rx4.Replace(pattern, "$1+");
+        Debug.Log(pattern);
+
+        return new Regex("^" + pattern + "$", RegexOptions.IgnoreCase);
+    }
+
+
+    //check word with dictionary
     private bool CheckDirtyWord(string s)
     {
         bool isDirty = false;
@@ -144,14 +168,47 @@ public class TimeAttackManager : MonoBehaviour
                 isDirty = true;
                 break;
             }
-            if (dirtyWord.ToUpper().Contains(s.ToUpper()))
+        }
+        return isDirty;
+    }
+
+
+    //check word with dictionary
+    private bool CheckDirtyWord(Regex rx)
+    {
+        //time measurement start
+        System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+        sw.Reset();
+        sw.Start();
+
+        bool isDirty = false;
+        int index = 0;
+        int size = GameDataEditor.Instance.dirtyWords.wordsList.Count;
+        while (!isDirty)
+        {
+            if (rx.IsMatch(GameDataEditor.Instance.dirtyWords.wordsList[index]))
             {
                 isDirty = true;
                 break;
             }
+            index++;
+            if (index == size) break; 
         }
+
+        //print position in dictionary
+        if (isDirty)
+        {
+            Debug.Log("index:" + index + " , " + "match:" + GameDataEditor.Instance.dirtyWords.wordsList[index]);
+        }
+
+        //time measurement end
+        sw.Stop();
+        Debug.Log("search time:" + sw.ElapsedMilliseconds + "ms");
+
         return isDirty;
     }
+
+
 
     //if player achieved the highest score, it is saved.
     private void CheckHighestTotalScore()
